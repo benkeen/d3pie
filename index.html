@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+
 	<style>
 		body {
 			font: 13px sans-serif;
@@ -18,7 +19,17 @@
 			font: 13px sans-serif;
 			fill: #666666;
 		}
+
+		/* for the UI */
+		#generator-sections {
+			margin-bottom: 15px;
+		}
+		#generator-sections li a {
+			padding: 8px 13px;
+		}
+
 	</style>
+
 	<script src="js/d3.min.js"></script>
 	<script src="js/jquery-2.0.3.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -26,81 +37,121 @@
 </head>
 <body>
 
-<div class="container">
 
-
-	<div class="page-header">
-		<h1>D3 Pie Chart Generator</h1>
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<div class="navbar-brand">Pie Chart Generator</div>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
 	</div>
 
-	<div class="row">
-		<div class="col-md-5">
+	<div class="navbar-collapse collapse navbar-responsive-collapse">
+		<ul class="nav navbar-nav">
+			<li><a href="#">About</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#">Github!</a></li>
+		</ul>
+	</div>
+</div>
 
-			<ul class="nav nav-tabs" style="margin-bottom: 15px;">
-				<li class="active"><a href="#styles" data-toggle="tab">Layout</a></li>
+
+<div class="container">
+
+	<h1>Pie Chart Generator</h1>
+	<br />
+
+	<ul class="nav nav-tabs" style="margin-bottom: 25px;">
+		<li class="active dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Generator <b class="caret"></b></a>
+			<ul class="dropdown-menu">
+				<li class="dropdown-header">Example Pie Charts</li>
+				<li><a href="#">Example 1</a></li>
+				<li><a href="#">Example 2</a></li>
+				<li><a href="#">Example 3</a></li>
+				<li class="divider"></li>
+				<li><a href="#">Example 4</a></li>
+				<li><a href="#">Example 5</a></li>
+			</ul>
+		</li>
+		<li><a href="#styles" data-toggle="tab">Download</a></li>
+	</ul>
+
+	<div class="row">
+		<div class="col-md-4">
+
+			<ul id="generator-sections" class="nav nav-pills">
+				<li class="active"><a href="#styles" data-toggle="tab">Main</a></li>
 				<li><a href="#labels" data-toggle="tab">Labels</a></li>
-				<li><a href="#data" data-toggle="tab">Data</a></li>
-				<li><a href="#colour" data-toggle="tab">Colours</a></li>
+				<li><a href="#data" data-toggle="tab">Data & Colour</a></li>
 				<li><a href="#transitions" data-toggle="tab">Effects</a></li>
 			</ul>
 
-			<div id="myTabContent" class="tab-content">
-				<div class="tab-pane fade active in" id="styles">
+			<div id="myTabContent" class="tab-content" style="min-height: 322px">
 
+				<div class="tab-pane fade active in" id="styles">
 					<ol>
+						<li>Title</li>
 						<li>
 							Inner radius: <input type="range" min="50" max="200" value="80" />
 						</li>
 						<li>
 							Outer radius: <input type="range" min="200" max="200" value="200" />
 						</li>
+						<li>
+							Canvas size: height / width
+						</li>
+						<li>
+							Show canvas border (checkbox)
+						</li>
 					</ol>
-
 				</div>
 				<div class="tab-pane fade" id="labels">
 					<ol>
-						<li>Labels inside / out</li>
+						<li>Location: outside / inside</li>
 						<li>Label format: label + % / label + value / label only</li>
 						<li>Tooltips</li>
 					</ol>
 				</div>
 				<div class="tab-pane fade" id="data">
-
-				</div>
-				<div class="tab-pane fade" id="colour">
-
 					<ol>
 						<li>Gradient + controls</li>
 					</ol>
-
 				</div>
 				<div class="tab-pane fade" id="transitions">
 
 					<ol>
 						<li>Load effect:
-
 							<select>
 								<option value="">None</option>
 								<option value="">Fade-in all</option>
 								<option value="">Fade in pie, fade in labels</option>
-								<option value="">Swoosh pie, fade in labels</option>
-								<option value="">Full swoosh pie, fade in labels</option>
+								<option value="">Swoosh segments, fade in labels</option>
+								<option value="">Swoosh entire pie, fade in labels</option>
 							</select>
-
 						</li>
 						<li>Load effect speed</li>
 						<li>segment highlight mouseover</li>
 						<li>segment pull-out onclick</li>
 						<li>segment pull-out transition effect</li>
-
 					</ol>
-
 				</div>
+
 			</div>
 
+
+<!--			<button type="button" class="btn btn-primary">Refresh &raquo;</button> -->
+
 		</div>
-		<div class="col-md-7">
-			<div id="demoPieChart"></div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div id="demoPieChart"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -117,11 +168,11 @@
 	var pi = Math.PI;
 
 	var pieChartData = [
-		{ name: "JS", value: 20 },
-		{ name: "CSS", value: 10 },
-		{ name: "HTML5 or Whatever", value: 52 },
-		{ name: "Sass", value: 80 },
-		{ name: "PHP", value: 26 }
+		{ name: "JS", value: 20, desc: "" },
+		{ name: "CSS", value: 10, desc: "" },
+		{ name: "HTML5 or Whatever", value: 52, desc: "" },
+		{ name: "Sass", value: 80, desc: "" },
+		{ name: "PHP", value: 26, desc: "" }
 	];
 
 	var totalSize = 0;
@@ -316,23 +367,9 @@
 				$(this).attr("class", "");
 			});
 	}
-
 	</script>
+
 </div>
-
-
-
-<hr size="1" />
-
-<i>Options:</i>
-<ul>
-</ul>
-
-<i>Site info</i>
-
-How to
-About
-Fork on Github!
 
 
 </body>
