@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+		body {
+			font: 13px sans-serif;
+		}
+		path {
+			stroke: #ffffff;
+			stroke-width: 1px;
+		}
+		.arc:hover {
+			opacity: 0.9;
+			cursor: pointer;
+		}
+		.pieShare {
+			font: 13px sans-serif;
+			fill: #666666;
+		}
+	</style>
+	<script src="js/d3.min.js"></script>
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<div class="container">
+
+
+	<div class="page-header">
+		<h1>D3 Pie Chart Generator</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-md-5">
+
+			<ul class="nav nav-tabs" style="margin-bottom: 15px;">
+				<li class="active"><a href="#styles" data-toggle="tab">Layout</a></li>
+				<li><a href="#labels" data-toggle="tab">Labels</a></li>
+				<li><a href="#data" data-toggle="tab">Data</a></li>
+				<li><a href="#colour" data-toggle="tab">Colours</a></li>
+				<li><a href="#transitions" data-toggle="tab">Effects</a></li>
+			</ul>
+
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade active in" id="styles">
+
+					<ol>
+						<li>
+							Inner radius: <input type="range" min="50" max="200" value="80" />
+						</li>
+						<li>
+							Outer radius: <input type="range" min="200" max="200" value="200" />
+						</li>
+					</ol>
+
+				</div>
+				<div class="tab-pane fade" id="labels">
+					<ol>
+						<li>Labels inside / out</li>
+						<li>Label format: label + % / label + value / label only</li>
+						<li>Tooltips</li>
+					</ol>
+				</div>
+				<div class="tab-pane fade" id="data">
+
+				</div>
+				<div class="tab-pane fade" id="colour">
+
+					<ol>
+						<li>Gradient + controls</li>
+					</ol>
+
+				</div>
+				<div class="tab-pane fade" id="transitions">
+
+					<ol>
+						<li>Load effect:
+
+							<select>
+								<option value="">None</option>
+								<option value="">Fade-in all</option>
+								<option value="">Fade in pie, fade in labels</option>
+								<option value="">Swoosh pie, fade in labels</option>
+								<option value="">Full swoosh pie, fade in labels</option>
+							</select>
+
+						</li>
+						<li>Load effect speed</li>
+						<li>segment highlight mouseover</li>
+						<li>segment pull-out onclick</li>
+						<li>segment pull-out transition effect</li>
+
+					</ol>
+
+				</div>
+			</div>
+
+		</div>
+		<div class="col-md-7">
+			<div id="demoPieChart"></div>
+		</div>
+	</div>
+
+
+
+	<script>
+	var slideInSpeed = 900;
+	var w = 500;
+	var h = 400;
+	var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"];
+	var innerRadius = 80;
+	var outerRadius = 150;
+	var percentOrValue = "percent";
+	var pi = Math.PI;
+
+	var pieChartData = [
+		{ name: "JS", value: 20 },
+		{ name: "CSS", value: 10 },
+		{ name: "HTML5 or Whatever", value: 52 },
+		{ name: "Sass", value: 80 },
+		{ name: "PHP", value: 26 }
+	];
+
+	var totalSize = 0;
+	for (var i=0; i<pieChartData.length; i++) {
+		totalSize += pieChartData[i].value;
+	}
+
+	var arc = d3.svg.arc()
+		.innerRadius(innerRadius)
+		.outerRadius(outerRadius)
+		.startAngle(0)
+		.endAngle(function(d) {
+			return (d.value / totalSize) * 2 * Math.PI;
+		});
+
+	var svg = d3.select("#demoPieChart").append("svg:svg")
+		.attr("width", w)
+		.attr("height", h)
+		.append("svg:g")
+		.attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+	var g = svg.selectAll(".arc")
+		.data(
+		pieChartData.filter(function(d) { return d.value; }),
+		function(d) { return d.name; }
+	)
+		.enter()
+		.append("g")
+		.attr("class", "arc");
+
+	g.append("path")
+		.attr("id", function(d, i) {
+			return "segment" + i;
+		})
+		.style("fill", function(d, index) {
+			return colors[index];
+		})
+		.transition()
+		.ease("cubic-in-out")
+		.duration(slideInSpeed)
+		.attrTween("d", arcTween);
+
+	svg.selectAll("g")
+		.attr("transform",
+		function(d, i) {
+			var angle = getSegmentRotationAngle(d, i);
+			return "rotate(" + angle + ")";
+		}
+	);
+
+	var labelGroup = svg.selectAll(".arc")
+		.append("g")
+		.attr("class", "labelGroup")
+		.attr("id", function(d, i) {
+			return "labelGroup" + i
+		});
+
+	labelGroup.append("text")
+		.attr("id", function(d, i) {
+			return "label" + i
+		})
+		.text(function(d) {
+			return d.name;
+		})
+		.attr("transform", function(d, i) {
+			var angle = getSegmentRotationAngle(d, i);
+			var labelRadius = outerRadius + 20;
+			var c = arc.centroid(d),
+				x = c[0],
+				y = c[1],
+				h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+
+			return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
+		})
+		.style('opacity', 0)
+		.style('font-weight', "bold");
+
+	labelGroup.append("text")
+		.text(function(d) {
+			return Math.round((d.value / totalSize) * 100) + "%";
+		})
+		.attr("class", "pieShare")
+		.attr("transform", function(d, i) {
+			var angle = getSegmentRotationAngle(d, i);
+			var labelRadius = outerRadius + 20;
+			var c = arc.centroid(d),
+				x = c[0],
+				y = c[1],
+				h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+
+			return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
+		})
+		.attr("dx", function(d, i) {
+			var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
+			return correspondingLabelWidth + 3;
+		})
+		.style('opacity', 0);
+
+	labelGroup
+		.attr("dx", function(d, i) {
+			return "-200px";
+		});
+
+	// fade in the labels when the load effect is complete
+	setTimeout(function() {
+		g.selectAll("text")
+			.transition()
+			.duration(500)
+			.style('opacity', 1);
+	}, slideInSpeed);
+
+	function arcTween(b) {
+		var i = d3.interpolate({ value: 0 }, b);
+		return function(t) {
+			return arc(i(t));
+		};
+	}
+
+	function getSegmentRotationAngle(d, index) {
+		var val = 0;
+		for (var i=0; i<index; i++) {
+			val += pieChartData[i].value;
+		}
+		return (val / totalSize) * 360;
+	}
+
+	/*
+	 var gradient = svg.append("defs").append("radialGradient")
+	 .attr("id", "gradient")
+	 .attr("cx", function(d, index) {
+	 //		var g = svg.selectAll("g");
+	 //		console.log();
+	 //		var center = arc.centroid(g[index]);
+	 //		return center[0];
+	 })
+	 .attr("cy", "50%");
+
+	 gradient.append("stop")
+	 .attr("offset", "0%")
+	 .attr("stop-color", function(d, i) {
+	 return colors[i]
+	 })
+	 .attr("stop-opacity", 0.5);
+
+	 gradient.append("stop")
+	 .attr("offset", "100%")
+	 .attr("stop-opacity", 1);
+	 */
+
+	$(function() {
+		$(".arc").on("click", function(e) {
+			var $segment = $(e.currentTarget).find("path");
+
+			// detect if it's moving here
+
+			if ($segment.attr("class") === "expanded") {
+				closeSegment($segment[0]);
+			} else {
+				openSegment($segment[0]);
+			}
+		});
+	})
+
+	function openSegment(segment) {
+
+		// close any open segments
+		if ($(".expanded").length > 0) {
+			closeSegment($(".expanded")[0]);
+		}
+
+		d3.select(segment).transition()
+			.duration(400)
+			.attr("transform", function(d, i) {
+				var c = arc.centroid(d),
+					x = c[0],
+					y = c[1],
+					h = Math.sqrt(x*x + y*y),
+					pullOutSize = 8;
+
+				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
+			})
+			.each("end", function(d, i) {
+				$(this).attr("class", "expanded");
+			});
+	}
+
+	function closeSegment(segment) {
+		d3.select(segment).transition()
+			.duration(400)
+			.attr("transform", "translate(0,0)")
+			.each("end", function(d, i) {
+				$(this).attr("class", "");
+			});
+	}
+
+	</script>
+</div>
+
+
+
+<hr size="1" />
+
+<i>Options:</i>
+<ul>
+</ul>
+
+<i>Site info</i>
+
+How to
+About
+Fork on Github!
+
+
+</body>
+</html>
