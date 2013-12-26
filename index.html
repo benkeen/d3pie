@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Pie Chart Generator</title>
 	<meta charset="utf-8">
 
 	<style>
@@ -27,12 +28,11 @@
 		#generator-sections li a {
 			padding: 8px 13px;
 		}
-
 	</style>
 
-	<script src="js/d3.min.js"></script>
-	<script src="js/jquery-2.0.3.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="js/libs/d3.min.js"></script>
+	<script src="js/libs/jquery-2.0.3.min.js"></script>
+	<script src="js/libs/bootstrap.min.js"></script>
 	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
@@ -86,7 +86,9 @@
 			<ul id="generator-sections" class="nav nav-pills">
 				<li class="active"><a href="#styles" data-toggle="tab">Main</a></li>
 				<li><a href="#labels" data-toggle="tab">Labels</a></li>
-				<li><a href="#data" data-toggle="tab">Data & Colour</a></li>
+				<li><a href="#data" data-toggle="tab">Data</a></li>
+				<li><a href="#data" data-toggle="tab">Colour</a></li>
+				<li><a href="#data" data-toggle="tab">Styles</a></li>
 				<li><a href="#transitions" data-toggle="tab">Effects</a></li>
 			</ul>
 
@@ -147,11 +149,11 @@
 
 		</div>
 		<div class="col-md-8">
-			<div class="panel panel-default">
-				<div class="panel-body">
+			<!--<div class="panel panel-default">
+				<div class="panel-body"> -->
 					<div id="demoPieChart"></div>
-				</div>
-			</div>
+				<!--</div>
+			</div>-->
 		</div>
 	</div>
 
@@ -159,13 +161,14 @@
 
 	<script>
 	var slideInSpeed = 900;
+	var labelFadeInTime = 500;
 	var w = 500;
 	var h = 400;
 	var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"];
 	var innerRadius = 80;
 	var outerRadius = 150;
 	var percentOrValue = "percent";
-	var pi = Math.PI;
+
 
 	var pieChartData = [
 		{ name: "JS", value: 20, desc: "" },
@@ -196,9 +199,9 @@
 
 	var g = svg.selectAll(".arc")
 		.data(
-		pieChartData.filter(function(d) { return d.value; }),
-		function(d) { return d.name; }
-	)
+			pieChartData.filter(function(d) { return d.value; }),
+			function(d) { return d.name; }
+		)
 		.enter()
 		.append("g")
 		.attr("class", "arc");
@@ -280,7 +283,7 @@
 	setTimeout(function() {
 		g.selectAll("text")
 			.transition()
-			.duration(500)
+			.duration(labelFadeInTime)
 			.style('opacity', 1);
 	}, slideInSpeed);
 
