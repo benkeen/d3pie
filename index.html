@@ -28,6 +28,9 @@
 		#generator-sections li a {
 			padding: 8px 13px;
 		}
+		#sidebar {
+			border-right: 1px solid #dddddd;
+		}
 	</style>
 
 	<script src="js/libs/d3.min.js"></script>
@@ -53,7 +56,7 @@
 			<li><a href="#">About</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#">Github!</a></li>
+			<li><a href="#">Fork on Github</a></li>
 		</ul>
 	</div>
 </div>
@@ -65,10 +68,10 @@
 	<br />
 
 	<ul class="nav nav-tabs" style="margin-bottom: 25px;">
-		<li class="active dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Generator <b class="caret"></b></a>
+		<li class="active"><a href="#generator" data-toggle="tab">Generator</a></li>
+		<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
 			<ul class="dropdown-menu">
-				<li class="dropdown-header">Example Pie Charts</li>
 				<li><a href="#">Example 1</a></li>
 				<li><a href="#">Example 2</a></li>
 				<li><a href="#">Example 3</a></li>
@@ -81,69 +84,76 @@
 	</ul>
 
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-4" id="sidebar">
 
 			<ul id="generator-sections" class="nav nav-pills">
 				<li class="active"><a href="#styles" data-toggle="tab">Main</a></li>
 				<li><a href="#labels" data-toggle="tab">Labels</a></li>
 				<li><a href="#data" data-toggle="tab">Data</a></li>
-				<li><a href="#data" data-toggle="tab">Colour</a></li>
-				<li><a href="#data" data-toggle="tab">Styles</a></li>
+				<li><a href="#styles" data-toggle="tab">Styles</a></li>
 				<li><a href="#transitions" data-toggle="tab">Effects</a></li>
 			</ul>
 
 			<div id="myTabContent" class="tab-content" style="min-height: 322px">
 
-				<div class="tab-pane fade active in" id="styles">
-					<ol>
-						<li>Title</li>
-						<li>
-							Inner radius: <input type="range" min="50" max="200" value="80" />
-						</li>
-						<li>
-							Outer radius: <input type="range" min="200" max="200" value="200" />
-						</li>
-						<li>
-							Canvas size: height / width
-						</li>
-						<li>
-							Show canvas border (checkbox)
-						</li>
-					</ol>
-				</div>
-				<div class="tab-pane fade" id="labels">
-					<ol>
-						<li>Location: outside / inside</li>
-						<li>Label format: label + % / label + value / label only</li>
-						<li>Tooltips</li>
-					</ol>
-				</div>
-				<div class="tab-pane fade" id="data">
-					<ol>
-						<li>Gradient + controls</li>
-					</ol>
-				</div>
-				<div class="tab-pane fade" id="transitions">
+				<form class="form-horizontal">
+					<div class="tab-pane fade active in" id="styles">
 
-					<ol>
-						<li>Load effect:
-							<select>
-								<option value="">None</option>
-								<option value="">Fade-in all</option>
-								<option value="">Fade in pie, fade in labels</option>
-								<option value="">Swoosh segments, fade in labels</option>
-								<option value="">Swoosh entire pie, fade in labels</option>
-							</select>
-						</li>
-						<li>Load effect speed</li>
-						<li>segment highlight mouseover</li>
-						<li>segment pull-out onclick</li>
-						<li>segment pull-out transition effect</li>
-					</ol>
-				</div>
+						<div class="form-group">
+							<label for="title" class="col-lg-4 control-label">Title</label>
+							<div class="col-lg-8">
+								<input type="text" class="form-control" id="title" value="Programming Languages" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="title" class="col-lg-4 control-label">Canvas Size</label>
+							<div class="col-lg-8">
+								<input type="text" size="5" min="50" max="200" value="400" /> px
+								<input type="text" size="5" min="50" max="200" value="400" /> px
+								<br />
+								<input type="checkbox" /> Show border
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="title" class="col-lg-4 control-label">Inner Radius</label>
+							<div class="col-lg-8">
+								<input type="range" min="50" max="200" value="80" />
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="labels">
+						<ol>
+							<li>Location: outside / inside</li>
+							<li>Label format: label + % / label + value / label only</li>
+							<li>Tooltips</li>
+						</ol>
+					</div>
+					<div class="tab-pane fade" id="data">
+						<ol>
+							<li>Gradient + controls</li>
+						</ol>
+					</div>
+					<div class="tab-pane fade" id="transitions">
 
+						<ol>
+							<li>Load effect:
+								<select>
+									<option value="">None</option>
+									<option value="">Fade-in all</option>
+									<option value="">Fade in pie, fade in labels</option>
+									<option value="">Swoosh segments, fade in labels</option>
+									<option value="">Swoosh entire pie, fade in labels</option>
+								</select>
+							</li>
+							<li>Load effect speed</li>
+							<li>segment highlight mouseover</li>
+							<li>segment pull-out onclick</li>
+							<li>segment pull-out transition effect</li>
+						</ol>
+					</div>
+
+				</form>
 			</div>
-
 
 <!--			<button type="button" class="btn btn-primary">Refresh &raquo;</button> -->
 
@@ -165,7 +175,7 @@
 	var w = 500;
 	var h = 400;
 	var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"];
-	var innerRadius = 80;
+	var innerRadius = 0;
 	var outerRadius = 150;
 	var percentOrValue = "percent";
 
