@@ -1,0 +1,31 @@
+/* for the UI */
+#main-tabs {
+    margin-bottom: 25px;
+}
+#generator-sections {
+    margin-bottom: 15px;
+}
+#generator-sections li a {
+    padding: 8px 13px;
+}
+#sidebar {
+    border-right: 1px solid #dddddd;
+}
+
+
+/* auto-generated, I guess */
+body {
+    font: 13px sans-serif;
+}
+path {
+    stroke: #ffffff;
+    stroke-width: 1px;
+}
+.arc:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+.pieShare {
+    font: 13px sans-serif;
+    fill: #666666;
+}

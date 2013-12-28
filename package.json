@@ -1,0 +1,27 @@
+{
+  "name": "d3-pie-charts",
+  "version": "0.1.0",
+  "description": "A D3 pie chart script and generator.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benkeen/d3-pie-charts.git"
+  },
+  "keywords": [
+    "d3",
+    "piecharts",
+    "charts",
+    "graphs"
+  ],
+  "author": "Ben Keen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benkeen/d3-pie-charts/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2"
+  }
+}

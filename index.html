@@ -3,52 +3,14 @@
 <head>
 	<title>Pie Chart Generator</title>
 	<meta charset="utf-8">
-
-	<style>
-		body {
-			font: 13px sans-serif;
-		}
-		path {
-			stroke: #ffffff;
-			stroke-width: 1px;
-		}
-		.arc:hover {
-			opacity: 0.9;
-			cursor: pointer;
-		}
-		.pieShare {
-			font: 13px sans-serif;
-			fill: #666666;
-		}
-
-		/* for the UI */
-		#generator-sections {
-			margin-bottom: 15px;
-		}
-		#generator-sections li a {
-			padding: 8px 13px;
-		}
-		#sidebar {
-			border-right: 1px solid #dddddd;
-		}
-	</style>
-
-	<script src="js/libs/d3.min.js"></script>
-	<script src="js/libs/jquery-2.0.3.min.js"></script>
-	<script src="js/libs/bootstrap.min.js"></script>
+	<link href="css/site.css" type="text/css" rel="stylesheet" />
 	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 
-
 <div class="navbar navbar-default">
 	<div class="navbar-header">
 		<div class="navbar-brand">Pie Chart Generator</div>
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
 	</div>
 
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -56,344 +18,44 @@
 			<li><a href="#">About</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#">Fork on Github</a></li>
+			<li><a href="https://github.com/benkeen/d3-pie-charts">Fork on Github</a></li>
 		</ul>
 	</div>
 </div>
 
-
 <div class="container">
-
 	<h1>Pie Chart Generator</h1>
 	<br />
 
-	<ul class="nav nav-tabs" style="margin-bottom: 25px;">
+	<ul id="main-tabs" class="nav nav-tabs">
 		<li class="active"><a href="#generator" data-toggle="tab">Generator</a></li>
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
-			<ul class="dropdown-menu">
-				<li><a href="#">Example 1</a></li>
-				<li><a href="#">Example 2</a></li>
-				<li><a href="#">Example 3</a></li>
-				<li class="divider"></li>
-				<li><a href="#">Example 4</a></li>
-				<li><a href="#">Example 5</a></li>
-			</ul>
+			<ul class="dropdown-menu" id="examplePies"></ul>
 		</li>
 		<li><a href="#styles" data-toggle="tab">Download</a></li>
 	</ul>
 
 	<div class="row">
-		<div class="col-md-4" id="sidebar">
-
-			<ul id="generator-sections" class="nav nav-pills">
-				<li class="active"><a href="#styles" data-toggle="tab">Main</a></li>
-				<li><a href="#labels" data-toggle="tab">Labels</a></li>
-				<li><a href="#data" data-toggle="tab">Data</a></li>
-				<li><a href="#styles" data-toggle="tab">Styles</a></li>
-				<li><a href="#transitions" data-toggle="tab">Effects</a></li>
-			</ul>
-
-			<div id="myTabContent" class="tab-content" style="min-height: 322px">
-
-				<form class="form-horizontal">
-					<div class="tab-pane fade active in" id="styles">
-
-						<div class="form-group">
-							<label for="title" class="col-lg-4 control-label">Title</label>
-							<div class="col-lg-8">
-								<input type="text" class="form-control" id="title" value="Programming Languages" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="title" class="col-lg-4 control-label">Title Location</label>
-							<div class="col-lg-8">
-								<span class="label label-primary">Top-left</span>
-								<span class="label label-default">Top-center</span>
-								<span class="label label-default">Pie center</span>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="title" class="col-lg-4 control-label">Canvas Size</label>
-							<div class="col-lg-8">
-								<input type="text" size="5" min="50" max="200" value="400" /> px
-								<input type="text" size="5" min="50" max="200" value="400" /> px
-								<br />
-								<input type="checkbox" /> <label>Show border</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="title" class="col-lg-4 control-label">Inner Radius</label>
-							<div class="col-lg-8">
-								<input type="range" min="50" max="200" value="80" style="width:100%" />
-								<label>0% (Pie)</label>
-								<label>99% (Donut)</label>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="labels">
-						<ol>
-							<li>Location: outside / inside</li>
-							<li>Label format: label + % / label + value / label only</li>
-							<li>Tooltips</li>
-						</ol>
-					</div>
-					<div class="tab-pane fade" id="data">
-						<ol>
-							<li>Gradient + controls</li>
-						</ol>
-					</div>
-					<div class="tab-pane fade" id="transitions">
-
-						<ol>
-							<li>Load effect:
-								<select>
-									<option value="">None</option>
-									<option value="">Fade-in all</option>
-									<option value="">Fade in pie, fade in labels</option>
-									<option value="">Swoosh segments, fade in labels</option>
-									<option value="">Swoosh entire pie, fade in labels</option>
-								</select>
-							</li>
-							<li>Load effect speed</li>
-							<li>segment highlight mouseover</li>
-							<li>segment pull-out onclick</li>
-							<li>segment pull-out transition effect</li>
-						</ol>
-					</div>
-
-				</form>
-			</div>
-
-<!--			<button type="button" class="btn btn-primary">Refresh &raquo;</button> -->
-
-		</div>
-		<div class="col-md-8">
-			<!--<div class="panel panel-default">
-				<div class="panel-body"> -->
-					<div id="demoPieChart"></div>
-				<!--</div>
-			</div>-->
+		<div class="col-md-5" id="sidebar"></div>
+		<div class="col-md-7">
+			<div id="demoPieChart"></div>
 		</div>
 	</div>
-
-
-
-	<script>
-	var slideInSpeed = 900;
-	var labelFadeInTime = 500;
-	var w = 500;
-	var h = 400;
-	var colors = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"];
-	var innerRadius = 0;
-	var outerRadius = 150;
-	var percentOrValue = "percent";
-
-
-	var pieChartData = [
-		{ name: "JS", value: 20, desc: "" },
-		{ name: "CSS", value: 10, desc: "" },
-		{ name: "HTML5 or Whatever", value: 52, desc: "" },
-		{ name: "Sass", value: 80, desc: "" },
-		{ name: "PHP", value: 26, desc: "" }
-	];
-
-	var totalSize = 0;
-	for (var i=0; i<pieChartData.length; i++) {
-		totalSize += pieChartData[i].value;
-	}
-
-	var arc = d3.svg.arc()
-		.innerRadius(innerRadius)
-		.outerRadius(outerRadius)
-		.startAngle(0)
-		.endAngle(function(d) {
-			return (d.value / totalSize) * 2 * Math.PI;
-		});
-
-	var svg = d3.select("#demoPieChart").append("svg:svg")
-		.attr("width", w)
-		.attr("height", h)
-		.append("svg:g")
-		.attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
-
-	var g = svg.selectAll(".arc")
-		.data(
-			pieChartData.filter(function(d) { return d.value; }),
-			function(d) { return d.name; }
-		)
-		.enter()
-		.append("g")
-		.attr("class", "arc");
-
-	g.append("path")
-		.attr("id", function(d, i) {
-			return "segment" + i;
-		})
-		.style("fill", function(d, index) {
-			return colors[index];
-		})
-		.transition()
-		.ease("cubic-in-out")
-		.duration(slideInSpeed)
-		.attrTween("d", arcTween);
-
-	svg.selectAll("g")
-		.attr("transform",
-		function(d, i) {
-			var angle = getSegmentRotationAngle(d, i);
-			return "rotate(" + angle + ")";
-		}
-	);
-
-	var labelGroup = svg.selectAll(".arc")
-		.append("g")
-		.attr("class", "labelGroup")
-		.attr("id", function(d, i) {
-			return "labelGroup" + i
-		});
-
-	labelGroup.append("text")
-		.attr("id", function(d, i) {
-			return "label" + i
-		})
-		.text(function(d) {
-			return d.name;
-		})
-		.attr("transform", function(d, i) {
-			var angle = getSegmentRotationAngle(d, i);
-			var labelRadius = outerRadius + 20;
-			var c = arc.centroid(d),
-				x = c[0],
-				y = c[1],
-				h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
-
-			return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
-		})
-		.style('opacity', 0)
-		.style('font-weight', "bold");
-
-	labelGroup.append("text")
-		.text(function(d) {
-			return Math.round((d.value / totalSize) * 100) + "%";
-		})
-		.attr("class", "pieShare")
-		.attr("transform", function(d, i) {
-			var angle = getSegmentRotationAngle(d, i);
-			var labelRadius = outerRadius + 20;
-			var c = arc.centroid(d),
-				x = c[0],
-				y = c[1],
-				h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
-
-			return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
-		})
-		.attr("dx", function(d, i) {
-			var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
-			return correspondingLabelWidth + 3;
-		})
-		.style('opacity', 0);
-
-	labelGroup
-		.attr("dx", function(d, i) {
-			return "-200px";
-		});
-
-	// fade in the labels when the load effect is complete
-	setTimeout(function() {
-		g.selectAll("text")
-			.transition()
-			.duration(labelFadeInTime)
-			.style('opacity', 1);
-	}, slideInSpeed);
-
-	function arcTween(b) {
-		var i = d3.interpolate({ value: 0 }, b);
-		return function(t) {
-			return arc(i(t));
-		};
-	}
-
-	function getSegmentRotationAngle(d, index) {
-		var val = 0;
-		for (var i=0; i<index; i++) {
-			val += pieChartData[i].value;
-		}
-		return (val / totalSize) * 360;
-	}
-
-	/*
-	 var gradient = svg.append("defs").append("radialGradient")
-	 .attr("id", "gradient")
-	 .attr("cx", function(d, index) {
-	 //		var g = svg.selectAll("g");
-	 //		console.log();
-	 //		var center = arc.centroid(g[index]);
-	 //		return center[0];
-	 })
-	 .attr("cy", "50%");
-
-	 gradient.append("stop")
-	 .attr("offset", "0%")
-	 .attr("stop-color", function(d, i) {
-	 return colors[i]
-	 })
-	 .attr("stop-opacity", 0.5);
-
-	 gradient.append("stop")
-	 .attr("offset", "100%")
-	 .attr("stop-opacity", 1);
-	 */
-
-	$(function() {
-		$(".arc").on("click", function(e) {
-			var $segment = $(e.currentTarget).find("path");
-
-			// detect if it's moving here
-
-			if ($segment.attr("class") === "expanded") {
-				closeSegment($segment[0]);
-			} else {
-				openSegment($segment[0]);
-			}
-		});
-	})
-
-	function openSegment(segment) {
-
-		// close any open segments
-		if ($(".expanded").length > 0) {
-			closeSegment($(".expanded")[0]);
-		}
-
-		d3.select(segment).transition()
-			.duration(400)
-			.attr("transform", function(d, i) {
-				var c = arc.centroid(d),
-					x = c[0],
-					y = c[1],
-					h = Math.sqrt(x*x + y*y),
-					pullOutSize = 8;
-
-				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
-			})
-			.each("end", function(d, i) {
-				$(this).attr("class", "expanded");
-			});
-	}
-
-	function closeSegment(segment) {
-		d3.select(segment).transition()
-			.duration(400)
-			.attr("transform", "translate(0,0)")
-			.each("end", function(d, i) {
-				$(this).attr("class", "");
-			});
-	}
-	</script>
-
 </div>
 
+
+<script src="js/libs/jquery-2.0.3.min.js"></script>
+<script src="js/libs/d3.min.js"></script>
+<script src="js/libs/backbone.js"></script>
+<script src="js/libs/bootstrap.min.js"></script>
+<script src="js/libs/ember-1.2.0.js"></script>
+<script src="js/libs/pieChart.js"></script>
+<script src="js/libs/require.js"></script>
+<script src="js/require.config.js"></script>
+<script>
+	require(["js/app-start.js"], function() { });
+</script>
 
 </body>
 </html>
