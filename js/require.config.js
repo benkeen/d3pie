@@ -8,8 +8,11 @@ require.config({
 		handlebars: "js/libs/handlebars.dev",
 		constants: "js/constants",
 
-		// templates and code
+		primaryTabs: "js/primaryTabs",
+
+		// templates
 		sidebarTemplate: "templates/sidebar.hbs",
-		examplePies: "templates/examplePies.hbs",
+		examplePiesTemplate: "templates/examplePies.hbs",
+		primaryTabsTemplate: "templates/primaryTabs.hbs"
 	}
 });

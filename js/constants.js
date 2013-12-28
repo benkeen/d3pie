@@ -6,9 +6,20 @@ define([], function() {
 	};
 
 	// example pie charts
-	C.EXAMPLE_PIES = {
+	C.EXAMPLE_PIES = [
+		{
+			label: "Example 1",
+			config: {
 
-	};
+			}
+		},
+		{
+			label: "Example 2",
+			config: {
+
+			}
+		}
+	];
 
 	return C;
 });
