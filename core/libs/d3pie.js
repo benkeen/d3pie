@@ -24,13 +24,12 @@
 	var _init = function(settings) {
 		var _settings = $.extend(true, {}, settings);
 
-
 		var pieChartData = [
-			{ name: "JS", value: 20, desc: "" },
-			{ name: "CSS", value: 10, desc: "" },
-			{ name: "HTML5 or Whatever", value: 52, desc: "" },
-			{ name: "Sass", value: 80, desc: "" },
-			{ name: "PHP", value: 26, desc: "" }
+			{ label: "JS", value: 20, desc: "" },
+			{ label: "CSS", value: 10, desc: "" },
+			{ label: "HTML5 or Whatever", value: 52, desc: "" },
+			{ label: "Sass", value: 80, desc: "" },
+			{ label: "PHP", value: 26, desc: "" }
 		];
 
 		var totalSize = 0;
@@ -56,7 +55,7 @@
 		var g = svg.selectAll(".arc")
 			.data(
 			pieChartData.filter(function(d) { return d.value; }),
-			function(d) { return d.name; }
+			function(d) { return d.label; }
 		)
 			.enter()
 			.append("g")
@@ -94,7 +93,7 @@
 				return "label" + i
 			})
 			.text(function(d) {
-				return d.name;
+				return d.label;
 			})
 			.attr("transform", function(d, i) {
 				var angle = getSegmentRotationAngle(d, i);
