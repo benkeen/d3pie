@@ -11,7 +11,8 @@ define([], function() {
 			label: "Programming Languages",
 			config: {
 				pieTitle: "Programming languages",
-				titleColour: "#000000",
+				titleColor: "#000000",
+				backgroundColor: null,
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" },
 					{ label: "Ruby", value: 218812, tooltip: "" },
@@ -23,17 +24,31 @@ define([], function() {
 					{ label: "Objective-C", value: 36344, tooltip: "" },
 					{ label: "C#", value: 32170, tooltip: "" },
 					{ label: "Shell", value: 28561, tooltip: "" }
-				]
+				],
+				effects: {
+					load: "",
+					loadEffectSpeed: 1000,
+					highlightSegmentOnMouseover: true,
+					pullOutSegmentOnClick: true
+				}
 			}
 		},
+
 		{
 			label: "Canadian Birds",
 			config: {
 				pieTitle: "Canadian Birds",
-				titleColour: "#000000",
+				titleColor: "#000000",
+				backgroundColor: null,
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" }
-				]
+				],
+				effects: {
+					load: "",
+					loadEffectSpeed: 1000,
+					highlightSegmentOnMouseover: true,
+					pullOutSegmentOnClick: true
+				}
 			}
 		}
 	];

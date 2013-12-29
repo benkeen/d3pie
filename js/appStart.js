@@ -1,7 +1,8 @@
 require([
 	"constants",
 	"primaryTabs",
-	"sidebar"
+	"sidebar",
+	"handlebarsHelpers"
 ], function(C, primaryTabs, sidebar) {
 	"use strict";
 

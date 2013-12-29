@@ -20,11 +20,11 @@
 		</div>
 
 		<div class="row">
-			<label for="titleColour" class="col-lg-4 control-label">Title Colour</label>
+			<label for="titleColor" class="col-lg-4 control-label">Title Color</label>
 		</div>
 		<div class="form-group">
-			<div id="titleColourGroup" class="input-group">
-				<input type="text" id="titleColour" value="{{config.titleColour}}" class="form-control" />
+			<div id="titleColorGroup" class="colorGroup input-group">
+				<input type="text" id="titleColor" value="{{config.titleColor}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
@@ -61,40 +61,77 @@
 		</table>
 
 		<ul class="pager">
-			<li class="previous"><a href="">Add row &raquo;</a></li>
+			<li class="previous"><a href="#">Add row &raquo;</a></li>
 		</ul>
 	</div>
 
 	<div class="tab-pane fade" id="styles">
-		<div class="form-group row">
-			<label for="title" class="col-lg-4 control-label">Inner Radius</label>
-			<div class="col-lg-8">
-				<input type="range" min="50" max="200" value="80" style="width:100%" />
-			</div>
+		<div class="row col-lg-12">
+			<label for="innerRadius" class="control-label">Inner Radius</label>
+		</div>
+		<div class="row col-lg-12 form-group">
+			<input type="range" id="innerRadius" min="1" max="100" value="{{config.innerRadius}}" style="width:100%" />
 		</div>
 	</div>
 
-	<div class="tab-pane fade" id="colours">
-		Background color
-		Segment colours
+	<div class="tab-pane fade" id="colors">
+		<div class="row col-lg-12">
+			<label for="titleColor" class="control-label">Background Color</label>
+		</div>
+		<div class="row col-lg-12 form-group">
+			<div>
+				<input type="radio" name="backgroundColor" value="transparent" {{#compare config.backgroundColor null operator="=="}}checked="checked"{{/compare}} />
+				<label for="backgroundColor" style="margin-left:5px">Transparent</label>
+			</div>
+
+			<input type="radio" name="backgroundColor" value="" {{#compare config.backgroundColor null operator="!="}}checked="checked"{{/compare}} />
+			<div style="display:inline-block; margin-bottom: -14px; margin-left:5px">
+				<div id="backgroundColorGroup" class="colorGroup input-group">
+					<input type="text" id="backgroundColor" value="{{config.backgroundColor}}" class="form-control" />
+					<span class="input-group-addon"><i></i></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="row col-lg-12">
+			<label class="control-label">Segment Colors</label>
+		</div>
 	</div>
 
+
 	<div class="tab-pane fade" id="transitions">
-		<ol>
-			<li>Load effect:
-				<select>
-					<option value="">None</option>
-					<option value="">Fade-in all</option>
-					<option value="">Fade in pie, fade in labels</option>
-					<option value="">Swoosh segments, fade in labels</option>
-					<option value="">Swoosh entire pie, fade in labels</option>
-				</select>
-			</li>
-			<li>Load effect speed</li>
-			<li>segment highlight mouseover</li>
-			<li>segment pull-out onclick</li>
-			<li>segment pull-out transition effect</li>
-		</ol>
+		<div class="row col-lg-12">
+			<label for="titleColor" class="control-label">Load effect</label>
+		</div>
+		<div class="row col-lg-12 form-group">
+			<select class="form-control">
+				<option value="none">None</option>
+				<option value="fadein">Fade-in all</option>
+				<option value="fadein">Fade in pie, fade in labels</option>
+				<option value="">Swoosh segments, fade in labels</option>
+				<option value="">Swoosh entire pie, fade in labels</option>
+			</select>
+		</div>
+
+		<div class="row col-lg-12">
+			<label for="titleColor" class="control-label">Load effect speed</label>
+		</div>
+		<div class="row col-lg-12 form-group">
+			<input type="text" class="form-control" value="{{config.effects.loadEffectSpeed}}" style="width:60px; display: inline-block" />
+			<label>ms</label>
+		</div>
+
+		<div class="row col-lg-12 form-group">
+			<input type="checkbox" id="highlightSegmentOnMouseover" {{#compare config.effects.highlightSegmentOnMouseover true}}checked="checked"{{/compare}} />
+			<label for="highlightSegmentOnMouseover" class="control-label">Highlight pie segment on mouseover</label>
+		</div>
+
+		<div class="row col-lg-12 form-group">
+			<input type="checkbox" id="pullOutSegmentOnClick" {{#compare config.effects.pullOutSegmentOnClick true}}checked="checked"{{/compare}} />
+			<label for="pullOutSegmentOnClick" class="control-label">Pull out pie segment on click</label>
+
+			<!-- segment pull-out transition effect -->
+		</div>
 	</div>
 
 </div>

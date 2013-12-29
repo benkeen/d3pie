@@ -6,6 +6,7 @@ require.config({
 		text: "js/libs/text",
 		hbs: "js/libs/hbs",
 		handlebars: "js/libs/handlebars.dev",
+		handlebarsHelpers: "js/handlebarsHelpers",
 		constants: "js/constants",
 
 		sidebar: "js/sidebar",

@@ -1,7 +1,9 @@
+// rename this to generatorView or something...
 define([
 	"constants",
+	"pieChartGenerator",
 	"hbs!sidebarTemplate"
-], function(C, sidebarTemplate) {
+], function(C, pieChartGenerator, sidebarTemplate) {
 	"use strict";
 
 	var _init = function() {
@@ -12,13 +14,21 @@ define([
 			config: pie.config
 		}));
 
-		$("#titleColourGroup").colorpicker();
+		_addEventHandlers();
+	};
+
+	/**
+	 *
+	 * @private
+	 */
+	var _addEventHandlers = function() {
+		$("#titleColorGroup").colorpicker();
+		$("#backgroundColorGroup").colorpicker();
 	};
 
 	var _loadExamplePie = function(config) {
 
 	};
-
 
 	return {
 		init: _init
