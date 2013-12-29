@@ -19,4 +19,4 @@ define([
 	return {
 		init: _init
 	};
-})
+});

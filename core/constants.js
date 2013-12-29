@@ -10,9 +10,15 @@ define([], function() {
 		{
 			label: "Programming Languages",
 			config: {
-				pieTitle: "Programming languages",
-				titleColor: "#000000",
-				backgroundColor: null,
+				title: {
+					text: "Programming languages",
+					color: "#000000",
+					fontSize: "",
+					font: ""
+				},
+				colors: {
+					backgroundColor: null
+				},
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" },
 					{ label: "Ruby", value: 218812, tooltip: "" },
@@ -37,8 +43,12 @@ define([], function() {
 		{
 			label: "Canadian Birds",
 			config: {
-				pieTitle: "Canadian Birds",
-				titleColor: "#000000",
+				title: {
+					text: "Canadian Birds",
+					color: "#000000",
+					fontSize: "",
+					font: ""
+				},
 				backgroundColor: null,
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" }
