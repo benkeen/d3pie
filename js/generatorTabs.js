@@ -1,8 +1,8 @@
 define([
 	"constants",
-	"hbs!primaryTabsTemplate",
+	"hbs!generatorTabsTemplate",
 	"hbs!examplePiesTemplate"
-], function(C, primaryTabsTemplate, examplePiesTemplate) {
+], function(C, generatorTabsTemplate, examplePiesTemplate) {
 	"use strict";
 
 	/**
@@ -12,7 +12,7 @@ define([
 	 */
 	var _init = function() {
 		var html = examplePiesTemplate({ examples: C.EXAMPLE_PIES });
-		$("#primaryTabs").html(primaryTabsTemplate({
+		$("#generatorTabs").html(generatorTabsTemplate({
 			examples: html
 		}));
 

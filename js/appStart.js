@@ -1,14 +1,20 @@
 require([
 	"constants",
-	"primaryTabs",
-	"sidebar",
+	"pageHelper",
+	"aboutPage",
+	"generatorPage",
+	"downloadPage",
+	"documentationPage",
 	"handlebarsHelpers"
-], function(C, primaryTabs, sidebar) {
+], function(C, pageHelper, aboutPage, generatorPage, downloadPage, documentationPage) {
 	"use strict";
 
-	primaryTabs.init();
-	sidebar.init();
+	// initialize our pages
+	aboutPage.init();
+	generatorPage.init();
+	downloadPage.init();
+	documentationPage.init();
 
-	// now fade in the three sections: nav, main content & footer row
-	$("#primaryTabs,#mainContent, #footerRow").hide().removeClass("hidden").fadeIn(400);
+	// select the default one (for local dev work, really)
+	pageHelper.selectPage("about");
 });

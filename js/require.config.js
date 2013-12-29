@@ -8,13 +8,24 @@ require.config({
 		handlebars: "js/libs/handlebars.dev",
 		handlebarsHelpers: "js/handlebarsHelpers",
 		constants: "js/constants",
+		pageHelper: "js/pageHelper",
 
-		sidebar: "js/sidebar",
-		primaryTabs: "js/primaryTabs",
+		// main pages
+		aboutPage: "js/aboutPage",
+		generatorPage: "js/generatorPage",
+		downloadPage: "js/downloadPage",
+		documentationPage: "js/documentationPage",
 
 		// templates
 		sidebarTemplate: "templates/sidebar.hbs",
 		examplePiesTemplate: "templates/examplePies.hbs",
-		primaryTabsTemplate: "templates/primaryTabs.hbs"
+		generatorTabsTemplate: "templates/generatorTabs.hbs",
+		aboutPageTemplate: "templates/aboutPage.hbs",
+		generatorPageTemplate: "templates/generatorPage.hbs",
+		downloadPageTemplate: "templates/downloadPage.hbs",
+		documentationPageTemplate: "templates/documentationPage.hbs",
+
+		pieChartGenerator: "js/pieChartGenerator",
+		generatorTabs: "js/generatorTabs"
 	}
 });
