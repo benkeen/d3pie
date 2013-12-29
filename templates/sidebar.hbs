@@ -1,81 +1,100 @@
-<ul id="generator-sections" class="nav nav-pills">
-	<li class="active"><a href="#styles" data-toggle="tab">Main</a></li>
-	<li><a href="#labels" data-toggle="tab">Labels</a></li>
-	<li><a href="#data" data-toggle="tab">Data</a></li>
-	<li><a href="#styles" data-toggle="tab">Styles</a></li>
-	<li><a href="#colours" data-toggle="tab">Colours</a></li>
-	<li><a href="#transitions" data-toggle="tab">Effects</a></li>
-</ul>
+<div class="tab-content">
 
-<div id="myTabContent" class="tab-content" style="min-height: 322px">
-
-	<form class="form-horizontal">
-
-		<div class="tab-pane fade active in" id="styles">
-			<div class="form-group">
-				<label for="title" class="col-lg-4 control-label">Title</label>
-				<div class="col-lg-8">
-					<input type="text" class="form-control" id="title" value="Programming Languages" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="title" class="col-lg-4 control-label">Title Location</label>
-				<div class="col-lg-8">
-					<span class="label label-primary">Top-left</span>
-					<span class="label label-default">Top-center</span>
-					<span class="label label-default">Pie center</span>
-				</div>
-			</div>
-
-			<!--
-			<div class="form-group">
-				<label for="title" class="col-lg-4 control-label">Canvas Size</label>
-				<div class="col-lg-8">
-					<input type="text" size="5" min="50" max="200" value="400" /> px
-					<input type="text" size="5" min="50" max="200" value="400" /> px
-					<br />
-					<input type="checkbox" /> <label>Show border</label>
-				</div>
-			</div>
-			-->
-
-			<div class="form-group">
-				<label for="title" class="col-lg-4 control-label">Inner Radius</label>
-				<div class="col-lg-8">
-					<input type="range" min="50" max="200" value="80" style="width:100%" />
-				</div>
-			</div>
+	<div class="tab-pane fade active in" id="main">
+		<div class="row col-lg-12">
+			<label for="pieTitle" class="control-label">Title</label>
+		</div>
+		<div class="row col-lg-12 form-group">
+			<input type="text" class="form-control" id="pieTitle" value="{{config.pieTitle}}" />
 		</div>
 
-		<div class="tab-pane" id="labels">
-			<ol>
-				<li>Location: outside / inside</li>
-				<li>Label format: label + % / label + value / label only</li>
-				<li>Tooltips</li>
-			</ol>
+		<div class="row col-lg-12">
+			<label for="titleLocation" class="control-label">Title Location</label>
 		</div>
-		<div class="tab-pane" id="data">
-			<ol>
-				<li>Gradient + controls</li>
-			</ol>
-		</div>
-		<div class="tab-pane" id="transitions">
-			<ol>
-				<li>Load effect:
-					<select>
-						<option value="">None</option>
-						<option value="">Fade-in all</option>
-						<option value="">Fade in pie, fade in labels</option>
-						<option value="">Swoosh segments, fade in labels</option>
-						<option value="">Swoosh entire pie, fade in labels</option>
-					</select>
-				</li>
-				<li>Load effect speed</li>
-				<li>segment highlight mouseover</li>
-				<li>segment pull-out onclick</li>
-				<li>segment pull-out transition effect</li>
-			</ol>
+		<div class="row col-lg-12 form-group">
+			<select class="form-control">
+				<option value="top-left">Top-left</option>
+				<option value="top-center">Top-center</option>
+				<option value="pie-center">Pie center (donuts only)</option>
+			</select>
 		</div>
 
-	</form>
+		<div class="row">
+			<label for="titleColour" class="col-lg-4 control-label">Title Colour</label>
+		</div>
+		<div class="form-group">
+			<div id="titleColourGroup" class="input-group">
+				<input type="text" id="titleColour" value="{{config.titleColour}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab-pane fade" id="labels">
+		<ol>
+			<li>Location: outside / inside</li>
+			<li>Label format: label + % / label + value / label only</li>
+			<li>Tooltips</li>
+		</ol>
+	</div>
+
+	<div class="tab-pane fade" id="data">
+		<table id="data-table" class="table table-striped table-bordered table-hover">
+			<thead>
+			<tr>
+				<th style="width:30%">Label</th>
+				<th style="width:20%">Value</th>
+				<th style="width:50%">Tooltip</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+			{{#each config.data}}
+			<tr>
+				<td><input type="text" value="{{label}}" /></td>
+				<td><input type="text" value="{{value}}" /></td>
+				<td><input type="text" value="{{tooltip}}" /></td>
+				<td><span class="removeRow"></span></td>
+			</tr>
+			{{/each}}
+			</tbody>
+		</table>
+
+		<ul class="pager">
+			<li class="previous"><a href="">Add row &raquo;</a></li>
+		</ul>
+	</div>
+
+	<div class="tab-pane fade" id="styles">
+		<div class="form-group row">
+			<label for="title" class="col-lg-4 control-label">Inner Radius</label>
+			<div class="col-lg-8">
+				<input type="range" min="50" max="200" value="80" style="width:100%" />
+			</div>
+		</div>
+	</div>
+
+	<div class="tab-pane fade" id="colours">
+		Background color
+		Segment colours
+	</div>
+
+	<div class="tab-pane fade" id="transitions">
+		<ol>
+			<li>Load effect:
+				<select>
+					<option value="">None</option>
+					<option value="">Fade-in all</option>
+					<option value="">Fade in pie, fade in labels</option>
+					<option value="">Swoosh segments, fade in labels</option>
+					<option value="">Swoosh entire pie, fade in labels</option>
+				</select>
+			</li>
+			<li>Load effect speed</li>
+			<li>segment highlight mouseover</li>
+			<li>segment pull-out onclick</li>
+			<li>segment pull-out transition effect</li>
+		</ol>
+	</div>
+
 </div>

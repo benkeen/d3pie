@@ -22,6 +22,8 @@
     "url": "https://github.com/benkeen/d3-pie-charts/issues"
   },
   "devDependencies": {
-    "grunt": "~0.4.2"
+    "grunt": "~0.4.2",
+    "grunt-template": "~0.2.2",
+    "grunt-md5": "~0.1.11"
   }
 }

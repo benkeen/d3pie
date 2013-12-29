@@ -1,15 +1,43 @@
 /* for the UI */
 #primaryTabs {
-    margin-bottom: 25px;
+    margin: 0px 0px 15px;
+    padding: 0px;
+    height: 40px;
 }
-#generator-sections {
-    margin-bottom: 15px;
+#mainContent {
+    min-height: 400px;
 }
-#generator-sections li a {
-    padding: 8px 13px;
+#exampleDropdown {
+    float: right;
 }
-#sidebar {
-    border-right: 1px solid #dddddd;
+#exampleDropdown a {
+    color: #444444;
+}
+#footerRow button {
+    float: right;
+}
+#data-table input {
+    width: 100%;
+    padding: 2px;
+}
+#data-table td {
+    padding: 3px;
+}
+#data-table thead th {
+    font-weight: normal;
+    color: #777777;
+}
+.removeRow {
+    width: 24px;
+    height: 24px;
+    background-image: url(../images/remove-icon.png);
+    background-size: 100%;
+    display: block;
+    opacity: 0.5;
+    cursor: pointer;
+}
+#titleColourGroup {
+    width: 120px;
 }
 
 

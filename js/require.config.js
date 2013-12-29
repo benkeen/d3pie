@@ -8,6 +8,7 @@ require.config({
 		handlebars: "js/libs/handlebars.dev",
 		constants: "js/constants",
 
+		sidebar: "js/sidebar",
 		primaryTabs: "js/primaryTabs",
 
 		// templates

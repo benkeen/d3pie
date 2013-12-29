@@ -3,6 +3,7 @@ define([
 	"hbs!primaryTabsTemplate",
 	"hbs!examplePiesTemplate"
 ], function(C, primaryTabsTemplate, examplePiesTemplate) {
+	"use strict";
 
 	/**
 	 * Our main initialization function. This creates the appropriate markup for the primary tabs and inserts
@@ -10,14 +11,16 @@ define([
 	 * @private
 	 */
 	var _init = function() {
-
-		var examplePieOptions = examplePiesTemplate({ examples: C.EXAMPLE_PIES });
-
-		console.log(examplePieOptions);
-
+		var html = examplePiesTemplate({ examples: C.EXAMPLE_PIES });
 		$("#primaryTabs").html(primaryTabsTemplate({
-			examples: examplePieOptions
+			examples: html
 		}));
+
+		_addEventHandlers();
+	};
+
+	var _addEventHandlers = function() {
+
 	};
 
 	return {
