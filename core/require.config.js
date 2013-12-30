@@ -1,5 +1,5 @@
 require.config({
-	baseUrl: "/d3pie/",
+	baseUrl: "",
 	paths: {
 
 		// core stuff

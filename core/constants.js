@@ -17,7 +17,8 @@ define([], function() {
 					font: ""
 				},
 				colors: {
-					backgroundColor: null
+					background: null,
+					segments: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
 				},
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" },
@@ -33,9 +34,10 @@ define([], function() {
 				],
 				effects: {
 					load: "",
-					loadEffectSpeed: 1000,
+					loadSpeed: 1000,
 					highlightSegmentOnMouseover: true,
-					pullOutSegmentOnClick: true
+					pullOutSegmentOnClick: true,
+					labelFadeInTime: 400
 				}
 			}
 		},
@@ -43,22 +45,6 @@ define([], function() {
 		{
 			label: "Canadian Birds",
 			config: {
-				title: {
-					text: "Canadian Birds",
-					color: "#000000",
-					fontSize: "",
-					font: ""
-				},
-				backgroundColor: null,
-				data: [
-					{ label: "JavaScript", value: 264131, tooltip: "" }
-				],
-				effects: {
-					load: "",
-					loadEffectSpeed: 1000,
-					highlightSegmentOnMouseover: true,
-					pullOutSegmentOnClick: true
-				}
 			}
 		}
 	];

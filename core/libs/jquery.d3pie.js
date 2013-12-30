@@ -9,20 +9,41 @@
 
 	var _pluginName = "d3pie";
 	var _defaultSettings = {
+		title: {
+			text: "Programming languages",
+			color: "#000000",
+			fontSize: "",
+			font: ""
+		},
+		colors: {
+			background: null,
+			segments: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
+		},
+		data: [
+			{ label: "JavaScript", value: 264131, tooltip: "" },
+			{ label: "Ruby", value: 218812, tooltip: "" },
+			{ label: "Java", value: 157618, tooltip: "" },
+			{ label: "PHP", value: 114384, tooltip: "" },
+			{ label: "Python", value: 95002, tooltip: "" },
+			{ label: "C+", value: 78327, tooltip: "" },
+			{ label: "C", value: 67706, tooltip: "" },
+			{ label: "Objective-C", value: 36344, tooltip: "" },
+			{ label: "C#", value: 32170, tooltip: "" },
+			{ label: "Shell", value: 28561, tooltip: "" }
+		],
+		width: 500,
+		height: 500,
+		effects: {
+			load: "",
+			loadSpeed: 1000,
+			highlightSegmentOnMouseover: true,
+			pullOutSegmentOnClick: true,
+			labelFadeInTime: 400
+		},
+		labels: {
 
-		// required
-		data: [],
-		w: 500,
-		h: 400,
-
-		// optional
-		title: "",
-		slideInSpeed: 900,
-		labelFadeInTime: 500,
-		colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"],
-		innerRadius: 0,
-		outerRadius: 150, // TODO this should be calculated now
-		percentOrValue: "percent"
+		},
+		innerRadius: 0
 	};
 
 
@@ -51,7 +72,8 @@
 		});
 	};
 
-	// TODO obviously refactor
+
+	var _arc, _svg;
 	d3pie.prototype.init = function() {
 
 		// store the options in a local var for circumventing any "this" nonsense
@@ -59,7 +81,14 @@
 		var data    = this.options.data;
 		var totalSize = _getTotalPieSize(data);
 
-		var arc = d3.svg.arc()
+		// temporary - but it should be calculated
+		options.outerRadius = ((options.width < options.height) ? options.width : options.height) / 3;
+
+		_addSVGSpace(this.element, options);
+		_addTitle(options.title);
+
+
+		_arc = d3.svg.arc()
 			.innerRadius(options.innerRadius)
 			.outerRadius(options.outerRadius)
 			.startAngle(0)
@@ -67,13 +96,7 @@
 				return (d.value / totalSize) * 2 * Math.PI;
 			});
 
-		var svg = d3.select(this.element[0]).append("svg:svg")
-			.attr("width", options.w)
-			.attr("height", options.h)
-			.append("svg:g")
-			.attr("transform", "translate(" + (options.w/2) + "," + (options.h/2) + ")");
-
-		var g = svg.selectAll(".arc")
+		var g = _svg.selectAll(".arc")
 			.data(
 				data.filter(function(d) { return d.value; }),
 				function(d) { return d.label; }
@@ -87,14 +110,14 @@
 				return "segment" + i;
 			})
 			.style("fill", function(d, index) {
-				return options.colors[index];
+				return options.colors.segments[index];
 			})
 			.transition()
 			.ease("cubic-in-out")
-			.duration(options.slideInSpeed)
+			.duration(options.effects.loadSpeed)
 			.attrTween("d", _arcTween);
 
-		svg.selectAll("g")
+		_svg.selectAll("g")
 			.attr("transform",
 			function(d, i) {
 				var angle = _getSegmentRotationAngle(d, i, data, totalSize);
@@ -102,7 +125,7 @@
 			}
 		);
 
-		var labelGroup = svg.selectAll(".arc")
+		var labelGroup = _svg.selectAll(".arc")
 			.append("g")
 			.attr("class", "labelGroup")
 			.attr("id", function(d, i) {
@@ -119,15 +142,15 @@
 			.attr("transform", function(d, i) {
 				var angle = _getSegmentRotationAngle(d, i, data, totalSize);
 				var labelRadius = options.outerRadius + 20;
-				var c = arc.centroid(d),
+				var c = _arc.centroid(d),
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
 
 				return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
 			})
-			.style('opacity', 0)
-			.style('font-weight', "bold");
+			.style('opacity', 0);
+//			.style('font-weight', "bold");
 
 		labelGroup.append("text")
 			.text(function(d) {
@@ -137,7 +160,7 @@
 			.attr("transform", function(d, i) {
 				var angle = _getSegmentRotationAngle(d, i, data, totalSize);
 				var labelRadius = options.outerRadius + 20;
-				var c = arc.centroid(d),
+				var c = _arc.centroid(d),
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
@@ -148,7 +171,7 @@
 				var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
 				return correspondingLabelWidth + 3;
 			})
-			.style('opacity', 0);
+			.style("opacity", 0);
 
 		labelGroup
 			.attr("dx", function(d, i) {
@@ -159,9 +182,9 @@
 		setTimeout(function() {
 			g.selectAll("text")
 				.transition()
-				.duration(options.labelFadeInTime)
-				.style('opacity', 1);
-		}, options.slideInSpeed);
+				.duration(options.effects.labelFadeInTime)
+				.style("opacity", 1);
+		}, options.effects.loadSpeed);
 
 		$(function() {
 			$(".arc").on("click", function(e) {
@@ -184,6 +207,7 @@
 	// TODO destroy
 
 
+
 	// ----- private functions -----
 
 	var _getTotalPieSize = function(data) {
@@ -198,13 +222,13 @@
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
-			closeSegment($(".expanded")[0]);
+			_closeSegment($(".expanded")[0]);
 		}
 
 		d3.select(segment).transition()
 			.duration(400)
 			.attr("transform", function(d, i) {
-				var c = arc.centroid(d),
+				var c = _arc.centroid(d),
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y),
@@ -229,9 +253,9 @@
 	var _arcTween = function(b) {
 		var i = d3.interpolate({ value: 0 }, b);
 		return function(t) {
-			return arc(i(t));
+			return _arc(i(t));
 		};
-	}
+	};
 
 	var _getSegmentRotationAngle = function(d, index, data, totalSize) {
 		var val = 0;
@@ -239,7 +263,33 @@
 			val += data[i].value;
 		}
 		return (val / totalSize) * 360;
-	}
+	};
+
+	var _addSVGSpace = function(element, options) {
+		_svg = d3.select(element).append("svg:svg")
+			.attr("width", options.width)
+			.attr("height", options.height)
+			.append("svg:g")
+			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+	};
+
+	var _addTitle = function(titleData) {
+
+		console.log("???");
+
+		var title = _svg.selectAll(".title")
+			.append("g")
+			.attr("id", function(d, i) {
+				return "title";
+			})
+			.attr("dx", 50)
+			.attr("dy", 50);
+
+		title.append("text")
+			.text(function(d) {
+				return titleData.title;
+			})
+	};
 
 })(jQuery, window, document);
 
