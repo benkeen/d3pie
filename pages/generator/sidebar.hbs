@@ -5,7 +5,7 @@
 			<label for="pieTitle" class="control-label">Title</label>
 		</div>
 		<div class="row col-lg-12 form-group">
-			<input type="text" class="form-control" id="pieTitle" value="{{config.pieTitle}}" />
+			<input type="text" class="form-control" id="pieTitle" value="{{config.title.text}}" />
 		</div>
 
 		<div class="row col-lg-12">
@@ -20,14 +20,26 @@
 		</div>
 
 		<div class="row">
-			<label for="titleColor" class="col-lg-4 control-label">Title Color</label>
+			<label for="titleColor" class="control-label">Title Color</label>
 		</div>
 		<div class="form-group">
 			<div id="titleColorGroup" class="colorGroup input-group">
-				<input type="text" id="titleColor" value="{{config.titleColor}}" class="form-control" />
+				<input type="text" id="titleColor" value="{{config.title.color}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
+
+		<div class="row">
+			<label for="titleFont" class="control-label">Font</label>
+		</div>
+		<div class="form-group">
+			<select id="titleFont" class="form-control">
+				<option value="top-left">Top-left</option>
+				<option value="top-center">Top-center</option>
+				<option value="pie-center">Pie center (donuts only)</option>
+			</select>
+		</div>
+
 	</div>
 
 	<div class="tab-pane fade" id="labels">
