@@ -12,9 +12,9 @@ define([], function() {
 			config: {
 				title: {
 					text: "Programming languages",
-					color: "#000000",
-					fontSize: "",
-					font: ""
+					color: "#333333",
+					fontSize: "12pt",
+					font: "arial"
 				},
 				colors: {
 					background: null,

@@ -166,12 +166,10 @@
 			.attr("class", "title")
 			.attr("x", 20)
 			.attr("y", 20)
-			.attr("fill", function(d) {
-				return d.color;
-			})
-			.text(function(d) {
-				return d.text;
-			})
+			.attr("fill", function(d) { return d.color; })
+			.text(function(d) { return d.text; })
+			.style("font-size", function(d) { return d.fontSize; })
+			.style("font", function(d) { return d.font; })
 	};
 
 
@@ -179,8 +177,6 @@
 		var pieChartElement = _svg.append("g")
 			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")")
 			.attr("class", "pieChart");
-
-//		console.log(options);
 
 		_arc = d3.svg.arc()
 			.innerRadius(options.innerRadius)

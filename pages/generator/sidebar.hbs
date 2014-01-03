@@ -45,24 +45,12 @@
 				</select>
 			</div>
 			<div class="col-md-7">
-				<label for="fontFamily" class="control-label">Font Size</label>
-				<div class="form-group padRight30">
-					<select id="fontFamily" class="form-control">
-						<option value="6px">6px</option>
-						<option value="7px">7px</option>
-						<option value="8px">8px</option>
-						<option value="8px">9px</option>
-						<option value="8px">10px</option>
-						<option value="8px">11px</option>
-						<option value="8px">12px</option>
-						<option value="8px">13px</option>
-						<option value="8px">14px</option>
-						<option value="8px">15px</option>
-						<option value="8px">16px</option>
-						<option value="8px">17px</option>
-						<option value="8px">18px</option>
-						<option value="8px">19px</option>
-						<option value="8px">20px</option>
+				<label for="fontSize" class="control-label">Font Size</label>
+				<div class="form-group">
+					<input id="fontSize" type="text" size="4" value="{{config.title.fontSize}}" />
+					<select class="form-control" style="width:60px; display:inline-block">
+						<option value="px">px</option>
+						<option value="pt">pt</option>
 					</select>
 				</div>
 			</div>

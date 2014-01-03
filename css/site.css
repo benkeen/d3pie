@@ -46,9 +46,6 @@ body .navbar-header {
 }
 
 /* auto-generated, I guess */
-body {
-    font: 13px sans-serif;
-}
 path {
     stroke: #ffffff;
     stroke-width: 1px;
@@ -57,11 +54,6 @@ path {
     opacity: 0.9;
     cursor: pointer;
 }
-.pieShare {
-    font: 13px sans-serif;
-    fill: #666666;
-}
-
 .padRight30 {
     padding-right: 30px;
 }
