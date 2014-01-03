@@ -61,3 +61,7 @@ path {
     font: 13px sans-serif;
     fill: #666666;
 }
+
+.padRight30 {
+    padding-right: 30px;
+}

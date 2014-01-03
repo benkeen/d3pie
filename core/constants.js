@@ -38,13 +38,15 @@ define([], function() {
 					highlightSegmentOnMouseover: true,
 					pullOutSegmentOnClick: true,
 					labelFadeInTime: 400
-				}
+				},
+				innerRadius: 100
 			}
 		},
 
 		{
 			label: "Canadian Birds",
 			config: {
+
 			}
 		}
 	];

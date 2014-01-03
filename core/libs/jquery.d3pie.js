@@ -23,18 +23,6 @@
 			background: null,
 			segments: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
 		},
-		data: [
-			{ label: "JavaScript", value: 264131, tooltip: "" },
-			{ label: "Ruby", value: 218812, tooltip: "" },
-			{ label: "Java", value: 157618, tooltip: "" },
-			{ label: "PHP", value: 114384, tooltip: "" },
-			{ label: "Python", value: 95002, tooltip: "" },
-			{ label: "C+", value: 78327, tooltip: "" },
-			{ label: "C", value: 67706, tooltip: "" },
-			{ label: "Objective-C", value: 36344, tooltip: "" },
-			{ label: "C#", value: 32170, tooltip: "" },
-			{ label: "Shell", value: 28561, tooltip: "" }
-		],
 		width: 500,
 		height: 500,
 		effects: {
@@ -43,17 +31,16 @@
 			highlightSegmentOnMouseover: true,
 			pullOutSegmentOnClick: true,
 			labelFadeInTime: 400
-		},
-		labels: {
-
-		},
-		innerRadius: 0
+		}
 	};
 
 
 	// our constructor
 	function d3pie(element, options) {
 		this.element = element;
+
+		console.log(options);
+
 		this.options = $.extend({}, _defaultSettings, options);
 
 		// TODO confirm the required parameters have been set
@@ -192,6 +179,8 @@
 		var pieChartElement = _svg.append("g")
 			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")")
 			.attr("class", "pieChart");
+
+//		console.log(options);
 
 		_arc = d3.svg.arc()
 			.innerRadius(options.innerRadius)

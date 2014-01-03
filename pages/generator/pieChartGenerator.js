@@ -50,6 +50,9 @@ define([
 
 		}
 
+		console.log(config);
+
+
 		$("#generatorPieChart").d3pie(config);
 	};
 
