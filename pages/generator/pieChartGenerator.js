@@ -50,10 +50,27 @@ define([
 
 		}
 
-		console.log(config);
-
-
 		$("#generatorPieChart").d3pie(config);
+	};
+
+	/**
+	 * Parses the generator fields and get the latest values.
+	 * @private
+	 */
+	var _getData = function() {
+		return {
+			title: _getTitleData()
+		};
+	};
+
+	var _getTitleData = function() {
+		return {
+			text: $("#pieTitle").val(),
+			location: $("#titleLocation").val(),
+			color: $("#titleColor").val(),
+			fontSize: $("#fontSize").val() + $("#fontSizeUnits").val(),
+			font: ""
+		};
 	};
 
 	return {

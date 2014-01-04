@@ -17,10 +17,9 @@
 				</div>
 			</div>
 			<div class="col-md-7">
-
 				<label for="titleLocation" class="control-label">Title Location</label>
 				<div class="form-group padRight30">
-					<select class="form-control">
+					<select id="titleLocation" class="form-control">
 						<option value="top-left">Top-left</option>
 						<option value="top-center">Top-center</option>
 						<option value="pie-center">Pie center (donuts only)</option>
@@ -32,7 +31,7 @@
 		<div class="row">
 			<div class="col-md-5">
 				<label for="fontFamily" class="control-label">Font</label>
-				<select id="titleFont" class="form-control">
+				<select id="fontFamily" class="form-control">
 					<option value="arial">Arial</option>
 					<option value="times new roman">Times New Roman</option>
 					<option value="courier">Courier</option>
@@ -47,8 +46,8 @@
 			<div class="col-md-7">
 				<label for="fontSize" class="control-label">Font Size</label>
 				<div class="form-group">
-					<input id="fontSize" type="text" size="4" value="{{config.title.fontSize}}" />
-					<select class="form-control" style="width:60px; display:inline-block">
+					<input id="fontSize" type="text" size="4" value="{{numbersOnly config.title.fontSize}}" />
+					<select id="fontSizeUnits" class="form-control">
 						<option value="px">px</option>
 						<option value="pt">pt</option>
 					</select>
@@ -161,4 +160,8 @@
 		</div>
 	</div>
 
+	<div class="tab-pane fade" id="misc">
+		Hide labels for segments smaller than X<br />
+		Add footer text ("Source ...")<br />
+	</div>
 </div>

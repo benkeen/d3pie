@@ -12,6 +12,7 @@ define([], function() {
 			config: {
 				title: {
 					text: "Programming languages",
+					location: "top-left",
 					color: "#333333",
 					fontSize: "12pt",
 					font: "arial"

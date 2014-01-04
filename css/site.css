@@ -39,6 +39,10 @@
 .colorGroup {
     width: 120px;
 }
+#fontSizeUnits {
+	width: 60px;
+	display: inline-block;
+}
 
 /* overridden bootstrap CSS */
 body .navbar-header {

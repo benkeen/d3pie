@@ -2,7 +2,7 @@ define([
 	"handlebars"
 ], function(Handlebars) {
 
-	Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
+	Handlebars.registerHelper("compare", function(lvalue, rvalue, options) {
 		if (arguments.length < 3) {
 			throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
 		}
@@ -30,6 +30,10 @@ define([
 		} else {
 			return options.inverse(this);
 		}
+	});
+
+	Handlebars.registerHelper("numbersOnly", function(str) {
+		return str.replace(/[^0-9]/g, "");
 	});
 
 });
