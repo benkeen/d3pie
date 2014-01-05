@@ -10,9 +10,9 @@
 	<tbody>
 	{{#each config.data}}
 		<tr>
-			<td><input type="text" value="{{label}}" /></td>
-			<td><input type="text" value="{{value}}" /></td>
-			<td><input type="text" value="{{tooltip}}" /></td>
+			<td><input type="text" class="dataLabel" value="{{label}}" /></td>
+			<td><input type="text" class="dataValue" value="{{value}}" /></td>
+			<td><input type="text" class="dataTooltip" value="{{tooltip}}" /></td>
 			<td><span class="removeRow"></span></td>
 		</tr>
 	{{/each}}

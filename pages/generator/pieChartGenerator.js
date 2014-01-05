@@ -23,7 +23,7 @@ define([
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
 		_currentPieSettings = C.EXAMPLE_PIES[0].config;
 
-		// populate all tabs with the
+		// render the generator tabs
 		$("#dataTab").html(dataTab({ config: _currentPieSettings }));
 		$("#effectsTab").html(effectsTab({ config: _currentPieSettings }));
 		$("#labelsTab").html(labelsTab({ config: _currentPieSettings }));
@@ -73,8 +73,9 @@ define([
 			config.effects.load = "none";
 		}
 
-		console.log(config);
-		return;
+		// temporary
+		config.width  = 500;
+		config.height = 500;
 
 		$("#generatorPieChart").d3pie(config);
 	};
@@ -105,26 +106,41 @@ define([
 	};
 
 	var _getDataTabData = function() {
-		return {
-
-		};
+		var data = [];
+		var trs = $("#data-table tbody tr");
+		for (var i=0; i<trs.length; i++) {
+			data.push({
+				label:   $(trs[i]).find(".dataLabel").val(),
+				value:   parseInt($(trs[i]).find(".dataValue").val(), 10), // TODO - need validation
+				tooltip: $(trs[i]).find(".dataTooltip").val()
+			})
+		}
+		return data;
 	};
 
 	var _getLabelsTabData = function() {
 		return {
-
+			location: $("#labelLocation").val(),
+			format:   $("#labelFormat").val(),
+			enableTooltips: $("#enableTooltips")[0].checked
 		};
 	};
 
 	var _getStylesTabData = function() {
 		return {
-
+			pieInnerRadius: $("#pieInnerRadius").val() + "%",
+			backgroundColor: null,
+			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
 		};
 	};
 
 	var _getEffectsTabData = function() {
 		return {
-
+			loadEffect: $("#loadEffect").val(),
+			loadEffectSpeed: $("#loadEffectSpeed").val(),
+			highlightSegmentOnMouseover: $("#highlightSegmentOnMouseover")[0].checked,
+			pullOutSegmentOnClick: $("#pullOutSegmentOnClick")[0].checked,
+			labelFadeInTime: 400
 		};
 	};
 

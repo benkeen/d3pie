@@ -14,31 +14,33 @@
 	var _pluginName = "d3pie";
 	var _defaultSettings = {
 		title: {
-			text: "Programming languages",
-			color: "#000000",
-			fontSize: "",
-			font: ""
+			location: "top-left",
+			color:    "#333333",
+			fontSize: "14px",
+			font:     "helvetica"
 		},
-		colors: {
-			background: null,
-			segments: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
+		labels: {
+			location: "inside",
+			format: "{L} {%}",
+			enableTooltips: false
 		},
-		width: 500,
-		height: 500,
+		styles: {
+			pieInnerRadius: "100%",
+			backgroundColor: null,
+			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
+		},
 		effects: {
-			load: "",
-			loadSpeed: 1000,
-			highlightSegmentOnMouseover: true,
-			pullOutSegmentOnClick: true,
+			loadEffect: "none",
+			loadEffectSpeed: 1000,
+			highlightSegmentOnMouseover: false,
+			pullOutSegmentOnClick: false,
 			labelFadeInTime: 400
 		}
 	};
 
-
 	// our constructor
 	function d3pie(element, options) {
 		this.element = element;
-
 		this.options = $.extend({}, _defaultSettings, options);
 
 		// TODO confirm the required parameters have been set
@@ -62,7 +64,7 @@
 	};
 
 
-	var _arc, _svg, _totalSize, _data;
+	var _arc, _svg, _totalSize, _data, _innerRadius;
 	d3pie.prototype.init = function() {
 
 		// store the options in a local var for circumventing any "this" nonsense
@@ -70,14 +72,25 @@
 		_data      = this.options.data;
 		_totalSize = _getTotalPieSize(_data);
 
-		// temporary
+		// TODO temporary!
 		options.outerRadius = ((options.width < options.height) ? options.width : options.height) / 3;
+
+		if (/%/.test(options.styles.pieInnerRadius)) {
+			var percent = parseInt(options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
+
+			// bounds check
+			percent = (percent > 99) ? 99 : percent;
+			percent = (percent < 0) ? 0 : percent;
+			_innerRadius = Math.floor((options.outerRadius / 100) * percent);
+		} else {
+			_innerRadius = parseInt(options.styles.pieInnerRadius, 10);
+		}
 
 		_addSVGSpace(this.element, options);
 		_addTitle(options.title);
 		_createPie(this.element, options);
 		_addLabels(options);
-		_addSegmentEventHandlers();
+		_addSegmentEventHandlers(options);
 	};
 
 
@@ -177,7 +190,7 @@
 			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
-			.innerRadius(options.innerRadius)
+			.innerRadius(_innerRadius)
 			.outerRadius(options.outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
@@ -191,18 +204,24 @@
 			)
 			.enter()
 			.append("g")
-			.attr("class", "arc");
+			.attr("class", function() {
+				var className = "arc";
+				if (options.effects.highlightSegmentOnMouseover) {
+					className += " arcHover";
+				}
+				return className;
+			});
 
 		g.append("path")
 			.attr("id", function(d, i) {
 				return "segment" + i;
 			})
 			.style("fill", function(d, index) {
-				return options.colors.segments[index];
+				return options.styles.colors[index];
 			})
 			.transition()
 			.ease("cubic-in-out")
-			.duration(options.effects.loadSpeed)
+			.duration(options.effects.loadEffectSpeed)
 			.attrTween("d", _arcTween);
 
 		_svg.selectAll("g.arc")
@@ -270,20 +289,22 @@
 				.transition()
 				.duration(options.effects.labelFadeInTime)
 				.style("opacity", 1);
-		}, options.effects.loadSpeed);
+		}, options.effects.loadEffectSpeed);
 	};
 
-	var _addSegmentEventHandlers = function() {
-		$(".arc").on("click", function(e) {
-			var $segment = $(e.currentTarget).find("path");
+	var _addSegmentEventHandlers = function(options) {
+		if (options.effects.pullOutSegmentOnClick) {
+			$(".arc").on("click", function(e) {
+				var $segment = $(e.currentTarget).find("path");
 
-			// detect if it's currently moving here
-			if ($segment.attr("class") === "expanded") {
-				_closeSegment($segment[0]);
-			} else {
-				_openSegment($segment[0]);
-			}
-		});
+				// detect if it's currently moving here
+				if ($segment.attr("class") === "expanded") {
+					_closeSegment($segment[0]);
+				} else {
+					_openSegment($segment[0]);
+				}
+			});
+		}
 	};
 
 })(jQuery, window, document);

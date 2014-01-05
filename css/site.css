@@ -39,6 +39,9 @@
 .colorGroup {
     width: 120px;
 }
+.padRight30 {
+	padding-right: 30px;
+}
 #titleFontSizeUnits {
 	width: 60px;
 	display: inline-block;
@@ -55,21 +58,19 @@
 	width:60px;
 	display: inline-block;
 }
+#pieInnerRadius {
+	width: 100%;
+}
 
 /* overridden bootstrap CSS */
 body .navbar-header {
     width: 120px;
 }
-
-/* auto-generated, I guess */
 path {
     stroke: #ffffff;
     stroke-width: 1px;
 }
-.arc:hover {
+.arcHover:hover {
     opacity: 0.9;
     cursor: pointer;
-}
-.padRight30 {
-    padding-right: 30px;
 }

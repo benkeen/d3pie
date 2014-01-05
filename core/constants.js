@@ -11,11 +11,11 @@ define([], function() {
 			label: "Programming Languages",
 			config: {
 				title: {
-					text: "Programming languages",
+					text:     "Programming languages",
 					location: "top-left",
-					color: "#333333",
-					fontSize: "16pt",
-					font: "helvetica"
+					color:    "#333333",
+					fontSize: "16px",
+					font:     "helvetica"
 				},
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" },
@@ -35,15 +35,15 @@ define([], function() {
 					enableTooltips: false
 				},
 				styles: {
-					pieInnerRadius: "50%",
+					pieInnerRadius: "70%",
 					backgroundColor: null,
 					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
 				},
 				effects: {
 					loadEffect: "fadein",
 					loadEffectSpeed: 1000,
-					highlightSegmentOnMouseover: true,
-					pullOutSegmentOnClick: true,
+					highlightSegmentOnMouseover: false,
+					pullOutSegmentOnClick: false,
 					labelFadeInTime: 400
 				},
 				misc: {

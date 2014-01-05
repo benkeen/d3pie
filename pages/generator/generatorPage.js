@@ -7,14 +7,9 @@ define([
 	"use strict";
 
 	var _init = function() {
-
-		$("#generatorPage").html(generatorPageTemplate({ examples: C.EXAMPLE_PIES }));
-
-//		var html = examplePiesTemplate({ examples: C.EXAMPLE_PIES });
-//		$("#generatorTabs").html(generatorTabsTemplate({
-//			examples: html
-//		}));
-
+		$("#generatorPage").html(generatorPageTemplate({
+			examples: C.EXAMPLE_PIES
+		}));
 		pieChartGenerator.init();
 
 		// now fade in the three sections: nav, main content & footer row
