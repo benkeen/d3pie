@@ -39,10 +39,19 @@
 .colorGroup {
     width: 120px;
 }
-#fontSizeUnits {
+#titleFontSizeUnits {
 	width: 60px;
 	display: inline-block;
 }
+#labelFormatExample {
+	width: 100px;
+	display: inline;
+}
+#labelFormat {
+	width: 70px;
+	display: inline-block;
+}
+
 
 /* overridden bootstrap CSS */
 body .navbar-header {

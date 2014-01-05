@@ -37,11 +37,9 @@ define([
 	});
 
 
-	Handlebars.registerHelper("contains", function(source, target) {
+	Handlebars.registerHelper("contains", function(source, target, options) {
 		var targetRegExp = new RegExp(target);
 		var matches = targetRegExp.test(source);
-		return matches;
-
 		if (matches) {
 			return options.fn(this);
 		} else {

@@ -39,8 +39,6 @@
 	function d3pie(element, options) {
 		this.element = element;
 
-		console.log(options);
-
 		this.options = $.extend({}, _defaultSettings, options);
 
 		// TODO confirm the required parameters have been set

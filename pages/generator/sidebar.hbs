@@ -30,8 +30,8 @@
 
 		<div class="row">
 			<div class="col-md-5">
-				<label for="fontFamily" class="control-label">Font</label>
-				<select id="fontFamily" class="form-control">
+				<label for="titleFont" class="control-label">Font</label>
+				<select id="titleFont" class="form-control">
 					<option value="arial" {{#compare config.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
 					<option value="times new roman" {{#compare config.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
 					<option value="courier" {{#compare config.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
@@ -44,10 +44,10 @@
 				</select>
 			</div>
 			<div class="col-md-7">
-				<label for="fontSize" class="control-label">Font Size</label>
+				<label for="titleFontSize" class="control-label">Font Size</label>
 				<div class="form-group">
-					<input id="fontSize" type="text" size="4" value="{{numbersOnly config.title.fontSize}}" />
-					<select id="fontSizeUnits" class="form-control">
+					<input id="titleFontSize" type="text" size="4" value="{{numbersOnly config.title.fontSize}}" />
+					<select id="titleFontSizeUnits" class="form-control">
 						<option value="px" {{#contains config.title.fontSize "px"}}selected="selected"{{/contains}}>px</option>
 						<option value="pt" {{#contains config.title.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
 					</select>
@@ -57,11 +57,36 @@
 	</div>
 
 	<div class="tab-pane fade" id="labels">
-		<ol>
-			<li>Location: outside / inside</li>
-			<li>Label format: label + % / label + value / label only</li>
-			<li>Tooltips</li>
-		</ol>
+
+		<div class="row">
+			<div class="col-md-6">
+				<label for="labelLocation" class="control-label">Label Location</label>
+				<div class="form-group padRight30">
+					<select id="labelLocation" class="form-control">
+						<option value="inside" {{#compare config.labels.location "inside"}}selected="selected"{{/compare}}>Inside</option>
+						<option value="outside" {{#compare config.labels.location "outside"}}selected="selected"{{/compare}}>Outside</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<label for="labelFormat" class="control-label">Label Format</label>
+				<div class="form-group padRight30">
+					<select id="labelFormatExample" class="form-control">
+						<option value="">Examples</option>
+						<option value="{L}">Label only</option>
+						<option value="{L} {%}">Label, plus percentage</option>
+						<option value="{L} {V}">Label plus segment value</option>
+					</select>
+					<input type="text" id="labelFormat" value="{{config.labels.format}}" />
+				</div>
+			</div>
+		</div>
+
+		<div class="row col-lg-12 form-group">
+			<input type="checkbox" id="enableTooltips" {{#compare config.labels.enableTooltips true}}checked="checked"{{/compare}} />
+			<label for="enableTooltips" class="control-label">Enable tooltips</label>
+		</div>
+
 	</div>
 
 	<div class="tab-pane fade" id="data">

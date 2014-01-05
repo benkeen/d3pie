@@ -33,6 +33,11 @@ define([], function() {
 					{ label: "C#", value: 32170, tooltip: "" },
 					{ label: "Shell", value: 28561, tooltip: "" }
 				],
+				labels: {
+					location: "inside", // inside/outside
+					format: "{L}", // {L} = label, {%} = percentage, {V} = value,
+					enableTooltips: false
+				},
 				effects: {
 					load: "",
 					loadSpeed: 1000,
@@ -40,7 +45,8 @@ define([], function() {
 					pullOutSegmentOnClick: true,
 					labelFadeInTime: 400
 				},
-				innerRadius: 100
+				innerRadius: 100,
+
 			}
 		},
 
@@ -49,7 +55,15 @@ define([], function() {
 			config: {
 
 			}
+		},
+
+		{
+			label: "Third item",
+			config: {
+
+			}
 		}
+
 	];
 
 	return C;

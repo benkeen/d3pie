@@ -38,7 +38,22 @@ define([
 		$("#titleColorGroup").colorpicker();
 		$("#backgroundColorGroup").colorpicker();
 
+		$("#labelFormatExample").on("change", function() {
+			$("#labelFormat").val(this.value);
+		});
+
 		//
+		$("#pieTitle,#titleColor,#titleLocation,#titleFont").on("change", _renderWithNoAnimation);
+	};
+
+	var _renderWithNoAnimation = function() {
+		var config = _getData();
+		_renderPie(false, config);
+	};
+
+	var _renderWithAnimation = function() {
+		var config = _getData();
+		_renderPie(true, config);
 	};
 
 	var _renderPie = function(includeStartAnimation, config) {
@@ -47,7 +62,7 @@ define([
 		// automatically showing the user's latest changes to the pie settings and not having to see the animation
 		// each and every time
 		if (!includeStartAnimation) {
-
+			config.effects.load = "none";
 		}
 
 		$("#generatorPieChart").d3pie(config);
@@ -59,17 +74,24 @@ define([
 	 */
 	var _getData = function() {
 		return {
-			title: _getTitleData()
+			title: _getTitleData(),
+			data: _getPieData()
 		};
 	};
 
 	var _getTitleData = function() {
 		return {
-			text: $("#pieTitle").val(),
+			text:     $("#pieTitle").val(),
 			location: $("#titleLocation").val(),
-			color: $("#titleColor").val(),
-			fontSize: $("#fontSize").val() + $("#fontSizeUnits").val(),
-			font: ""
+			color:    $("#titleColor").val(),
+			fontSize: $("#titleFontSize").val() + $("#titleFontSizeUnits").val(),
+			font:     $("#titleFont").val()
+		};
+	};
+
+	var _getPieData = function() {
+		return {
+
 		};
 	};
 
