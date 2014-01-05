@@ -57,8 +57,8 @@
 	// prevents multiple instantiations of the same plugin
 	$.fn[_pluginName] = function(options) {
 		return this.each(function() {
-			if (!$.data(this, 'plugin_' + _pluginName)) {
-				$.data(this, 'plugin_' + _pluginName, new d3pie(this, options));
+			if (!$.data(this, _pluginName)) {
+				$.data(this, _pluginName, new d3pie(this, options));
 			}
 		});
 	};
@@ -77,8 +77,6 @@
 
 		if (/%/.test(options.styles.pieInnerRadius)) {
 			var percent = parseInt(options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
-
-			// bounds check
 			percent = (percent > 99) ? 99 : percent;
 			percent = (percent < 0) ? 0 : percent;
 			_innerRadius = Math.floor((options.outerRadius / 100) * percent);
@@ -96,8 +94,17 @@
 
 	// ----- public functions -----
 
-	// TODO destroy
+	d3pie.prototype.destroy = function() {
 
+		// remove the data attr
+		$(this.element).removeData(_pluginName);
+
+		// clear out the SVG
+		$(this.element).html("");
+
+		// what the heck
+		delete this.options;
+	};
 
 
 	// ----- private functions -----
@@ -213,12 +220,8 @@
 			});
 
 		g.append("path")
-			.attr("id", function(d, i) {
-				return "segment" + i;
-			})
-			.style("fill", function(d, index) {
-				return options.styles.colors[index];
-			})
+			.attr("id", function(d, i) { return "segment" + i; })
+			.style("fill", function(d, index) { return options.styles.colors[index]; })
 			.transition()
 			.ease("cubic-in-out")
 			.duration(options.effects.loadEffectSpeed)
@@ -259,8 +262,10 @@
 
 				return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
 			})
-			.style('opacity', 0)
-			.style('font-size', "8pt");
+			.style('font-size', "8pt")
+			.style("opacity", function() {
+				return (options.effects.loadEffect === "fadein") ? 0 : 1;
+			});
 
 		labelGroup.append("text")
 			.text(function(d) {
@@ -281,15 +286,20 @@
 				var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
 				return correspondingLabelWidth + 3;
 			})
-			.style("opacity", 0);
+			.style('font-size', "8pt")
+			.style("opacity", function() {
+				return (options.effects.loadEffect === "fadein") ? 0 : 1;
+			});
 
 		// fade in the labels when the load effect is complete
-		setTimeout(function() {
-			d3.selectAll("text.segmentLabel")
-				.transition()
-				.duration(options.effects.labelFadeInTime)
-				.style("opacity", 1);
-		}, options.effects.loadEffectSpeed);
+		if (options.effects.loadEffect === "fadein") {
+			setTimeout(function() {
+				d3.selectAll("text.segmentLabel")
+					.transition()
+					.duration(options.effects.labelFadeInTime)
+					.style("opacity", 1);
+			}, options.effects.loadEffectSpeed);
+		}
 	};
 
 	var _addSegmentEventHandlers = function(options) {

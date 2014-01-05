@@ -17,7 +17,17 @@ define([
 	// chooses a different example, or changes an individual setting. It's what's used to pass to d3pie.js
 	// to actually render the
 	var _currentPieSettings = {};
+	var _isCreated = false;
 
+	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
+	var _previousTitle = null;
+	var _previousTitleColor = null;
+	var _titleColorManuallyChanged = null;
+
+	/**
+	 * Our initialization function. Called on page load.
+	 * @private
+	 */
 	var _init = function() {
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
@@ -31,9 +41,13 @@ define([
 		$("#stylesTab").html(stylesTab({ config: _currentPieSettings }));
 		$("#titleTab").html(titleTab({ config: _currentPieSettings }));
 
+		// log the state of various fields
+		_previousTitle = _currentPieSettings.title.text;
+		_previousTitleColor = _currentPieSettings.title.color;
+
 		_addEventHandlers();
 
-		// now render the pie!
+		// render the pie!
 		_renderWithAnimation()
 	};
 
@@ -45,15 +59,40 @@ define([
 	var _addEventHandlers = function() {
 
 		// instantiated our individual colour pickers
-		$("#titleColorGroup").colorpicker();
+		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
 		$("#backgroundColorGroup").colorpicker();
 
 		$("#labelFormatExample").on("change", function() {
 			$("#labelFormat").val(this.value);
 		});
 
-		//
-		$("#pieTitle,#titleColor,#titleLocation,#titleFont").on("change", _renderWithNoAnimation);
+		$("#pieTitle").on("keyup", function() {
+			if (_previousTitle !== this.value) {
+				_renderWithNoAnimation();
+				_previousTitle = this.value;
+			}
+		});
+
+		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
+		// or by selecting a color via the colorpicker. The former still triggers a "changed" event on the colorpicker
+		// so we need to tell it that the user just did it manually. That prevents unnecessary re-draws.
+		$("#titleColor").on("input", function() {
+			var newValue = this.value;
+			_titleColorManuallyChanged = true;
+			if (_previousTitleColor !== newValue && newValue.length === 7) {
+				_renderWithNoAnimation();
+				_previousTitleColor = newValue;
+			}
+		});
+	};
+
+	var _onTitleColorChangeViaColorpicker = function(e) {
+		var newValue = e.color.toHex();
+		if (_previousTitleColor !== newValue && newValue.length === 7 && !_titleColorManuallyChanged) {
+			_renderWithNoAnimation();
+			_previousTitleColor = newValue;
+		}
+		_titleColorManuallyChanged = false;
 	};
 
 	var _renderWithNoAnimation = function() {
@@ -77,7 +116,12 @@ define([
 		config.width  = 500;
 		config.height = 500;
 
+		if (_isCreated) {
+			$("#generatorPieChart").data("d3pie").destroy();
+		}
+
 		$("#generatorPieChart").d3pie(config);
+		_isCreated = true;
 	};
 
 	/**
