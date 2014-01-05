@@ -1,15 +1,20 @@
 define([
 	"constants",
-	"generatorTabs",
 	"pieChartGenerator",
+	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate"
-], function(C, generatorTabs, pieChartGenerator, generatorPageTemplate) {
+], function(C, pieChartGenerator, examplePiesTemplate, generatorPageTemplate) {
 	"use strict";
 
 	var _init = function() {
-		$("#generatorPage").html(generatorPageTemplate());
 
-		generatorTabs.init();
+		$("#generatorPage").html(generatorPageTemplate({ examples: C.EXAMPLE_PIES }));
+
+//		var html = examplePiesTemplate({ examples: C.EXAMPLE_PIES });
+//		$("#generatorTabs").html(generatorTabsTemplate({
+//			examples: html
+//		}));
+
 		pieChartGenerator.init();
 
 		// now fade in the three sections: nav, main content & footer row

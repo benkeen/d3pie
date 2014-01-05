@@ -17,10 +17,6 @@ define([], function() {
 					fontSize: "16pt",
 					font: "helvetica"
 				},
-				colors: {
-					background: null,
-					segments: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
-				},
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" },
 					{ label: "Ruby", value: 218812, tooltip: "" },
@@ -38,15 +34,21 @@ define([], function() {
 					format: "{L}", // {L} = label, {%} = percentage, {V} = value,
 					enableTooltips: false
 				},
+				styles: {
+					pieInnerRadius: "50%",
+					backgroundColor: null,
+					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
+				},
 				effects: {
-					load: "",
-					loadSpeed: 1000,
+					loadEffect: "fadein",
+					loadEffectSpeed: 1000,
 					highlightSegmentOnMouseover: true,
 					pullOutSegmentOnClick: true,
 					labelFadeInTime: 400
 				},
-				innerRadius: 100,
+				misc: {
 
+				}
 			}
 		},
 

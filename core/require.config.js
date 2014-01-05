@@ -26,9 +26,14 @@ require.config({
 		generatorPage: "pages/generator/generatorPage",
 		generatorTabs: "pages/generator/generatorTabs",
 		pieChartGenerator: "pages/generator/pieChartGenerator",
-		sidebarTemplate: "pages/generator/sidebar.hbs",
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
-		generatorTabsTemplate: "pages/generator/generatorTabs.hbs",
-		generatorPageTemplate: "pages/generator/generatorPage.hbs"
+		generatorPageTemplate: "pages/generator/generatorPage.hbs",
+
+		dataTab: "pages/generator/tabData.hbs",
+		effectsTab: "pages/generator/tabEffects.hbs",
+		labelsTab: "pages/generator/tabLabels.hbs",
+		miscTab: "pages/generator/tabMisc.hbs",
+		stylesTab: "pages/generator/tabStyles.hbs",
+		titleTab: "pages/generator/tabTitle.hbs"
 	}
 });

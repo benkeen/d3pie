@@ -2,10 +2,32 @@
 	<h1>Generator</h1>
 </div>
 
-<div class="hidden" id="generatorTabs"></div>
+<div class="hidden" id="generatorTabs">
+	<ul class="nav nav-pills">
+		<li class="active"><a href="#title" data-toggle="tab">Title</a></li>
+		<li><a href="#dataTab" data-toggle="tab">Data</a></li>
+		<li><a href="#labelsTab" data-toggle="tab">Labels</a></li>
+		<li><a href="#stylesTab" data-toggle="tab">Styles</a></li>
+		<li><a href="#effectsTab" data-toggle="tab">Effects</a></li>
+		<li><a href="#miscTab" data-toggle="tab">Misc</a></li>
+		<li id="exampleDropdown">
+			<a href="#examples" data-toggle="dropdown">Examples <span class="caret"></span></a>
+			<ul class="dropdown-menu pull-right">{{{examples}}}</ul>
+		</li>
+	</ul>
+</div>
 
 <div class="row hidden" id="mainContent">
-	<div class="col-md-5" id="sidebar"></div>
+	<div class="col-md-5" id="sidebar">
+		<div class="tab-content">
+			<div class="tab-pane fade active in" id="titleTab"></div>
+			<div class="tab-pane fade" id="labelsTab"></div>
+			<div class="tab-pane fade" id="dataTab"></div>
+			<div class="tab-pane fade" id="stylesTab"></div>
+			<div class="tab-pane fade" id="effectsTab"></div>
+			<div class="tab-pane fade" id="miscTab"></div>
+		</div>
+	</div>
 	<div class="col-md-7">
 		<div id="generatorPieChart"></div>
 	</div>

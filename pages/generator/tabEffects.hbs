@@ -1,0 +1,30 @@
+<div class="row">
+	<div class="col-md-6">
+		<label for="loadEffect" class="control-label">Load effect</label>
+		<div class="form-group padRight30">
+			<select id="loadEffect" class="form-control">
+				<option value="none" {{#compare config.labels.loadEffect "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="fadein" {{#compare config.labels.loadEffect "fadein"}}selected="selected"{{/compare}}>Fade in pie, fade in labels</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label for="loadEffectSpeed" class="control-label">Load effect speed</label>
+		<div class="form-group padRight30">
+			<input type="text" id="loadEffectSpeed" class="form-control" value="{{config.effects.loadEffectSpeed}}" />
+			<label>ms</label>
+		</div>
+	</div>
+</div>
+
+<div class="row col-lg-12 form-group">
+	<input type="checkbox" id="highlightSegmentOnMouseover" {{#compare config.effects.highlightSegmentOnMouseover true}}checked="checked"{{/compare}} />
+	<label for="highlightSegmentOnMouseover" class="control-label">Highlight pie segment on mouseover</label>
+</div>
+
+<div class="row col-lg-12 form-group">
+	<input type="checkbox" id="pullOutSegmentOnClick" {{#compare config.effects.pullOutSegmentOnClick true}}checked="checked"{{/compare}} />
+	<label for="pullOutSegmentOnClick" class="control-label">Pull out pie segment on click</label>
+
+	<!-- segment pull-out transition effect -->
+</div>

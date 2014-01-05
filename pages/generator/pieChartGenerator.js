@@ -1,11 +1,16 @@
 /**
- * Contains all the logic for the actual generator. It
+ * Contains all the logic for the actual generator.
  */
 define([
 	"constants",
 	"pieChartGenerator",
-	"hbs!sidebarTemplate"
-], function(C, pieChartGenerator, sidebarTemplate) {
+	"hbs!dataTab",
+	"hbs!effectsTab",
+	"hbs!labelsTab",
+	"hbs!miscTab",
+	"hbs!stylesTab",
+	"hbs!titleTab"
+], function(C, pieChartGenerator, dataTab, effectsTab, labelsTab, miscTab, stylesTab, titleTab) {
 	"use strict";
 
 	// stores the current configuration of the pie chart. It's updated onload, and whenever the user
@@ -15,16 +20,21 @@ define([
 
 	var _init = function() {
 
-		// always initialize the sidebar with whatever's stored in the first example pie chart
+		// always initialize the sidebar with whatever's in the selected example (always first item right now)
 		_currentPieSettings = C.EXAMPLE_PIES[0].config;
-		$("#sidebar").html(sidebarTemplate({
-			config: _currentPieSettings
-		}));
+
+		// populate all tabs with the
+		$("#dataTab").html(dataTab({ config: _currentPieSettings }));
+		$("#effectsTab").html(effectsTab({ config: _currentPieSettings }));
+		$("#labelsTab").html(labelsTab({ config: _currentPieSettings }));
+		$("#miscTab").html(miscTab({ config: _currentPieSettings }));
+		$("#stylesTab").html(stylesTab({ config: _currentPieSettings }));
+		$("#titleTab").html(titleTab({ config: _currentPieSettings }));
 
 		_addEventHandlers();
 
 		// now render the pie!
-		_renderPie(true, _currentPieSettings);
+		_renderWithAnimation()
 	};
 
 	/**
@@ -47,13 +57,11 @@ define([
 	};
 
 	var _renderWithNoAnimation = function() {
-		var config = _getData();
-		_renderPie(false, config);
+		_renderPie(false, _getConfigObject());
 	};
 
 	var _renderWithAnimation = function() {
-		var config = _getData();
-		_renderPie(true, config);
+		_renderPie(true, _getConfigObject());
 	};
 
 	var _renderPie = function(includeStartAnimation, config) {
@@ -65,6 +73,9 @@ define([
 			config.effects.load = "none";
 		}
 
+		console.log(config);
+		return;
+
 		$("#generatorPieChart").d3pie(config);
 	};
 
@@ -72,14 +83,18 @@ define([
 	 * Parses the generator fields and get the latest values.
 	 * @private
 	 */
-	var _getData = function() {
+	var _getConfigObject = function() {
 		return {
-			title: _getTitleData(),
-			data: _getPieData()
+			title:   _getTitleTabData(),
+			data:    _getDataTabData(),
+			labels:  _getLabelsTabData(),
+			styles:  _getStylesTabData(),
+			effects: _getEffectsTabData(),
+			misc:    _getMiscTabData()
 		};
 	};
 
-	var _getTitleData = function() {
+	var _getTitleTabData = function() {
 		return {
 			text:     $("#pieTitle").val(),
 			location: $("#titleLocation").val(),
@@ -89,7 +104,31 @@ define([
 		};
 	};
 
-	var _getPieData = function() {
+	var _getDataTabData = function() {
+		return {
+
+		};
+	};
+
+	var _getLabelsTabData = function() {
+		return {
+
+		};
+	};
+
+	var _getStylesTabData = function() {
+		return {
+
+		};
+	};
+
+	var _getEffectsTabData = function() {
+		return {
+
+		};
+	};
+
+	var _getMiscTabData = function() {
 		return {
 
 		};

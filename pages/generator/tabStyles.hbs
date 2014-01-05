@@ -1,0 +1,28 @@
+<div class="row col-lg-12">
+	<label for="pieInnerRadius" class="control-label">Pie Inner Radius</label>
+</div>
+<div class="row col-lg-12 form-group">
+	<input type="range" id="pieInnerRadius" min="1" max="100" value="{{config.innerRadius}}" style="width:100%" />
+</div>
+
+<div class="row col-lg-12">
+	<label for="titleColor" class="control-label">Background Color</label>
+</div>
+<div class="row col-lg-12 form-group">
+	<div>
+		<input type="radio" name="backgroundColor" value="transparent" {{#compare config.backgroundColor null operator="=="}}checked="checked"{{/compare}} />
+		<label for="backgroundColor" style="margin-left:5px">Transparent</label>
+	</div>
+
+	<input type="radio" name="backgroundColor" value="" {{#compare config.backgroundColor null operator="!="}}checked="checked"{{/compare}} />
+	<div style="display:inline-block; margin-bottom: -14px; margin-left:5px">
+		<div id="backgroundColorGroup" class="colorGroup input-group">
+			<input type="text" id="backgroundColor" value="{{config.backgroundColor}}" class="form-control" />
+			<span class="input-group-addon"><i></i></span>
+		</div>
+	</div>
+</div>
+
+<div class="row col-lg-12">
+	<label class="control-label">Segment Colors</label>
+</div>

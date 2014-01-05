@@ -1,0 +1,53 @@
+<div class="row col-lg-12">
+	<label for="pieTitle" class="control-label">Title</label>
+</div>
+<div class="row col-lg-12 form-group">
+	<input type="text" class="form-control" id="pieTitle" value="{{config.title.text}}" />
+</div>
+
+<div class="row">
+	<div class="col-md-5">
+		<label for="titleColor" class="control-label">Title Color</label>
+		<div id="titleColorGroup" class="colorGroup input-group form-group">
+			<input type="text" id="titleColor" value="{{config.title.color}}" class="form-control" />
+			<span class="input-group-addon"><i></i></span>
+		</div>
+	</div>
+	<div class="col-md-7">
+		<label for="titleLocation" class="control-label">Title Location</label>
+		<div class="form-group padRight30">
+			<select id="titleLocation" class="form-control">
+				<option value="top-left">Top-left</option>
+				<option value="top-center">Top-center</option>
+				<option value="pie-center">Pie center (donuts only)</option>
+			</select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-5">
+		<label for="titleFont" class="control-label">Font</label>
+		<select id="titleFont" class="form-control">
+			<option value="arial" {{#compare config.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+			<option value="times new roman" {{#compare config.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+			<option value="courier" {{#compare config.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+			<option value="verdana" {{#compare config.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+			<option value="helvetica" {{#compare config.title.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+			<option value="palatino" {{#compare config.title.font "palatino"}}selected="selected"{{/compare}}>Palatino</option>
+			<option value="garamond" {{#compare config.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			<option value="bookman" {{#compare config.title.font "bookman"}}selected="selected"{{/compare}}>Bookman</option>
+			<option value="trebuchet" {{#compare config.title.font "trebuchet"}}selected="selected"{{/compare}}>Trebuchet</option>
+		</select>
+	</div>
+	<div class="col-md-7">
+		<label for="titleFontSize" class="control-label">Font Size</label>
+		<div class="form-group">
+			<input id="titleFontSize" type="text" size="4" value="{{numbersOnly config.title.fontSize}}" />
+			<select id="titleFontSizeUnits" class="form-control">
+				<option value="px" {{#contains config.title.fontSize "px"}}selected="selected"{{/contains}}>px</option>
+				<option value="pt" {{#contains config.title.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
+			</select>
+		</div>
+	</div>
+</div>

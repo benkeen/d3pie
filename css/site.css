@@ -51,7 +51,10 @@
 	width: 70px;
 	display: inline-block;
 }
-
+#loadEffectSpeed {
+	width:60px;
+	display: inline-block;
+}
 
 /* overridden bootstrap CSS */
 body .navbar-header {
