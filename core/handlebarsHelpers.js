@@ -36,4 +36,16 @@ define([
 		return str.replace(/[^0-9]/g, "");
 	});
 
+
+	Handlebars.registerHelper("contains", function(source, target) {
+		var targetRegExp = new RegExp(target);
+		var matches = targetRegExp.test(source);
+		return matches;
+
+		if (matches) {
+			return options.fn(this);
+		} else {
+			return options.inverse(this);
+		}
+	});
 });

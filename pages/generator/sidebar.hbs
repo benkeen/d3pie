@@ -48,8 +48,8 @@
 				<div class="form-group">
 					<input id="fontSize" type="text" size="4" value="{{numbersOnly config.title.fontSize}}" />
 					<select id="fontSizeUnits" class="form-control">
-						<option value="px">px</option>
-						<option value="pt">pt</option>
+						<option value="px" {{#contains config.title.fontSize "px"}}selected="selected"{{/contains}}>px</option>
+						<option value="pt" {{#contains config.title.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
 					</select>
 				</div>
 			</div>
