@@ -14,8 +14,8 @@ define([], function() {
 					text: "Programming languages",
 					location: "top-left",
 					color: "#333333",
-					fontSize: "12pt",
-					font: "arial"
+					fontSize: "16px",
+					font: "helvetica"
 				},
 				colors: {
 					background: null,

@@ -32,15 +32,15 @@
 			<div class="col-md-5">
 				<label for="fontFamily" class="control-label">Font</label>
 				<select id="fontFamily" class="form-control">
-					<option value="arial">Arial</option>
-					<option value="times new roman">Times New Roman</option>
-					<option value="courier">Courier</option>
-					<option value="verdana">Verdana</option>
-					<option value="helvetica">Helvetica</option>
-					<option value="palatino">Palatino</option>
-					<option value="garamond">Garamond</option>
-					<option value="bookman">Bookman</option>
-					<option value="trebuchet">Trebuchet</option>
+					<option value="arial" {{#compare config.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+					<option value="times new roman" {{#compare config.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+					<option value="courier" {{#compare config.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+					<option value="verdana" {{#compare config.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+					<option value="helvetica" {{#compare config.title.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+					<option value="palatino" {{#compare config.title.font "palatino"}}selected="selected"{{/compare}}>Palatino</option>
+					<option value="garamond" {{#compare config.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+					<option value="bookman" {{#compare config.title.font "bookman"}}selected="selected"{{/compare}}>Bookman</option>
+					<option value="trebuchet" {{#compare config.title.font "trebuchet"}}selected="selected"{{/compare}}>Trebuchet</option>
 				</select>
 			</div>
 			<div class="col-md-7">
