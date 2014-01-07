@@ -70,7 +70,9 @@ path {
     stroke: #ffffff;
     stroke-width: 1px;
 }
-.arcHover:hover {
+.arcHover:hover path {
     opacity: 0.9;
+}
+.arcHover:hover .labelGroup {
     cursor: pointer;
 }

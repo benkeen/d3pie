@@ -172,7 +172,10 @@ define([
 		return {
 			location: $("#labelLocation").val(),
 			format:   $("#labelFormat").val(),
-			enableTooltips: $("#enableTooltips")[0].checked
+			enableTooltips: $("#enableTooltips")[0].checked,
+			labelColor: $("#labelColor").val(),
+			labelPercentageColor: $("#labelPercentageColor").val(),
+			labelSegmentValueColor: $("#labelSegmentValueColor").val()
 		};
 	};
 

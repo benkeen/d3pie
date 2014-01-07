@@ -4,9 +4,9 @@
 </div>
 
 <div class="row col-lg-12 form-group">
-	<input type="checkbox" id="hideLabels" {{#compare config.misc.hideLabels true}}checked="checked"{{/compare}} />
+	<input type="checkbox" id="hideLabelsForSmallSegments" {{#compare config.misc.hideLabelsForSmallSegments true}}checked="checked"{{/compare}} />
 	<label for="orderData" class="control-label">Hide labels for segments <= </label>
-	<input type="text" />
+	<input type="text" id="hideLabelsForSmallSegments" />
 	<select class="form-group">
 		<option value="percent">percent</option>
 		<option value="value">value</option>

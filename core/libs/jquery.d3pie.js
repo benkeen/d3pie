@@ -27,7 +27,7 @@
 		styles: {
 			pieInnerRadius: "100%",
 			backgroundColor: null,
-			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
+			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 		},
 		effects: {
 			loadEffect: "none",
@@ -35,6 +35,12 @@
 			highlightSegmentOnMouseover: false,
 			pullOutSegmentOnClick: false,
 			labelFadeInTime: 400
+		},
+		misc: {
+			enableTooltips: false,
+			orderData: "hightolow",
+			hideLabelsForSmallSegments: false,
+			hideLabelsForSmallSegmentSize: "0%"
 		}
 	};
 
@@ -44,6 +50,8 @@
 		this.options = $.extend({}, _defaultSettings, options);
 
 		// TODO confirm the required parameters have been set
+
+		// TODO format all colours so they begin with #
 
 		// TODO confirm d3 is available
 
@@ -64,7 +72,7 @@
 	};
 
 
-	var _arc, _svg, _totalSize, _data, _innerRadius;
+	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius;
 	d3pie.prototype.init = function() {
 
 		// store the options in a local var for circumventing any "this" nonsense
@@ -73,13 +81,13 @@
 		_totalSize = _getTotalPieSize(_data);
 
 		// TODO temporary!
-		options.outerRadius = ((options.width < options.height) ? options.width : options.height) / 3;
+		_outerRadius = ((options.width < options.height) ? options.width : options.height) / 2.8;
 
 		if (/%/.test(options.styles.pieInnerRadius)) {
 			var percent = parseInt(options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
 			percent = (percent > 99) ? 99 : percent;
 			percent = (percent < 0) ? 0 : percent;
-			_innerRadius = Math.floor((options.outerRadius / 100) * percent);
+			_innerRadius = Math.floor((_outerRadius / 100) * percent);
 		} else {
 			_innerRadius = parseInt(options.styles.pieInnerRadius, 10);
 		}
@@ -156,7 +164,7 @@
 		};
 	};
 
-	var _getSegmentRotationAngle = function(d, index, data, totalSize) {
+	var _getSegmentRotationAngle = function(index, data, totalSize) {
 		var val = 0;
 		for (var i=0; i<index; i++) {
 			val += data[i].value;
@@ -198,10 +206,11 @@
 
 		_arc = d3.svg.arc()
 			.innerRadius(_innerRadius)
-			.outerRadius(options.outerRadius)
+			.outerRadius(_outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
-				return (d.value / _totalSize) * 2 * Math.PI;
+				var angle = (d.value / _totalSize) * 2 * Math.PI;
+				return angle;
 			});
 
 		var g = pieChartElement.selectAll(".arc")
@@ -230,43 +239,69 @@
 		_svg.selectAll("g.arc")
 			.attr("transform",
 				function(d, i) {
-					var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
+					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 					return "rotate(" + angle + ")";
 				}
 			);
 	};
 
 	var _addLabels = function(options) {
-		var labelGroup = _svg.selectAll(".arc")
+//		var labelGroup = _svg.selectAll(".arc")
+//			.append("g")
+//			.attr("class", "labelGroup")
+//			.attr("id", function(d, i) {
+//				return "labelGroup" + i;
+//			});
+
+		var labelGroup = _svg.selectAll(".labelGroup")
+			.data(
+				_data.filter(function(d) { return d.value; }),
+				function(d) { return d.label; }
+			)
+			.enter()
 			.append("g")
 			.attr("class", "labelGroup")
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
 			});
+			//.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+
+
+		var hyp = _outerRadius + 20;
+		var centerX = options.width / 2;
+		var centerY = options.height / 2;
 
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
-			.attr("id", function(d, i) {
-				return "label" + i;
+			.attr("id", function(d, i) { return "label" + i; })
+			.text(function(d) { return d.label; })
+			.attr("dx", function(d, i) {
+				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var nextAngle = 360;
+				if (i < options.data.length - 1) {
+					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+				}
+				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
+				return centerX + Math.sin(segmentCenterAngle) * hyp;
 			})
-			.text(function(d) {
-				return d.label;
-			})
-			.attr("transform", function(d, i) {
-				var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
-				var labelRadius = options.outerRadius + 20;
-				var c = _arc.centroid(d),
-					x = c[0],
-					y = c[1],
-					h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+			.attr("dy", function(d, i) {
+				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var nextAngle = 360;
+				if (i < options.data.length - 1) {
+					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+				}
+				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
 
-				return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
+				//console.log("x: " + i + ": ", segmentCenterAngle, Math.cos(segmentCenterAngle) * hyp);
+				return centerY + Math.cos(segmentCenterAngle) * hyp;
 			})
-			.style('font-size', "8pt")
+			.style("font-size", "8pt")
+			.style("fill", options.labels.labelColor)
 			.style("opacity", function() {
 				return (options.effects.loadEffect === "fadein") ? 0 : 1;
 			});
 
+		/*
 		labelGroup.append("text")
 			.text(function(d) {
 				return Math.round((d.value / _totalSize) * 100) + "%";
@@ -274,7 +309,7 @@
 			.attr("class", "pieShare")
 			.attr("transform", function(d, i) {
 				var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
-				var labelRadius = options.outerRadius + 20;
+				var labelRadius = _outerRadius + 30;
 				var c = _arc.centroid(d),
 					x = c[0],
 					y = c[1],
@@ -282,24 +317,68 @@
 
 				return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
 			})
-			.attr("dx", function(d, i) {
-				var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
-				return correspondingLabelWidth + 3;
-			})
-			.style('font-size', "8pt")
+			.style("fill", options.labels.labelPercentageColor)
+			.style("font-size", "8pt")
 			.style("opacity", function() {
 				return (options.effects.loadEffect === "fadein") ? 0 : 1;
 			});
+*/
 
 		// fade in the labels when the load effect is complete
-		if (options.effects.loadEffect === "fadein") {
-			setTimeout(function() {
-				d3.selectAll("text.segmentLabel")
-					.transition()
-					.duration(options.effects.labelFadeInTime)
-					.style("opacity", 1);
-			}, options.effects.loadEffectSpeed);
-		}
+		var loadSpeed = (options.effects.loadEffect === "fadein") ? options.effects.loadEffect : 1;
+
+		setTimeout(function() {
+			d3.selectAll("text.segmentLabel")
+				.transition()
+				.duration(options.effects.labelFadeInTime)
+				.style("opacity", 1);
+		}, loadSpeed);
+
+
+		// now place the labels in reasonable locations
+		setTimeout(function() {
+
+			// tmp
+			var lineDots = [];
+
+			/*
+			d3.selectAll(".segmentLabel")
+				.attr("transform", function(d, i) {
+					var labelWidthInPixels = document.getElementById("label" + i).getComputedTextLength();
+
+					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+
+					var labelRadius = _outerRadius + 30;
+					var c = _arc.centroid(d),
+						x = c[0],
+						y = c[1],
+						h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+
+					var baseX = x/h * labelRadius;
+					var baseY = y/h * labelRadius;
+
+					// tmp
+//					lineDots.push({ x: newBaseX, y: newBaseY });
+
+					// adjust the position, based on the
+//					var finalX = 0;
+//					if (angle <= 180) {
+//						finalX = baseX + 30;
+//					} else {
+//						finalX = baseX - labelWidthInPixels - 30;
+//					}
+					return "translate(" + baseX + ',' + baseY +  ") rotate(" + -angle + ")";
+				});
+
+			d3.selectAll(".pieShare")
+				.attr("dx", function(d, i) {
+					var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
+					return correspondingLabelWidth + 3;
+				})
+			 */
+		}, 1);
+
+
 	};
 
 	var _addSegmentEventHandlers = function(options) {
@@ -316,6 +395,23 @@
 			});
 		}
 	};
+
+
+	//	transition().call(endall, function() {console.log("all done")});
+//
+//	function endall(transition, callback) {
+//		var n = 0;
+//		transition
+//			.each(function() { ++n; })
+//			.each("end", function() { if (!--n) callback.apply(this, arguments); });
+//	}
+
+
+//	var valueline = d3.svg.line()
+//		.interpolate("basis")           // <=== THERE IT IS!
+//		.x(function(d) { return x(d.date); })
+//		.y(function(d) { return y(d.close); });
+
 
 })(jQuery, window, document);
 
