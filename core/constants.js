@@ -32,10 +32,12 @@ define([], function() {
 				labels: {
 					location: "inside", // inside/outside
 					format: "{L}", // {L} = label, {%} = percentage, {V} = value,
-					enableTooltips: false
+					labelColor: "#333333",
+					labelPercentageColor: "#666666",
+					labelSegmentValueColor: "#999999"
 				},
 				styles: {
-					pieInnerRadius: "70%",
+					pieInnerRadius: "40%",
 					backgroundColor: null,
 					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
 				},
@@ -47,7 +49,9 @@ define([], function() {
 					labelFadeInTime: 400
 				},
 				misc: {
-
+					enableTooltips: false,
+					orderData: "hightolow", // only one option right now
+					hideLabels: false
 				}
 			}
 		},

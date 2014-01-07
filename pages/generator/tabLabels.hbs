@@ -22,7 +22,43 @@
 	</div>
 </div>
 
-<div class="row col-lg-12 form-group">
-	<input type="checkbox" id="enableTooltips" {{#compare config.labels.enableTooltips true}}checked="checked"{{/compare}} />
-	<label for="enableTooltips" class="control-label">Enable tooltips</label>
+<div class="row col-md-12">
+	<label for="labelLocation" class="control-label">Label component colors</label>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<label for="labelColor">Main label</label>
+	</div>
+	<div class="col-md-1">{L}</div>
+	<div class="col-md-8">
+		<div id="labelColorGroup" class="colorGroup input-group">
+			<input type="text" id="labelColor" value="{{config.labels.labelColor}}" class="form-control" />
+			<span class="input-group-addon"><i></i></span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<label for="labelPercentageColor">Percentage</label>
+	</div>
+	<div class="col-md-1">{%}</div>
+	<div class="col-md-8">
+		<div id="labelPercentageColorGroup" class="colorGroup input-group">
+			<input type="text" id="labelPercentageColor" value="{{config.labels.labelPercentageColor}}" class="form-control" />
+			<span class="input-group-addon"><i></i></span>
+		</div>
+	</div>
+</div>
+
+<div class="row form-group">
+	<div class="col-md-3">
+		<label for="labelSegmentValueColor">Segment value</label>
+	</div>
+	<div class="col-md-1">{V}</div>
+	<div class="col-md-8">
+		<div id="labelSegmentValueColor" class="colorGroup input-group">
+			<input type="text" id="labelSegmentValueColor" value="{{config.labels.labelSegmentValueColor}}" class="form-control" />
+			<span class="input-group-addon"><i></i></span>
+		</div>
+	</div>
 </div>

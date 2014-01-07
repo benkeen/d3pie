@@ -1,8 +1,15 @@
 <div class="row col-lg-12 form-group">
-	<input type="checkbox" id="orderData" {{#compare config.effects.highlightSegmentOnMouseover true}}checked="checked"{{/compare}} />
-	<label for="orderData" class="control-label">Hide labels for segments smaller than </label>
-	<select class="form-group">
+	<input type="checkbox" id="enableTooltips" {{#compare config.misc.enableTooltips true}}checked="checked"{{/compare}} />
+	<label for="enableTooltips" class="control-label">Enable tooltips</label>
+</div>
 
+<div class="row col-lg-12 form-group">
+	<input type="checkbox" id="hideLabels" {{#compare config.misc.hideLabels true}}checked="checked"{{/compare}} />
+	<label for="orderData" class="control-label">Hide labels for segments <= </label>
+	<input type="text" />
+	<select class="form-group">
+		<option value="percent">percent</option>
+		<option value="value">value</option>
 	</select>
 </div>
 
@@ -15,3 +22,8 @@
 	<input type="checkbox" id="orderData" {{#compare config.effects.highlightSegmentOnMouseover true}}checked="checked"{{/compare}} />
 	<label for="orderData" class="control-label">Include footer text: </label>
 </div>
+
+
+<!--
+orderData: "hightolow", // only one option right now
+-->

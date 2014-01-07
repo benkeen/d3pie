@@ -62,6 +62,12 @@ define([
 		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
 		$("#backgroundColorGroup").colorpicker();
 
+		// label tab
+		$("#labelColorGroup").colorpicker();
+		$("#labelPercentageColorGroup").colorpicker();
+		$("#labelSegmentValueColor").colorpicker();
+
+
 		$("#labelFormatExample").on("change", function() {
 			$("#labelFormat").val(this.value);
 		});
