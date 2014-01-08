@@ -246,13 +246,6 @@
 	};
 
 	var _addLabels = function(options) {
-//		var labelGroup = _svg.selectAll(".arc")
-//			.append("g")
-//			.attr("class", "labelGroup")
-//			.attr("id", function(d, i) {
-//				return "labelGroup" + i;
-//			});
-
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
 				_data.filter(function(d) { return d.value; }),
@@ -263,38 +256,14 @@
 			.attr("class", "labelGroup")
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
-			});
-			//.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+			})
+			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
 
-
-		var hyp = _outerRadius + 20;
-		var centerX = options.width / 2;
-		var centerY = options.height / 2;
-
+		var hyp = _outerRadius + 10;
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
 			.attr("id", function(d, i) { return "label" + i; })
 			.text(function(d) { return d.label; })
-			.attr("dx", function(d, i) {
-				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
-				var nextAngle = 360;
-				if (i < options.data.length - 1) {
-					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
-				}
-				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
-				return centerX + Math.sin(segmentCenterAngle) * hyp;
-			})
-			.attr("dy", function(d, i) {
-				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
-				var nextAngle = 360;
-				if (i < options.data.length - 1) {
-					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
-				}
-				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
-
-				//console.log("x: " + i + ": ", segmentCenterAngle, Math.cos(segmentCenterAngle) * hyp);
-				return centerY + Math.cos(segmentCenterAngle) * hyp;
-			})
 			.style("font-size", "8pt")
 			.style("fill", options.labels.labelColor)
 			.style("opacity", function() {
@@ -338,47 +307,67 @@
 		// now place the labels in reasonable locations
 		setTimeout(function() {
 
-			// tmp
-			var lineDots = [];
-
-			/*
 			d3.selectAll(".segmentLabel")
-				.attr("transform", function(d, i) {
+				.attr("dx", function(d, i) {
 					var labelWidthInPixels = document.getElementById("label" + i).getComputedTextLength();
 
 					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+					var nextAngle = 360;
+					if (i < options.data.length - 1) {
+						nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+					}
 
-					var labelRadius = _outerRadius + 30;
-					var c = _arc.centroid(d),
-						x = c[0],
-						y = c[1],
-						h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+					var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
+					var remainderAngle = segmentCenterAngle % 90;
+					var quarter = Math.floor(segmentCenterAngle / 90);
 
-					var baseX = x/h * labelRadius;
-					var baseY = y/h * labelRadius;
-
-					// tmp
-//					lineDots.push({ x: newBaseX, y: newBaseY });
-
-					// adjust the position, based on the
-//					var finalX = 0;
-//					if (angle <= 180) {
-//						finalX = baseX + 30;
-//					} else {
-//						finalX = baseX - labelWidthInPixels - 30;
-//					}
-					return "translate(" + baseX + ',' + baseY +  ") rotate(" + -angle + ")";
-				});
-
-			d3.selectAll(".pieShare")
-				.attr("dx", function(d, i) {
-					var correspondingLabelWidth = document.getElementById("label" + i).getComputedTextLength();
-					return correspondingLabelWidth + 3;
+					var x;
+					switch (quarter) {
+						case 0:
+							x = Math.sin(_toRadians(remainderAngle)) * hyp;
+							break;
+						case 1:
+							x = Math.cos(_toRadians(remainderAngle)) * hyp;
+							break;
+						case 2:
+							x = -Math.sin(_toRadians(remainderAngle)) * hyp;
+							x -= labelWidthInPixels;
+							break;
+						case 3:
+							x = -Math.cos(_toRadians(remainderAngle)) * hyp;
+							x -= labelWidthInPixels;
+							break;
+					}
+					return x;
 				})
-			 */
+				.attr("dy", function(d, i) {
+					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+					var nextAngle = 360;
+					if (i < options.data.length - 1) {
+						nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+					}
+					var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
+					var remainderAngle = (segmentCenterAngle % 90);
+					var quarter = Math.floor(segmentCenterAngle / 90);
+
+					var y;
+					switch (quarter) {
+						case 0:
+							y = -Math.cos(_toRadians(remainderAngle)) * hyp;
+							break;
+						case 1:
+							y = Math.sin(_toRadians(remainderAngle)) * hyp;
+							break;
+						case 2:
+							y = Math.cos(_toRadians(remainderAngle)) * hyp;
+							break;
+						case 3:
+							y = -Math.sin(_toRadians(remainderAngle)) * hyp;
+							break;
+					}
+					return y;
+				});
 		}, 1);
-
-
 	};
 
 	var _addSegmentEventHandlers = function(options) {
@@ -396,6 +385,13 @@
 		}
 	};
 
+	var _toRadians = function(degrees) {
+		return degrees * (Math.PI / 180);
+	};
+
+	var _toDegrees = function(radians) {
+		return radians * (180 / Math.PI);
+	};
 
 	//	transition().call(endall, function() {console.log("all done")});
 //
