@@ -259,7 +259,6 @@
 			})
 			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
 
-		var hyp = _outerRadius + 10;
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
 			.attr("id", function(d, i) { return "label" + i; })
@@ -291,7 +290,8 @@
 			.style("opacity", function() {
 				return (options.effects.loadEffect === "fadein") ? 0 : 1;
 			});
-*/
+		*/
+
 
 		// fade in the labels when the load effect is complete
 		var loadSpeed = (options.effects.loadEffect === "fadein") ? options.effects.loadEffect : 1;
@@ -304,12 +304,16 @@
 		}, loadSpeed);
 
 
-		// now place the labels in reasonable locations
+		// now place the labels in reasonable locations. Needed to run AFTER the text has been added, because we
+		// need to calculate the
 		setTimeout(function() {
 
+
+			var circleCoordGroups = [];
 			d3.selectAll(".segmentLabel")
 				.attr("dx", function(d, i) {
 					var labelWidthInPixels = document.getElementById("label" + i).getComputedTextLength();
+					//bbox = textNode.getBBox();
 
 					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 					var nextAngle = 360;
@@ -322,22 +326,30 @@
 					var quarter = Math.floor(segmentCenterAngle / 90);
 
 					var x;
+					var radiusX;
 					switch (quarter) {
 						case 0:
-							x = Math.sin(_toRadians(remainderAngle)) * hyp;
+							x       = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20);
+							radiusX = Math.sin(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 						case 1:
-							x = Math.cos(_toRadians(remainderAngle)) * hyp;
+							x       = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20);
+							radiusX = Math.cos(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 						case 2:
-							x = -Math.sin(_toRadians(remainderAngle)) * hyp;
-							x -= labelWidthInPixels;
+							x       = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels;
+							radiusX = -Math.sin(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 						case 3:
-							x = -Math.cos(_toRadians(remainderAngle)) * hyp;
-							x -= labelWidthInPixels;
+							x       = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels;
+							radiusX = -Math.cos(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 					}
+					circleCoordGroups[i] = [
+						{ x: radiusX, y: null },
+						{ x: x, y: null }
+					];
+
 					return x;
 				})
 				.attr("dy", function(d, i) {
@@ -351,22 +363,50 @@
 					var quarter = Math.floor(segmentCenterAngle / 90);
 
 					var y;
+					var radiusY;
 					switch (quarter) {
 						case 0:
-							y = -Math.cos(_toRadians(remainderAngle)) * hyp;
+							y       = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20);
+							radiusY = -Math.cos(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 						case 1:
-							y = Math.sin(_toRadians(remainderAngle)) * hyp;
+							y       = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20);
+							radiusY = Math.sin(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 						case 2:
-							y = Math.cos(_toRadians(remainderAngle)) * hyp;
+							y       = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20);
+							radiusY = Math.cos(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 						case 3:
-							y = -Math.sin(_toRadians(remainderAngle)) * hyp;
+							y       = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20);
+							radiusY = -Math.sin(_toRadians(remainderAngle)) * _outerRadius;
 							break;
 					}
+					circleCoordGroups[i][0].y = radiusY;
+					circleCoordGroups[i][1].y = y;
 					return y;
 				});
+
+				var circleGroups = _svg.selectAll("circle")
+					.data(circleCoordGroups)
+					.enter()
+					.append("g")
+					.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+
+				circleGroups
+					.append("circle")
+					.attr("cx", function(d) { return d[0].x; })
+					.attr("cy", function(d) { return d[0].y; })
+					.attr("r", function(d) { return 2; })
+					.style("fill", function(d) { return "#000000"; })
+
+				circleGroups
+					.append("circle")
+					.attr("cx", function(d) { return d[1].x; })
+					.attr("cy", function(d) { return d[1].y; })
+					.attr("r", function(d) { return 2; })
+					.style("fill", function(d) { return "#336699"; })
+
 		}, 1);
 	};
 
