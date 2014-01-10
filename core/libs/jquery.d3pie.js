@@ -414,27 +414,40 @@
 					.enter()
 					.append("g")
 					.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+//
+//				circleGroups
+//					.append("circle")
+//					.attr("cx", function(d) { return d[0].x; })
+//					.attr("cy", function(d) { return d[0].y; })
+//					.attr("r", function(d) { return 2; })
+//					.style("fill", function(d) { return "#000000"; })
+//
+//				circleGroups
+//					.append("circle")
+//					.attr("cx", function(d) { return d[1].x; })
+//					.attr("cy", function(d) { return d[1].y; })
+//					.attr("r", function(d) { return 2; })
+//					.style("fill", function(d) { return "#336699"; })
+//
+//				circleGroups
+//					.append("circle")
+//					.attr("cx", function(d) { return d[2].x; })
+//					.attr("cy", function(d) { return d[2].y; })
+//					.attr("r", function(d) { return 2; })
+//					.style("fill", function(d) { return "#990000"; })
 
-				circleGroups
-					.append("circle")
-					.attr("cx", function(d) { return d[0].x; })
-					.attr("cy", function(d) { return d[0].y; })
-					.attr("r", function(d) { return 2; })
-					.style("fill", function(d) { return "#000000"; })
+			var lineFunction = d3.svg.line()
+				.x(function(d) { return d.x; })
+				.y(function(d) { return d.y; })
+				.interpolate("basis");
 
-				circleGroups
-					.append("circle")
-					.attr("cx", function(d) { return d[1].x; })
-					.attr("cy", function(d) { return d[1].y; })
-					.attr("r", function(d) { return 2; })
-					.style("fill", function(d) { return "#336699"; })
 
-				circleGroups
-					.append("circle")
-					.attr("cx", function(d) { return d[2].x; })
-					.attr("cy", function(d) { return d[2].y; })
-					.attr("r", function(d) { return 2; })
-					.style("fill", function(d) { return "#990000"; })
+			var lineGraph = _svg.append("path")
+			                            .attr("d", lineFunction(circleCoordGroups))
+			                            .attr("stroke", "blue")
+			                            .attr("stroke-width", 1)
+			                            .attr("fill", "#660000");
+
 
 		}, 1);
 	};
@@ -461,6 +474,9 @@
 	var _toDegrees = function(radians) {
 		return radians * (180 / Math.PI);
 	};
+
+
+
 
 	//	transition().call(endall, function() {console.log("all done")});
 //
