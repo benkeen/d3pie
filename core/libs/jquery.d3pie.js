@@ -325,32 +325,40 @@
 					var remainderAngle = segmentCenterAngle % 90;
 					var quarter = Math.floor(segmentCenterAngle / 90);
 
-					var x;
-					var radiusX;
+					var p1, p2, p3, labelX;
 					switch (quarter) {
 						case 0:
-							x       = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20);
-							radiusX = Math.sin(_toRadians(remainderAngle)) * _outerRadius;
+							labelX = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) + 10;
+							p1     = Math.sin(_toRadians(remainderAngle)) * _outerRadius;
+							p2     = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 15);
+							p3     = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) + 5;
 							break;
 						case 1:
-							x       = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20);
-							radiusX = Math.cos(_toRadians(remainderAngle)) * _outerRadius;
+							labelX = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) + 10;
+							p1     = Math.cos(_toRadians(remainderAngle)) * _outerRadius;
+							p2     = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 15);
+							p3     = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) + 5;
 							break;
 						case 2:
-							x       = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels;
-							radiusX = -Math.sin(_toRadians(remainderAngle)) * _outerRadius;
+							labelX = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels - 10;
+							p1     = -Math.sin(_toRadians(remainderAngle)) * _outerRadius;
+							p2     = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 15);
+							p3     = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) - 5;
 							break;
 						case 3:
-							x       = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels;
-							radiusX = -Math.cos(_toRadians(remainderAngle)) * _outerRadius;
+							labelX = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels - 10;
+							p1     = -Math.cos(_toRadians(remainderAngle)) * _outerRadius;
+							p2     = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 15);
+							p3     = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) - 5;
 							break;
 					}
 					circleCoordGroups[i] = [
-						{ x: radiusX, y: null },
-						{ x: x, y: null }
+						{ x: p1, y: null },
+						{ x: p2, y: null },
+						{ x: p3, y: null }
 					];
 
-					return x;
+					return labelX;
 				})
 				.attr("dy", function(d, i) {
 					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
@@ -362,29 +370,43 @@
 					var remainderAngle = (segmentCenterAngle % 90);
 					var quarter = Math.floor(segmentCenterAngle / 90);
 
-					var y;
-					var radiusY;
+					var p1, p2, p3, labelY;
+
 					switch (quarter) {
 						case 0:
-							y       = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20);
-							radiusY = -Math.cos(_toRadians(remainderAngle)) * _outerRadius;
+							var calc1 = Math.cos(_toRadians(remainderAngle));
+							labelY = -calc1 * (_outerRadius + 20);
+							p1     = -calc1 * _outerRadius;
+							p2     = -calc1 * (_outerRadius + 15);
+							p3     = -calc1 * (_outerRadius + 20);
 							break;
 						case 1:
-							y       = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20);
-							radiusY = Math.sin(_toRadians(remainderAngle)) * _outerRadius;
+							var calc2 = Math.sin(_toRadians(remainderAngle));
+							labelY = calc2 * (_outerRadius + 20);
+							p1     = calc2 * _outerRadius;
+							p2     = calc2 * (_outerRadius + 15);
+							p3     = calc2 * (_outerRadius + 20);
 							break;
 						case 2:
-							y       = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20);
-							radiusY = Math.cos(_toRadians(remainderAngle)) * _outerRadius;
+							var calc3 = Math.cos(_toRadians(remainderAngle));
+							labelY = calc3 * (_outerRadius + 20);
+							p1     = calc3 * _outerRadius;
+							p2     = calc3 * (_outerRadius + 15);
+							p3     = calc3 * (_outerRadius + 20);
 							break;
 						case 3:
-							y       = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20);
-							radiusY = -Math.sin(_toRadians(remainderAngle)) * _outerRadius;
+							var calc4 = Math.sin(_toRadians(remainderAngle));
+							labelY = -calc4 * (_outerRadius + 20);
+							p1     = -calc4 * _outerRadius;
+							p2     = -calc4 * (_outerRadius + 15);
+							p3     = -calc4 * (_outerRadius + 20);
 							break;
 					}
-					circleCoordGroups[i][0].y = radiusY;
-					circleCoordGroups[i][1].y = y;
-					return y;
+					circleCoordGroups[i][0].y = p1;
+					circleCoordGroups[i][1].y = p2;
+					circleCoordGroups[i][2].y = p3;
+
+					return labelY;
 				});
 
 				var circleGroups = _svg.selectAll("circle")
@@ -406,6 +428,13 @@
 					.attr("cy", function(d) { return d[1].y; })
 					.attr("r", function(d) { return 2; })
 					.style("fill", function(d) { return "#336699"; })
+
+				circleGroups
+					.append("circle")
+					.attr("cx", function(d) { return d[2].x; })
+					.attr("cy", function(d) { return d[2].y; })
+					.attr("r", function(d) { return 2; })
+					.style("fill", function(d) { return "#990000"; })
 
 		}, 1);
 	};
