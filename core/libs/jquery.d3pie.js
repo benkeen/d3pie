@@ -199,6 +199,12 @@
 	};
 
 
+	/**
+	 * Creates the pie chart segments and displays them according to the selected load effect.
+	 * @param element
+	 * @param options
+	 * @private
+	 */
 	var _createPie = function(element, options) {
 		var pieChartElement = _svg.append("g")
 			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")")
@@ -228,6 +234,11 @@
 				return className;
 			});
 
+		// if we're not fading in the pie, just set the load speed to 0
+		if (options.effects.loadEffect !== "default") {
+			options.effects.loadEffectSpeed = 0;
+		}
+
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
 			.style("fill", function(d, index) { return options.styles.colors[index]; })
@@ -236,8 +247,7 @@
 			.transition()
 			.ease("cubic-in-out")
 			.duration(options.effects.loadEffectSpeed)
-			.attrTween("d", _arcTween)
-
+			.attrTween("d", _arcTween);
 
 		_svg.selectAll("g.arc")
 			.attr("transform",
@@ -248,7 +258,14 @@
 			);
 	};
 
+	/**
+	 * Add the labels to the pie.
+	 * @param options
+	 * @private
+	 */
 	var _addLabels = function(options) {
+
+		// 1. Add the main label (not positioned yet)
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
 				_data.filter(function(d) { return d.value; }),
@@ -268,9 +285,12 @@
 			.text(function(d) { return d.label; })
 			.style("font-size", "8pt")
 			.style("fill", options.labels.labelColor)
-			.style("opacity", function() {
-				return (options.effects.loadEffect === "fadein") ? 0 : 1;
-			});
+			.style("opacity", 0);
+
+		// 2. Add the percentage label (not positioned yet)
+
+
+		// 3. Add the value label (not positioned yet)
 
 		/*
 		labelGroup.append("text")
@@ -295,10 +315,8 @@
 			});
 		*/
 
-
-		// fade in the labels when the load effect is complete
-		var loadSpeed = (options.effects.loadEffect === "fadein") ? options.effects.loadEffect : 1;
-
+		// fade in the labels when the load effect is complete - or immediately if there's no load effect
+		var loadSpeed = (options.effects.loadEffect === "default") ? options.effects.loadEffectSpeed : 1;
 		setTimeout(function() {
 			d3.selectAll("text.segmentLabel")
 				.transition()
@@ -307,123 +325,124 @@
 		}, loadSpeed);
 
 
-		// now place the labels in reasonable locations. Needed to run AFTER the text has been added, because we
-		// need to calculate the
-		setTimeout(function() {
+		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
+		// text elements in place prior to
+		setTimeout(function() { _addLabelLines(options) }, 1);
+	};
 
 
-			var circleCoordGroups = [];
-			var pieDistance = 16; // configurable!
-			var lineMidPointDistance = pieDistance - (pieDistance / 4);
+	var _addLabelLines = function(options) {
+		var pieDistance = 16; // TODO: make configurable
+		var lineMidPointDistance = pieDistance - (pieDistance / 4);
+		var circleCoordGroups = [];
 
+		d3.selectAll(".segmentLabel")
+			.style("opacity", 0)
+			.attr("dx", function(d, i) {
+				var labelDimensions = document.getElementById("label" + i).getBBox();
 
-			d3.selectAll(".segmentLabel")
-				.attr("dx", function(d, i) {
-					var labelDimensions = document.getElementById("label" + i).getBBox();
+				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var nextAngle = 360;
+				if (i < options.data.length - 1) {
+					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+				}
 
-					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
-					var nextAngle = 360;
-					if (i < options.data.length - 1) {
-						nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
-					}
+				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
+				var remainderAngle = segmentCenterAngle % 90;
+				var quarter = Math.floor(segmentCenterAngle / 90);
 
-					var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
-					var remainderAngle = segmentCenterAngle % 90;
-					var quarter = Math.floor(segmentCenterAngle / 90);
+				var labelXMargin = 10; // the x-distance of the label from the end of the line
 
+				var p1, p2, p3, labelX;
+				switch (quarter) {
+					case 0:
+						var calc1 = Math.sin(_toRadians(remainderAngle));
+						labelX = calc1 * (_outerRadius + pieDistance) + labelXMargin;
+						p1     = calc1 * _outerRadius;
+						p2     = calc1 * (_outerRadius + lineMidPointDistance);
+						p3     = calc1 * (_outerRadius + pieDistance) + 5;
+						break;
+					case 1:
+						var calc2 = Math.cos(_toRadians(remainderAngle));
+						labelX = calc2 * (_outerRadius + pieDistance) + labelXMargin;
+						p1     = calc2 * _outerRadius;
+						p2     = calc2 * (_outerRadius + lineMidPointDistance);
+						p3     = calc2 * (_outerRadius + pieDistance) + 5;
+						break;
+					case 2:
+						var calc3 = Math.sin(_toRadians(remainderAngle));
+						labelX = -calc3 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
+						p1     = -calc3 * _outerRadius;
+						p2     = -calc3 * (_outerRadius + lineMidPointDistance);
+						p3     = -calc3 * (_outerRadius + pieDistance) - 5;
+						break;
+					case 3:
+						var calc4 = Math.cos(_toRadians(remainderAngle));
+						labelX = -calc4 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
+						p1     = -calc4 * _outerRadius;
+						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
+						p3     = -calc4 * (_outerRadius + pieDistance) - 5;
+						break;
+				}
+				circleCoordGroups[i] = [
+					{ x: p1, y: null },
+					{ x: p2, y: null },
+					{ x: p3, y: null }
+				];
 
-					var labelXMargin = 10; // the x-distance of the label from the end of the line
+				return labelX;
+			})
+			.attr("dy", function(d, i) {
+				var labelDimensions = document.getElementById("label" + i).getBBox();
+				var heightOffset = labelDimensions.height / 5;
 
-					var p1, p2, p3, labelX;
-					switch (quarter) {
-						case 0:
-							var calc1 = Math.sin(_toRadians(remainderAngle));
-							labelX = calc1 * (_outerRadius + pieDistance) + labelXMargin;
-							p1     = calc1 * _outerRadius;
-							p2     = calc1 * (_outerRadius + lineMidPointDistance);
-							p3     = calc1 * (_outerRadius + pieDistance) + 5;
-							break;
-						case 1:
-							var calc2 = Math.cos(_toRadians(remainderAngle));
-							labelX = calc2 * (_outerRadius + pieDistance) + labelXMargin;
-							p1     = calc2 * _outerRadius;
-							p2     = calc2 * (_outerRadius + lineMidPointDistance);
-							p3     = calc2 * (_outerRadius + pieDistance) + 5;
-							break;
-						case 2:
-							var calc3 = Math.sin(_toRadians(remainderAngle));
-							labelX = -calc3 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
-							p1     = -calc3 * _outerRadius;
-							p2     = -calc3 * (_outerRadius + lineMidPointDistance);
-							p3     = -calc3 * (_outerRadius + pieDistance) - 5;
-							break;
-						case 3:
-							var calc4 = Math.cos(_toRadians(remainderAngle));
-							labelX = -calc4 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
-							p1     = -calc4 * _outerRadius;
-							p2     = -calc4 * (_outerRadius + lineMidPointDistance);
-							p3     = -calc4 * (_outerRadius + pieDistance) - 5;
-							break;
-					}
-					circleCoordGroups[i] = [
-						{ x: p1, y: null },
-						{ x: p2, y: null },
-						{ x: p3, y: null }
-					];
+				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var nextAngle = 360;
+				if (i < options.data.length - 1) {
+					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+				}
+				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
+				var remainderAngle = (segmentCenterAngle % 90);
+				var quarter = Math.floor(segmentCenterAngle / 90);
 
-					return labelX;
-				})
-				.attr("dy", function(d, i) {
-					var labelDimensions = document.getElementById("label" + i).getBBox();
-					var heightOffset = labelDimensions.height / 3;
+				var p1, p2, p3, labelY;
 
-					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
-					var nextAngle = 360;
-					if (i < options.data.length - 1) {
-						nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
-					}
-					var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
-					var remainderAngle = (segmentCenterAngle % 90);
-					var quarter = Math.floor(segmentCenterAngle / 90);
+				switch (quarter) {
+					case 0:
+						var calc1 = Math.cos(_toRadians(remainderAngle));
+						labelY = -calc1 * (_outerRadius + pieDistance);
+						p1     = -calc1 * _outerRadius;
+						p2     = -calc1 * (_outerRadius + lineMidPointDistance);
+						p3     = -calc1 * (_outerRadius + pieDistance) - heightOffset;
+						break;
+					case 1:
+						var calc2 = Math.sin(_toRadians(remainderAngle));
+						labelY = calc2 * (_outerRadius + pieDistance);
+						p1     = calc2 * _outerRadius;
+						p2     = calc2 * (_outerRadius + lineMidPointDistance);
+						p3     = calc2 * (_outerRadius + pieDistance) - heightOffset;
+						break;
+					case 2:
+						var calc3 = Math.cos(_toRadians(remainderAngle));
+						labelY = calc3 * (_outerRadius + pieDistance);
+						p1     = calc3 * _outerRadius;
+						p2     = calc3 * (_outerRadius + lineMidPointDistance);
+						p3     = calc3 * (_outerRadius + pieDistance) - heightOffset;
+						break;
+					case 3:
+						var calc4 = Math.sin(_toRadians(remainderAngle));
+						labelY = -calc4 * (_outerRadius + pieDistance);
+						p1     = -calc4 * _outerRadius;
+						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
+						p3     = -calc4 * (_outerRadius + pieDistance) - heightOffset;
+						break;
+				}
+				circleCoordGroups[i][0].y = p1;
+				circleCoordGroups[i][1].y = p2;
+				circleCoordGroups[i][2].y = p3;
 
-					var p1, p2, p3, labelY;
-
-					switch (quarter) {
-						case 0:
-							var calc1 = Math.cos(_toRadians(remainderAngle));
-							labelY = -calc1 * (_outerRadius + pieDistance);
-							p1     = -calc1 * _outerRadius;
-							p2     = -calc1 * (_outerRadius + lineMidPointDistance);
-							p3     = -calc1 * (_outerRadius + pieDistance) - heightOffset;
-							break;
-						case 1:
-							var calc2 = Math.sin(_toRadians(remainderAngle));
-							labelY = calc2 * (_outerRadius + pieDistance);
-							p1     = calc2 * _outerRadius;
-							p2     = calc2 * (_outerRadius + lineMidPointDistance);
-							p3     = calc2 * (_outerRadius + pieDistance) - heightOffset;
-							break;
-						case 2:
-							var calc3 = Math.cos(_toRadians(remainderAngle));
-							labelY = calc3 * (_outerRadius + pieDistance);
-							p1     = calc3 * _outerRadius;
-							p2     = calc3 * (_outerRadius + lineMidPointDistance);
-							p3     = calc3 * (_outerRadius + pieDistance) - heightOffset;
-							break;
-						case 3:
-							var calc4 = Math.sin(_toRadians(remainderAngle));
-							labelY = -calc4 * (_outerRadius + pieDistance);
-							p1     = -calc4 * _outerRadius;
-							p2     = -calc4 * (_outerRadius + lineMidPointDistance);
-							p3     = -calc4 * (_outerRadius + pieDistance) - heightOffset;
-							break;
-					}
-					circleCoordGroups[i][0].y = p1;
-					circleCoordGroups[i][1].y = p2;
-					circleCoordGroups[i][2].y = p3;
-
-					return labelY;
-				});
+				return labelY;
+			});
 
 //				var circleGroups = _svg.selectAll("circle")
 //					.data(circleCoordGroups)
@@ -453,28 +472,29 @@
 //					.style("fill", function(d) { return "#990000"; })
 
 
-			// add the main line groups
-			var lineGroups = _svg.insert("g", ".pieChart");
+		// add the main line groups
+		var lineGroups = _svg.insert("g", ".pieChart");
 
-			var lineGroup = lineGroups.selectAll(".lineGroup")
-				.data(circleCoordGroups)
-				.enter()
-				.append("g")
-				.attr("class", "lineGroup")
-				.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+		var lineGroup = lineGroups.selectAll(".lineGroup")
+			.data(circleCoordGroups)
+			.enter()
+			.append("g")
+			.attr("class", "lineGroup")
+			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
 
-			var lineFunction = d3.svg.line()
-				.interpolate("basis")
-				.x(function(d) { return d.x; })
-				.y(function(d) { return d.y; });
+		var lineFunction = d3.svg.line()
+			.interpolate("basis")
+			.x(function(d) { return d.x; })
+			.y(function(d) { return d.y; });
 
-			lineGroup.append("path")
-				.attr("d", lineFunction)
-				.attr("stroke", "#666666")
-				.attr("stroke-width", 1)
-				.attr("fill", "none");
-		}, 1);
-	};
+		lineGroup.append("path")
+			.attr("d", lineFunction)
+			.attr("stroke", "#666666")
+			.attr("stroke-width", 1)
+			.attr("fill", "none");
+	}
+
+
 
 	var _addSegmentEventHandlers = function(options) {
 		if (options.effects.pullOutSegmentOnClick) {

@@ -42,7 +42,7 @@ define([], function() {
 					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 				},
 				effects: {
-					loadEffect: "fadein", // fadein / none
+					loadEffect: "default", //  none / default
 					loadEffectSpeed: 1000,
 					highlightSegmentOnMouseover: true,
 					pullOutSegmentOnClick: true,

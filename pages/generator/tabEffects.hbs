@@ -3,8 +3,8 @@
 		<label for="loadEffect" class="control-label">Load effect</label>
 		<div class="form-group padRight30">
 			<select id="loadEffect" class="form-control">
-				<option value="none" {{#compare config.labels.loadEffect "none"}}selected="selected"{{/compare}}>None</option>
-				<option value="fadein" {{#compare config.labels.loadEffect "fadein"}}selected="selected"{{/compare}}>Fade in pie, fade in labels</option>
+				<option value="none" {{#compare config.effects.loadEffect "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="default" {{#compare config.effects.loadEffect "default"}}selected="selected"{{/compare}}>Swoosh in pie, fade in labels</option>
 			</select>
 		</div>
 	</div>
