@@ -10,6 +10,7 @@
  * - prefix all classes and allow it to be customized
  */
 ;(function($, window, document) {
+	"use strict";
 
 	var _pluginName = "d3pie";
 	var _defaultSettings = {
@@ -54,11 +55,15 @@
 		this.element = element;
 		this.options = $.extend({}, _defaultSettings, options);
 
+		// confirm d3 is available [check minimum version]
+		if (!window.d3 || !window.d3.hasOwnProperty("version")) {
+			console.error("d3pie error: d3 is not available");
+			return;
+		}
+
 		// TODO confirm the required parameters have been set
 
 		// TODO format all colours so they begin with #
-
-		// TODO confirm d3 is available
 
 		this._defaults = _defaultSettings;
 		this._name = _pluginName;
@@ -67,60 +72,13 @@
 		this.init();
 	}
 
-	// prevents multiple instantiations of the same plugin
+	// prevents multiple instantiations of the same plugin on the same element
 	$.fn[_pluginName] = function(options) {
 		return this.each(function() {
 			if (!$.data(this, _pluginName)) {
 				$.data(this, _pluginName, new d3pie(this, options));
 			}
 		});
-	};
-
-
-	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius;
-	d3pie.prototype.init = function() {
-
-		// store the options in a local var for circumventing any "this" nonsense
-		var options = this.options;
-		_data      = this.options.data;
-		_totalSize = _getTotalPieSize(_data);
-
-		// TODO !!!
-		
-		// outer radius
-		if (/%/.test(options.styles.pieOuterRadius)) {
-			var percent = parseInt(options.styles.pieOuterRadius.replace(/[\D]/, ""), 10);
-			percent = (percent > 99) ? 99 : percent;
-			percent = (percent < 0) ? 0 : percent;
-			_innerRadius = Math.floor((_outerRadius / 100) * percent);
-		} else {
-			_innerRadius = parseInt(options.styles.pieInnerRadius, 10);
-		}
-
-
-		// inner radius
-		if (/%/.test(options.styles.pieInnerRadius)) {
-			var percent = parseInt(options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
-			percent = (percent > 99) ? 99 : percent;
-			percent = (percent < 0) ? 0 : percent;
-			_innerRadius = Math.floor((_outerRadius / 100) * percent);
-		} else {
-			_innerRadius = parseInt(options.styles.pieInnerRadius, 10);
-		}
-
-		_outerRadius = ((options.width < options.height) ? options.width : options.height) / 2.8;
-
-		// caca
-
-		_outerRadius = options.size.pieOuterRadius;
-		console.log(_outerRadius);
-
-
-		_addSVGSpace(this.element, options);
-		_addTitle(options.title);
-		_createPie(this.element, options);
-		_addLabels(options);
-		_addSegmentEventHandlers(options);
 	};
 
 
@@ -140,6 +98,84 @@
 
 
 	// ----- private functions -----
+
+
+	// TODO these are temporary. They'll need to attach to the instance, I think. Either way, this is feeling very klutzy
+	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius, _options;
+
+	d3pie.prototype.init = function() {
+
+		// store the options in a local var for circumventing any "this" nonsense
+		_options = this.options;
+		_data      = this.options.data;
+		_totalSize = _getTotalPieSize(_data);
+
+		// outer radius is either specified (e.g. through the generator), or omitted altogether
+		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
+		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
+
+		// first, calculate the default _outerRadius
+		var w = _options.size.canvasWidth;
+		var h = _options.size.canvasHeight;
+		_outerRadius = ((w < h) ? w : h) / 2.8;
+
+		// if the user specified something, use that instead
+		if (_options.size.pieOuterRadius !== null) {
+			if (/%/.test(_options.size.pieOuterRadius)) {
+				var percent = parseInt(_options.size.pieOuterRadius.replace(/[\D]/, ""), 10);
+				percent = (percent > 99) ? 99 : percent;
+				percent = (percent < 0) ? 0 : percent;
+				var smallestDimension = (w < h) ? w : h;
+				_outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
+			} else {
+				// blurgh! TODO bounds checking
+				_outerRadius = parseInt(_options.size.pieOuterRadius, 10);
+			}
+		}
+
+		// inner radius
+		if (/%/.test(_options.styles.pieInnerRadius)) {
+			var percent = parseInt(_options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
+			percent = (percent > 99) ? 99 : percent;
+			percent = (percent < 0) ? 0 : percent;
+			_innerRadius = Math.floor((_outerRadius / 100) * percent);
+		} else {
+			_innerRadius = parseInt(_options.styles.pieInnerRadius, 10);
+		}
+
+		_addSVGSpace(this.element);
+		_addTitle(_options.title);
+		_createPie(this.element);
+		_addLabels();
+		_addSegmentEventHandlers();
+	};
+
+	// creates the SVG element
+	var _addSVGSpace = function(element) {
+		_svg = d3.select(element).append("svg:svg")
+			.attr("width", _options.size.canvasWidth)
+			.attr("height", _options.size.canvasHeight);
+	};
+
+	/**
+	 * Adds the Pie Chart title.
+	 * @param titleData
+	 * @private
+	 */
+	var _addTitle = function(titleData) {
+		var title = _svg.selectAll(".title")
+			.data([titleData]);
+
+		title.enter()
+			.append("text")
+			.attr("class", "title")
+			.attr("x", 20)
+			.attr("y", 20)
+			.attr("fill", function(d) { return d.color; })
+			.text(function(d) { return d.text; })
+			.style("font-size", function(d) { return d.fontSize; })
+			.style("font", function(d) { return d.font; })
+	};
 
 	var _getTotalPieSize = function(data) {
 		var totalSize = 0;
@@ -196,42 +232,15 @@
 		return (val / totalSize) * 360;
 	};
 
-	var _addSVGSpace = function(element, options) {
-		_svg = d3.select(element).append("svg:svg")
-			.attr("width", options.width)
-			.attr("height", options.height);
-	};
-
-	/**
-	 * Adds the Pie Chart title.
-	 * @param titleData
-	 * @private
-	 */
-	var _addTitle = function(titleData) {
-		var title = _svg.selectAll(".title")
-			.data([titleData]);
-
-		title.enter()
-			.append("text")
-			.attr("class", "title")
-			.attr("x", 20)
-			.attr("y", 20)
-			.attr("fill", function(d) { return d.color; })
-			.text(function(d) { return d.text; })
-			.style("font-size", function(d) { return d.fontSize; })
-			.style("font", function(d) { return d.font; })
-	};
-
-
 	/**
 	 * Creates the pie chart segments and displays them according to the selected load effect.
 	 * @param element
 	 * @param options
 	 * @private
 	 */
-	var _createPie = function(element, options) {
+	var _createPie = function() {
 		var pieChartElement = _svg.append("g")
-			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")")
+			.attr("transform", _getSVGCenter)
 			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
@@ -252,25 +261,25 @@
 			.append("g")
 			.attr("class", function() {
 				var className = "arc";
-				if (options.effects.highlightSegmentOnMouseover) {
+				if (_options.effects.highlightSegmentOnMouseover) {
 					className += " arcHover";
 				}
 				return className;
 			});
 
 		// if we're not fading in the pie, just set the load speed to 0
-		if (options.effects.loadEffect !== "default") {
-			options.effects.loadEffectSpeed = 0;
+		if (_options.effects.loadEffect !== "default") {
+			_options.effects.loadEffectSpeed = 0;
 		}
 
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
-			.style("fill", function(d, index) { return options.styles.colors[index]; })
+			.style("fill", function(d, index) { return _options.styles.colors[index]; })
 			.style("stroke", "#ffffff")
 			.style("stroke-width", 1)
 			.transition()
 			.ease("cubic-in-out")
-			.duration(options.effects.loadEffectSpeed)
+			.duration(_options.effects.loadEffectSpeed)
 			.attrTween("d", _arcTween);
 
 		_svg.selectAll("g.arc")
@@ -282,12 +291,13 @@
 			);
 	};
 
+
 	/**
 	 * Add the labels to the pie.
 	 * @param options
 	 * @private
 	 */
-	var _addLabels = function(options) {
+	var _addLabels = function() {
 
 		// 1. Add the main label (not positioned yet)
 		var labelGroup = _svg.selectAll(".labelGroup")
@@ -301,14 +311,14 @@
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
 			})
-			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+			.attr("transform", _getSVGCenter);
 
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
 			.attr("id", function(d, i) { return "label" + i; })
 			.text(function(d) { return d.label; })
 			.style("font-size", "8pt")
-			.style("fill", options.labels.labelColor)
+			.style("fill", _options.labels.labelColor)
 			.style("opacity", 0);
 
 		// 2. Add the percentage label (not positioned yet)
@@ -340,22 +350,24 @@
 		*/
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
-		var loadSpeed = (options.effects.loadEffect === "default") ? options.effects.loadEffectSpeed : 1;
+		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;
+
 		setTimeout(function() {
+			var labelFadeInTime = (_options.effects.loadEffect === "default") ? _options.effects.labelFadeInTime : 1;
 			d3.selectAll("text.segmentLabel")
 				.transition()
-				.duration(options.effects.labelFadeInTime)
+				.duration(labelFadeInTime)
 				.style("opacity", 1);
 		}, loadSpeed);
 
 
 		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
 		// text elements in place prior to
-		setTimeout(function() { _addLabelLines(options) }, 1);
+		setTimeout(_addLabelLines, 1);
 	};
 
 
-	var _addLabelLines = function(options) {
+	var _addLabelLines = function() {
 		var pieDistance = 16; // TODO: make configurable
 		var lineMidPointDistance = pieDistance - (pieDistance / 4);
 		var circleCoordGroups = [];
@@ -367,7 +379,7 @@
 
 				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 				var nextAngle = 360;
-				if (i < options.data.length - 1) {
+				if (i < _options.data.length - 1) {
 					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
 				}
 
@@ -422,7 +434,7 @@
 
 				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 				var nextAngle = 360;
-				if (i < options.data.length - 1) {
+				if (i < _options.data.length - 1) {
 					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
 				}
 				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
@@ -475,7 +487,7 @@
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup")
-			.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+			.attr("transform", _getSVGCenter);
 
 		var lineFunction = d3.svg.line()
 			.interpolate("basis")
@@ -489,20 +501,22 @@
 			.attr("fill", "none");
 	};
 
-	var _addSegmentEventHandlers = function(options) {
-		if (options.effects.pullOutSegmentOnClick) {
-			$(".arc").on("click", function(e) {
-				var $segment = $(e.currentTarget).find("path");
-
-				// TODO detect if it's currently moving here
-
-				if ($segment.attr("class") === "expanded") {
-					_closeSegment($segment[0]);
-				} else {
-					_openSegment($segment[0]);
-				}
-			});
+	var _addSegmentEventHandlers = function() {
+		if (!_options.effects.pullOutSegmentOnClick) {
+			return;
 		}
+
+		$(".arc").on("click", function(e) {
+			var $segment = $(e.currentTarget).find("path");
+
+			// TODO detect if it's currently moving here
+
+			if ($segment.attr("class") === "expanded") {
+				_closeSegment($segment[0]);
+			} else {
+				_openSegment($segment[0]);
+			}
+		});
 	};
 
 	var _toRadians = function(degrees) {
@@ -512,5 +526,9 @@
 	var _toDegrees = function(radians) {
 		return radians * (180 / Math.PI);
 	};
+
+	var _getSVGCenter = function() {
+		return "translate(" + (_options.size.canvasWidth/2) + "," + (_options.size.canvasHeight/2) + ")"
+	}
 
 })(jQuery, window, document);

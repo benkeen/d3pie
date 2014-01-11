@@ -17,6 +17,26 @@ define([], function() {
 					fontSize: "16px",
 					font:     "helvetica"
 				},
+
+				header: {
+					title: {
+						text:     "Programming languages",
+						color:    "#333333",
+						fontSize: "16px",
+						font:     "helvetica"
+					},
+					subtitle: {
+						text:     "Programming languages",
+						color:    "#333333",
+						fontSize: "16px",
+						font:     "helvetica"
+					},
+					location: "top-left"
+				},
+				footer: {
+					text: ""
+				},
+
 				size: {
 					canvasWidth: 500,
 					canvasHeight: 500,

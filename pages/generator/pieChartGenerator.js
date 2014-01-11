@@ -10,8 +10,9 @@ define([
 	"hbs!labelsTab",
 	"hbs!stylesTab",
 	"hbs!effectsTab",
+	"hbs!eventsTab",
 	"hbs!miscTab"
-], function(C, pieChartGenerator, titleTab, sizeTab, dataTab, labelsTab, stylesTab, effectsTab, miscTab) {
+], function(C, pieChartGenerator, titleTab, sizeTab, dataTab, labelsTab, stylesTab, effectsTab, eventsTab, miscTab) {
 	"use strict";
 
 	// stores the current configuration of the pie chart. It's updated onload, and whenever the user
@@ -38,11 +39,11 @@ define([
 		$("#titleTab").html(titleTab({ config: _currentPieSettings }));
 		$("#sizeTab").html(sizeTab({ config: _currentPieSettings }));
 		$("#dataTab").html(dataTab({ config: _currentPieSettings }));
-		$("#effectsTab").html(effectsTab({ config: _currentPieSettings }));
 		$("#labelsTab").html(labelsTab({ config: _currentPieSettings }));
-		$("#miscTab").html(miscTab({ config: _currentPieSettings }));
 		$("#stylesTab").html(stylesTab({ config: _currentPieSettings }));
-
+		$("#effectsTab").html(effectsTab({ config: _currentPieSettings }));
+		$("#eventsTab").html(eventsTab({ config: _currentPieSettings }));
+		$("#miscTab").html(miscTab({ config: _currentPieSettings }));
 
 		// log the state of various fields
 		_previousTitle = _currentPieSettings.title.text;
@@ -137,10 +138,6 @@ define([
 			config.effects.loadEffect = "none";
 		}
 
-		// temporary
-		config.width  = 500;
-		config.height = 500;
-
 		if (_isCreated) {
 			$("#generatorPieChart").data("d3pie").destroy();
 		}
@@ -179,8 +176,8 @@ define([
 		return {
 			canvasWidth:    $("#canvasWidth").val(),
 			canvasHeight:   $("#canvasHeight").val(),
-			pieInnerRadius: $("#pieInnerRadius").val(),
-			pieOuterRadius: $("#pieOuterRadius").val()
+			pieInnerRadius: $("#pieInnerRadius").val() + "%",
+			pieOuterRadius: $("#pieOuterRadius").val() + "%"
 		};
 	};
 

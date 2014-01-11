@@ -35,6 +35,7 @@ require.config({
 		labelsTab: "pages/generator/tabLabels.hbs",
 		stylesTab: "pages/generator/tabStyles.hbs",
 		effectsTab: "pages/generator/tabEffects.hbs",
+		eventsTab: "pages/generator/tabEvents.hbs",
 		miscTab: "pages/generator/tabMisc.hbs"
 	}
 });
