@@ -29,11 +29,12 @@ require.config({
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
+		titleTab: "pages/generator/tabTitle.hbs",
+		sizeTab: "pages/generator/tabSize.hbs",
 		dataTab: "pages/generator/tabData.hbs",
-		effectsTab: "pages/generator/tabEffects.hbs",
 		labelsTab: "pages/generator/tabLabels.hbs",
-		miscTab: "pages/generator/tabMisc.hbs",
 		stylesTab: "pages/generator/tabStyles.hbs",
-		titleTab: "pages/generator/tabTitle.hbs"
+		effectsTab: "pages/generator/tabEffects.hbs",
+		miscTab: "pages/generator/tabMisc.hbs"
 	}
 });

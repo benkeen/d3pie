@@ -4,13 +4,14 @@
 define([
 	"constants",
 	"pieChartGenerator",
+	"hbs!titleTab",
+	"hbs!sizeTab",
 	"hbs!dataTab",
-	"hbs!effectsTab",
 	"hbs!labelsTab",
-	"hbs!miscTab",
 	"hbs!stylesTab",
-	"hbs!titleTab"
-], function(C, pieChartGenerator, dataTab, effectsTab, labelsTab, miscTab, stylesTab, titleTab) {
+	"hbs!effectsTab",
+	"hbs!miscTab"
+], function(C, pieChartGenerator, titleTab, sizeTab, dataTab, labelsTab, stylesTab, effectsTab, miscTab) {
 	"use strict";
 
 	// stores the current configuration of the pie chart. It's updated onload, and whenever the user
@@ -34,12 +35,14 @@ define([
 		_currentPieSettings = C.EXAMPLE_PIES[0].config;
 
 		// render the generator tabs
+		$("#titleTab").html(titleTab({ config: _currentPieSettings }));
+		$("#sizeTab").html(sizeTab({ config: _currentPieSettings }));
 		$("#dataTab").html(dataTab({ config: _currentPieSettings }));
 		$("#effectsTab").html(effectsTab({ config: _currentPieSettings }));
 		$("#labelsTab").html(labelsTab({ config: _currentPieSettings }));
 		$("#miscTab").html(miscTab({ config: _currentPieSettings }));
 		$("#stylesTab").html(stylesTab({ config: _currentPieSettings }));
-		$("#titleTab").html(titleTab({ config: _currentPieSettings }));
+
 
 		// log the state of various fields
 		_previousTitle = _currentPieSettings.title.text;
@@ -62,6 +65,19 @@ define([
 		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
 		$("#backgroundColorGroup").colorpicker();
 
+		// title
+		$("#pieTitle").on("keyup", function() {
+			if (_previousTitle !== this.value) {
+				_renderWithNoAnimation();
+				_previousTitle = this.value;
+			}
+		});
+
+		// size tab
+		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
+		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
+		$("#pieOuterRadius").on("change", _renderWithNoAnimation);
+
 		// label tab
 		$("#labelColorGroup").colorpicker();
 		$("#labelPercentageColorGroup").colorpicker();
@@ -70,13 +86,6 @@ define([
 
 		$("#labelFormatExample").on("change", function() {
 			$("#labelFormat").val(this.value);
-		});
-
-		$("#pieTitle").on("keyup", function() {
-			if (_previousTitle !== this.value) {
-				_renderWithNoAnimation();
-				_previousTitle = this.value;
-			}
 		});
 
 		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
@@ -101,6 +110,16 @@ define([
 		_titleColorManuallyChanged = false;
 	};
 
+	var _onChangeInnerRadius = function(e) {
+		$("#pieInnerRadiusDisplayValue").html(e.target.value + "%");
+		_renderWithNoAnimation();
+	};
+
+	var _onChangeOuterRadius = function(e) {
+		$("#pieOuterRadiusDisplayValue").html(e.target.value + "%");
+		_renderWithNoAnimation();
+	};
+
 	var _renderWithNoAnimation = function() {
 		_renderPie(false, _getConfigObject());
 	};
@@ -115,7 +134,7 @@ define([
 		// automatically showing the user's latest changes to the pie settings and not having to see the animation
 		// each and every time
 		if (!includeStartAnimation) {
-			config.effects.load = "none";
+			config.effects.loadEffect = "none";
 		}
 
 		// temporary
@@ -137,6 +156,7 @@ define([
 	var _getConfigObject = function() {
 		return {
 			title:   _getTitleTabData(),
+			size:    _getSizeData(),
 			data:    _getDataTabData(),
 			labels:  _getLabelsTabData(),
 			styles:  _getStylesTabData(),
@@ -152,6 +172,15 @@ define([
 			color:    $("#titleColor").val(),
 			fontSize: $("#titleFontSize").val() + $("#titleFontSizeUnits").val(),
 			font:     $("#titleFont").val()
+		};
+	};
+
+	var _getSizeData = function() {
+		return {
+			canvasWidth:    $("#canvasWidth").val(),
+			canvasHeight:   $("#canvasHeight").val(),
+			pieInnerRadius: $("#pieInnerRadius").val(),
+			pieOuterRadius: $("#pieOuterRadius").val()
 		};
 	};
 

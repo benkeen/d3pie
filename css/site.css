@@ -58,10 +58,18 @@
 	width:60px;
 	display: inline-block;
 }
-#pieInnerRadius {
+#pieInnerRadius, #pieOuterRadius {
 	width: 100%;
 }
-
+input.smallField {
+	width: 60px;
+}
+input.ib, .ib {
+	display: inline-block;
+}
+.bl {
+	display: block;
+}
 
 /* overridden bootstrap CSS */
 body .navbar-header {

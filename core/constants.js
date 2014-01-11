@@ -17,6 +17,12 @@ define([], function() {
 					fontSize: "16px",
 					font:     "helvetica"
 				},
+				size: {
+					canvasWidth: 500,
+					canvasHeight: 500,
+					pieInnerRadius: "40%",
+					pieOuterRadius: "66%"
+				},
 				data: [
 					{ label: "JavaScript", value: 264131, tooltip: "" },
 					{ label: "Ruby", value: 218812, tooltip: "" },
@@ -37,7 +43,6 @@ define([], function() {
 					labelSegmentValueColor: "#cccccc"
 				},
 				styles: {
-					pieInnerRadius: "40%",
 					backgroundColor: null,
 					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 				},

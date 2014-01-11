@@ -19,13 +19,18 @@
 			fontSize: "14px",
 			font:     "helvetica"
 		},
+		size: {
+			canvasHeight: 500,
+			canvasWidth: 500,
+			pieInnerRadius: "100%",
+			pieOuterRadius: null
+		},
 		labels: {
 			location: "inside",
 			format: "{L} {%}",
 			enableTooltips: false
 		},
 		styles: {
-			pieInnerRadius: "100%",
 			backgroundColor: null,
 			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 		},
@@ -80,9 +85,20 @@
 		_data      = this.options.data;
 		_totalSize = _getTotalPieSize(_data);
 
-		// TODO temporary!
-		_outerRadius = ((options.width < options.height) ? options.width : options.height) / 2.8;
+		// TODO !!!
+		
+		// outer radius
+		if (/%/.test(options.styles.pieOuterRadius)) {
+			var percent = parseInt(options.styles.pieOuterRadius.replace(/[\D]/, ""), 10);
+			percent = (percent > 99) ? 99 : percent;
+			percent = (percent < 0) ? 0 : percent;
+			_innerRadius = Math.floor((_outerRadius / 100) * percent);
+		} else {
+			_innerRadius = parseInt(options.styles.pieInnerRadius, 10);
+		}
 
+
+		// inner radius
 		if (/%/.test(options.styles.pieInnerRadius)) {
 			var percent = parseInt(options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
 			percent = (percent > 99) ? 99 : percent;
@@ -91,6 +107,14 @@
 		} else {
 			_innerRadius = parseInt(options.styles.pieInnerRadius, 10);
 		}
+
+		_outerRadius = ((options.width < options.height) ? options.width : options.height) / 2.8;
+
+		// caca
+
+		_outerRadius = options.size.pieOuterRadius;
+		console.log(_outerRadius);
+
 
 		_addSVGSpace(this.element, options);
 		_addTitle(options.title);
@@ -351,7 +375,7 @@
 				var remainderAngle = segmentCenterAngle % 90;
 				var quarter = Math.floor(segmentCenterAngle / 90);
 
-				var labelXMargin = 10; // the x-distance of the label from the end of the line
+				var labelXMargin = 10; // the x-distance of the label from the end of the line [TODO configurable?]
 
 				var p1, p2, p3, labelX;
 				switch (quarter) {
@@ -404,7 +428,6 @@
 				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
 				var remainderAngle = (segmentCenterAngle % 90);
 				var quarter = Math.floor(segmentCenterAngle / 90);
-
 				var p1, p2, p3, labelY;
 
 				switch (quarter) {
@@ -444,34 +467,6 @@
 				return labelY;
 			});
 
-//				var circleGroups = _svg.selectAll("circle")
-//					.data(circleCoordGroups)
-//					.enter()
-//					.append("g")
-//					.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
-//
-//				circleGroups
-//					.append("circle")
-//					.attr("cx", function(d) { return d[0].x; })
-//					.attr("cy", function(d) { return d[0].y; })
-//					.attr("r", function(d) { return 2; })
-//					.style("fill", function(d) { return "#000000"; })
-//
-//				circleGroups
-//					.append("circle")
-//					.attr("cx", function(d) { return d[1].x; })
-//					.attr("cy", function(d) { return d[1].y; })
-//					.attr("r", function(d) { return 2; })
-//					.style("fill", function(d) { return "#336699"; })
-//
-//				circleGroups
-//					.append("circle")
-//					.attr("cx", function(d) { return d[2].x; })
-//					.attr("cy", function(d) { return d[2].y; })
-//					.attr("r", function(d) { return 2; })
-//					.style("fill", function(d) { return "#990000"; })
-
-
 		// add the main line groups
 		var lineGroups = _svg.insert("g", ".pieChart");
 
@@ -492,16 +487,15 @@
 			.attr("stroke", "#666666")
 			.attr("stroke-width", 1)
 			.attr("fill", "none");
-	}
-
-
+	};
 
 	var _addSegmentEventHandlers = function(options) {
 		if (options.effects.pullOutSegmentOnClick) {
 			$(".arc").on("click", function(e) {
 				var $segment = $(e.currentTarget).find("path");
 
-				// detect if it's currently moving here
+				// TODO detect if it's currently moving here
+
 				if ($segment.attr("class") === "expanded") {
 					_closeSegment($segment[0]);
 				} else {
@@ -519,24 +513,4 @@
 		return radians * (180 / Math.PI);
 	};
 
-
-
-
-	//	transition().call(endall, function() {console.log("all done")});
-//
-//	function endall(transition, callback) {
-//		var n = 0;
-//		transition
-//			.each(function() { ++n; })
-//			.each("end", function() { if (!--n) callback.apply(this, arguments); });
-//	}
-
-
-//	var valueline = d3.svg.line()
-//		.interpolate("basis")           // <=== THERE IT IS!
-//		.x(function(d) { return x(d.date); })
-//		.y(function(d) { return y(d.close); });
-
-
 })(jQuery, window, document);
-
