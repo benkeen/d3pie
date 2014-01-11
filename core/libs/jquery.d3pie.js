@@ -313,10 +313,13 @@
 
 
 			var circleCoordGroups = [];
+			var pieDistance = 16; // configurable!
+			var lineMidPointDistance = pieDistance - (pieDistance / 4);
+
+
 			d3.selectAll(".segmentLabel")
 				.attr("dx", function(d, i) {
-					var labelWidthInPixels = document.getElementById("label" + i).getComputedTextLength();
-					//bbox = textNode.getBBox(); // to get height
+					var labelDimensions = document.getElementById("label" + i).getBBox();
 
 					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 					var nextAngle = 360;
@@ -328,35 +331,38 @@
 					var remainderAngle = segmentCenterAngle % 90;
 					var quarter = Math.floor(segmentCenterAngle / 90);
 
+
+					var labelXMargin = 10; // the x-distance of the label from the end of the line
+
 					var p1, p2, p3, labelX;
 					switch (quarter) {
 						case 0:
 							var calc1 = Math.sin(_toRadians(remainderAngle));
-							labelX = calc1 * (_outerRadius + 20) + 10;
+							labelX = calc1 * (_outerRadius + pieDistance) + labelXMargin;
 							p1     = calc1 * _outerRadius;
-							p2     = calc1 * (_outerRadius + 15);
-							p3     = calc1 * (_outerRadius + 20) + 5;
+							p2     = calc1 * (_outerRadius + lineMidPointDistance);
+							p3     = calc1 * (_outerRadius + pieDistance) + 5;
 							break;
 						case 1:
 							var calc2 = Math.cos(_toRadians(remainderAngle));
-							labelX = calc2 * (_outerRadius + 20) + 10;
+							labelX = calc2 * (_outerRadius + pieDistance) + labelXMargin;
 							p1     = calc2 * _outerRadius;
-							p2     = calc2 * (_outerRadius + 15);
-							p3     = calc2 * (_outerRadius + 20) + 5;
+							p2     = calc2 * (_outerRadius + lineMidPointDistance);
+							p3     = calc2 * (_outerRadius + pieDistance) + 5;
 							break;
 						case 2:
 							var calc3 = Math.sin(_toRadians(remainderAngle));
-							labelX = -calc3 * (_outerRadius + 20) - labelWidthInPixels - 10;
+							labelX = -calc3 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
 							p1     = -calc3 * _outerRadius;
-							p2     = -calc3 * (_outerRadius + 15);
-							p3     = -calc3 * (_outerRadius + 20) - 5;
+							p2     = -calc3 * (_outerRadius + lineMidPointDistance);
+							p3     = -calc3 * (_outerRadius + pieDistance) - 5;
 							break;
 						case 3:
 							var calc4 = Math.cos(_toRadians(remainderAngle));
-							labelX = -calc4 * (_outerRadius + 20) - labelWidthInPixels - 10;
+							labelX = -calc4 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
 							p1     = -calc4 * _outerRadius;
-							p2     = -calc4 * (_outerRadius + 15);
-							p3     = -calc4 * (_outerRadius + 20) - 5;
+							p2     = -calc4 * (_outerRadius + lineMidPointDistance);
+							p3     = -calc4 * (_outerRadius + pieDistance) - 5;
 							break;
 					}
 					circleCoordGroups[i] = [
@@ -368,6 +374,9 @@
 					return labelX;
 				})
 				.attr("dy", function(d, i) {
+					var labelDimensions = document.getElementById("label" + i).getBBox();
+					var heightOffset = labelDimensions.height / 3;
+
 					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 					var nextAngle = 360;
 					if (i < options.data.length - 1) {
@@ -382,31 +391,31 @@
 					switch (quarter) {
 						case 0:
 							var calc1 = Math.cos(_toRadians(remainderAngle));
-							labelY = -calc1 * (_outerRadius + 20);
+							labelY = -calc1 * (_outerRadius + pieDistance);
 							p1     = -calc1 * _outerRadius;
-							p2     = -calc1 * (_outerRadius + 15);
-							p3     = -calc1 * (_outerRadius + 20);
+							p2     = -calc1 * (_outerRadius + lineMidPointDistance);
+							p3     = -calc1 * (_outerRadius + pieDistance) - heightOffset;
 							break;
 						case 1:
 							var calc2 = Math.sin(_toRadians(remainderAngle));
-							labelY = calc2 * (_outerRadius + 20);
+							labelY = calc2 * (_outerRadius + pieDistance);
 							p1     = calc2 * _outerRadius;
-							p2     = calc2 * (_outerRadius + 15);
-							p3     = calc2 * (_outerRadius + 20);
+							p2     = calc2 * (_outerRadius + lineMidPointDistance);
+							p3     = calc2 * (_outerRadius + pieDistance) - heightOffset;
 							break;
 						case 2:
 							var calc3 = Math.cos(_toRadians(remainderAngle));
-							labelY = calc3 * (_outerRadius + 20);
+							labelY = calc3 * (_outerRadius + pieDistance);
 							p1     = calc3 * _outerRadius;
-							p2     = calc3 * (_outerRadius + 15);
-							p3     = calc3 * (_outerRadius + 20);
+							p2     = calc3 * (_outerRadius + lineMidPointDistance);
+							p3     = calc3 * (_outerRadius + pieDistance) - heightOffset;
 							break;
 						case 3:
 							var calc4 = Math.sin(_toRadians(remainderAngle));
-							labelY = -calc4 * (_outerRadius + 20);
+							labelY = -calc4 * (_outerRadius + pieDistance);
 							p1     = -calc4 * _outerRadius;
-							p2     = -calc4 * (_outerRadius + 15);
-							p3     = -calc4 * (_outerRadius + 20);
+							p2     = -calc4 * (_outerRadius + lineMidPointDistance);
+							p3     = -calc4 * (_outerRadius + pieDistance) - heightOffset;
 							break;
 					}
 					circleCoordGroups[i][0].y = p1;
@@ -445,7 +454,9 @@
 
 
 			// add the main line groups
-			var lineGroups = _svg.selectAll(".lineGroup")
+			var lineGroups = _svg.insert("g", ".pieChart");
+
+			var lineGroup = lineGroups.selectAll(".lineGroup")
 				.data(circleCoordGroups)
 				.enter()
 				.append("g")
@@ -457,7 +468,7 @@
 				.x(function(d) { return d.x; })
 				.y(function(d) { return d.y; });
 
-			lineGroups.append("path")
+			lineGroup.append("path")
 				.attr("d", lineFunction)
 				.attr("stroke", "#666666")
 				.attr("stroke-width", 1)
