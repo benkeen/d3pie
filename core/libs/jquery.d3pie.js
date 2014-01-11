@@ -231,10 +231,13 @@
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
 			.style("fill", function(d, index) { return options.styles.colors[index]; })
+			.style("stroke", "#ffffff")
+			.style("stroke-width", 1)
 			.transition()
 			.ease("cubic-in-out")
 			.duration(options.effects.loadEffectSpeed)
-			.attrTween("d", _arcTween);
+			.attrTween("d", _arcTween)
+
 
 		_svg.selectAll("g.arc")
 			.attr("transform",
@@ -313,7 +316,7 @@
 			d3.selectAll(".segmentLabel")
 				.attr("dx", function(d, i) {
 					var labelWidthInPixels = document.getElementById("label" + i).getComputedTextLength();
-					//bbox = textNode.getBBox();
+					//bbox = textNode.getBBox(); // to get height
 
 					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
 					var nextAngle = 360;
@@ -328,28 +331,32 @@
 					var p1, p2, p3, labelX;
 					switch (quarter) {
 						case 0:
-							labelX = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) + 10;
-							p1     = Math.sin(_toRadians(remainderAngle)) * _outerRadius;
-							p2     = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 15);
-							p3     = Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) + 5;
+							var calc1 = Math.sin(_toRadians(remainderAngle));
+							labelX = calc1 * (_outerRadius + 20) + 10;
+							p1     = calc1 * _outerRadius;
+							p2     = calc1 * (_outerRadius + 15);
+							p3     = calc1 * (_outerRadius + 20) + 5;
 							break;
 						case 1:
-							labelX = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) + 10;
-							p1     = Math.cos(_toRadians(remainderAngle)) * _outerRadius;
-							p2     = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 15);
-							p3     = Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) + 5;
+							var calc2 = Math.cos(_toRadians(remainderAngle));
+							labelX = calc2 * (_outerRadius + 20) + 10;
+							p1     = calc2 * _outerRadius;
+							p2     = calc2 * (_outerRadius + 15);
+							p3     = calc2 * (_outerRadius + 20) + 5;
 							break;
 						case 2:
-							labelX = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels - 10;
-							p1     = -Math.sin(_toRadians(remainderAngle)) * _outerRadius;
-							p2     = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 15);
-							p3     = -Math.sin(_toRadians(remainderAngle)) * (_outerRadius + 20) - 5;
+							var calc3 = Math.sin(_toRadians(remainderAngle));
+							labelX = -calc3 * (_outerRadius + 20) - labelWidthInPixels - 10;
+							p1     = -calc3 * _outerRadius;
+							p2     = -calc3 * (_outerRadius + 15);
+							p3     = -calc3 * (_outerRadius + 20) - 5;
 							break;
 						case 3:
-							labelX = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) - labelWidthInPixels - 10;
-							p1     = -Math.cos(_toRadians(remainderAngle)) * _outerRadius;
-							p2     = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 15);
-							p3     = -Math.cos(_toRadians(remainderAngle)) * (_outerRadius + 20) - 5;
+							var calc4 = Math.cos(_toRadians(remainderAngle));
+							labelX = -calc4 * (_outerRadius + 20) - labelWidthInPixels - 10;
+							p1     = -calc4 * _outerRadius;
+							p2     = -calc4 * (_outerRadius + 15);
+							p3     = -calc4 * (_outerRadius + 20) - 5;
 							break;
 					}
 					circleCoordGroups[i] = [
@@ -409,11 +416,11 @@
 					return labelY;
 				});
 
-				var circleGroups = _svg.selectAll("circle")
-					.data(circleCoordGroups)
-					.enter()
-					.append("g")
-					.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+//				var circleGroups = _svg.selectAll("circle")
+//					.data(circleCoordGroups)
+//					.enter()
+//					.append("g")
+//					.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
 //
 //				circleGroups
 //					.append("circle")
@@ -436,19 +443,25 @@
 //					.attr("r", function(d) { return 2; })
 //					.style("fill", function(d) { return "#990000"; })
 
+
+			// add the main line groups
+			var lineGroups = _svg.selectAll(".lineGroup")
+				.data(circleCoordGroups)
+				.enter()
+				.append("g")
+				.attr("class", "lineGroup")
+				.attr("transform", "translate(" + (options.width/2) + "," + (options.height/2) + ")");
+
 			var lineFunction = d3.svg.line()
+				.interpolate("basis")
 				.x(function(d) { return d.x; })
-				.y(function(d) { return d.y; })
-				.interpolate("basis");
+				.y(function(d) { return d.y; });
 
-
-			var lineGraph = _svg.append("path")
-			                            .attr("d", lineFunction(circleCoordGroups))
-			                            .attr("stroke", "blue")
-			                            .attr("stroke-width", 1)
-			                            .attr("fill", "#660000");
-
-
+			lineGroups.append("path")
+				.attr("d", lineFunction)
+				.attr("stroke", "#666666")
+				.attr("stroke-width", 1)
+				.attr("fill", "none");
 		}, 1);
 	};
 

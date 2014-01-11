@@ -62,13 +62,10 @@
 	width: 100%;
 }
 
+
 /* overridden bootstrap CSS */
 body .navbar-header {
     width: 120px;
-}
-path {
-    stroke: #ffffff;
-    stroke-width: 1px;
 }
 .arcHover:hover path {
     opacity: 0.9;
