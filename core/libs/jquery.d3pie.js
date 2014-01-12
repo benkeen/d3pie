@@ -195,20 +195,21 @@
 				} else {
 					y = 20;
 				}
-
 				return y;
 			})
 			.attr("text-anchor", function() {
+				var location;
 				if (_options.header.location === "top-center" || _options.header.location === "pie-center") {
-					return "middle";
+					location = "middle";
 				} else {
-					return "left";
+					location = "left";
 				}
+				return location;
 			})
-			.attr("fill", function(d) { return d.color; })
+			.attr("fill", function(d) { return d.title.color; })
 			.text(function(d) { return d.title.text; })
-			.style("font-size", function(d) { return d.fontSize; })
-			.style("font-family", function(d) { return d.font; })
+			.style("font-size", function(d) { return d.title.fontSize; })
+			.style("font-family", function(d) { return d.title.font; })
 	};
 
 	var _getTotalPieSize = function(data) {
