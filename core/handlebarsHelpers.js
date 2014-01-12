@@ -33,16 +33,27 @@ define([
 	});
 
 	Handlebars.registerHelper("numbersOnly", function(str) {
-		return str.replace(/[^0-9]/g, "");
+		var s = str;
+		try {
+			s = str.replace(/[^0-9]/g, "");
+		} catch (e) {
+			console.error("problem in {{numbersOnly}}", arguments);
+		}
+		return s;
 	});
 
 	Handlebars.registerHelper("contains", function(source, target, options) {
-		var targetRegExp = new RegExp(target);
-		var matches = targetRegExp.test(source);
-		if (matches) {
-			return options.fn(this);
-		} else {
-			return options.inverse(this);
+		try {
+			var targetRegExp = new RegExp(target);
+			var matches = targetRegExp.test(source);
+			if (matches) {
+				return options.fn(this);
+			} else {
+				return options.inverse(this);
+			}
+		} catch (e) {
+			console.error("problem in {{contains}}", arguments);
+			return false;
 		}
 	});
 });

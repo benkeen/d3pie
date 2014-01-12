@@ -24,6 +24,7 @@ define([
 	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
 	var _previousTitle = null;
 	var _previousTitleColor = null;
+	var _previousSubtitleColor = null;
 	var _titleColorManuallyChanged = null;
 
 	/**
@@ -46,8 +47,9 @@ define([
 		$("#miscTab").html(miscTab({ config: _currentPieSettings }));
 
 		// log the state of various fields
-		_previousTitle = _currentPieSettings.title.text;
-		_previousTitleColor = _currentPieSettings.title.color;
+		_previousTitle = _currentPieSettings.header.title.text;
+		_previousTitleColor = _currentPieSettings.header.title.color;
+		_previousSubtitleColor = _currentPieSettings.header.subtitle.text;
 
 		_addEventHandlers();
 
@@ -64,6 +66,7 @@ define([
 
 		// instantiated our individual colour pickers
 		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
+		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
 		$("#backgroundColorGroup").colorpicker();
 
 		// title
@@ -77,17 +80,19 @@ define([
 		// size tab
 		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
 		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
-		$("#pieOuterRadius").on("change", _renderWithNoAnimation);
+
 
 		// label tab
 		$("#labelColorGroup").colorpicker();
 		$("#labelPercentageColorGroup").colorpicker();
 		$("#labelSegmentValueColor").colorpicker();
 
-
 		$("#labelFormatExample").on("change", function() {
 			$("#labelFormat").val(this.value);
 		});
+
+		// general
+		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 
 		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
 		// or by selecting a color via the colorpicker. The former still triggers a "changed" event on the colorpicker
@@ -109,6 +114,15 @@ define([
 			_previousTitleColor = newValue;
 		}
 		_titleColorManuallyChanged = false;
+	};
+
+	var _onSubtitleColorChangeViaColorpicker = function(e) {
+		var newValue = e.color.toHex();
+		if (_previousSubtitleColor !== newValue && newValue.length === 7 && !_subtitleColorManuallyChanged) {
+			_renderWithNoAnimation();
+			_previousSubtitleColor = newValue;
+		}
+		_subtitleColorManuallyChanged = false;
 	};
 
 	var _onChangeInnerRadius = function(e) {
@@ -152,7 +166,7 @@ define([
 	 */
 	var _getConfigObject = function() {
 		return {
-			title:   _getTitleTabData(),
+			header:  _getTitleTabData(),
 			size:    _getSizeData(),
 			data:    _getDataTabData(),
 			labels:  _getLabelsTabData(),
@@ -164,11 +178,19 @@ define([
 
 	var _getTitleTabData = function() {
 		return {
-			text:     $("#pieTitle").val(),
-			location: $("#titleLocation").val(),
-			color:    $("#titleColor").val(),
-			fontSize: $("#titleFontSize").val() + $("#titleFontSizeUnits").val(),
-			font:     $("#titleFont").val()
+			title: {
+				text:     $("#pieTitle").val(),
+				color:    $("#titleColor").val(),
+				fontSize: $("#titleFontSize").val() + $("#titleFontSizeUnits").val(),
+				font:     $("#titleFont").val()
+			},
+			subtitle: {
+				text:     $("#pieSubtitle").val(),
+				color:    $("#subtitleColor").val(),
+				fontSize: $("#subtitleFontSize").val() + $("#subtitleFontSizeUnits").val(),
+				font:     $("#subtitleFont").val()
+			},
+			location: $("#titleLocation").val()
 		};
 	};
 
@@ -209,7 +231,7 @@ define([
 		return {
 			pieInnerRadius: $("#pieInnerRadius").val() + "%",
 			backgroundColor: null,
-			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222"]
+			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#009900", "#003300"]
 		};
 	};
 

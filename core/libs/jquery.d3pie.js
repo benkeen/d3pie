@@ -14,11 +14,18 @@
 
 	var _pluginName = "d3pie";
 	var _defaultSettings = {
-		title: {
-			location: "top-left",
-			color:    "#333333",
-			fontSize: "14px",
-			font:     "helvetica"
+		header: {
+			title: {
+				color:    "#333333",
+				fontSize: "14px",
+				font:     "helvetica"
+			},
+			subtitle: {
+				color:    "#333333",
+				fontSize: "14px",
+				font:     "helvetica"
+			},
+			location: "top-left"
 		},
 		size: {
 			canvasHeight: 500,
@@ -49,6 +56,7 @@
 			hideLabelsForSmallSegmentSize: "0%"
 		}
 	};
+
 
 	// our constructor
 	function d3pie(element, options) {
@@ -144,7 +152,7 @@
 		}
 
 		_addSVGSpace(this.element);
-		_addTitle(_options.title);
+		_addTitle(_options.header);
 		_createPie(this.element);
 		_addLabels();
 		_addSegmentEventHandlers();
@@ -163,18 +171,44 @@
 	 * @private
 	 */
 	var _addTitle = function(titleData) {
+
+		// TODO not necessary!
 		var title = _svg.selectAll(".title")
 			.data([titleData]);
 
 		title.enter()
 			.append("text")
 			.attr("class", "title")
-			.attr("x", 20)
-			.attr("y", 20)
+			.attr("x", function() {
+				var x;
+				if (_options.header.location === "top-left") {
+					x = 20;
+				} else {
+					x = _options.size.canvasWidth / 2;
+				}
+				return x;
+			})
+			.attr("y", function() {
+				var y;
+				if (_options.header.location === "pie-center") {
+					y =  _options.size.canvasHeight / 2;
+				} else {
+					y = 20;
+				}
+
+				return y;
+			})
+			.attr("text-anchor", function() {
+				if (_options.header.location === "top-center" || _options.header.location === "pie-center") {
+					return "middle";
+				} else {
+					return "left";
+				}
+			})
 			.attr("fill", function(d) { return d.color; })
-			.text(function(d) { return d.text; })
+			.text(function(d) { return d.title.text; })
 			.style("font-size", function(d) { return d.fontSize; })
-			.style("font", function(d) { return d.font; })
+			.style("font-family", function(d) { return d.font; })
 	};
 
 	var _getTotalPieSize = function(data) {
@@ -254,9 +288,9 @@
 
 		var g = pieChartElement.selectAll(".arc")
 			.data(
-				_data.filter(function(d) { return d.value; }),
-				function(d) { return d.label; }
-			)
+			_data.filter(function(d) { return d.value; }),
+			function(d) { return d.label; }
+		)
 			.enter()
 			.append("g")
 			.attr("class", function() {
@@ -284,11 +318,11 @@
 
 		_svg.selectAll("g.arc")
 			.attr("transform",
-				function(d, i) {
-					var angle = _getSegmentRotationAngle(i, _data, _totalSize);
-					return "rotate(" + angle + ")";
-				}
-			);
+			function(d, i) {
+				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				return "rotate(" + angle + ")";
+			}
+		);
 	};
 
 
@@ -302,9 +336,9 @@
 		// 1. Add the main label (not positioned yet)
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
-				_data.filter(function(d) { return d.value; }),
-				function(d) { return d.label; }
-			)
+			_data.filter(function(d) { return d.value; }),
+			function(d) { return d.label; }
+		)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup")
@@ -327,27 +361,27 @@
 		// 3. Add the value label (not positioned yet)
 
 		/*
-		labelGroup.append("text")
-			.text(function(d) {
-				return Math.round((d.value / _totalSize) * 100) + "%";
-			})
-			.attr("class", "pieShare")
-			.attr("transform", function(d, i) {
-				var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
-				var labelRadius = _outerRadius + 30;
-				var c = _arc.centroid(d),
-					x = c[0],
-					y = c[1],
-					h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+		 labelGroup.append("text")
+		 .text(function(d) {
+		 return Math.round((d.value / _totalSize) * 100) + "%";
+		 })
+		 .attr("class", "pieShare")
+		 .attr("transform", function(d, i) {
+		 var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
+		 var labelRadius = _outerRadius + 30;
+		 var c = _arc.centroid(d),
+		 x = c[0],
+		 y = c[1],
+		 h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
 
-				return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
-			})
-			.style("fill", options.labels.labelPercentageColor)
-			.style("font-size", "8pt")
-			.style("opacity", function() {
-				return (options.effects.loadEffect === "fadein") ? 0 : 1;
-			});
-		*/
+		 return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
+		 })
+		 .style("fill", options.labels.labelPercentageColor)
+		 .style("font-size", "8pt")
+		 .style("opacity", function() {
+		 return (options.effects.loadEffect === "fadein") ? 0 : 1;
+		 });
+		 */
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
 		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;

@@ -10,25 +10,17 @@ define([], function() {
 		{
 			label: "Programming Languages",
 			config: {
-				title: {
-					text:     "Programming languages",
-					location: "top-left",
-					color:    "#333333",
-					fontSize: "16px",
-					font:     "helvetica"
-				},
-
 				header: {
 					title: {
 						text:     "Programming languages",
 						color:    "#333333",
 						fontSize: "16px",
-						font:     "helvetica"
+						font:     "garamond"
 					},
 					subtitle: {
-						text:     "Programming languages",
-						color:    "#333333",
-						fontSize: "16px",
+						text:     "Most popular programming languages in my own head",
+						color:    "#999999",
+						fontSize: "11px",
 						font:     "helvetica"
 					},
 					location: "top-left"

@@ -42,7 +42,7 @@
 .padRight30 {
 	padding-right: 30px;
 }
-#titleFontSizeUnits {
+#titleFontSizeUnits, #subtitleFontSizeUnits {
 	width: 60px;
 	display: inline-block;
 }
@@ -80,4 +80,14 @@ body .navbar-header {
 }
 .arcHover:hover .labelGroup {
     cursor: pointer;
+}
+.pixelSizeField {
+    width: 50px;
+}
+
+body .form-group .btn, body .input-group-addon, body .input-group-btn .btn {
+    padding: 8px;
+}
+body .colorGroup {
+    width: 100px;
 }

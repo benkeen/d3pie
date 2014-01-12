@@ -2,87 +2,101 @@
 	<label for="pieTitle" class="control-label">Title</label>
 </div>
 <div class="row col-lg-12 form-group">
-	<input type="text" class="form-control" id="pieTitle" value="{{config.title.text}}" />
+	<input type="text" class="form-control" id="pieTitle" value="{{config.header.title.text}}" />
 </div>
 
 <div class="row col-lg-12">
 	<label for="pieSubtitle" class="control-label">Subtitle</label>
 </div>
 <div class="row col-lg-12 form-group">
-	<input type="text" class="form-control" id="pieSubtitle" value="{{config.title.text}}" />
+	<input type="text" class="form-control" id="pieSubtitle" value="{{config.header.subtitle.text}}" />
 </div>
-
 
 <div class="row col-lg-12">
 	<label for="titleLocation" class="control-label">Title Location</label>
 </div>
 <div class="row col-lg-12 form-group">
 	<div>
-		<select id="titleLocation" class="form-control">
-			<option value="top-left">Top-left</option>
-			<option value="top-center">Top-center</option>
-			<option value="pie-center">Pie center (donuts only)</option>
+		<select id="titleLocation" class="form-control changeUpdateNoAnimation">
+			<option value="top-left" {{#compare config.header.location "top-left"}}selected="selected"{{/compare}}>Top-left</option>
+			<option value="top-center" {{#compare config.header.location "top-center"}}selected="selected"{{/compare}}>Top-center</option>
+			<option value="pie-center" {{#compare config.header.location "pie-center"}}selected="selected"{{/compare}}>Pie center (donuts only)</option>
 		</select>
 	</div>
 </div>
 
-<hr size="1" />
+<div class="row col-md-12" style="padding-top: 10px">
+	<h4>Title Styles</h4>
+</div>
 
-<div class="row">
-	<div class="col-md-5">
-		<label for="titleColor" class="control-label">Title Color</label>
-		<div id="titleColorGroup" class="colorGroup input-group form-group">
-			<input type="text" id="titleColor" value="{{config.title.color}}" class="form-control" />
-			<span class="input-group-addon"><i></i></span>
-		</div>
+<div id="titleStyles" style="padding-right: 30px">
+	<div class="md-col-12"></div>
+
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3"><label>Color</label></div>
+		<div class="col-md-3"><label>Font</label></div>
+		<div class="col-md-4"><label>Font Size</label></div>
 	</div>
-	<div class="col-md-7">
-		<label for="titleLocation" class="control-label">Title Location</label>
-		<div class="form-group padRight30">
-			<select id="titleLocation" class="form-control">
-				<option value="top-left">Top-left</option>
-				<option value="top-center">Top-center</option>
-				<option value="pie-center">Pie center (donuts only)</option>
+
+	<div class="row">
+		<div class="col-md-2"><label for="titleColor">Title</label></div>
+		<div class="col-md-3">
+			<div id="titleColorGroup" class="colorGroup input-group form-group">
+				<input type="text" id="titleColor" value="{{config.header.title.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<select id="titleFont" class="form-control changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.header.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="times new roman" {{#compare config.header.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.header.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.header.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.header.title.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="palatino" {{#compare config.header.title.font "palatino"}}selected="selected"{{/compare}}>Palatino</option>
+				<option value="garamond" {{#compare config.header.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<option value="bookman" {{#compare config.header.title.font "bookman"}}selected="selected"{{/compare}}>Bookman</option>
+				<option value="trebuchet" {{#compare config.header.title.font "trebuchet"}}selected="selected"{{/compare}}>Trebuchet</option>
+			</select>
+		</div>
+		<div class="col-md-4">
+			<input id="titleFontSize" type="text" class="pixelSizeField" value="{{numbersOnly config.header.title.fontSize}}" />
+			<select id="titleFontSizeUnits" class="form-control changeUpdateNoAnimation">
+				<option value="px" {{#contains config.header.title.fontSize "px"}}selected="selected"{{/contains}}>px</option>
+				<option value="pt" {{#contains config.header.title.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
 			</select>
 		</div>
 	</div>
-</div>
 
-<div class="row">
-	<div class="col-md-5">
-		<label for="titleFont" class="control-label">Font</label>
-		<select id="titleFont" class="form-control">
-			<option value="arial" {{#compare config.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-			<option value="times new roman" {{#compare config.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-			<option value="courier" {{#compare config.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-			<option value="verdana" {{#compare config.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-			<option value="helvetica" {{#compare config.title.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-			<option value="palatino" {{#compare config.title.font "palatino"}}selected="selected"{{/compare}}>Palatino</option>
-			<option value="garamond" {{#compare config.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
-			<option value="bookman" {{#compare config.title.font "bookman"}}selected="selected"{{/compare}}>Bookman</option>
-			<option value="trebuchet" {{#compare config.title.font "trebuchet"}}selected="selected"{{/compare}}>Trebuchet</option>
-		</select>
-	</div>
-	<div class="col-md-7">
-		<label for="titleFontSize" class="control-label">Font Size</label>
-		<div class="form-group">
-			<input id="titleFontSize" type="text" size="4" value="{{numbersOnly config.title.fontSize}}" />
-			<select id="titleFontSizeUnits" class="form-control">
-				<option value="px" {{#contains config.title.fontSize "px"}}selected="selected"{{/contains}}>px</option>
-				<option value="pt" {{#contains config.title.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
+	<div class="row">
+		<div class="col-md-2"><label for="subtitleColor">Subtitle</label></div>
+		<div class="col-md-3">
+			<div id="titleColorGroup" class="colorGroup input-group form-group">
+				<input type="text" id="subtitleColor" value="{{config.header.subtitle.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<select id="titleFont" class="form-control changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.header.subtitle.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="times new roman" {{#compare config.header.subtitle.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.header.subtitle.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.header.subtitle.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.header.subtitle.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="palatino" {{#compare config.header.subtitle.font "palatino"}}selected="selected"{{/compare}}>Palatino</option>
+				<option value="garamond" {{#compare config.header.subtitle.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<option value="bookman" {{#compare config.header.subtitle.font "bookman"}}selected="selected"{{/compare}}>Bookman</option>
+				<option value="trebuchet" {{#compare config.header.subtitle.font "trebuchet"}}selected="selected"{{/compare}}>Trebuchet</option>
+			</select>
+		</div>
+		<div class="col-md-4">
+			<input id="subtitleFontSize" type="text" class="pixelSizeField" value="{{numbersOnly config.header.subtitle.fontSize}}" />
+			<select id="subtitleFontSizeUnits" class="form-control changeUpdateNoAnimation">
+				<option value="px" {{#contains config.header.subtitle.fontSize "px"}}selected="selected"{{/contains}}>px</option>
+				<option value="pt" {{#contains config.header.subtitle.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
 			</select>
 		</div>
 	</div>
+
 </div>
-
-
-Title
-Subtitle
-Location:
-
-Title styles settings >>
-
-<ul>
-	<li>Subtitle</li>
-	<li>Subtitle font, font-size, color</li>
-</ul>
