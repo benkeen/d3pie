@@ -42,10 +42,6 @@
 .padRight30 {
 	padding-right: 30px;
 }
-#titleFontSizeUnits, #subtitleFontSizeUnits {
-	width: 60px;
-	display: inline-block;
-}
 #labelFormatExample {
 	width: 100px;
 	display: inline;
@@ -69,6 +65,10 @@ input.ib, .ib {
 }
 .bl {
 	display: block;
+}
+.hasError {
+	background-color: #990000;
+	color: white;
 }
 
 /* overridden bootstrap CSS */

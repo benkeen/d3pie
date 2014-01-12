@@ -26,6 +26,7 @@ define([
 	var _previousTitleColor = null;
 	var _previousSubtitleColor = null;
 	var _titleColorManuallyChanged = null;
+	var _subtitleColorManuallyChanged = null;
 
 	/**
 	 * Our initialization function. Called on page load.
@@ -34,7 +35,7 @@ define([
 	var _init = function() {
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
-		_currentPieSettings = C.EXAMPLE_PIES[0].config;
+		_currentPieSettings = C.EXAMPLE_PIES[2].config;
 
 		// render the generator tabs
 		$("#titleTab").html(titleTab({ config: _currentPieSettings }));
@@ -55,6 +56,9 @@ define([
 
 		// render the pie!
 		_renderWithAnimation()
+
+		// focus on the title field, just to be nice
+		setTimeout(function() { $("#pieTitle").focus(); }, 100);
 	};
 
 	/**
@@ -64,35 +68,17 @@ define([
 	 */
 	var _addEventHandlers = function() {
 
-		// instantiated our individual colour pickers
-		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
-		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
-		$("#backgroundColorGroup").colorpicker();
+		// general event handlers used in multiple places
+		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 
-		// title
+
+		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {
 				_renderWithNoAnimation();
 				_previousTitle = this.value;
 			}
 		});
-
-		// size tab
-		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
-		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
-
-
-		// label tab
-		$("#labelColorGroup").colorpicker();
-		$("#labelPercentageColorGroup").colorpicker();
-		$("#labelSegmentValueColor").colorpicker();
-
-		$("#labelFormatExample").on("change", function() {
-			$("#labelFormat").val(this.value);
-		});
-
-		// general
-		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 
 		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
 		// or by selecting a color via the colorpicker. The former still triggers a "changed" event on the colorpicker
@@ -105,6 +91,40 @@ define([
 				_previousTitleColor = newValue;
 			}
 		});
+		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
+
+		$("#subtitleColor").on("input", function() {
+			var newValue = this.value;
+			_subtitleColorManuallyChanged = true;
+			if (_previousSubtitleColor !== newValue && newValue.length === 7) {
+				_renderWithNoAnimation();
+				_previousSubtitleColor = newValue;
+			}
+		});
+		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
+
+
+		// TODO this can be generalized
+		$("#titleFontSize,#subtitleFontSize").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
+
+		// 2. size tab
+		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
+		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
+
+		// 4. labels tab
+		$("#labelColorGroup").colorpicker();
+		$("#labelPercentageColorGroup").colorpicker();
+		$("#labelSegmentValueColor").colorpicker();
+
+		$("#labelFormatExample").on("change", function() {
+			$("#labelFormat").val(this.value);
+		});
+
+		// 5. Styles tab
+		$("#backgroundColorGroup").colorpicker();
+
+		// 6. Effects tab
+		$("#loadEffect").on("change", _renderWithAnimation);
 	};
 
 	var _onTitleColorChangeViaColorpicker = function(e) {
@@ -132,6 +152,19 @@ define([
 
 	var _onChangeOuterRadius = function(e) {
 		$("#pieOuterRadiusDisplayValue").html(e.target.value + "%");
+		_renderWithNoAnimation();
+	};
+
+	var _onKeyupNumberFieldUpdateNoAnimation = function(e) {
+		var val = e.target.value;
+
+		// check it's not empty and contains only numbers
+		if (/[^\d]/.test(val) || val === "") {
+			$(e.target).addClass("hasError");
+			return;
+		}
+
+		$(e.target).removeClass("hasError");
 		_renderWithNoAnimation();
 	};
 
@@ -181,13 +214,13 @@ define([
 			title: {
 				text:     $("#pieTitle").val(),
 				color:    $("#titleColor").val(),
-				fontSize: $("#titleFontSize").val() + $("#titleFontSizeUnits").val(),
+				fontSize: $("#titleFontSize").val() + "px",
 				font:     $("#titleFont").val()
 			},
 			subtitle: {
 				text:     $("#pieSubtitle").val(),
 				color:    $("#subtitleColor").val(),
-				fontSize: $("#subtitleFontSize").val() + $("#subtitleFontSizeUnits").val(),
+				fontSize: $("#subtitleFontSize").val() + "px",
 				font:     $("#subtitleFont").val()
 			},
 			location: $("#titleLocation").val()

@@ -15,13 +15,13 @@ define([], function() {
 						text:     "Programming languages",
 						color:    "#333333",
 						fontSize: "16px",
-						font:     "garamond"
+						font:     "open sans"
 					},
 					subtitle: {
-						text:     "Most popular programming languages in my own head",
+						text:     "A bunch of arbitrary programming languages",
 						color:    "#999999",
 						fontSize: "11px",
-						font:     "helvetica"
+						font:     "open sans"
 					},
 					location: "top-left"
 				},
@@ -75,9 +75,68 @@ define([], function() {
 		},
 
 		{
-			label: "Canadian Birds",
+			label: "BC Birds I Have Yet To See",
 			config: {
 
+			}
+		},
+
+		{
+			label: "Spousal Resentment",
+			config: {
+				header: {
+					title: {
+						text:     "Spousal Resentment",
+						color:    "#333333",
+						fontSize: "22px",
+						font:     "open sans"
+					},
+					subtitle: {
+						text:     "Comments my wife has made when I tell her I'm working on this script instead of doing something \"fun\".",
+						color:    "#999999",
+						fontSize: "11px",
+						font:     "helvetica"
+					},
+					location: "top-center"
+				},
+				size: {
+					canvasWidth: 600,
+					canvasHeight: 400,
+					pieInnerRadius: "0%",
+					pieOuterRadius: "60%"
+				},
+				data: [
+					{ label: "When's it going to be done?", value: 8, tooltip: "" },
+					{ label: "Bennnnn!", value: 5, tooltip: "" },
+					{ label: "Come ON.", value: 3, tooltip: "" },
+					{ label: "Oh, god.", value: 2, tooltip: "" },
+					{ label: "But it's Friday night!", value: 3, tooltip: "" },
+					{ label: "Again?", value: 2, tooltip: "" }
+				],
+				labels: {
+					location: "inside", // inside/outside
+					format: "{L}", // {L} = label, {%} = percentage, {V} = value,
+					labelColor: "#333333",
+					labelPercentageColor: "#999999",
+					labelSegmentValueColor: "#cccccc"
+				},
+				styles: {
+					backgroundColor: null,
+					colors: ["#00dd00"]
+				},
+				effects: {
+					loadEffect: "default",
+					loadEffectSpeed: 1000,
+					highlightSegmentOnMouseover: true,
+					pullOutSegmentOnClick: true,
+					labelFadeInTime: 400
+				},
+				misc: {
+					enableTooltips: false,
+					orderData: "hightolow",
+					hideLabelsForSmallSegments: false,
+					hideLabelsForSmallSegmentSize: "5%"
+				}
 			}
 		}
 	];

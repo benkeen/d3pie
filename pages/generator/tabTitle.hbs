@@ -35,8 +35,8 @@
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-3"><label>Color</label></div>
-		<div class="col-md-3"><label>Font</label></div>
-		<div class="col-md-4"><label>Font Size</label></div>
+		<div class="col-md-4"><label>Font</label></div>
+		<div class="col-md-3"><label>Font Size</label></div>
 	</div>
 
 	<div class="row">
@@ -47,9 +47,10 @@
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<select id="titleFont" class="form-control changeUpdateNoAnimation">
 				<option value="arial" {{#compare config.header.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.header.title.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
 				<option value="times new roman" {{#compare config.header.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
 				<option value="courier" {{#compare config.header.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
 				<option value="verdana" {{#compare config.header.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
@@ -57,26 +58,24 @@
 				<option value="garamond" {{#compare config.header.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
 			</select>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<input id="titleFontSize" type="text" class="pixelSizeField" value="{{numbersOnly config.header.title.fontSize}}" />
-			<select id="titleFontSizeUnits" class="form-control changeUpdateNoAnimation">
-				<option value="px" {{#contains config.header.title.fontSize "px"}}selected="selected"{{/contains}}>px</option>
-				<option value="pt" {{#contains config.header.title.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
-			</select>
+			<label>px</label>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-2"><label for="subtitleColor">Subtitle</label></div>
 		<div class="col-md-3">
-			<div id="titleColorGroup" class="colorGroup input-group form-group">
+			<div id="subtitleColorGroup" class="colorGroup input-group form-group">
 				<input type="text" id="subtitleColor" value="{{config.header.subtitle.color}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
-		<div class="col-md-3">
-			<select id="titleFont" class="form-control changeUpdateNoAnimation">
+		<div class="col-md-4">
+			<select id="subtitleFont" class="form-control changeUpdateNoAnimation">
 				<option value="arial" {{#compare config.header.subtitle.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.header.subtitle.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
 				<option value="times new roman" {{#compare config.header.subtitle.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
 				<option value="courier" {{#compare config.header.subtitle.font "courier"}}selected="selected"{{/compare}}>Courier</option>
 				<option value="verdana" {{#compare config.header.subtitle.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
@@ -84,12 +83,9 @@
 				<option value="garamond" {{#compare config.header.subtitle.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
 			</select>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<input id="subtitleFontSize" type="text" class="pixelSizeField" value="{{numbersOnly config.header.subtitle.fontSize}}" />
-			<select id="subtitleFontSizeUnits" class="form-control changeUpdateNoAnimation">
-				<option value="px" {{#contains config.header.subtitle.fontSize "px"}}selected="selected"{{/contains}}>px</option>
-				<option value="pt" {{#contains config.header.subtitle.fontSize "pt"}}selected="selected"{{/contains}}>pt</option>
-			</select>
+			<label>px</label>
 		</div>
 	</div>
 

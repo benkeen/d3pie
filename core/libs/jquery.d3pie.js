@@ -386,7 +386,6 @@
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
 		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;
-
 		setTimeout(function() {
 			var labelFadeInTime = (_options.effects.loadEffect === "default") ? _options.effects.labelFadeInTime : 1;
 			d3.selectAll("text.segmentLabel")
@@ -514,8 +513,9 @@
 				return labelY;
 			});
 
-		// add the main line groups
-		var lineGroups = _svg.insert("g", ".pieChart");
+		var lineGroups = _svg.insert("g", ".pieChart")
+			.attr("class", "lineGroups")
+			.style("opacity", 0);
 
 		var lineGroup = lineGroups.selectAll(".lineGroup")
 			.data(circleCoordGroups)
@@ -534,6 +534,16 @@
 			.attr("stroke", "#666666")
 			.attr("stroke-width", 1)
 			.attr("fill", "none");
+
+		// fade in the labels when the load effect is complete - or immediately if there's no load effect
+		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;
+		setTimeout(function() {
+			var labelFadeInTime = (_options.effects.loadEffect === "default") ? _options.effects.labelFadeInTime : 1;
+			d3.selectAll("g.lineGroups")
+				.transition()
+				.duration(labelFadeInTime)
+				.style("opacity", 1);
+		}, loadSpeed);
 	};
 
 	var _addSegmentEventHandlers = function() {
