@@ -111,6 +111,13 @@
 	// TODO these are temporary. They'll need to attach to the instance, I think. Either way, this is feeling very klutzy
 	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius, _options;
 
+
+	//
+	var _canvasLeftPadding = 5;
+	var _canvasBottomPadding = 5;
+	var _labelPieDistance = 16;
+
+
 	d3pie.prototype.init = function() {
 
 		// store the options in a local var for circumventing any "this" nonsense
@@ -152,7 +159,13 @@
 		}
 
 		_addSVGSpace(this.element);
-		_addTitle(_options.header);
+
+		// add the title, subtitle and footer. The center of the pie is positioned according to the remaining space
+		_addTitle();
+		_addSubtitle();
+		_addFooter();
+
+		// now create the pie chart and add the labels
 		_createPie(this.element);
 		_addLabels();
 		_addSegmentEventHandlers();
@@ -170,33 +183,13 @@
 	 * @param titleData
 	 * @private
 	 */
-	var _addTitle = function(titleData) {
-
-		// TODO not necessary!
-		var title = _svg.selectAll(".title")
-			.data([titleData]);
+	var _addTitle = function() {
+		var title = _svg.selectAll(".title").data([_options.header]); // yuck
 
 		title.enter()
 			.append("text")
+			.attr("id", "title")
 			.attr("class", "title")
-			.attr("x", function() {
-				var x;
-				if (_options.header.location === "top-left") {
-					x = 20;
-				} else {
-					x = _options.size.canvasWidth / 2;
-				}
-				return x;
-			})
-			.attr("y", function() {
-				var y;
-				if (_options.header.location === "pie-center") {
-					y =  _options.size.canvasHeight / 2;
-				} else {
-					y = 20;
-				}
-				return y;
-			})
 			.attr("text-anchor", function() {
 				var location;
 				if (_options.header.location === "top-center" || _options.header.location === "pie-center") {
@@ -209,8 +202,90 @@
 			.attr("fill", function(d) { return d.title.color; })
 			.text(function(d) { return d.title.text; })
 			.style("font-size", function(d) { return d.title.fontSize; })
-			.style("font-family", function(d) { return d.title.font; })
+			.style("font-family", function(d) { return d.title.font; });
+
+		setTimeout(_positionTitle, 1);
 	};
+
+	var _positionTitle = function() {
+		var titleElement = document.getElementById("title");
+		var dimensions = titleElement.getBBox();
+		var height = dimensions.height;
+
+		var topPadding = 5;
+
+		var x;
+		if (_options.header.location === "top-left") {
+			x = _canvasLeftPadding;
+		} else {
+			x = _options.size.canvasWidth / 2;
+		}
+
+		var y;
+		if (_options.header.location === "pie-center") {
+			y = _options.size.canvasHeight / 2;
+		} else {
+			y = topPadding + height;
+		}
+
+		_svg.select("#title")
+			.attr("x", x)
+			.attr("y", y);
+	};
+
+
+	var _addSubtitle = function() {
+		var title = _svg.selectAll(".subtitle").data([_options.header]);
+
+		title.enter()
+			.append("text")
+			.attr("id", "subtitle")
+			.attr("class", "subtitle")
+			.attr("text-anchor", function() {
+				var location;
+				if (_options.header.location === "top-center" || _options.header.location === "pie-center") {
+					location = "middle";
+				} else {
+					location = "left";
+				}
+				return location;
+			})
+			.attr("fill", function(d) { return d.subtitle.color; })
+			.text(function(d) { return d.subtitle.text; })
+			.style("font-size", function(d) { return d.subtitle.fontSize; })
+			.style("font-family", function(d) { return d.subtitle.font; });
+
+		setTimeout(_positionSubtitle, 1);
+	};
+
+	var _positionSubtitle = function() {
+		var subtitleElement = document.getElementById("subtitle");
+		var dimensions = subtitleElement.getBBox();
+
+		var x;
+		if (_options.header.location === "top-left") {
+			x = _canvasLeftPadding;
+		} else {
+			x = _options.size.canvasWidth / 2;
+		}
+
+		var y;
+		if (_options.header.location === "pie-center") {
+			y = _options.size.canvasHeight / 2;
+		} else {
+			y = dimensions.height + 5 + parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+		}
+
+		_svg.select("#subtitle")
+			.attr("x", x)
+			.attr("y", y);
+	};
+
+
+	var _addFooter = function() {
+
+	};
+
 
 	var _getTotalPieSize = function(data) {
 		var totalSize = 0;
@@ -402,8 +477,7 @@
 
 
 	var _addLabelLines = function() {
-		var pieDistance = 16; // TODO: make configurable
-		var lineMidPointDistance = pieDistance - (pieDistance / 4);
+		var lineMidPointDistance = _labelPieDistance - (_labelPieDistance / 4);
 		var circleCoordGroups = [];
 
 		d3.selectAll(".segmentLabel")
@@ -427,31 +501,31 @@
 				switch (quarter) {
 					case 0:
 						var calc1 = Math.sin(_toRadians(remainderAngle));
-						labelX = calc1 * (_outerRadius + pieDistance) + labelXMargin;
+						labelX = calc1 * (_outerRadius + _labelPieDistance) + labelXMargin;
 						p1     = calc1 * _outerRadius;
 						p2     = calc1 * (_outerRadius + lineMidPointDistance);
-						p3     = calc1 * (_outerRadius + pieDistance) + 5;
+						p3     = calc1 * (_outerRadius + _labelPieDistance) + 5;
 						break;
 					case 1:
 						var calc2 = Math.cos(_toRadians(remainderAngle));
-						labelX = calc2 * (_outerRadius + pieDistance) + labelXMargin;
+						labelX = calc2 * (_outerRadius + _labelPieDistance) + labelXMargin;
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
-						p3     = calc2 * (_outerRadius + pieDistance) + 5;
+						p3     = calc2 * (_outerRadius + _labelPieDistance) + 5;
 						break;
 					case 2:
 						var calc3 = Math.sin(_toRadians(remainderAngle));
-						labelX = -calc3 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
+						labelX = -calc3 * (_outerRadius + _labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc3 * _outerRadius;
 						p2     = -calc3 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc3 * (_outerRadius + pieDistance) - 5;
+						p3     = -calc3 * (_outerRadius + _labelPieDistance) - 5;
 						break;
 					case 3:
 						var calc4 = Math.cos(_toRadians(remainderAngle));
-						labelX = -calc4 * (_outerRadius + pieDistance) - labelDimensions.width - labelXMargin;
+						labelX = -calc4 * (_outerRadius + _labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc4 * (_outerRadius + pieDistance) - 5;
+						p3     = -calc4 * (_outerRadius + _labelPieDistance) - 5;
 						break;
 				}
 				circleCoordGroups[i] = [
@@ -479,31 +553,31 @@
 				switch (quarter) {
 					case 0:
 						var calc1 = Math.cos(_toRadians(remainderAngle));
-						labelY = -calc1 * (_outerRadius + pieDistance);
+						labelY = -calc1 * (_outerRadius + _labelPieDistance);
 						p1     = -calc1 * _outerRadius;
 						p2     = -calc1 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc1 * (_outerRadius + pieDistance) - heightOffset;
+						p3     = -calc1 * (_outerRadius + _labelPieDistance) - heightOffset;
 						break;
 					case 1:
 						var calc2 = Math.sin(_toRadians(remainderAngle));
-						labelY = calc2 * (_outerRadius + pieDistance);
+						labelY = calc2 * (_outerRadius + _labelPieDistance);
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
-						p3     = calc2 * (_outerRadius + pieDistance) - heightOffset;
+						p3     = calc2 * (_outerRadius + _labelPieDistance) - heightOffset;
 						break;
 					case 2:
 						var calc3 = Math.cos(_toRadians(remainderAngle));
-						labelY = calc3 * (_outerRadius + pieDistance);
+						labelY = calc3 * (_outerRadius + _labelPieDistance);
 						p1     = calc3 * _outerRadius;
 						p2     = calc3 * (_outerRadius + lineMidPointDistance);
-						p3     = calc3 * (_outerRadius + pieDistance) - heightOffset;
+						p3     = calc3 * (_outerRadius + _labelPieDistance) - heightOffset;
 						break;
 					case 3:
 						var calc4 = Math.sin(_toRadians(remainderAngle));
-						labelY = -calc4 * (_outerRadius + pieDistance);
+						labelY = -calc4 * (_outerRadius + _labelPieDistance);
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc4 * (_outerRadius + pieDistance) - heightOffset;
+						p3     = -calc4 * (_outerRadius + _labelPieDistance) - heightOffset;
 						break;
 				}
 				circleCoordGroups[i][0].y = p1;

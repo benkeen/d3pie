@@ -28,7 +28,6 @@ define([], function() {
 				footer: {
 					text: ""
 				},
-
 				size: {
 					canvasWidth: 500,
 					canvasHeight: 500,
@@ -95,7 +94,7 @@ define([], function() {
 						text:     "Comments my wife has made when I tell her I'm working on this script instead of doing something \"fun\".",
 						color:    "#999999",
 						fontSize: "11px",
-						font:     "helvetica"
+						font:     "open sans"
 					},
 					location: "top-center"
 				},
@@ -103,7 +102,7 @@ define([], function() {
 					canvasWidth: 600,
 					canvasHeight: 400,
 					pieInnerRadius: "0%",
-					pieOuterRadius: "60%"
+					pieOuterRadius: "56%"
 				},
 				data: [
 					{ label: "When's it going to be done?", value: 8, tooltip: "" },
