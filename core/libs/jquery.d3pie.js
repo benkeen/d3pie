@@ -27,6 +27,9 @@
 			},
 			location: "top-left"
 		},
+		footer: {
+
+		},
 		size: {
 			canvasHeight: 500,
 			canvasWidth: 500,
@@ -112,7 +115,7 @@
 	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius, _options;
 
 
-	//
+	// TODO move to Misc configurable options
 	var _canvasLeftPadding = 5;
 	var _canvasBottomPadding = 5;
 	var _labelPieDistance = 16;
@@ -184,7 +187,7 @@
 	 * @private
 	 */
 	var _addTitle = function() {
-		var title = _svg.selectAll(".title").data([_options.header]); // yuck
+		var title = _svg.selectAll(".title").data([_options.header.title]);
 
 		title.enter()
 			.append("text")
@@ -199,10 +202,10 @@
 				}
 				return location;
 			})
-			.attr("fill", function(d) { return d.title.color; })
-			.text(function(d) { return d.title.text; })
-			.style("font-size", function(d) { return d.title.fontSize; })
-			.style("font-family", function(d) { return d.title.font; });
+			.attr("fill", function(d) { return d.color; })
+			.text(function(d) { return d.text; })
+			.style("font-size", function(d) { return d.fontSize; })
+			.style("font-family", function(d) { return d.font; });
 
 		setTimeout(_positionTitle, 1);
 	};
@@ -235,7 +238,7 @@
 
 
 	var _addSubtitle = function() {
-		var title = _svg.selectAll(".subtitle").data([_options.header]);
+		var title = _svg.selectAll(".subtitle").data([_options.header.subtitle]);
 
 		title.enter()
 			.append("text")
@@ -250,10 +253,10 @@
 				}
 				return location;
 			})
-			.attr("fill", function(d) { return d.subtitle.color; })
-			.text(function(d) { return d.subtitle.text; })
-			.style("font-size", function(d) { return d.subtitle.fontSize; })
-			.style("font-family", function(d) { return d.subtitle.font; });
+			.attr("fill", function(d) { return d.color; })
+			.text(function(d) { return d.text; })
+			.style("font-size", function(d) { return d.fontSize; })
+			.style("font-family", function(d) { return d.font; });
 
 		setTimeout(_positionSubtitle, 1);
 	};
@@ -283,9 +286,45 @@
 
 
 	var _addFooter = function() {
+		var title = _svg.selectAll(".footer").data([_options.footer]);
 
+		title.enter()
+			.append("text")
+			.attr("id", "footer")
+			.attr("class", "footer")
+			.attr("text-anchor", function() {
+				var location;
+				if (_options.footer.location === "bottom-center") {
+					location = "middle";
+				} else if (_options.footer.location === "bottom-right") {
+					location = "right";
+				} else {
+					location = "left";
+				}
+				return location;
+			})
+			.attr("fill", function(d) { return d.color; })
+			.text(function(d) { return d.text; })
+			.style("font-size", function(d) { return d.fontSize; })
+			.style("font-family", function(d) { return d.font; });
+
+		setTimeout(_positionFooter, 1);
 	};
 
+	var _positionFooter = function() {
+		var x;
+		if (_options.footer.location === "bottom-left") {
+			x = _canvasLeftPadding;
+		} else if (_options.footer.location === "bottom-right") { // TODO not working yet.
+			x = _options.size.canvasWidth / 2;
+		} else {
+			x = _options.size.canvasWidth / 2;
+		}
+
+		_svg.select("#footer")
+			.attr("x", x)
+			.attr("y", _options.size.canvasHeight - _canvasBottomPadding);
+	};
 
 	var _getTotalPieSize = function(data) {
 		var totalSize = 0;

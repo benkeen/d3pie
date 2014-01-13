@@ -1,0 +1,57 @@
+<div class="row col-lg-12">
+    <label for="pieTitle" class="control-label">Footer text</label>
+</div>
+<div class="row col-lg-12 form-group">
+    <input type="text" class="form-control" id="footerText" value="{{config.footer.text}}" />
+</div>
+
+<div class="row col-lg-12">
+    <label for="footerLocation" class="control-label">Footer Location</label>
+</div>
+<div class="row col-lg-12 form-group">
+    <div>
+        <select id="footerLocation" class="form-control changeUpdateNoAnimation">
+            <option value="bottom-left" {{#compare config.footer.location "bottom-left"}}selected="selected"{{/compare}}>Bottom-left</option>
+            <option value="bottom-center" {{#compare config.footer.location "bottom-center"}}selected="selected"{{/compare}}>Bottom-center</option>
+            <option value="bottom-right" {{#compare config.footer.location "bottom-right"}}selected="selected"{{/compare}}>Bottom-right</option>
+        </select>
+    </div>
+</div>
+
+<div class="row col-md-12" style="padding-top: 10px">
+    <h4>Footer Styles</h4>
+</div>
+
+<div id="titleStyles" style="padding-right: 30px">
+    <div class="md-col-12"></div>
+
+    <div class="row">
+        <div class="col-md-4"><label>Color</label></div>
+        <div class="col-md-4"><label>Font</label></div>
+        <div class="col-md-4"><label>Font Size</label></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div id="footerColorGroup" class="colorGroup input-group form-group">
+                <input type="text" id="footerColor" value="{{config.footer.color}}" class="form-control" />
+                <span class="input-group-addon"><i></i></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select id="footerFont" class="form-control changeUpdateNoAnimation">
+                <option value="arial" {{#compare config.footer.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+                <option value="open sans" {{#compare config.footer.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+                <option value="times new roman" {{#compare config.footer.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+                <option value="courier" {{#compare config.footer.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+                <option value="verdana" {{#compare config.footer.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+                <option value="helvetica" {{#compare config.footer.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+                <option value="garamond" {{#compare config.footer.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input id="footerFontSize" type="text" class="pixelSizeField" value="{{numbersOnly config.footer.fontSize}}" />
+            <label>px</label>
+        </div>
+    </div>
+</div>

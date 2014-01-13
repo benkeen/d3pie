@@ -8,11 +8,13 @@ define([
 	"hbs!sizeTab",
 	"hbs!dataTab",
 	"hbs!labelsTab",
-	"hbs!stylesTab",
+	"hbs!colorTab",
 	"hbs!effectsTab",
 	"hbs!eventsTab",
+	"hbs!footerTab",
 	"hbs!miscTab"
-], function(C, pieChartGenerator, titleTab, sizeTab, dataTab, labelsTab, stylesTab, effectsTab, eventsTab, miscTab) {
+], function(C, pieChartGenerator, titleTab, sizeTab, dataTab, labelsTab, colorTab, effectsTab, eventsTab,
+			footerTab, miscTab) {
 	"use strict";
 
 	// stores the current configuration of the pie chart. It's updated onload, and whenever the user
@@ -23,10 +25,14 @@ define([
 
 	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
 	var _previousTitle = null;
+
 	var _previousTitleColor = null;
 	var _previousSubtitleColor = null;
+	var _previousFooterColor = null;
+
 	var _titleColorManuallyChanged = null;
 	var _subtitleColorManuallyChanged = null;
+	var _footerColorManuallyChanged = null;
 
 	/**
 	 * Our initialization function. Called on page load.
@@ -42,7 +48,8 @@ define([
 		$("#sizeTab").html(sizeTab({ config: _currentPieSettings }));
 		$("#dataTab").html(dataTab({ config: _currentPieSettings }));
 		$("#labelsTab").html(labelsTab({ config: _currentPieSettings }));
-		$("#stylesTab").html(stylesTab({ config: _currentPieSettings }));
+		$("#footerTab").html(footerTab({ config: _currentPieSettings }));
+		$("#colorTab").html(colorTab({ config: _currentPieSettings }));
 		$("#effectsTab").html(effectsTab({ config: _currentPieSettings }));
 		$("#eventsTab").html(eventsTab({ config: _currentPieSettings }));
 		$("#miscTab").html(miscTab({ config: _currentPieSettings }));
@@ -71,6 +78,8 @@ define([
 		// general event handlers used in multiple places
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 
+		// TODO generalize
+		$("#titleFontSize,#subtitleFontSize,#footerFontSize").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
 
 		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
@@ -103,10 +112,6 @@ define([
 		});
 		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
 
-
-		// TODO this can be generalized
-		$("#titleFontSize,#subtitleFontSize").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
-
 		// 2. size tab
 		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
 		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
@@ -120,13 +125,26 @@ define([
 			$("#labelFormat").val(this.value);
 		});
 
-		// 5. Styles tab
+		// 5. Color tab
 		$("#backgroundColorGroup").colorpicker();
 
 		// 6. Effects tab
 		$("#loadEffect").on("change", _renderWithAnimation);
+
+		// Footer tab
+		$("#footerColor").on("input", function() {
+			var newValue = this.value;
+			_titleColorManuallyChanged = true;
+			if (_previousTitleColor !== newValue && newValue.length === 7) {
+				_renderWithNoAnimation();
+				_previousTitleColor = newValue;
+			}
+		});
+		$("#footerColorGroup").colorpicker().on("changeColor", _onFooterColorChangeViaColorpicker);
+
 	};
 
+	// TODO refactor these
 	var _onTitleColorChangeViaColorpicker = function(e) {
 		var newValue = e.color.toHex();
 		if (_previousTitleColor !== newValue && newValue.length === 7 && !_titleColorManuallyChanged) {
@@ -143,6 +161,15 @@ define([
 			_previousSubtitleColor = newValue;
 		}
 		_subtitleColorManuallyChanged = false;
+	};
+
+	var _onFooterColorChangeViaColorpicker = function(e) {
+		var newValue = e.color.toHex();
+		if (_previousFooterColor !== newValue && newValue.length === 7 && !_footerColorManuallyChanged) {
+			_renderWithNoAnimation();
+			_previousFooterColor = newValue;
+		}
+		_footerColorManuallyChanged = false;
 	};
 
 	var _onChangeInnerRadius = function(e) {
@@ -200,6 +227,7 @@ define([
 	var _getConfigObject = function() {
 		return {
 			header:  _getTitleTabData(),
+			footer:  _getFooterTabData(),
 			size:    _getSizeData(),
 			data:    _getDataTabData(),
 			labels:  _getLabelsTabData(),
@@ -257,6 +285,16 @@ define([
 			labelColor: $("#labelColor").val(),
 			labelPercentageColor: $("#labelPercentageColor").val(),
 			labelSegmentValueColor: $("#labelSegmentValueColor").val()
+		};
+	};
+
+	var _getFooterTabData = function() {
+		return {
+			text:     $("#footerText").val(),
+			color:    $("#footerColor").val(),
+			fontSize: $("#footerFontSize").val(),
+			font:     $("#footerFont").val(),
+			location: $("#footerLocation").val()
 		};
 	};
 

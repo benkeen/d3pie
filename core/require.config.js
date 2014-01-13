@@ -33,7 +33,8 @@ require.config({
 		sizeTab: "pages/generator/tabSize.hbs",
 		dataTab: "pages/generator/tabData.hbs",
 		labelsTab: "pages/generator/tabLabels.hbs",
-		stylesTab: "pages/generator/tabStyles.hbs",
+		footerTab: "pages/generator/tabFooter.hbs",
+		colorTab: "pages/generator/tabColors.hbs",
 		effectsTab: "pages/generator/tabEffects.hbs",
 		eventsTab: "pages/generator/tabEvents.hbs",
 		miscTab: "pages/generator/tabMisc.hbs"

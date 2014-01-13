@@ -26,7 +26,11 @@ define([], function() {
 					location: "top-left"
 				},
 				footer: {
-					text: ""
+					text: "",
+					color:    "#999999",
+					fontSize: "10px",
+					font:     "open sans",
+					location: "bottom-left"
 				},
 				size: {
 					canvasWidth: 500,
@@ -97,6 +101,13 @@ define([], function() {
 						font:     "open sans"
 					},
 					location: "top-center"
+				},
+				footer: {
+					text: "Source: me, my room, the last 2 months.",
+					color:    "#999999",
+					fontSize: "10px",
+					font:     "open sans",
+					location: "bottom-left"
 				},
 				size: {
 					canvasWidth: 600,
