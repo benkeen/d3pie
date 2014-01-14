@@ -1,12 +1,13 @@
 require([
 	"constants",
+	"mediator",
 	"pageHelper",
 	"aboutPage",
 	"generatorPage",
 	"downloadPage",
 	"documentationPage",
 	"handlebarsHelpers"
-], function(C, pageHelper, aboutPage, generatorPage, downloadPage, documentationPage) {
+], function(C, mediator, pageHelper, aboutPage, generatorPage, downloadPage, documentationPage) {
 	"use strict";
 
 	// initialize our pages

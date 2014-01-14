@@ -8,6 +8,7 @@ require.config({
 		handlebars: "core/libs/handlebars.dev",
 		handlebarsHelpers: "core/handlebarsHelpers",
 		constants: "core/constants",
+		mediator: "core/mediator",
 		pageHelper: "core/pageHelper",
 
 		// About page
@@ -25,7 +26,6 @@ require.config({
 		// Generator page
 		generatorPage: "pages/generator/generatorPage",
 		generatorTabs: "pages/generator/generatorTabs",
-		pieChartGenerator: "pages/generator/pieChartGenerator",
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 

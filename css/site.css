@@ -70,6 +70,26 @@ input.ib, .ib {
 	background-color: #990000;
 	color: white;
 }
+#segmentColors {
+    margin: 0px;
+    padding: 0px;
+}
+
+#segmentColors li {
+    float: left;
+    display: inline-block;
+    width: 60px;
+    height: 45px;
+    padding: 2px;
+}
+#segmentColors li span {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+}
+
 
 /* overridden bootstrap CSS */
 body .navbar-header {
@@ -91,3 +111,4 @@ body .form-group .btn, body .input-group-addon, body .input-group-btn .btn {
 body .colorGroup {
     width: 100px;
 }
+

@@ -755,7 +755,7 @@
 				clearInterval(interval);
 			}
 			inc++;
-		}, 5);
+		}, 1);
 	};
 
 
