@@ -78,18 +78,29 @@ input.ib, .ib {
 #segmentColors li {
     float: left;
     display: inline-block;
-    width: 60px;
-    height: 45px;
-    padding: 2px;
+    width: 80px;
+    height: 52px;
+    padding: 4px;
+}
+#segmentColors li div {
+	background-color: #dddddd;
+	border-radius: 6px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 #segmentColors li span {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
+	display: inline-block;
+	float: left;
 }
-
+#segmentColors li span.handle {
+	width: 26px;
+	height: 44px;
+}
+#segmentColors li span.color {
+	width: 46px;
+	height: 44px;
+}
 
 /* overridden bootstrap CSS */
 body .navbar-header {

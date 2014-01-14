@@ -132,7 +132,7 @@ define([], function() {
 				},
 				styles: {
 					backgroundColor: null,
-					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
+					colors: ["#90C8DC", "#BE985E", "#16959E", "#76330B", "#04304A", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 				},
 				effects: {
 					loadEffect: "default",

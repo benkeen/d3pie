@@ -30,7 +30,10 @@
 <ul id="segmentColors">
 	{{#each config.styles.colors}}
 	<li>
-		<span style="background-color:{{this}}"></span>
+		<div>
+			<span class="handle"></span>
+			<span class="color" style="background-color:{{this}}"></span>
+		</div>
 	</li>
 	{{/each}}
 </ul>

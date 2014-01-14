@@ -47,7 +47,7 @@ define([
 		_loadDemoPie(C.EXAMPLE_PIES[0]);
 
 		// now fade in the three sections: nav, main content & footer row
-		$("#generatorTabs,#mainContent, #footerRow").hide().removeClass("hidden").fadeIn(400);
+		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
 		$("#exampleDropdown").on("click", "ul li a", function(e) {
 			var index = parseInt($(e.target).data("index"), 10);
@@ -65,12 +65,9 @@ define([
 	 */
 	var _addTabEventHandlers = function() {
 
-
 		// general event handlers used in multiple places
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
-
-		// TODO generalize
-		$("#titleFontSize,#subtitleFontSize,#footerFontSize").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
+		$(".keyupUpdateNoAnumation").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
 
 		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
