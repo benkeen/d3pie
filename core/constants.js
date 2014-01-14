@@ -107,7 +107,7 @@ define([], function() {
 					color:    "#999999",
 					fontSize: "10px",
 					font:     "open sans",
-					location: "bottom-left"
+					location: "bottom-center"
 				},
 				size: {
 					canvasWidth: 600,
@@ -118,10 +118,10 @@ define([], function() {
 				data: [
 					{ label: "When's it going to be done?", value: 8, tooltip: "" },
 					{ label: "Bennnnn!", value: 5, tooltip: "" },
-					{ label: "Come ON.", value: 3, tooltip: "" },
 					{ label: "Oh, god.", value: 2, tooltip: "" },
 					{ label: "But it's Friday night!", value: 3, tooltip: "" },
-					{ label: "Again?", value: 2, tooltip: "" }
+					{ label: "Again?", value: 2, tooltip: "" },
+					{ label: "[baleful stare]", value: 3, tooltip: "" }
 				],
 				labels: {
 					location: "inside", // inside/outside

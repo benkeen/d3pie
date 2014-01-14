@@ -28,7 +28,7 @@
 			location: "top-left"
 		},
 		footer: {
-
+			text: ""
 		},
 		size: {
 			canvasHeight: 500,
@@ -37,9 +37,11 @@
 			pieOuterRadius: null
 		},
 		labels: {
+			enable: false,
 			location: "inside",
 			format: "{L} {%}",
-			enableTooltips: false
+			hideLabelsForSmallSegments: false,
+			hideLabelsForSmallSegmentSize: "0%"
 		},
 		styles: {
 			backgroundColor: null,
@@ -52,11 +54,24 @@
 			pullOutSegmentOnClick: false,
 			labelFadeInTime: 400
 		},
+		tooltips: {
+			enable: false
+		},
 		misc: {
-			enableTooltips: false,
-			orderData: "hightolow",
-			hideLabelsForSmallSegments: false,
-			hideLabelsForSmallSegmentSize: "0%"
+			classPrefix: "auto",
+			idPrefix: "auto",
+
+			orderData: "none", // none, value-asc, value-desc, label-asc, label-desc, random
+			canvasPadding: {
+				top: 5,
+				right: 5,
+				bottom: 5,
+				left: 5
+			},
+			titleSubtitlePadding: 5, // the padding between the title and subtitle
+			footerPiePadding: 0,
+			labelPieDistance: 16,
+			textSelectable: false
 		}
 	};
 
@@ -64,7 +79,7 @@
 	// our constructor
 	function d3pie(element, options) {
 		this.element = element;
-		this.options = $.extend({}, _defaultSettings, options);
+		this.options = $.extend(true, {}, _defaultSettings, options);
 
 		// confirm d3 is available [check minimum version]
 		if (!window.d3 || !window.d3.hasOwnProperty("version")) {
@@ -115,12 +130,6 @@
 	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius, _options;
 
 
-	// TODO move to Misc configurable options
-	var _canvasLeftPadding = 5;
-	var _canvasBottomPadding = 5;
-	var _labelPieDistance = 16;
-
-
 	d3pie.prototype.init = function() {
 
 		// store the options in a local var for circumventing any "this" nonsense
@@ -168,10 +177,13 @@
 		_addSubtitle();
 		_addFooter();
 
-		// now create the pie chart and add the labels
-		_createPie(this.element);
-		_addLabels();
-		_addSegmentEventHandlers();
+		// now create the pie chart and add the labels. We have to place this in a timeout because the previous functions
+		// took a little time (1ms)
+		setTimeout(function() {
+			_createPie();
+			_addLabels();
+			_addSegmentEventHandlers();
+		}, 10);
 	};
 
 	// creates the SVG element
@@ -187,11 +199,16 @@
 	 * @private
 	 */
 	var _addTitle = function() {
-		var title = _svg.selectAll(".title").data([_options.header.title]);
+		if (_options.header.title.text === "") {
+			return;
+		}
 
+		var title = _svg.selectAll(".title").data([_options.header.title]);
 		title.enter()
 			.append("text")
 			.attr("id", "title")
+			.attr("x", 0)
+			.attr("y", -1000)
 			.attr("class", "title")
 			.attr("text-anchor", function() {
 				var location;
@@ -207,7 +224,7 @@
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 
-		setTimeout(_positionTitle, 1);
+		_whenIdExists("title", _positionTitle);
 	};
 
 	var _positionTitle = function() {
@@ -215,33 +232,25 @@
 		var dimensions = titleElement.getBBox();
 		var height = dimensions.height;
 
-		var topPadding = 5;
-
-		var x;
-		if (_options.header.location === "top-left") {
-			x = _canvasLeftPadding;
-		} else {
-			x = _options.size.canvasWidth / 2;
-		}
-
-		var y;
-		if (_options.header.location === "pie-center") {
-			y = _options.size.canvasHeight / 2;
-		} else {
-			y = topPadding + height;
-		}
+		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
+		var y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : _options.misc.canvasPadding.top + height;
 
 		_svg.select("#title")
 			.attr("x", x)
 			.attr("y", y);
 	};
 
-
 	var _addSubtitle = function() {
-		var title = _svg.selectAll(".subtitle").data([_options.header.subtitle]);
+		if (_options.header.subtitle.text === "") {
+			return;
+		}
 
-		title.enter()
+		_svg.selectAll(".subtitle")
+			.data([_options.header.subtitle])
+			.enter()
 			.append("text")
+			.attr("x", 0)
+			.attr("y", -1000)
 			.attr("id", "subtitle")
 			.attr("class", "subtitle")
 			.attr("text-anchor", function() {
@@ -258,25 +267,21 @@
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 
-		setTimeout(_positionSubtitle, 1);
+		_whenIdExists("subtitle", _positionSubtitle);
 	};
 
 	var _positionSubtitle = function() {
 		var subtitleElement = document.getElementById("subtitle");
 		var dimensions = subtitleElement.getBBox();
+		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
 
-		var x;
-		if (_options.header.location === "top-left") {
-			x = _canvasLeftPadding;
-		} else {
-			x = _options.size.canvasWidth / 2;
-		}
-
+		// when positioning the subtitle, take into account whether there's a title or not
 		var y;
-		if (_options.header.location === "pie-center") {
-			y = _options.size.canvasHeight / 2;
+		if (_options.header.title.text !== "") {
+		 	var titleY = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.titleSubtitlePadding + titleY;
 		} else {
-			y = dimensions.height + 5 + parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+		 	y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.canvasPadding.top;
 		}
 
 		_svg.select("#subtitle")
@@ -284,12 +289,13 @@
 			.attr("y", y);
 	};
 
-
 	var _addFooter = function() {
-		var title = _svg.selectAll(".footer").data([_options.footer]);
-
-		title.enter()
+		_svg.selectAll(".footer")
+			.data([_options.footer])
+			.enter()
 			.append("text")
+			.attr("x", 0)
+			.attr("y", -1000)
 			.attr("id", "footer")
 			.attr("class", "footer")
 			.attr("text-anchor", function() {
@@ -297,7 +303,7 @@
 				if (_options.footer.location === "bottom-center") {
 					location = "middle";
 				} else if (_options.footer.location === "bottom-right") {
-					location = "right";
+					location = "left"; // on purpose. We have to change the x-coord to make it properly right-aligned
 				} else {
 					location = "left";
 				}
@@ -308,22 +314,23 @@
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 
-		setTimeout(_positionFooter, 1);
+		_whenIdExists("footer", _positionFooter);
 	};
 
 	var _positionFooter = function() {
 		var x;
 		if (_options.footer.location === "bottom-left") {
-			x = _canvasLeftPadding;
-		} else if (_options.footer.location === "bottom-right") { // TODO not working yet.
-			x = _options.size.canvasWidth / 2;
+			x = _options.misc.canvasPadding.left;
+		} else if (_options.footer.location === "bottom-right") {
+			var dims = document.getElementById("footer").getBBox();
+			x = _options.size.canvasWidth - dims.width - _options.misc.canvasPadding.right;
 		} else {
 			x = _options.size.canvasWidth / 2;
 		}
 
 		_svg.select("#footer")
 			.attr("x", x)
-			.attr("y", _options.size.canvasHeight - _canvasBottomPadding);
+			.attr("y", _options.size.canvasHeight - _options.misc.canvasPadding.bottom);
 	};
 
 	var _getTotalPieSize = function(data) {
@@ -451,9 +458,9 @@
 		// 1. Add the main label (not positioned yet)
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
-			_data.filter(function(d) { return d.value; }),
-			function(d) { return d.label; }
-		)
+				_data.filter(function(d) { return d.value; }),
+				function(d) { return d.label; }
+			)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup")
@@ -516,7 +523,7 @@
 
 
 	var _addLabelLines = function() {
-		var lineMidPointDistance = _labelPieDistance - (_labelPieDistance / 4);
+		var lineMidPointDistance = _options.misc.labelPieDistance - (_options.misc.labelPieDistance / 4);
 		var circleCoordGroups = [];
 
 		d3.selectAll(".segmentLabel")
@@ -540,31 +547,31 @@
 				switch (quarter) {
 					case 0:
 						var calc1 = Math.sin(_toRadians(remainderAngle));
-						labelX = calc1 * (_outerRadius + _labelPieDistance) + labelXMargin;
+						labelX = calc1 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
 						p1     = calc1 * _outerRadius;
 						p2     = calc1 * (_outerRadius + lineMidPointDistance);
-						p3     = calc1 * (_outerRadius + _labelPieDistance) + 5;
+						p3     = calc1 * (_outerRadius + _options.misc.labelPieDistance) + 5;
 						break;
 					case 1:
 						var calc2 = Math.cos(_toRadians(remainderAngle));
-						labelX = calc2 * (_outerRadius + _labelPieDistance) + labelXMargin;
+						labelX = calc2 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
-						p3     = calc2 * (_outerRadius + _labelPieDistance) + 5;
+						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) + 5;
 						break;
 					case 2:
 						var calc3 = Math.sin(_toRadians(remainderAngle));
-						labelX = -calc3 * (_outerRadius + _labelPieDistance) - labelDimensions.width - labelXMargin;
+						labelX = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc3 * _outerRadius;
 						p2     = -calc3 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc3 * (_outerRadius + _labelPieDistance) - 5;
+						p3     = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - 5;
 						break;
 					case 3:
 						var calc4 = Math.cos(_toRadians(remainderAngle));
-						labelX = -calc4 * (_outerRadius + _labelPieDistance) - labelDimensions.width - labelXMargin;
+						labelX = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc4 * (_outerRadius + _labelPieDistance) - 5;
+						p3     = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - 5;
 						break;
 				}
 				circleCoordGroups[i] = [
@@ -592,31 +599,31 @@
 				switch (quarter) {
 					case 0:
 						var calc1 = Math.cos(_toRadians(remainderAngle));
-						labelY = -calc1 * (_outerRadius + _labelPieDistance);
+						labelY = -calc1 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = -calc1 * _outerRadius;
 						p2     = -calc1 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc1 * (_outerRadius + _labelPieDistance) - heightOffset;
+						p3     = -calc1 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 1:
 						var calc2 = Math.sin(_toRadians(remainderAngle));
-						labelY = calc2 * (_outerRadius + _labelPieDistance);
+						labelY = calc2 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
-						p3     = calc2 * (_outerRadius + _labelPieDistance) - heightOffset;
+						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 2:
 						var calc3 = Math.cos(_toRadians(remainderAngle));
-						labelY = calc3 * (_outerRadius + _labelPieDistance);
+						labelY = calc3 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = calc3 * _outerRadius;
 						p2     = calc3 * (_outerRadius + lineMidPointDistance);
-						p3     = calc3 * (_outerRadius + _labelPieDistance) - heightOffset;
+						p3     = calc3 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 3:
 						var calc4 = Math.sin(_toRadians(remainderAngle));
-						labelY = -calc4 * (_outerRadius + _labelPieDistance);
+						labelY = -calc4 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
-						p3     = -calc4 * (_outerRadius + _labelPieDistance) - heightOffset;
+						p3     = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 				}
 				circleCoordGroups[i][0].y = p1;
@@ -686,7 +693,71 @@
 	};
 
 	var _getSVGCenter = function() {
-		return "translate(" + (_options.size.canvasWidth/2) + "," + (_options.size.canvasHeight/2) + ")"
-	}
+		var pieCenter = _getPieCenter();
+		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
+	};
+
+	/**
+	 * Used to determine where on the canvas the center of the pie chart should be. It takes into account the
+	 * height and position of the title, subtitle and footer.
+	 * @private
+	 */
+	var _getPieCenter = function() {
+		var hasTopTitle = (_options.header.title.text !== "" && _options.header.location !== "pie-center");
+		var hasTopSubtitle = (_options.header.subtitle.text !== "" && _options.header.location !== "pie-center");
+		var hasFooter = (_options.footer.text !== "");
+
+		var headerOffset = 0;
+		if (hasTopTitle && hasTopSubtitle) {
+			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10);
+		} else if (hasTopTitle) {
+			headerOffset = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+		} else if (hasTopSubtitle) {
+			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10);
+		}
+
+		var footerOffset = 0;
+		if (hasFooter) {
+			footerOffset = _getFooterHeight() + _options.misc.canvasPadding.bottom;
+		}
+
+		return {
+			x: _options.size.canvasWidth / 2,
+			y: ((_options.size.canvasHeight - headerOffset - footerOffset) / 2) + headerOffset
+		}
+	};
+
+	// can only be called after the footer has been added to the SVG document
+	var _getFooterHeight = function() {
+		var dimensions = document.getElementById("footer").getBBox();
+		return dimensions.height;
+	};
+
+	var _getTitleHeight = function() {
+		var dimensions = document.getElementById("title").getBBox();
+		return dimensions.height;
+	};
+
+	var _getSubtitleHeight = function() {
+		var dimensions = document.getElementById("subtitle").getBBox();
+		return dimensions.height;
+	};
+
+	var _whenIdExists = function(id, callback) {
+		var inc = 1;
+		var giveupTime = 1000;
+		var interval = setInterval(function () {
+			if (document.getElementById(id)) {
+				clearInterval(interval);
+				callback();
+			}
+			if (inc > giveupTime) {
+				clearInterval(interval);
+			}
+			inc++;
+		}, 5);
+	};
+
+
 
 })(jQuery, window, document);

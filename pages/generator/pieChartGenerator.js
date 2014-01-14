@@ -25,6 +25,8 @@ define([
 
 	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
 	var _previousTitle = null;
+	var _previousSubtitle = null;
+	var _previousFooterText = null;
 
 	var _previousTitleColor = null;
 	var _previousSubtitleColor = null;
@@ -56,8 +58,11 @@ define([
 
 		// log the state of various fields
 		_previousTitle = _currentPieSettings.header.title.text;
+		_previousSubtitle = _currentPieSettings.header.subtitle.text;
 		_previousTitleColor = _currentPieSettings.header.title.color;
 		_previousSubtitleColor = _currentPieSettings.header.subtitle.text;
+
+		_previousFooterText = _currentPieSettings.footer.text;
 
 		_addEventHandlers();
 
@@ -86,6 +91,12 @@ define([
 			if (_previousTitle !== this.value) {
 				_renderWithNoAnimation();
 				_previousTitle = this.value;
+			}
+		});
+		$("#pieSubtitle").on("keyup", function() {
+			if (_previousSubtitle !== this.value) {
+				_renderWithNoAnimation();
+				_previousSubtitle = this.value;
 			}
 		});
 
@@ -132,6 +143,13 @@ define([
 		$("#loadEffect").on("change", _renderWithAnimation);
 
 		// Footer tab
+		$("#footerText").on("keyup", function() {
+			if (_previousFooterText !== this.value) {
+				_renderWithNoAnimation();
+				_previousFooterText = this.value;
+			}
+		});
+
 		$("#footerColor").on("input", function() {
 			var newValue = this.value;
 			_titleColorManuallyChanged = true;
