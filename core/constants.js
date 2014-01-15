@@ -14,16 +14,16 @@ define([], function() {
 					title: {
 						text:     "Programming languages",
 						color:    "#333333",
-						fontSize: "16px",
+						fontSize: "24px",
 						font:     "open sans"
 					},
 					subtitle: {
 						text:     "A bunch of arbitrary programming languages",
 						color:    "#999999",
-						fontSize: "11px",
+						fontSize: "12px",
 						font:     "open sans"
 					},
-					location: "top-left"
+					location: "top-center"
 				},
 				footer: {
 					text: "",
@@ -33,7 +33,7 @@ define([], function() {
 					location: "bottom-left"
 				},
 				size: {
-					canvasWidth: 500,
+					canvasWidth: 650,
 					canvasHeight: 500,
 					pieInnerRadius: "40%",
 					pieOuterRadius: "66%"
@@ -70,7 +70,7 @@ define([], function() {
 				},
 				misc: {
 					enableTooltips: false,
-					orderData: "hightolow", // only one option right now
+					dataSortOrder: "random",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%"
 				}
@@ -143,7 +143,7 @@ define([], function() {
 				},
 				misc: {
 					enableTooltips: false,
-					orderData: "hightolow",
+					dataSortOrder: "random",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%"
 				}

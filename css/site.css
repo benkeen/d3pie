@@ -135,3 +135,7 @@ body .colorGroup {
 .note {
     color: #999999;
 }
+.handle {
+    background: transparent url(../images/drag.png) 50% 50% no-repeat;
+    /* cursor: pointer; */
+}

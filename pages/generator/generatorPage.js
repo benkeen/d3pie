@@ -327,7 +327,7 @@ define([
 
 	var _getMiscTabData = function() {
 		return {
-
+			dataSortOrder: $("#dataSortOrder").val()
 		};
 	};
 

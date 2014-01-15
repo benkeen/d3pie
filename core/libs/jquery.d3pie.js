@@ -61,7 +61,7 @@
 			classPrefix: "auto",
 			idPrefix: "auto",
 
-			orderData: "none", // none, value-asc, value-desc, label-asc, label-desc, random
+			dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
 			canvasPadding: {
 				top: 5,
 				right: 5,
@@ -127,15 +127,37 @@
 
 
 	// TODO these are temporary. They'll need to attach to the instance, I think. Either way, this is feeling very klutzy
-	var _arc, _svg, _totalSize, _data, _innerRadius, _outerRadius, _options;
+	var _arc, _svg, _totalSize, _innerRadius, _outerRadius, _options;
 
 
 	d3pie.prototype.init = function() {
 
 		// store the options in a local var for circumventing any "this" nonsense
 		_options = this.options;
-		_data      = this.options.data;
-		_totalSize = _getTotalPieSize(_data);
+
+		// sort the data
+		switch (_options.misc.dataSortOrder) {
+			case "none":
+				// do nothing.
+				break;
+			case "random":
+				_options.data = _shuffleArray(_options.data);
+				break;
+			case "value-asc":
+				_options.data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
+				break;
+			case "value-desc":
+				_options.data.sort(function(a, b) { return (a.value > b.value) ? 1 : -1 });
+				break;
+			case "label-asc":
+				_options.data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
+				break;
+			case "label-desc":
+				_options.data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
+				break;
+		}
+
+		_totalSize = _getTotalPieSize(_options.data);
 
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
@@ -410,9 +432,9 @@
 
 		var g = pieChartElement.selectAll(".arc")
 			.data(
-			_data.filter(function(d) { return d.value; }),
-			function(d) { return d.label; }
-		)
+				_options.data.filter(function(d) { return d.value; }),
+				function(d) { return d.label; }
+			)
 			.enter()
 			.append("g")
 			.attr("class", function() {
@@ -441,7 +463,7 @@
 		_svg.selectAll("g.arc")
 			.attr("transform",
 			function(d, i) {
-				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var angle = _getSegmentRotationAngle(i, _options.data, _totalSize);
 				return "rotate(" + angle + ")";
 			}
 		);
@@ -458,7 +480,7 @@
 		// 1. Add the main label (not positioned yet)
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
-				_data.filter(function(d) { return d.value; }),
+				_options.data.filter(function(d) { return d.value; }),
 				function(d) { return d.label; }
 			)
 			.enter()
@@ -483,27 +505,27 @@
 		// 3. Add the value label (not positioned yet)
 
 		/*
-		 labelGroup.append("text")
-		 .text(function(d) {
-		 return Math.round((d.value / _totalSize) * 100) + "%";
-		 })
-		 .attr("class", "pieShare")
-		 .attr("transform", function(d, i) {
-		 var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
-		 var labelRadius = _outerRadius + 30;
-		 var c = _arc.centroid(d),
-		 x = c[0],
-		 y = c[1],
-		 h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
+		labelGroup.append("text")
+		.text(function(d) {
+		return Math.round((d.value / _totalSize) * 100) + "%";
+		})
+		.attr("class", "pieShare")
+		.attr("transform", function(d, i) {
+		var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
+		var labelRadius = _outerRadius + 30;
+		var c = _arc.centroid(d),
+		x = c[0],
+		y = c[1],
+		h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
 
-		 return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
-		 })
-		 .style("fill", options.labels.labelPercentageColor)
-		 .style("font-size", "8pt")
-		 .style("opacity", function() {
-		 return (options.effects.loadEffect === "fadein") ? 0 : 1;
-		 });
-		 */
+		return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
+		})
+		.style("fill", options.labels.labelPercentageColor)
+		.style("font-size", "8pt")
+		.style("opacity", function() {
+		return (options.effects.loadEffect === "fadein") ? 0 : 1;
+		});
+		*/
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
 		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;
@@ -531,10 +553,10 @@
 			.attr("dx", function(d, i) {
 				var labelDimensions = document.getElementById("label" + i).getBBox();
 
-				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var angle = _getSegmentRotationAngle(i, _options.data, _totalSize);
 				var nextAngle = 360;
 				if (i < _options.data.length - 1) {
-					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+					nextAngle = _getSegmentRotationAngle(i+1, _options.data, _totalSize);
 				}
 
 				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
@@ -586,10 +608,10 @@
 				var labelDimensions = document.getElementById("label" + i).getBBox();
 				var heightOffset = labelDimensions.height / 5;
 
-				var angle = _getSegmentRotationAngle(i, _data, _totalSize);
+				var angle = _getSegmentRotationAngle(i, _options.data, _totalSize);
 				var nextAngle = 360;
 				if (i < _options.data.length - 1) {
-					nextAngle = _getSegmentRotationAngle(i+1, _data, _totalSize);
+					nextAngle = _getSegmentRotationAngle(i+1, _options.data, _totalSize);
 				}
 				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
 				var remainderAngle = (segmentCenterAngle % 90);
@@ -758,6 +780,19 @@
 		}, 1);
 	};
 
+	var _shuffleArray = function(array) {
+		var currentIndex = array.length, tmpVal, randomIndex;
 
+		while (0 !== currentIndex) {
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// and swap it with the current element
+			tmpVal = array[currentIndex];
+			array[currentIndex] = array[randomIndex];
+			array[randomIndex] = tmpVal;
+		}
+		return array;
+	};
 
 })(jQuery, window, document);
