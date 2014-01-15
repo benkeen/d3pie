@@ -69,6 +69,7 @@ define([
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".keyupUpdateNoAnumation").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
 
+
 		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {
@@ -107,6 +108,13 @@ define([
 		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
 
 		// 2. size tab
+		$("#showCanvasOutline").on("click", function(e) {
+			if (e.target.checked) {
+				$("#generatorPieChart").addClass("showOutline");
+			} else {
+				$("#generatorPieChart").removeClass("showOutline");
+			}
+		});
 		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
 		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
 

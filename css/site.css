@@ -123,3 +123,15 @@ body .colorGroup {
     width: 100px;
 }
 
+#generatorPieChart {
+    display: inline-block;
+}
+#generatorPieChart {
+    border: 1px solid #ffffff;
+}
+#generatorPieChart.showOutline {
+    border: 1px dashed #999999;
+}
+.note {
+    color: #999999;
+}

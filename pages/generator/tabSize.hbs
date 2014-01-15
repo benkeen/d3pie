@@ -1,5 +1,5 @@
 <div class="row col-lg-12">
-	<h4>Title</h4>
+	<h4>Size</h4>
 </div>
 
 <div class="row form-group">
@@ -8,10 +8,17 @@
 		<input type="text" id="canvasWidth" value="{{config.size.canvasWidth}}" class="form-control smallField ib" />
 		<label class="ib">px</label>
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-3">
 		<label for="canvasHeight" class="control-label bl">Canvas Height</label>
 		<input type="text" id="canvasHeight" value="{{config.size.canvasHeight}}" class="form-control smallField ib" />
 		<label class="ib">px</label>
+	</div>
+	<div class="col-md-6">
+		<input type="checkbox" id="showCanvasOutline" style="margin-right: 8px; margin-bottom: 10px;" />
+		<label for="showCanvasOutline">
+			Show canvas outline<br />
+			<span class="note">(for visual illustration only)</span>
+		</label>
 	</div>
 </div>
 
