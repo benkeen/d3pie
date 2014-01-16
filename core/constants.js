@@ -39,16 +39,16 @@ define([], function() {
 					pieOuterRadius: "66%"
 				},
 				data: [
-					{ label: "JavaScript", value: 264131, tooltip: "" },
-					{ label: "Ruby", value: 218812, tooltip: "" },
-					{ label: "Java", value: 157618, tooltip: "" },
-					{ label: "PHP", value: 114384, tooltip: "" },
-					{ label: "Python", value: 95002, tooltip: "" },
-					{ label: "C+", value: 78327, tooltip: "" },
-					{ label: "C", value: 67706, tooltip: "" },
-					{ label: "Objective-C", value: 36344, tooltip: "" },
-					{ label: "C#", value: 32170, tooltip: "" },
-					{ label: "Shell", value: 28561, tooltip: "" }
+					{ label: "JavaScript", value: 264131 },
+					{ label: "Ruby", value: 218812 },
+					{ label: "Java", value: 157618  },
+					{ label: "PHP", value: 114384  },
+					{ label: "Python", value: 95002 },
+					{ label: "C+", value: 78327 },
+					{ label: "C", value: 67706 },
+					{ label: "Objective-C", value: 36344 },
+					{ label: "C#", value: 32170 },
+					{ label: "Shell", value: 28561 }
 				],
 				labels: {
 					location: "inside", // inside/outside
@@ -72,7 +72,13 @@ define([], function() {
 					enableTooltips: false,
 					dataSortOrder: "random",
 					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%"
+					hideLabelsForSmallSegmentSize: "5%",
+					canvasPadding: {
+						top: 5,
+						right: 5,
+						bottom: 5,
+						left: 5
+					}
 				}
 			}
 		},

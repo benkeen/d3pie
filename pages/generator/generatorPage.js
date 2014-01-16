@@ -28,10 +28,12 @@ define([
 	var _previousTitleColor = null;
 	var _previousSubtitleColor = null;
 	var _previousFooterColor = null;
+	var _previousBackgroundColor = null;
 
 	var _titleColorManuallyChanged = null;
 	var _subtitleColorManuallyChanged = null;
 	var _footerColorManuallyChanged = null;
+	var _backgroundColorManuallyChanged = null;
 
 	/**
 	 * Our initialization function. Called on page load.
@@ -67,7 +69,7 @@ define([
 
 		// general event handlers used in multiple places
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
-		$(".keyupUpdateNoAnumation").on("keyup", _onKeyupNumberFieldUpdateNoAnimation);
+		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
 
 
 		// 1. Title tab
@@ -128,7 +130,7 @@ define([
 		});
 
 		// 5. Color tab
-		$("#backgroundColorGroup").colorpicker();
+		$("#backgroundColorGroup").colorpicker().on("changeColor", _onBackgroundColorChangeViaColorPicker);
 
 		// 6. Effects tab
 		$("#loadEffect").on("change", _renderWithAnimation);
@@ -179,6 +181,15 @@ define([
 			_previousFooterColor = newValue;
 		}
 		_footerColorManuallyChanged = false;
+	};
+
+	var _onBackgroundColorChangeViaColorPicker = function(e) {
+		var newValue = e.color.toHex();
+		if (_previousBackgroundColor !== newValue && newValue.length === 7 && !_backgroundColorManuallyChanged) {
+			_renderWithNoAnimation();
+			_previousBackgroundColor = newValue;
+		}
+		_backgroundColorManuallyChanged = false;
 	};
 
 	var _onChangeInnerRadius = function(e) {
@@ -290,7 +301,7 @@ define([
 		return {
 			location: $("#labelLocation").val(),
 			format:   $("#labelFormat").val(),
-			enableTooltips: $("#enableTooltips")[0].checked,
+//			enableTooltips: $("#enableTooltips")[0].checked,
 			labelColor: $("#labelColor").val(),
 			labelPercentageColor: $("#labelPercentageColor").val(),
 			labelSegmentValueColor: $("#labelSegmentValueColor").val()
@@ -326,13 +337,21 @@ define([
 	};
 
 	var _getMiscTabData = function() {
+
+		// TODO validation
+
 		return {
-			dataSortOrder: $("#dataSortOrder").val()
+			dataSortOrder: $("#dataSortOrder").val(),
+			canvasPadding: {
+				top: parseInt($("#canvasPaddingTop").val(), 10),
+				right: parseInt($("#canvasPaddingRight").val(), 10),
+				bottom: parseInt($("#canvasPaddingBottom").val(), 10),
+				left: parseInt($("#canvasPaddingLeft").val(), 10)
+			}
 		};
 	};
 
 	var _loadDemoPie = function(pieConfiguration) {
-
 		var config = pieConfiguration.config;
 
 		// render the generator tabs

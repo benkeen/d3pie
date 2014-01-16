@@ -1,38 +1,63 @@
 <div class="row col-lg-12">
-	<h4>Element Padding</h4>
+	<h4>Padding</h4>
 </div>
 
-<label>Canvas Padding</label>
 <div class="row">
-	<div class="row col-lg-3">
-		<label>Top</label>
-		<input type="text" class="smallField keyupUpdateNoAnumation" />
+	<div class="col-lg-3">
+		<label>Canvas Top</label>
 	</div>
-	<div class="row col-lg-3">
-		<label>Top</label>
-		<input type="text" class="smallField keyupUpdateNoAnumation" />
+	<div class="col-lg-3">
+		<label>Canvas Right</label>
 	</div>
-	<div class="row col-lg-3">
-		<label>Top</label>
-		<input type="text" class="smallField keyupUpdateNoAnumation" />
+	<div class="col-lg-3">
+		<label>Canvas Bottom</label>
 	</div>
-	<div class="row col-lg-3">
-		<label>Top</label>
-		<input type="text" class="smallField keyupUpdateNoAnumation" />
+	<div class="col-lg-3">
+		<label>Canvas Left</label>
+	</div>
+</div>
+
+<div class="row form-group">
+	<div class="col-lg-3">
+		<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" class="smallField updateNoAnimation" />
+	</div>
+	<div class="col-lg-3">
+		<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" class="smallField updateNoAnimation" />
+	</div>
+	<div class="col-lg-3">
+		<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" class="smallField updateNoAnimation" />
+	</div>
+	<div class="col-lg-3">
+		<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" class="smallField updateNoAnimation" />
 	</div>
 </div>
 
 
+<div class="row">
+	<div class="col-lg-3">
+		<label>Footer-text pad</label>
+	</div>
+	<div class="col-lg-3">
+		<label>Label-pie dist.</label>
+	</div>
+	<div class="col-lg-3">
+	</div>
+	<div class="col-lg-3">
+	</div>
+</div>
 
-canvasPadding: {
-top: 5,
-right: 5,
-bottom: 5,
-left: 5
-},
-titleSubtitlePadding: 5, // the padding between the title and subtitle
-footerPiePadding: 0,
-labelPieDistance: 16,
+<div class="row form-group">
+	<div class="col-lg-3">
+		<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" class="smallField updateNoAnimation" />
+	</div>
+	<div class="col-lg-3">
+		<input type="number" id="labelPieDistance" value="{{config.misc.labelPieDistance}}" class="smallField updateNoAnimation" />
+	</div>
+	<div class="col-lg-3">
+	</div>
+	<div class="col-lg-3">
+	</div>
+</div>
 
 
 
