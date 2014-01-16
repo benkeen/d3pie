@@ -131,6 +131,10 @@ define([
 
 		// 5. Color tab
 		$("#backgroundColorGroup").colorpicker().on("changeColor", _onBackgroundColorChangeViaColorPicker);
+		$("#segmentColors").sortable({
+			handle: ".handle",
+			update: _renderWithNoAnimation
+		});
 
 		// 6. Effects tab
 		$("#loadEffect").on("change", _renderWithAnimation);
@@ -319,10 +323,16 @@ define([
 	};
 
 	var _getStylesTabData = function() {
+		var colors = [];
+
+		var colorElements = $("#segmentColors").find("span.color");
+		for (var i=0; i<colorElements.length; i++) {
+			colors.push(_rgb2hex($(colorElements[i]).css("background-color")));
+		}
 		return {
 			pieInnerRadius: $("#pieInnerRadius").val() + "%",
 			backgroundColor: null,
-			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#009900", "#003300"]
+			colors: colors
 		};
 	};
 
@@ -380,6 +390,19 @@ define([
 		// called
 		_addTabEventHandlers();
 	};
+
+
+	var _rgb2hex = function(rgb) {
+		function hex(x) {
+			return ("0" + parseInt(x).toString(16)).slice(-2);
+		}
+		if (  rgb.search("rgb") == -1 ) {
+			return rgb;
+		} else {
+			rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+			return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+		}
+	}
 
 	return {
 		init: _init

@@ -183,13 +183,13 @@
 		}
 
 		// inner radius
-		if (/%/.test(_options.styles.pieInnerRadius)) {
-			var percent = parseInt(_options.styles.pieInnerRadius.replace(/[\D]/, ""), 10);
+		if (/%/.test(_options.size.pieInnerRadius)) {
+			var percent = parseInt(_options.size.pieInnerRadius.replace(/[\D]/, ""), 10);
 			percent = (percent > 99) ? 99 : percent;
 			percent = (percent < 0) ? 0 : percent;
 			_innerRadius = Math.floor((_outerRadius / 100) * percent);
 		} else {
-			_innerRadius = parseInt(_options.styles.pieInnerRadius, 10);
+			_innerRadius = parseInt(_options.size.pieInnerRadius, 10);
 		}
 
 		_addSVGSpace(this.element);

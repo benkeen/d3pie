@@ -70,7 +70,7 @@ define([], function() {
 				},
 				misc: {
 					enableTooltips: false,
-					dataSortOrder: "random",
+					dataSortOrder: "none",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%",
 					canvasPadding: {

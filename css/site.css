@@ -137,5 +137,5 @@ body .colorGroup {
 }
 .handle {
     background: transparent url(../images/drag.png) 50% 50% no-repeat;
-    /* cursor: pointer; */
+    cursor: pointer;
 }
