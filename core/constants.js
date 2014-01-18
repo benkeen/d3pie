@@ -59,7 +59,7 @@ define([], function() {
 				},
 				styles: {
 					backgroundColor: null,
-					colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
+					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121", "#830909", "#923e99", "#ae83d5"]
 				},
 				effects: {
 					loadEffect: "default", //  none / default
@@ -78,7 +78,8 @@ define([], function() {
 						right: 5,
 						bottom: 5,
 						left: 5
-					}
+					},
+					preventTextSelection: true
 				}
 			}
 		},
@@ -138,7 +139,7 @@ define([], function() {
 				},
 				styles: {
 					backgroundColor: null,
-					colors: ["#90C8DC", "#BE985E", "#16959E", "#76330B", "#04304A", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
+					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#a61111", "#923e99", "#ae83d5"]
 				},
 				effects: {
 					loadEffect: "default",
@@ -151,11 +152,29 @@ define([], function() {
 					enableTooltips: false,
 					dataSortOrder: "random",
 					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%"
+					hideLabelsForSmallSegmentSize: "5%",
+					preventTextSelection: true
 				}
 			}
 		}
 	];
+
+
+	C.PALETTES = [
+		{
+			name: "Greens",
+			colors: ["#92dd98", "#68ca6f", "#58b65e", "#4ca551", "#3f8450", "#296137", "#16481a", "#0a370e", "#062708", "#000000"]
+		}
+	];
+
+	C.EVENT = {
+		DEMO_PIE: {
+			RENDER: {
+				NO_ANIMATION: 'demo-pie-render-no-animation',
+				WITH_ANIMATION: 'demo-pie-render-with-animation'
+			}
+		}
+	};
 
 	return C;
 });

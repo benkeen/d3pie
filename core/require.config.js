@@ -29,7 +29,9 @@ require.config({
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
-		titleTab: "pages/generator/tabTitle.hbs",
+		titleTab: "pages/generator/tabTitle",
+		titleTabTemplate: "pages/generator/tabTitleTemplate.hbs",
+
 		sizeTab: "pages/generator/tabSize.hbs",
 		dataTab: "pages/generator/tabData.hbs",
 		labelsTab: "pages/generator/tabLabels.hbs",

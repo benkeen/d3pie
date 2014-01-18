@@ -26,7 +26,6 @@
 	<label class="control-label">Segment Colors</label>
 </div>
 
-
 <ul id="segmentColors">
 	{{#each config.styles.colors}}
 	<li>
@@ -38,11 +37,14 @@
 	{{/each}}
 </ul>
 
-<div style="float: right; border: 1px dashed #cccccc; padding: 20px 30px;">
-	Drag here to<br />
-	delete color
-</div>
 
-<ul class="pager">
-	<li class="previous"><a href="#">Add color &raquo;</a></li>
-</ul>
+<div class="clear"></div>
+<div style="border-top: 1px solid #efefef; clear: both; margin-top: 8px; padding-top: 8px;">
+	<ul class="pager">
+		<li class="previous"><a href="#">Add color &raquo;</a></li>
+	</ul>
+
+	<ul id="deleteColorZone" style="border: 1px dashed #cccccc; padding: 20px 30px">
+		<li id="defaultDeleteColorZone">Drag here to delete color</li>
+	</ul>
+</div>

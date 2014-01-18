@@ -3,9 +3,9 @@
  */
 define([
 	"constants",
+	"titleTab",
 	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate",
-	"hbs!titleTab",
 	"hbs!sizeTab",
 	"hbs!dataTab",
 	"hbs!labelsTab",
@@ -14,26 +14,21 @@ define([
 	"hbs!eventsTab",
 	"hbs!footerTab",
 	"hbs!miscTab"
-], function(C, examplePiesTemplate, generatorPageTemplate, titleTab, sizeTab, dataTab, labelsTab, colorTab, effectsTab,
+], function(C, titleTab, examplePiesTemplate, generatorPageTemplate, sizeTab, dataTab, labelsTab, colorTab, effectsTab,
 			eventsTab, footerTab, miscTab) {
 	"use strict";
 
 	var _isCreated = false;
 
 	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
-	var _previousTitle = null;
-	var _previousSubtitle = null;
 	var _previousFooterText = null;
 
-	var _previousTitleColor = null;
-	var _previousSubtitleColor = null;
 	var _previousFooterColor = null;
 	var _previousBackgroundColor = null;
 
-	var _titleColorManuallyChanged = null;
-	var _subtitleColorManuallyChanged = null;
 	var _footerColorManuallyChanged = null;
 	var _backgroundColorManuallyChanged = null;
+
 
 	/**
 	 * Our initialization function. Called on page load.
@@ -56,8 +51,21 @@ define([
 			_loadDemoPie(C.EXAMPLE_PIES[index]);
 		});
 
+		$("#deleteColorZone").sortable({
+			connectWith: "#segmentColors",
+			over: function() {
+				console.log("....");
+			}
+		});
+
+		$("#addColorLink").on("click", function(e) {
+			e.preventDefault();
+
+		});
+
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
+
 	};
 
 	/**
@@ -67,47 +75,10 @@ define([
 	 */
 	var _addTabEventHandlers = function() {
 
-		// general event handlers used in multiple places
+		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
 
-
-		// 1. Title tab
-		$("#pieTitle").on("keyup", function() {
-			if (_previousTitle !== this.value) {
-				_renderWithNoAnimation();
-				_previousTitle = this.value;
-			}
-		});
-		$("#pieSubtitle").on("keyup", function() {
-			if (_previousSubtitle !== this.value) {
-				_renderWithNoAnimation();
-				_previousSubtitle = this.value;
-			}
-		});
-
-		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
-		// or by selecting a color via the colorpicker. The former still triggers a "changed" event on the colorpicker
-		// so we need to tell it that the user just did it manually. That prevents unnecessary re-draws.
-		$("#titleColor").on("input", function() {
-			var newValue = this.value;
-			_titleColorManuallyChanged = true;
-			if (_previousTitleColor !== newValue && newValue.length === 7) {
-				_renderWithNoAnimation();
-				_previousTitleColor = newValue;
-			}
-		});
-		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
-
-		$("#subtitleColor").on("input", function() {
-			var newValue = this.value;
-			_subtitleColorManuallyChanged = true;
-			if (_previousSubtitleColor !== newValue && newValue.length === 7) {
-				_renderWithNoAnimation();
-				_previousSubtitleColor = newValue;
-			}
-		});
-		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
 
 		// 2. size tab
 		$("#showCanvasOutline").on("click", function(e) {
@@ -133,6 +104,7 @@ define([
 		$("#backgroundColorGroup").colorpicker().on("changeColor", _onBackgroundColorChangeViaColorPicker);
 		$("#segmentColors").sortable({
 			handle: ".handle",
+			connectWith: "#deleteColorZone",
 			update: _renderWithNoAnimation
 		});
 
@@ -156,26 +128,6 @@ define([
 			}
 		});
 		$("#footerColorGroup").colorpicker().on("changeColor", _onFooterColorChangeViaColorpicker);
-
-	};
-
-	// TODO refactor these
-	var _onTitleColorChangeViaColorpicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousTitleColor !== newValue && newValue.length === 7 && !_titleColorManuallyChanged) {
-			_renderWithNoAnimation();
-			_previousTitleColor = newValue;
-		}
-		_titleColorManuallyChanged = false;
-	};
-
-	var _onSubtitleColorChangeViaColorpicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousSubtitleColor !== newValue && newValue.length === 7 && !_subtitleColorManuallyChanged) {
-			_renderWithNoAnimation();
-			_previousSubtitleColor = newValue;
-		}
-		_subtitleColorManuallyChanged = false;
 	};
 
 	var _onFooterColorChangeViaColorpicker = function(e) {
@@ -244,13 +196,14 @@ define([
 		_isCreated = true;
 	};
 
+
 	/**
 	 * Parses the generator fields and get the latest values.
 	 * @private
 	 */
 	var _getConfigObject = function() {
 		return {
-			header:  _getTitleTabData(),
+			header:  titleTab.getTabData(),
 			footer:  _getFooterTabData(),
 			size:    _getSizeData(),
 			data:    _getDataTabData(),
@@ -261,23 +214,6 @@ define([
 		};
 	};
 
-	var _getTitleTabData = function() {
-		return {
-			title: {
-				text:     $("#pieTitle").val(),
-				color:    $("#titleColor").val(),
-				fontSize: $("#titleFontSize").val() + "px",
-				font:     $("#titleFont").val()
-			},
-			subtitle: {
-				text:     $("#pieSubtitle").val(),
-				color:    $("#subtitleColor").val(),
-				fontSize: $("#subtitleFontSize").val() + "px",
-				font:     $("#subtitleFont").val()
-			},
-			location: $("#titleLocation").val()
-		};
-	};
 
 	var _getSizeData = function() {
 		return {
@@ -365,7 +301,8 @@ define([
 		var config = pieConfiguration.config;
 
 		// render the generator tabs
-		$("#titleTab").html(titleTab({ config: config }));
+		titleTab.render(config);
+
 		$("#sizeTab").html(sizeTab({ config: config }));
 		$("#dataTab").html(dataTab({ config: config }));
 		$("#labelsTab").html(labelsTab({ config: config }));
@@ -376,10 +313,6 @@ define([
 		$("#miscTab").html(miscTab({ config: config }));
 
 		// log the state of various fields
-		_previousTitle = config.header.title.text;
-		_previousSubtitle = config.header.subtitle.text;
-		_previousTitleColor = config.header.title.color;
-		_previousSubtitleColor = config.header.subtitle.text;
 
 		_previousFooterText = config.footer.text;
 

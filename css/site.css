@@ -139,3 +139,13 @@ body .colorGroup {
     background: transparent url(../images/drag.png) 50% 50% no-repeat;
     cursor: pointer;
 }
+.clear {
+    clear: both;
+}
+
+#deleteColorZone li {
+    display: none;
+}
+#deleteColorZone #defaultDeleteColorZone {
+    display: block;
+}
