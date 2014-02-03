@@ -32,7 +32,7 @@
     height: 24px;
     background-image: url(../images/remove-icon.png);
     background-size: 100%;
-    display: block;
+    display: inline-block;
     opacity: 0.5;
     cursor: pointer;
 }
@@ -148,4 +148,16 @@ body .colorGroup {
 }
 #deleteColorZone #defaultDeleteColorZone {
     display: block;
+}
+
+#sortableDataList {
+	list-style: none;
+	padding: 0px;
+}
+#sortableDataListHeader {
+	list-style: none;
+	padding: 0px;
+}
+#sortableDataListHeader {
+	
 }
