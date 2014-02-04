@@ -3,6 +3,7 @@
  */
 define([
 	"constants",
+	"mediator",
 	"titleTab",
 	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate",
@@ -14,10 +15,11 @@ define([
 	"hbs!eventsTab",
 	"hbs!footerTab",
 	"hbs!miscTab"
-], function(C, titleTab, examplePiesTemplate, generatorPageTemplate, sizeTab, dataTab, labelsTab, colorTab, effectsTab,
-			eventsTab, footerTab, miscTab) {
+], function(C, mediator, titleTab, examplePiesTemplate, generatorPageTemplate, sizeTab, dataTab, labelsTab, colorTab,
+			effectsTab, eventsTab, footerTab, miscTab) {
 	"use strict";
 
+	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
 
 	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
@@ -35,6 +37,12 @@ define([
 	 * @private
 	 */
 	var _init = function() {
+
+		// register the current module
+		mediator.register(_MODULE_ID);
+
+		titleTab.init();
+
 
 		$("#generatorPage").html(generatorPageTemplate({
 			examples: examplePiesTemplate({ examples: C.EXAMPLE_PIES })
@@ -60,12 +68,15 @@ define([
 
 		$("#addColorLink").on("click", function(e) {
 			e.preventDefault();
-
 		});
 
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
 
+		var subscriptions = {};
+		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION] = _renderWithNoAnimation;
+		subscriptions[C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION] = _renderWithAnimation;
+		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
 	/**
@@ -78,7 +89,6 @@ define([
 		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
-
 
 		// 2. size tab
 		$("#showCanvasOutline").on("click", function(e) {
@@ -121,7 +131,7 @@ define([
 
 		$("#footerColor").on("input", function() {
 			var newValue = this.value;
-			_titleColorManuallyChanged = true;
+			_footerColorManuallyChanged = true;
 			if (_previousTitleColor !== newValue && newValue.length === 7) {
 				_renderWithNoAnimation();
 				_previousTitleColor = newValue;

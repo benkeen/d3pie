@@ -123,8 +123,18 @@
 	};
 
 
-	// ----- private functions -----
+	// this let's the user dynamically update
+	d3pie.prototype.updateProperty = function(prop, value) {
+		switch (prop) {
+			case "title":
+				break;
+			case "subtitle":
+				break;
+		}
+	};
 
+
+	// ----- private functions -----
 
 	// TODO these are temporary. They'll need to attach to the instance, I think. Either way, this is feeling very klutzy
 	var _arc, _svg, _totalSize, _innerRadius, _outerRadius, _options;
@@ -797,7 +807,7 @@
 	};
 
 	var _addFilter = function() {
-		console.log(_getPieCenter());
+		//console.log(_getPieCenter());
 		//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
 	};
 

@@ -17,8 +17,9 @@ define([
 
 
 	var _init = function() {
-
+		mediator.register(_MODULE_ID);
 	};
+
 
 	var _render = function(config) {
 		$("#titleTab").html(titleTabTemplate({ config: config }));
@@ -31,7 +32,7 @@ define([
 		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {
-				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP_NO_ANIMATION, { prop: "title" });
 				_previousTitle = this.value;
 			}
 		});
@@ -105,6 +106,7 @@ define([
 
 
 	return {
+		init: _init,
 		render: _render,
 		getTabData: _getTabData
 	};
