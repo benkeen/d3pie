@@ -74,8 +74,9 @@ define([
 		$("#pieTitle").focus();
 
 		var subscriptions = {};
-		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION] = _renderWithNoAnimation;
+		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION]   = _renderWithNoAnimation;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION] = _renderWithAnimation;
+		subscriptions[C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP]    = _updateProperty;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
@@ -189,6 +190,10 @@ define([
 		_renderPie(true, _getConfigObject());
 	};
 
+	var _updateProperty = function(msg) {
+		$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
+	};
+
 	var _renderPie = function(includeStartAnimation, config) {
 
 		// if we don't want to include the start animation, just override the values in the UI. This is useful for
@@ -220,7 +225,7 @@ define([
 			labels:  _getLabelsTabData(),
 			styles:  _getStylesTabData(),
 			effects: _getEffectsTabData(),
-			misc:    _getMiscTabData()
+			misc:    miscTab.getTabData()
 		};
 	};
 

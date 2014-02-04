@@ -32,13 +32,19 @@ define([
 		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {
-				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP_NO_ANIMATION, { prop: "title" });
+				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
+					prop: "title",
+					value: this.value
+				});
 				_previousTitle = this.value;
 			}
 		});
 		$("#pieSubtitle").on("keyup", function() {
 			if (_previousSubtitle !== this.value) {
-				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
+					prop: "subtitle",
+					value: this.value
+				});
 				_previousSubtitle = this.value;
 			}
 		});

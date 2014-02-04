@@ -150,7 +150,7 @@ define([], function() {
 				},
 				misc: {
 					enableTooltips: false,
-					dataSortOrder: "random",
+					dataSortOrder: "none",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%",
 					preventTextSelection: true
@@ -158,7 +158,6 @@ define([], function() {
 			}
 		}
 	];
-
 
 	C.PALETTES = [
 		{
@@ -171,7 +170,8 @@ define([], function() {
 		DEMO_PIE: {
 			RENDER: {
 				NO_ANIMATION: 'demo-pie-render-no-animation',
-				WITH_ANIMATION: 'demo-pie-render-with-animation'
+				WITH_ANIMATION: 'demo-pie-render-with-animation',
+				UPDATE_PROP: 'demo-pie-render-update-prop'
 			}
 		}
 	};

@@ -58,9 +58,15 @@
 			enable: false
 		},
 		misc: {
+
+//			enableTooltips: false,
+//			dataSortOrder: "none",
+//			hideLabelsForSmallSegments: false,
+//			hideLabelsForSmallSegmentSize: "5%",
+//			preventTextSelection: true
+
 			classPrefix: "auto",
 			idPrefix: "auto",
-
 			dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
 			canvasPadding: {
 				top: 5,
@@ -79,7 +85,13 @@
 	// our constructor
 	function d3pie(element, options) {
 		this.element = element;
+		console.log(options)
+		return;
+
 		this.options = $.extend(true, {}, _defaultSettings, options);
+
+		console.log(this.options);
+		return;
 
 		// confirm d3 is available [check minimum version]
 		if (!window.d3 || !window.d3.hasOwnProperty("version")) {
@@ -124,11 +136,16 @@
 
 
 	// this let's the user dynamically update
-	d3pie.prototype.updateProperty = function(prop, value) {
+	d3pie.prototype.updateProp = function(prop, value) {
 		switch (prop) {
 			case "title":
+				$("#title").html(value);
 				break;
 			case "subtitle":
+				$("#subtitle").html(value);
+				if (value === "") {
+
+				}
 				break;
 		}
 	};
