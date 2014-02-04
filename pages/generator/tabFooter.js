@@ -1,18 +1,18 @@
 define([
 	"constants",
 	"mediator",
-	"hbs!miscTabTemplate"
-], function(C, mediator, miscTabTemplate) {
+	"hbs!footerTabTemplate"
+], function(C, mediator, footerTabTemplate) {
 	"use strict";
 
-	var _MODULE_ID = "miscTab";
+	var _MODULE_ID = "footerTab";
 
 	var _init = function() {
 		mediator.register(_MODULE_ID);
 	};
 
 	var _render = function(config) {
-		$("#miscTab").html(miscTabTemplate({ config: config }));
+		$("#footerTab").html(footerTabTemplate({ config: config }));
 	};
 
 	var _getTabData = function() {

@@ -29,16 +29,22 @@ require.config({
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
+		// --- tabs ---
 		titleTab: "pages/generator/tabTitle",
 		titleTabTemplate: "pages/generator/tabTitleTemplate.hbs",
 
-		sizeTab: "pages/generator/tabSize.hbs",
+		sizeTab: "pages/generator/tabSize.js",
+		sizeTabTemplate: "pages/generator/tabSizeTemplate.hbs",
+
+		miscTab: "pages/generator/tabMisc.js",
+		miscTabTemplate: "pages/generator/tabMiscTemplate.hbs",
+
 		dataTab: "pages/generator/tabData.hbs",
 		labelsTab: "pages/generator/tabLabels.hbs",
 		footerTab: "pages/generator/tabFooter.hbs",
 		colorTab: "pages/generator/tabColors.hbs",
 		effectsTab: "pages/generator/tabEffects.hbs",
-		eventsTab: "pages/generator/tabEvents.hbs",
-		miscTab: "pages/generator/tabMisc.hbs"
+		eventsTab: "pages/generator/tabEvents.hbs"
+
 	}
 });

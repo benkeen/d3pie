@@ -5,19 +5,20 @@ define([
 	"constants",
 	"mediator",
 	"titleTab",
+	"sizeTab",
+	"miscTab",
 	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate",
-	"hbs!sizeTab",
 	"hbs!dataTab",
 	"hbs!labelsTab",
 	"hbs!colorTab",
 	"hbs!effectsTab",
 	"hbs!eventsTab",
 	"hbs!footerTab",
-	"hbs!miscTab"
-], function(C, mediator, titleTab, examplePiesTemplate, generatorPageTemplate, sizeTab, dataTab, labelsTab, colorTab,
-			effectsTab, eventsTab, footerTab, miscTab) {
+], function(C, mediator, titleTab, sizeTab, miscTab, examplePiesTemplate, generatorPageTemplate, dataTab, labelsTab, colorTab,
+			effectsTab, eventsTab, footerTab) {
 	"use strict";
+
 
 	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
@@ -42,7 +43,6 @@ define([
 		mediator.register(_MODULE_ID);
 
 		titleTab.init();
-
 
 		$("#generatorPage").html(generatorPageTemplate({
 			examples: examplePiesTemplate({ examples: C.EXAMPLE_PIES })
@@ -90,17 +90,6 @@ define([
 		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
-
-		// 2. size tab
-		$("#showCanvasOutline").on("click", function(e) {
-			if (e.target.checked) {
-				$("#generatorPieChart").addClass("showOutline");
-			} else {
-				$("#generatorPieChart").removeClass("showOutline");
-			}
-		});
-		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
-		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
 
 		// 4. labels tab
 		$("#labelColorGroup").colorpicker();
@@ -157,16 +146,6 @@ define([
 			_previousBackgroundColor = newValue;
 		}
 		_backgroundColorManuallyChanged = false;
-	};
-
-	var _onChangeInnerRadius = function(e) {
-		$("#pieInnerRadiusDisplayValue").html(e.target.value + "%");
-		_renderWithNoAnimation();
-	};
-
-	var _onChangeOuterRadius = function(e) {
-		$("#pieOuterRadiusDisplayValue").html(e.target.value + "%");
-		_renderWithNoAnimation();
 	};
 
 	var _onKeyupNumberFieldUpdateNoAnimation = function(e) {

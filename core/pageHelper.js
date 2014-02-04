@@ -1,7 +1,7 @@
 define([], function() {
 	"use strict";
 
-	var _selectPage = function() {
+	var _selectPage = function(page) {
 
 	};
 
