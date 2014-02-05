@@ -86,12 +86,8 @@
 	function d3pie(element, options) {
 		this.element = element;
 		console.log(options)
-		return;
 
 		this.options = $.extend(true, {}, _defaultSettings, options);
-
-		console.log(this.options);
-		return;
 
 		// confirm d3 is available [check minimum version]
 		if (!window.d3 || !window.d3.hasOwnProperty("version")) {

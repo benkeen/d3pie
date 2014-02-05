@@ -16,11 +16,6 @@ define([
 	var _subtitleColorManuallyChanged = null;
 
 
-	var _init = function() {
-		mediator.register(_MODULE_ID);
-	};
-
-
 	var _render = function(config) {
 		$("#titleTab").html(titleTabTemplate({ config: config }));
 
@@ -111,8 +106,9 @@ define([
 	};
 
 
+	mediator.register(_MODULE_ID);
+
 	return {
-		init: _init,
 		render: _render,
 		getTabData: _getTabData
 	};

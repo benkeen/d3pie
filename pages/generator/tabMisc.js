@@ -7,22 +7,27 @@ define([
 
 	var _MODULE_ID = "miscTab";
 
-	var _init = function() {
-		mediator.register(_MODULE_ID);
-	};
-
 	var _render = function(config) {
 		$("#miscTab").html(miscTabTemplate({ config: config }));
 	};
 
 	var _getTabData = function() {
-		return {
+		// TODO validation
 
+		return {
+			dataSortOrder: $("#dataSortOrder").val(),
+			canvasPadding: {
+				top: parseInt($("#canvasPaddingTop").val(), 10),
+				right: parseInt($("#canvasPaddingRight").val(), 10),
+				bottom: parseInt($("#canvasPaddingBottom").val(), 10),
+				left: parseInt($("#canvasPaddingLeft").val(), 10)
+			}
 		};
 	};
 
+	mediator.register(_MODULE_ID);
+
 	return {
-		init: _init,
 		render: _render,
 		getTabData: _getTabData
 	};

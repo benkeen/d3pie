@@ -7,9 +7,6 @@ define([
 
 	var _MODULE_ID = "eventsTab";
 
-	var _init = function() {
-		mediator.register(_MODULE_ID);
-	};
 
 	var _render = function(config) {
 		$("#eventsTab").html(eventsTabTemplate({ config: config }));
@@ -21,8 +18,9 @@ define([
 		};
 	};
 
+	mediator.register(_MODULE_ID);
+
 	return {
-		init: _init,
 		render: _render,
 		getTabData: _getTabData
 	};

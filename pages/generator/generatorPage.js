@@ -6,31 +6,23 @@ define([
 	"mediator",
 	"titleTab",
 	"sizeTab",
+	"dataTab",
+	"colorsTab",
+	"labelsTab",
+	"footerTab",
+	"effectsTab",
+	"eventsTab",
 	"miscTab",
 	"hbs!examplePiesTemplate",
-	"hbs!generatorPageTemplate",
-	"hbs!dataTab",
-	"hbs!labelsTab",
-	"hbs!colorTab",
-	"hbs!effectsTab",
-	"hbs!eventsTab",
-	"hbs!footerTab",
-], function(C, mediator, titleTab, sizeTab, miscTab, examplePiesTemplate, generatorPageTemplate, dataTab, labelsTab, colorTab,
-			effectsTab, eventsTab, footerTab) {
+	"hbs!generatorPageTemplate"
+], function(C, mediator, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab, miscTab,
+			examplePiesTemplate, generatorPageTemplate) {
 	"use strict";
 
 
 	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
-
-	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
-	var _previousFooterText = null;
-
-	var _previousFooterColor = null;
-	var _previousBackgroundColor = null;
-
-	var _footerColorManuallyChanged = null;
-	var _backgroundColorManuallyChanged = null;
+	var _demoD3Pie = null;
 
 
 	/**
@@ -38,11 +30,6 @@ define([
 	 * @private
 	 */
 	var _init = function() {
-
-		// register the current module
-		mediator.register(_MODULE_ID);
-
-		titleTab.init();
 
 		$("#generatorPage").html(generatorPageTemplate({
 			examples: examplePiesTemplate({ examples: C.EXAMPLE_PIES })
@@ -59,19 +46,9 @@ define([
 			_loadDemoPie(C.EXAMPLE_PIES[index]);
 		});
 
-		$("#deleteColorZone").sortable({
-			connectWith: "#segmentColors",
-			over: function() {
-				console.log("....");
-			}
-		});
-
-		$("#addColorLink").on("click", function(e) {
-			e.preventDefault();
-		});
-
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
+
 
 		var subscriptions = {};
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION]   = _renderWithNoAnimation;
@@ -90,62 +67,6 @@ define([
 		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
-
-		// 4. labels tab
-		$("#labelColorGroup").colorpicker();
-		$("#labelPercentageColorGroup").colorpicker();
-		$("#labelSegmentValueColor").colorpicker();
-
-		$("#labelFormatExample").on("change", function() {
-			$("#labelFormat").val(this.value);
-		});
-
-		// 5. Color tab
-		$("#backgroundColorGroup").colorpicker().on("changeColor", _onBackgroundColorChangeViaColorPicker);
-		$("#segmentColors").sortable({
-			handle: ".handle",
-			connectWith: "#deleteColorZone",
-			update: _renderWithNoAnimation
-		});
-
-		// 6. Effects tab
-		$("#loadEffect").on("change", _renderWithAnimation);
-
-		// Footer tab
-		$("#footerText").on("keyup", function() {
-			if (_previousFooterText !== this.value) {
-				_renderWithNoAnimation();
-				_previousFooterText = this.value;
-			}
-		});
-
-		$("#footerColor").on("input", function() {
-			var newValue = this.value;
-			_footerColorManuallyChanged = true;
-			if (_previousTitleColor !== newValue && newValue.length === 7) {
-				_renderWithNoAnimation();
-				_previousTitleColor = newValue;
-			}
-		});
-		$("#footerColorGroup").colorpicker().on("changeColor", _onFooterColorChangeViaColorpicker);
-	};
-
-	var _onFooterColorChangeViaColorpicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousFooterColor !== newValue && newValue.length === 7 && !_footerColorManuallyChanged) {
-			_renderWithNoAnimation();
-			_previousFooterColor = newValue;
-		}
-		_footerColorManuallyChanged = false;
-	};
-
-	var _onBackgroundColorChangeViaColorPicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousBackgroundColor !== newValue && newValue.length === 7 && !_backgroundColorManuallyChanged) {
-			_renderWithNoAnimation();
-			_previousBackgroundColor = newValue;
-		}
-		_backgroundColorManuallyChanged = false;
 	};
 
 	var _onKeyupNumberFieldUpdateNoAnimation = function(e) {
@@ -170,6 +91,7 @@ define([
 	};
 
 	var _updateProperty = function(msg) {
+		//console.log(_demoD3Pie);
 		$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
 	};
 
@@ -186,7 +108,7 @@ define([
 			$("#generatorPieChart").data("d3pie").destroy();
 		}
 
-		$("#generatorPieChart").d3pie(config);
+		_demoD3Pie = $("#generatorPieChart").d3pie(config);
 		_isCreated = true;
 	};
 
@@ -198,138 +120,40 @@ define([
 	var _getConfigObject = function() {
 		return {
 			header:  titleTab.getTabData(),
-			footer:  _getFooterTabData(),
-			size:    _getSizeData(),
-			data:    _getDataTabData(),
-			labels:  _getLabelsTabData(),
-			styles:  _getStylesTabData(),
-			effects: _getEffectsTabData(),
+			footer:  footerTab.getTabData(),
+			size:    sizeTab.getTabData(),
+			data:    dataTab.getTabData(),
+			labels:  labelsTab.getTabData(),
+			styles:  colorsTab.getTabData(),
+			effects: effectsTab.getTabData(),
 			misc:    miscTab.getTabData()
 		};
 	};
 
-
-	var _getSizeData = function() {
-		return {
-			canvasWidth:    $("#canvasWidth").val(),
-			canvasHeight:   $("#canvasHeight").val(),
-			pieInnerRadius: $("#pieInnerRadius").val() + "%",
-			pieOuterRadius: $("#pieOuterRadius").val() + "%"
-		};
-	};
-
-	var _getDataTabData = function() {
-		var data = [];
-		var trs = $("#data-table tbody tr");
-		for (var i=0; i<trs.length; i++) {
-			data.push({
-				label:   $(trs[i]).find(".dataLabel").val(),
-				value:   parseInt($(trs[i]).find(".dataValue").val(), 10), // TODO - need validation
-				tooltip: $(trs[i]).find(".dataTooltip").val()
-			})
-		}
-		return data;
-	};
-
-	var _getLabelsTabData = function() {
-		return {
-			location: $("#labelLocation").val(),
-			format:   $("#labelFormat").val(),
-//			enableTooltips: $("#enableTooltips")[0].checked,
-			labelColor: $("#labelColor").val(),
-			labelPercentageColor: $("#labelPercentageColor").val(),
-			labelSegmentValueColor: $("#labelSegmentValueColor").val()
-		};
-	};
-
-	var _getFooterTabData = function() {
-		return {
-			text:     $("#footerText").val(),
-			color:    $("#footerColor").val(),
-			fontSize: $("#footerFontSize").val(),
-			font:     $("#footerFont").val(),
-			location: $("#footerLocation").val()
-		};
-	};
-
-	var _getStylesTabData = function() {
-		var colors = [];
-
-		var colorElements = $("#segmentColors").find("span.color");
-		for (var i=0; i<colorElements.length; i++) {
-			colors.push(_rgb2hex($(colorElements[i]).css("background-color")));
-		}
-		return {
-			pieInnerRadius: $("#pieInnerRadius").val() + "%",
-			backgroundColor: null,
-			colors: colors
-		};
-	};
-
-	var _getEffectsTabData = function() {
-		return {
-			loadEffect: $("#loadEffect").val(),
-			loadEffectSpeed: $("#loadEffectSpeed").val(),
-			highlightSegmentOnMouseover: $("#highlightSegmentOnMouseover")[0].checked,
-			pullOutSegmentOnClick: $("#pullOutSegmentOnClick")[0].checked,
-			labelFadeInTime: 400
-		};
-	};
-
-	var _getMiscTabData = function() {
-
-		// TODO validation
-
-		return {
-			dataSortOrder: $("#dataSortOrder").val(),
-			canvasPadding: {
-				top: parseInt($("#canvasPaddingTop").val(), 10),
-				right: parseInt($("#canvasPaddingRight").val(), 10),
-				bottom: parseInt($("#canvasPaddingBottom").val(), 10),
-				left: parseInt($("#canvasPaddingLeft").val(), 10)
-			}
-		};
-	};
 
 	var _loadDemoPie = function(pieConfiguration) {
 		var config = pieConfiguration.config;
 
 		// render the generator tabs
 		titleTab.render(config);
-
-		$("#sizeTab").html(sizeTab({ config: config }));
-		$("#dataTab").html(dataTab({ config: config }));
-		$("#labelsTab").html(labelsTab({ config: config }));
-		$("#footerTab").html(footerTab({ config: config }));
-		$("#colorTab").html(colorTab({ config: config }));
-		$("#effectsTab").html(effectsTab({ config: config }));
-		$("#eventsTab").html(eventsTab({ config: config }));
-		$("#miscTab").html(miscTab({ config: config }));
-
-		// log the state of various fields
-
-		_previousFooterText = config.footer.text;
+		sizeTab.render(config);
+		dataTab.render(config);
+		colorsTab.render(config);
+		labelsTab.render(config);
+		footerTab.render(config);
+		effectsTab.render(config);
+		eventsTab.render(config);
+		miscTab.render(config);
 
 		// render the pie!
 		_renderWithAnimation();
 
-		// always add the event handlers. This is because the tabs are recreated every time this function is
-		// called
+		// always add the event handlers. This is because the tab content is recreated every time this function is called
 		_addTabEventHandlers();
 	};
 
 
-	var _rgb2hex = function(rgb) {
-		function hex(x) {
-			return ("0" + parseInt(x).toString(16)).slice(-2);
-		}
-		if (  rgb.search("rgb") == -1 ) {
-			return rgb;
-		} else {
-			rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-			return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-		}
-	}
+	mediator.register(_MODULE_ID);
 
 	return {
 		init: _init

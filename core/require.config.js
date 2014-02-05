@@ -33,18 +33,29 @@ require.config({
 		titleTab: "pages/generator/tabTitle",
 		titleTabTemplate: "pages/generator/tabTitleTemplate.hbs",
 
-		sizeTab: "pages/generator/tabSize.js",
+		sizeTab: "pages/generator/tabSize",
 		sizeTabTemplate: "pages/generator/tabSizeTemplate.hbs",
 
-		miscTab: "pages/generator/tabMisc.js",
+		miscTab: "pages/generator/tabMisc",
 		miscTabTemplate: "pages/generator/tabMiscTemplate.hbs",
 
-		dataTab: "pages/generator/tabData.hbs",
-		labelsTab: "pages/generator/tabLabels.hbs",
-		footerTab: "pages/generator/tabFooter.hbs",
-		colorTab: "pages/generator/tabColors.hbs",
-		effectsTab: "pages/generator/tabEffects.hbs",
-		eventsTab: "pages/generator/tabEvents.hbs"
+		dataTab: "pages/generator/tabData",
+		dataTabTemplate: "pages/generator/tabDataTemplate.hbs",
+
+		labelsTab: "pages/generator/tabLabels",
+		labelsTabTemplate: "pages/generator/tabLabelsTemplate.hbs",
+
+		footerTab: "pages/generator/tabFooter",
+		footerTabTemplate: "pages/generator/tabFooterTemplate.hbs",
+
+		colorsTab: "pages/generator/tabColors",
+		colorsTabTemplate: "pages/generator/tabColorsTemplate.hbs",
+
+		effectsTab: "pages/generator/tabEffects",
+		effectsTabTemplate: "pages/generator/tabEffectsTemplate.hbs",
+
+		eventsTab: "pages/generator/tabEvents",
+		eventsTabTemplate: "pages/generator/tabEventsTemplate.hbs"
 
 	}
 });

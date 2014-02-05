@@ -7,14 +7,10 @@ define([
 
 	var _MODULE_ID = "sizeTab";
 
-	var _init = function() {
-		mediator.register(_MODULE_ID);
-	};
 
 	var _render = function(config) {
 		$("#sizeTab").html(sizeTabTemplate({ config: config }));
 
-		// 2. size tab
 		$("#showCanvasOutline").on("click", function(e) {
 			if (e.target.checked) {
 				$("#generatorPieChart").addClass("showOutline");
@@ -28,22 +24,26 @@ define([
 
 	var _onChangeInnerRadius = function(e) {
 		$("#pieInnerRadiusDisplayValue").html(e.target.value + "%");
-		_renderWithNoAnimation();
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
 	var _onChangeOuterRadius = function(e) {
 		$("#pieOuterRadiusDisplayValue").html(e.target.value + "%");
-		_renderWithNoAnimation();
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
 	var _getTabData = function() {
 		return {
-
+			canvasWidth:    $("#canvasWidth").val(),
+			canvasHeight:   $("#canvasHeight").val(),
+			pieInnerRadius: $("#pieInnerRadius").val() + "%",
+			pieOuterRadius: $("#pieOuterRadius").val() + "%"
 		};
 	};
 
+	mediator.register(_MODULE_ID);
+
 	return {
-		init: _init,
 		render: _render,
 		getTabData: _getTabData
 	};
