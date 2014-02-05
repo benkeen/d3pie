@@ -2,7 +2,8 @@ define([], function() {
 
 	var C = {
 		VERSION: "0.1.0",
-		MINIFIED: false // move entirely to grunt?
+		MINIFIED: false,
+		DEBUG: true
 	};
 
 	// example pie charts
@@ -62,11 +63,22 @@ define([], function() {
 					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121", "#830909", "#923e99", "#ae83d5"]
 				},
 				effects: {
-					loadEffect: "default", //  none / default
-					loadEffectSpeed: 1000,
+					load: {
+						effect: "default", // none / default
+						speed: 1000
+					},
+					pullOutSegmentOnClick: {
+						effect: "linear", // none / linear / bounce /
+						speed: 400
+					},
 					highlightSegmentOnMouseover: true,
-					pullOutSegmentOnClick: true,
 					labelFadeInTime: 400
+				},
+				callbacks: {
+					onload: "function() { console.log(\"pie chart loaded.\"); }",
+					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
+					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
+					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
 					enableTooltips: false,
@@ -81,13 +93,6 @@ define([], function() {
 					},
 					preventTextSelection: true
 				}
-			}
-		},
-
-		{
-			label: "BC Birds I Have Yet To See",
-			config: {
-
 			}
 		},
 
@@ -142,18 +147,36 @@ define([], function() {
 					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#a61111", "#923e99", "#ae83d5"]
 				},
 				effects: {
-					loadEffect: "default",
-					loadEffectSpeed: 1000,
-					highlightSegmentOnMouseover: true,
-					pullOutSegmentOnClick: true,
-					labelFadeInTime: 400
+					load: {
+						effect: "default", // none / default
+						speed: 1000
+					},
+					pullOutSegmentOnClick: {
+						effect: "linear", // none / linear / bounce /
+						speed: 400
+					},
+
+					labelFadeInTime: 400,
+					highlightSegmentOnMouseover: true
+				},
+				callbacks: {
+					onload: "function() { console.log(\"pie chart loaded.\"); }",
+					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
+					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
+					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "none",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%",
-					preventTextSelection: true
+					preventTextSelection: true,
+					canvasPadding: {
+						top: 5,
+						right: 5,
+						bottom: 5,
+						left: 5
+					}
 				}
 			}
 		}

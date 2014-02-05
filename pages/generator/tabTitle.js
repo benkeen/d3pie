@@ -24,11 +24,10 @@ define([
 		_previousTitleColor = config.header.title.color;
 		_previousSubtitleColor = config.header.subtitle.text;
 
-		// 1. Title tab
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
-					prop: "title",
+					prop: "header.title.text",
 					value: this.value
 				});
 				_previousTitle = this.value;
@@ -37,7 +36,7 @@ define([
 		$("#pieSubtitle").on("keyup", function() {
 			if (_previousSubtitle !== this.value) {
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
-					prop: "subtitle",
+					prop: "header.subtitle.text",
 					value: this.value
 				});
 				_previousSubtitle = this.value;

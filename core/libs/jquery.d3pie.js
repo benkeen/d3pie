@@ -48,10 +48,16 @@
 			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 		},
 		effects: {
-			loadEffect: "none",
-			loadEffectSpeed: 1000,
+			load: {
+				effect: "default", // none / default
+				speed: 1000
+			},
+			pullOutSegmentOnClick: {
+				effect: "linear", // none / linear / bounce /
+				speed: 400
+			},
+
 			highlightSegmentOnMouseover: false,
-			pullOutSegmentOnClick: false,
 			labelFadeInTime: 400
 		},
 		tooltips: {
@@ -85,8 +91,6 @@
 	// our constructor
 	function d3pie(element, options) {
 		this.element = element;
-		console.log(options)
-
 		this.options = $.extend(true, {}, _defaultSettings, options);
 
 		// confirm d3 is available [check minimum version]
@@ -127,24 +131,40 @@
 		$(this.element).html("");
 
 		// what the heck
-		delete this.options;
+		//delete this.options;
 	};
 
+	d3pie.prototype.recreate = function() {
+		$(this.element).html("");
+		this.init();
+	};
 
-	// this let's the user dynamically update
-	d3pie.prototype.updateProp = function(prop, value) {
-		switch (prop) {
-			case "title":
+	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
+	// intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
+	// just redraw the single element
+	d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
+
+		switch (propKey) {
+			case "header.title.text":
+				var oldValue = _processObj(this.options, propKey);
+				_processObj(this.options, propKey, value);
 				$("#title").html(value);
+				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
+					this.recreate();
+				}
 				break;
-			case "subtitle":
-				$("#subtitle").html(value);
-				if (value === "") {
 
+			case "header.subtitle.text":
+				var oldValue = _processObj(this.options, propKey);
+				_processObj(this.options, propKey, value);
+				$("#subtitle").html(value);
+				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
+					this.recreate();
 				}
 				break;
 		}
 	};
+
 
 
 	// ----- private functions -----
@@ -229,7 +249,7 @@
 			_addFilter();
 			_addLabels();
 			_addSegmentEventHandlers();
-		}, 10);
+		}, 5);
 	};
 
 	// creates the SVG element
@@ -395,7 +415,8 @@
 		}
 
 		d3.select(segment).transition()
-			.duration(400)
+			.ease(_options.effects.pullOutSegmentOnClick.effect)
+			.duration(_options.effects.pullOutSegmentOnClick.speed)
 			.attr("transform", function(d, i) {
 				var c = _arc.centroid(d),
 					x = c[0],
@@ -470,8 +491,9 @@
 			});
 
 		// if we're not fading in the pie, just set the load speed to 0
-		if (_options.effects.loadEffect !== "default") {
-			_options.effects.loadEffectSpeed = 0;
+		var loadSpeed = _options.effects.load.speed;
+		if (_options.effects.load.effect === "none") {
+			loadSpeed = 0;
 		}
 
 		g.append("path")
@@ -481,7 +503,7 @@
 			.style("stroke-width", 1)
 			.transition()
 			.ease("cubic-in-out")
-			.duration(_options.effects.loadEffectSpeed)
+			.duration(loadSpeed)
 			.attrTween("d", _arcTween);
 
 		_svg.selectAll("g.arc")
@@ -552,9 +574,9 @@
 		*/
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
-		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;
+		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
 		setTimeout(function() {
-			var labelFadeInTime = (_options.effects.loadEffect === "default") ? _options.effects.labelFadeInTime : 1;
+			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
 			d3.selectAll("text.segmentLabel")
 				.transition()
 				.duration(labelFadeInTime)
@@ -702,9 +724,9 @@
 			.attr("fill", "none");
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
-		var loadSpeed = (_options.effects.loadEffect === "default") ? _options.effects.loadEffectSpeed : 1;
+		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
 		setTimeout(function() {
-			var labelFadeInTime = (_options.effects.loadEffect === "default") ? _options.effects.labelFadeInTime : 1;
+			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
 			d3.selectAll("g.lineGroups")
 				.transition()
 				.duration(labelFadeInTime)
@@ -713,7 +735,7 @@
 	};
 
 	var _addSegmentEventHandlers = function() {
-		if (!_options.effects.pullOutSegmentOnClick) {
+		if (_options.effects.pullOutSegmentOnClick.effect === "none") {
 			return;
 		}
 
@@ -824,5 +846,17 @@
 		//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
 	};
 
+
+	var _processObj = function(obj, is, value) {
+		if (typeof is == 'string') {
+			return _processObj(obj, is.split('.'), value);
+		} else if (is.length == 1 && value !== undefined) {
+			return obj[is[0]] = value;
+		} else if (is.length == 0) {
+			return obj;
+		} else {
+			return _processObj(obj[is[0]], is.slice(1), value);
+		}
+	};
 
 })(jQuery, window, document);

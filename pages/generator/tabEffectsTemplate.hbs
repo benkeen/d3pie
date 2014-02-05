@@ -2,39 +2,60 @@
 	<h4>Cool Effects</h4>
 </div>
 
-<div class="row">
+<div class="row" style="border-bottom: 1px solid #dddddd">
 	<div class="col-md-6">
 		<label for="loadEffect" class="control-label">Load effect</label>
 		<div class="form-group padRight30">
 			<select id="loadEffect" class="form-control">
-				<option value="none" {{#compare config.effects.loadEffect "none"}}selected="selected"{{/compare}}>None</option>
-				<option value="default" {{#compare config.effects.loadEffect "default"}}selected="selected"{{/compare}}>Default</option>
+				<option value="none" {{#compare config.effects.load.effect "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="default" {{#compare config.effects.load.effect "default"}}selected="selected"{{/compare}}>Default</option>
+				<!-- <option value="fadein" {{#compare config.effects.load.effect "fadein"}}selected="selected"{{/compare}}>Fade-in</option> -->
 			</select>
 		</div>
 	</div>
-	<div class="col-md-6">
-		<label for="loadEffectSpeed" class="control-label">Load effect speed</label>
+	<div class="col-md-4">
+		<label for="loadEffectSpeed" class="control-label">Speed</label>
 		<div class="form-group padRight30">
-			<input type="text" id="loadEffectSpeed" class="form-control" value="{{config.effects.loadEffectSpeed}}" />
+			<input type="number" id="loadEffectSpeed" class="form-control ib smallField" value="{{config.effects.load.speed}}" />
 			<label>ms</label>
 		</div>
 	</div>
+	<div class="col-md-2">
+		<label>&nbsp;</label>
+		<button id="pieSegmentClickEffectBtn" class="btn btn-xs btn-primary btn-info">View &raquo;</button>
+	</div>
 </div>
+
+<div class="row" style="border-bottom: 1px solid #dddddd">
+	<div class="col-md-6">
+		<label for="pullOutSegmentOnClick" class="control-label">Pie segment click effect</label>
+		<div class="form-group padRight30">
+			<select id="pullOutSegmentOnClickEffect" class="form-control">
+				<option value="none" {{#compare config.effects.pullOutSegmentOnClick.effect "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="linear" {{#compare config.effects.pullOutSegmentOnClick.effect "linear"}}selected="selected"{{/compare}}>Linear</option>
+				<option value="elastic" {{#compare config.effects.pullOutSegmentOnClick.effect "elastic"}}selected="selected"{{/compare}}>Elastic</option>
+				<option value="bounce" {{#compare config.effects.pullOutSegmentOnClick.effect "bounce"}}selected="selected"{{/compare}}>Bounce</option>
+				<option value="back" {{#compare config.effects.pullOutSegmentOnClick.effect "back"}}selected="selected"{{/compare}}>Backing in</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<label for="loadEffectSpeed" class="control-label">Speed</label>
+		<div class="form-group padRight30">
+			<input type="number" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib smallField" value="{{config.effects.pullOutSegmentOnClick.speed}}" />
+			<label>ms</label>
+		</div>
+	</div>
+
+	<div class="col-md-2">
+		<label>&nbsp;</label>
+		<button class="btn btn-xs btn-primary btn-info">View &raquo;</button>
+	</div>
+</div>
+
 
 <div class="row col-lg-12 form-group">
 	<input type="checkbox" id="highlightSegmentOnMouseover" {{#compare config.effects.highlightSegmentOnMouseover true}}checked="checked"{{/compare}} />
 	<label for="highlightSegmentOnMouseover" class="control-label">Highlight pie segment on mouseover</label>
-</div>
-
-<div class="row col-lg-12 form-group">
-	<input type="checkbox" id="pullOutSegmentOnClick" {{#compare config.effects.pullOutSegmentOnClick true}}checked="checked"{{/compare}} />
-	<label for="pullOutSegmentOnClick" class="control-label">Pull out pie segment on click. Motion effect:</label>
-	<select class="form-control">
-		<option>Linear</option>
-		<option>Linear</option>
-		<option>Linear</option>
-		<option>Linear</option>
-		<option>Linear</option>
-	</select>
-	<!-- segment pull-out transition effect -->
 </div>

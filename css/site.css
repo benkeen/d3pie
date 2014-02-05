@@ -50,10 +50,6 @@
 	width: 70px;
 	display: inline-block;
 }
-#loadEffectSpeed {
-	width:60px;
-	display: inline-block;
-}
 #pieInnerRadius, #pieOuterRadius {
 	width: 100%;
 }
