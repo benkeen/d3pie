@@ -3,7 +3,7 @@ define([], function() {
 	var C = {
 		VERSION: "0.1.0",
 		MINIFIED: false,
-		DEBUG: true
+		DEBUG: false
 	};
 
 	// example pie charts
@@ -159,12 +159,6 @@ define([], function() {
 					labelFadeInTime: 400,
 					highlightSegmentOnMouseover: true
 				},
-				callbacks: {
-					onload: "function() { console.log(\"pie chart loaded.\"); }",
-					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
-					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
-					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
-				},
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "none",
@@ -181,6 +175,9 @@ define([], function() {
 			}
 		}
 	];
+
+	// people's favourite pie flavours
+
 
 	C.PALETTES = [
 		{

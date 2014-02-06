@@ -157,3 +157,11 @@ body .colorGroup {
 #sortableDataListHeader {
 
 }
+
+.callbackCode {
+	font-size: 12px;
+	color: green;
+}
+body .disabledText {
+	color: #cccccc;
+}

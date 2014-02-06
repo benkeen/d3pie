@@ -19,7 +19,6 @@ define([
 			examplePiesTemplate, generatorPageTemplate) {
 	"use strict";
 
-
 	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
 	var _demoD3Pie = null;
@@ -91,7 +90,7 @@ define([
 	};
 
 	var _updateProperty = function(msg) {
-		//console.log(_demoD3Pie);
+		//_demoD3Pie.updateProp(msg.data.prop, msg.data.value);
 		$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
 	};
 
@@ -119,14 +118,15 @@ define([
 	 */
 	var _getConfigObject = function() {
 		return {
-			header:  titleTab.getTabData(),
-			footer:  footerTab.getTabData(),
-			size:    sizeTab.getTabData(),
-			data:    dataTab.getTabData(),
-			labels:  labelsTab.getTabData(),
-			styles:  colorsTab.getTabData(),
-			effects: effectsTab.getTabData(),
-			misc:    miscTab.getTabData()
+			header:    titleTab.getTabData(),
+			footer:    footerTab.getTabData(),
+			size:      sizeTab.getTabData(),
+			data:      dataTab.getTabData(),
+			labels:    labelsTab.getTabData(),
+			styles:    colorsTab.getTabData(),
+			effects:   effectsTab.getTabData(),
+			callbacks: eventsTab.getTabData(),
+			misc:      miscTab.getTabData()
 		};
 	};
 

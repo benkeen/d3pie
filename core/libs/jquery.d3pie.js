@@ -63,8 +63,13 @@
 		tooltips: {
 			enable: false
 		},
+		callbacks: {
+			onload: null,
+			onMouseoverSegment: null,
+			onMouseoutSegment: null,
+			onClickSegment: null
+		},
 		misc: {
-
 //			enableTooltips: false,
 //			dataSortOrder: "none",
 //			hideLabelsForSmallSegments: false,
@@ -123,14 +128,8 @@
 	// ----- public functions -----
 
 	d3pie.prototype.destroy = function() {
-
-		// remove the data attr
-		$(this.element).removeData(_pluginName);
-
-		// clear out the SVG
-		$(this.element).html("");
-
-		// what the heck
+		$(this.element).removeData(_pluginName); // remove the data attr
+		$(this.element).html(""); // clear out the SVG
 		//delete this.options;
 	};
 
@@ -162,7 +161,16 @@
 					this.recreate();
 				}
 				break;
+
+			case "callbacks.onload":
+			case "callbacks.onMouseoverSegment":
+			case "callbacks.onMouseoutSegment":
+			case "callbacks.onClickSegment":
+				_processObj(this.options, propKey, value);
+				break;
 		}
+
+		console.log(this.options);
 	};
 
 
@@ -581,6 +589,18 @@
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
+
+			// once everything's done loading, trigger any onload callback
+			console.log(_options.callbacks);
+
+			if ($.isFunction(_options.callbacks.onload)) {
+				setTimeout(function() {
+					try {
+						_options.callbacks.onload();
+					} catch (e) { }
+				}, labelFadeInTime);
+			}
+
 		}, loadSpeed);
 
 

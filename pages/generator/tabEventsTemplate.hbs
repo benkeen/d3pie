@@ -5,48 +5,48 @@
 
 <div class="row">
 	<div class="col-md-4">
-		<input type="checkbox" />
-		<label for="event" class="control-label">Onload</label>
+		<input type="checkbox" class="callbackCheckbox" id="callbacksOnloadEnabled" data-prop="callbacks.onload" />
+		<label for="callbacksOnloadEnabled" class="control-label">Onload</label>
 	</div>
 	<div class="col-md-8">
 		<div class="form-group">
-			<input type="text" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib" value="function() { console.log(\"loaded.\"; }" />
+			<span class="callbackCode disabledText">{{config.callbacks.onload}}</span>
 		</div>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-4">
-		<input type="checkbox" />
-		<label for="event" class="control-label">Segment mouseover</label>
+		<input type="checkbox" class="callbackCheckbox" id="callbacksSegmentMouseoverEnabled" data-prop="callbacks.onMouseoverSegment" />
+		<label for="callbacksSegmentMouseoverEnabled" class="control-label">Segment mouseover</label>
 	</div>
 	<div class="col-md-8">
 		<div class="form-group">
-			<input type="text" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib" value="" />
+			<span class="callbackCode disabledText">{{config.callbacks.onMouseoverSegment}}</span>
 		</div>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-4">
-		<input type="checkbox" />
-		<label for="event" class="control-label">Segment mouseout</label>
+		<input type="checkbox" class="callbackCheckbox" id="callbacksSegmentMouseoutEnabled" data-prop="callbacks.onMouseoutSegment" />
+		<label for="callbacksSegmentMouseoutEnabled" class="control-label">Segment mouseout</label>
 	</div>
 	<div class="col-md-8">
 		<div class="form-group">
-			<input type="text" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib" value="" />
+			<span class="callbackCode disabledText">{{config.callbacks.onMouseoutSegment}}</span>
 		</div>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-4">
-		<input type="checkbox" />
-		<label for="event" class="control-label">Segment click</label>
+		<input type="checkbox" class="callbackCheckbox" id="callbacksSegmentClickEnabled" data-prop="callbacks.onClickSegment" />
+		<label for="callbacksSegmentClickEnabled" class="control-label">Segment click</label>
 	</div>
 	<div class="col-md-8">
 		<div class="form-group">
-			<input type="text" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib" value="" />
+			<span class="callbackCode disabledText">{{config.callbacks.onClickSegment}}</span>
 		</div>
 	</div>
 </div>
