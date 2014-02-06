@@ -91,6 +91,7 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
+					labelPieDistance: 40,
 					preventTextSelection: true
 				}
 			}
@@ -170,7 +171,8 @@ define([], function() {
 						right: 5,
 						bottom: 5,
 						left: 5
-					}
+					},
+					labelPieDistance: 16
 				}
 			}
 		}

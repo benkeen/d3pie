@@ -21,7 +21,8 @@ define([
 				right: parseInt($("#canvasPaddingRight").val(), 10),
 				bottom: parseInt($("#canvasPaddingBottom").val(), 10),
 				left: parseInt($("#canvasPaddingLeft").val(), 10)
-			}
+			},
+			labelPieDistance: parseInt($("#labelPieDistance").val(), 10)
 		};
 	};
 

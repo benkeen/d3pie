@@ -610,6 +610,7 @@
 	};
 
 
+	// this both adds the lines and positions the labels
 	var _addLabelLines = function() {
 		var lineMidPointDistance = _options.misc.labelPieDistance - (_options.misc.labelPieDistance / 4);
 		var circleCoordGroups = [];
