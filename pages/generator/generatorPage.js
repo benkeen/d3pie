@@ -4,6 +4,7 @@
 define([
 	"constants",
 	"mediator",
+
 	"titleTab",
 	"sizeTab",
 	"dataTab",
@@ -13,6 +14,7 @@ define([
 	"effectsTab",
 	"eventsTab",
 	"miscTab",
+
 	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate"
 ], function(C, mediator, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab, miscTab,
@@ -100,7 +102,7 @@ define([
 		// automatically showing the user's latest changes to the pie settings and not having to see the animation
 		// each and every time
 		if (!includeStartAnimation) {
-			config.effects.loadEffect = "none";
+			config.effects.load.effect = "none";
 		}
 
 		if (_isCreated) {

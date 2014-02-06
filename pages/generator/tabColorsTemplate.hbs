@@ -8,12 +8,14 @@
 
 <div class="row">
 	<div class="col-md-5">
-		<input type="radio" name="backgroundColor" value="transparent" {{#compare config.backgroundColor null operator="=="}}checked="checked"{{/compare}} />
+		<input type="radio" name="backgroundColor" id="backgroundColor1" value="transparent" style="float: left; margin-right: 8px"
+			value="transparent" {{#compare config.backgroundColor null operator="=="}}checked="checked"{{/compare}} />
 		<label for="backgroundColor" style="margin-left:5px">Transparent</label>
 	</div>
 	<div class="col-md-7">
 		<div class="form-group">
-			<input type="radio" name="backgroundColor" value="color" {{#compare config.backgroundColor null operator="!="}}checked="checked"{{/compare}} />
+			<input type="radio" name="backgroundColor" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
+				value="color" {{#compare config.backgroundColor null operator="!="}}checked="checked"{{/compare}} />
 			<div id="backgroundColorGroup" class="colorGroup input-group">
 				<input type="text" id="backgroundColor" value="{{config.backgroundColor}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>

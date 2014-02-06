@@ -262,7 +262,10 @@
 	var _addSVGSpace = function(element) {
 		_svg = d3.select(element).append("svg:svg")
 			.attr("width", _options.size.canvasWidth)
-			.attr("height", _options.size.canvasHeight);
+			.attr("height", _options.size.canvasHeight)
+			.style("background-color", function() {
+				return (_options.styles.backgroundColor === "transparent") ? "" : _options.styles.backgroundColor;
+			});
 	};
 
 	/**

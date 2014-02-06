@@ -37,6 +37,7 @@ define([
 	var _onBackgroundColorChangeViaColorPicker = function(e) {
 		var newValue = e.color.toHex();
 		if (_previousBackgroundColor !== newValue && newValue.length === 7 && !_backgroundColorManuallyChanged) {
+			$("#backgroundColor2")[0].checked = true;
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 			_previousBackgroundColor = newValue;
 		}
@@ -51,9 +52,15 @@ define([
 			colors.push(_rgb2hex($(colorElements[i]).css("background-color")));
 		}
 
+		var backgroundColor = null;
+		var selectedBackgroundColorType = $("input[name=backgroundColor]:checked").val();
+		if (selectedBackgroundColorType === "solid") {
+			backgroundColor = $("#backgroundColor").val();
+		}
+
 		return {
 			pieInnerRadius: $("#pieInnerRadius").val() + "%", // ???
-			backgroundColor: null,
+			backgroundColor: backgroundColor,
 			colors: colors
 		};
 	};
