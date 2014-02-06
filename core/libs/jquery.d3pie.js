@@ -169,8 +169,6 @@
 				_processObj(this.options, propKey, value);
 				break;
 		}
-
-		console.log(this.options);
 	};
 
 
@@ -512,6 +510,7 @@
 			.transition()
 			.ease("cubic-in-out")
 			.duration(loadSpeed)
+			.attr("data-index", function(d, i) { return i; })
 			.attrTween("d", _arcTween);
 
 		_svg.selectAll("g.arc")
@@ -590,9 +589,7 @@
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
 
-			// once everything's done loading, trigger any onload callback
-			console.log(_options.callbacks);
-
+			// once everything's done loading, trigger the onload callback if defined
 			if ($.isFunction(_options.callbacks.onload)) {
 				setTimeout(function() {
 					try {
@@ -755,21 +752,49 @@
 	};
 
 	var _addSegmentEventHandlers = function() {
-		if (_options.effects.pullOutSegmentOnClick.effect === "none") {
-			return;
-		}
 
 		$(".arc").on("click", function(e) {
 			var $segment = $(e.currentTarget).find("path");
+			var isExpanded = $segment.attr("class") === "expanded";
 
-			// TODO detect if it's currently moving here
+			_onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
 
-			if ($segment.attr("class") === "expanded") {
-				_closeSegment($segment[0]);
-			} else {
-				_openSegment($segment[0]);
+			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
+				if (isExpanded) {
+					_closeSegment($segment[0]);
+				} else {
+					_openSegment($segment[0]);
+				}
 			}
 		});
+
+		$(".arc").on("mouseover", function(e) {
+			var $segment = $(e.currentTarget).find("path");
+			var isExpanded = $segment.attr("class") === "expanded";
+			_onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
+		});
+
+		$(".arc").on("mouseout", function(e) {
+			var $segment = $(e.currentTarget).find("path");
+			var isExpanded = $segment.attr("class") === "expanded";
+			_onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
+		});
+	};
+
+	// helper function used to call the click, mouseover, mouseout segment callback functions
+	var _onSegmentEvent = function(func, $segment, isExpanded) {
+		if (!$.isFunction(func)) {
+			return;
+		}
+		try {
+			var index = parseInt($segment.data("index"), 10);
+			func({
+				segment: $segment[0],
+				index: index,
+				expanded: isExpanded,
+				data: _options.data[index]
+			});
+		} catch(e) { }
 	};
 
 	var _toRadians = function(degrees) {
