@@ -33,10 +33,14 @@ define([
 			}
 		});
 		$("input[name=backgroundColor]").on("change", function() {
-			console.log("...")
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.NO_ANIMATION);
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
+		$("#backgroundColor").on("focus", function() {
+			$("#backgroundColor2")[0].checked = true;
+			$("#backgroundColorGroup").colorpicker("show");
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
 	};
 
 	var _onBackgroundColorChangeViaColorPicker = function(e) {
@@ -59,19 +63,15 @@ define([
 
 		var backgroundColor = null;
 		var selectedBackgroundColorType = $("input[name=backgroundColor]:checked").val();
-		console.log("!", selectedBackgroundColorType);
-
 		if (selectedBackgroundColorType === "solid") {
 			backgroundColor = $("#backgroundColor").val();
 		}
 
 		return {
-			pieInnerRadius: $("#pieInnerRadius").val() + "%", // ???
 			backgroundColor: backgroundColor,
 			colors: colors
 		};
 	};
-
 
 
 	var _rgb2hex = function(rgb) {

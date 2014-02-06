@@ -4,7 +4,6 @@
 define([
 	"constants",
 	"mediator",
-
 	"titleTab",
 	"sizeTab",
 	"dataTab",
@@ -14,7 +13,6 @@ define([
 	"effectsTab",
 	"eventsTab",
 	"miscTab",
-
 	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate"
 ], function(C, mediator, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab, miscTab,
@@ -31,7 +29,6 @@ define([
 	 * @private
 	 */
 	var _init = function() {
-
 		$("#generatorPage").html(generatorPageTemplate({
 			examples: examplePiesTemplate({ examples: C.EXAMPLE_PIES })
 		}));
@@ -49,7 +46,6 @@ define([
 
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
-
 
 		var subscriptions = {};
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION]   = _renderWithNoAnimation;
