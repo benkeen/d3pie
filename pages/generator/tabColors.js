@@ -32,6 +32,11 @@ define([
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 			}
 		});
+		$("input[name=backgroundColor]").on("change", function() {
+			console.log("...")
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.NO_ANIMATION);
+		});
+
 	};
 
 	var _onBackgroundColorChangeViaColorPicker = function(e) {
@@ -54,6 +59,8 @@ define([
 
 		var backgroundColor = null;
 		var selectedBackgroundColorType = $("input[name=backgroundColor]:checked").val();
+		console.log("!", selectedBackgroundColorType);
+
 		if (selectedBackgroundColorType === "solid") {
 			backgroundColor = $("#backgroundColor").val();
 		}
