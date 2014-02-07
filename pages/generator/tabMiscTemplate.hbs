@@ -2,75 +2,78 @@
 	<h4>Padding</h4>
 </div>
 
-<div class="row">
-	<div class="col-lg-3">
-		<label>Canvas Top</label>
+<div class="misc">
+	<div class="row">
+		<div class="col-lg-3">
+			<label>Canvas Top</label>
+		</div>
+		<div class="col-lg-3">
+			<label>Canvas Right</label>
+		</div>
+		<div class="col-lg-3">
+			<label>Canvas Bottom</label>
+		</div>
+		<div class="col-lg-3">
+			<label>Canvas Left</label>
+		</div>
 	</div>
-	<div class="col-lg-3">
-		<label>Canvas Right</label>
+
+	<div class="row form-group">
+		<div class="col-lg-3">
+			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0" class="smallField updateNoAnimation" />
+		</div>
+		<div class="col-lg-3">
+			<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" min="0" class="smallField updateNoAnimation" />
+		</div>
+		<div class="col-lg-3">
+			<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" min="0" class="smallField updateNoAnimation" />
+		</div>
+		<div class="col-lg-3">
+			<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" min="0" class="smallField updateNoAnimation" />
+		</div>
 	</div>
-	<div class="col-lg-3">
-		<label>Canvas Bottom</label>
+
+
+	<div class="row">
+		<div class="col-lg-3">
+			<label>Footer-text pad</label>
+		</div>
+		<div class="col-lg-3">
+			<label>Label-pie dist.</label>
+		</div>
+		<div class="col-lg-3">
+			<label>Title-subtitle pad</label>
+		</div>
+		<div class="col-lg-3">
+		</div>
 	</div>
-	<div class="col-lg-3">
-		<label>Canvas Left</label>
+
+	<div class="row form-group">
+		<div class="col-lg-3">
+			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" class="smallField updateNoAnimation" />
+		</div>
+		<div class="col-lg-3">
+			<input type="number" id="labelPieDistance" value="{{config.misc.labelPieDistance}}" class="smallField updateNoAnimation" />
+		</div>
+		<div class="col-lg-3">
+			<input type="number" id="titleSubtitlePadding" value="{{config.misc.titleSubtitlePadding}}" class="smallField updateNoAnimation" />
+		</div>
+		<div class="col-lg-3">
+		</div>
 	</div>
+
+
+	<div class="row col-lg-12">
+		<h4>Misc</h4>
+	</div>
+
+
+	<div class="row col-lg-12 form-group">
+		<input type="checkbox" id="preventTextSection" {{#compare config.misc.preventTextSelection true}}checked="checked"{{/compare}} />
+		<label for="preventTextSection" class="control-label">Prevent selection of text</label>
+	</div>
+
 </div>
-
-<div class="row form-group">
-	<div class="col-lg-3">
-		<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0" class="smallField updateNoAnimation" />
-	</div>
-	<div class="col-lg-3">
-		<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" min="0" class="smallField updateNoAnimation" />
-	</div>
-	<div class="col-lg-3">
-		<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" min="0" class="smallField updateNoAnimation" />
-	</div>
-	<div class="col-lg-3">
-		<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" min="0" class="smallField updateNoAnimation" />
-	</div>
-</div>
-
-
-<div class="row">
-	<div class="col-lg-3">
-		<label>Footer-text pad</label>
-	</div>
-	<div class="col-lg-3">
-		<label>Label-pie dist.</label>
-	</div>
-	<div class="col-lg-3">
-	</div>
-	<div class="col-lg-3">
-	</div>
-</div>
-
-<div class="row form-group">
-	<div class="col-lg-3">
-		<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" class="smallField updateNoAnimation" />
-	</div>
-	<div class="col-lg-3">
-		<input type="number" id="labelPieDistance" value="{{config.misc.labelPieDistance}}" class="smallField updateNoAnimation" />
-	</div>
-	<div class="col-lg-3">
-	</div>
-	<div class="col-lg-3">
-	</div>
-</div>
-
-
-<div class="row col-lg-12">
-	<h4>Misc</h4>
-</div>
-
-
-<div class="row col-lg-12 form-group">
-	<input type="checkbox" id="preventTextSection" {{#compare config.misc.preventTextSelection true}}checked="checked"{{/compare}} />
-	<label for="preventTextSection" class="control-label">Prevent selection of text</label>
-</div>
-
-
 
 <!--
 <div class="row col-lg-12">

@@ -8,11 +8,17 @@
     min-height: 400px;
 }
 #exampleDropdown {
-    float: right;
+	border-left: 1px solid #cccccc;
+	margin-left: 20px;
+	padding-left: 20px;
 }
 #exampleDropdown a {
     color: #444444;
 }
+#generateBtnItem {
+	float: right;
+}
+
 #footerRow button {
     float: right;
 }
@@ -164,4 +170,8 @@ body .colorGroup {
 }
 body .disabledText {
 	color: #cccccc;
+}
+
+.misc .col-lg-3 {
+	padding-right: 10px;
 }

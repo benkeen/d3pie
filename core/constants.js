@@ -9,6 +9,93 @@ define([], function() {
 	// example pie charts
 	C.EXAMPLE_PIES = [
 		{
+			label: "Top 15 Fears",
+			config: {
+				header: {
+					title: {
+						text:     "Top 15 Fears",
+						color:    "#333333",
+						fontSize: "24px",
+						font:     "open sans"
+					},
+					subtitle: {
+						text:     "What strikes the most terror in people?",
+						color:    "#999999",
+						fontSize: "12px",
+						font:     "open sans"
+					},
+					location: "pie-center"
+				},
+				footer: {
+					text: "* This was curious. Ever we're not sure why over 400 people regard chickens as a Top 15 Fear.",
+					color:    "#999999",
+					fontSize: "10px",
+					font:     "open sans",
+					location: "bottom-left"
+				},
+				size: {
+					canvasWidth: 650,
+					canvasHeight: 500,
+					pieInnerRadius: "95%",
+					pieOuterRadius: "60%"
+				},
+				data: [
+					{ label: "Spiders", value: 2 },
+					{ label: "Mother-in-laws", value: 10 },
+					{ label: "Sharks", value: 8 },
+					{ label: "Alien invasion", value: 8 },
+					{ label: "Learning Objective-C", value: 5 },
+					{ label: "Donald Rumsfeld", value: 4 },
+					{ label: "The Zombie Apocalypse", value: 4 },
+					{ label: "Chickens *", value: 3 }
+				],
+				labels: {
+					location: "inside", // inside/outside
+					format: "{L}", // {L} = label, {%} = percentage, {V} = value,
+					labelColor: "#333333",
+					labelPercentageColor: "#999999",
+					labelSegmentValueColor: "#cccccc"
+				},
+				styles: {
+					backgroundColor: null,
+					colors: ["#333333", "#444444", "#555555", "#666666", "#777777", "#888888", "#999999", "#cb2121", "#830909", "#923e99", "#ae83d5"]
+				},
+				effects: {
+					load: {
+						effect: "default", // none / default
+						speed: 1000
+					},
+					pullOutSegmentOnClick: {
+						effect: "linear", // none / linear / bounce /
+						speed: 400
+					},
+					highlightSegmentOnMouseover: true,
+					labelFadeInTime: 400
+				},
+				callbacks: {
+					onload: "function() { console.log(\"pie chart loaded.\"); }",
+					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
+					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
+					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
+				},
+				misc: {
+					enableTooltips: false,
+					dataSortOrder: "none",
+					hideLabelsForSmallSegments: false,
+					hideLabelsForSmallSegmentSize: "5%",
+					canvasPadding: {
+						top: 5,
+						right: 5,
+						bottom: 5,
+						left: 5
+					},
+					labelPieDistance: 40,
+					preventTextSelection: true
+				}
+			}
+		},
+
+		{
 			label: "Programming Languages",
 			config: {
 				header: {

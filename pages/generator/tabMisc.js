@@ -22,6 +22,7 @@ define([
 				bottom: parseInt($("#canvasPaddingBottom").val(), 10),
 				left: parseInt($("#canvasPaddingLeft").val(), 10)
 			},
+			titleSubtitlePadding: parseInt($("#titleSubtitlePadding").val(), 10),
 			labelPieDistance: parseInt($("#labelPieDistance").val(), 10)
 		};
 	};

@@ -2,12 +2,8 @@
  * d3pie jQuery plugin
  * @author Ben Keen
  * @version 0.1.0
- * @date Dec 2013
+ * @date Feb 2014
  * http://github.com/benkeen/d3pie
- *
- * TODO:
- * - need to allow multiple pies per page
- * - prefix all classes and allow it to be customized
  */
 ;(function($, window, document) {
 	"use strict";
@@ -76,8 +72,7 @@
 //			hideLabelsForSmallSegmentSize: "5%",
 //			preventTextSelection: true
 
-			classPrefix: "auto",
-			idPrefix: "auto",
+			cssPrefix: "auto", //
 			dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
 			canvasPadding: {
 				top: 5,
@@ -92,6 +87,12 @@
 		}
 	};
 
+	// to be populated on first render
+	var _componentDimensions = {
+		title: { h: 0, w: 0 },
+		subtitle: { h: 0, w: 0 },
+		topHeaderGroup: { h: 0, w: 0 }
+	};
 
 	// our constructor
 	function d3pie(element, options) {
@@ -138,6 +139,7 @@
 		this.init();
 	};
 
+
 	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
 	// intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
 	// just redraw the single element
@@ -176,45 +178,42 @@
 	// ----- private functions -----
 
 	// TODO these are temporary. They'll need to attach to the instance, I think. Either way, this is feeling very klutzy
-	var _arc, _svg, _totalSize, _innerRadius, _outerRadius, _options;
+	var _arc, _svg, _totalSize, _innerRadius, _outerRadius, _options,
+		_hasTitle, _hasSubtitle, _hasFooter;
+
+
+	var _offscreenCoord = -10000;
 
 
 	d3pie.prototype.init = function() {
-
-		// store the options in a local var for circumventing any "this" nonsense
 		_options = this.options;
 
-		// sort the data
-		switch (_options.misc.dataSortOrder) {
-			case "none":
-				// do nothing.
-				break;
-			case "random":
-				_options.data = _shuffleArray(_options.data);
-				break;
-			case "value-asc":
-				_options.data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
-				break;
-			case "value-desc":
-				_options.data.sort(function(a, b) { return (a.value > b.value) ? 1 : -1 });
-				break;
-			case "label-asc":
-				_options.data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
-				break;
-			case "label-desc":
-				_options.data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
-				break;
-		}
+		// 1. Prep-work
+		_sortPieData();
+		_addSVGSpace(this.element);
 
-		_totalSize = _getTotalPieSize(_options.data);
+		_hasTitle    = _options.header.title.text !== "";
+		_hasSubtitle = _options.header.subtitle.text !== "";
+		_hasFooter   = _options.footer.text !== "";
+
+
+		// Step 1: add all text components offscreen. We need to know their widths/heights for later computation,
+		// so adding them to the
+		_addTextElementsOffscreen();
+		// _storeTextElementDimensions();
+
+
 
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
 		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
 
 		// first, calculate the default _outerRadius
-		var w = _options.size.canvasWidth;
-		var h = _options.size.canvasHeight;
+		var w = _options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right;
+		var h = _options.size.canvasHeight - headerHeight - _options.misc.canvasPadding.bottom - footerHeight);
+
+
+
 		_outerRadius = ((w < h) ? w : h) / 2.8;
 
 		// if the user specified something, use that instead
@@ -241,15 +240,16 @@
 			_innerRadius = parseInt(_options.size.pieInnerRadius, 10);
 		}
 
-		_addSVGSpace(this.element);
 
-		// add the title, subtitle and footer. The center of the pie is positioned according to the remaining space
-		_addTitle();
-		_addSubtitle();
-		_addFooter();
+		// position the title + subtitle. These two are interdependent
+		_whenIdExists("title", _positionTitle);
+		_whenIdExists("subtitle", _positionSubtitle);
 
-		// now create the pie chart and add the labels. We have to place this in a timeout because the previous functions
-		// took a little time (1ms)
+
+
+
+		// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
+		// functions took a little time
 		setTimeout(function() {
 			_createPie();
 			_addFilter();
@@ -257,6 +257,41 @@
 			_addSegmentEventHandlers();
 		}, 5);
 	};
+
+
+	var _addTextElementsOffscreen = function() {
+		if (_hasTitle) {
+			_addTitle();
+		}
+		if (_hasSubtitle) {
+			_addSubtitle();
+		}
+
+		_addFooter();
+	};
+
+	var _sortPieData = function() {
+		switch (_options.misc.dataSortOrder) {
+			case "none":
+				// do nothing.
+				break;
+			case "random":
+				_options.data = _shuffleArray(_options.data);
+				break;
+			case "value-asc":
+				_options.data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
+				break;
+			case "value-desc":
+				_options.data.sort(function(a, b) { return (a.value > b.value) ? 1 : -1 });
+				break;
+			case "label-asc":
+				_options.data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
+				break;
+			case "label-desc":
+				_options.data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
+				break;
+		}
+	}
 
 	// creates the SVG element
 	var _addSVGSpace = function(element) {
@@ -274,16 +309,12 @@
 	 * @private
 	 */
 	var _addTitle = function() {
-		if (_options.header.title.text === "") {
-			return;
-		}
-
 		var title = _svg.selectAll(".title").data([_options.header.title]);
 		title.enter()
 			.append("text")
 			.attr("id", "title")
-			.attr("x", 0)
-			.attr("y", -1000)
+			.attr("x", _offscreenCoord)
+			.attr("y", _offscreenCoord)
 			.attr("class", "title")
 			.attr("text-anchor", function() {
 				var location;
@@ -298,22 +329,34 @@
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-
-		_whenIdExists("title", _positionTitle);
 	};
 
 	var _positionTitle = function() {
-		var titleElement = document.getElementById("title");
-		var dimensions = titleElement.getBBox();
-		var height = dimensions.height;
-
+		_componentDimensions.title.h = _getTitleHeight();
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-		var y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : _options.misc.canvasPadding.top + height;
+		var y;
+
+		if (_options.header.location === "pie-center") {
+
+			// this is the exact vertical center
+			y = ((_options.size.canvasHeight - _options.misc.canvasPadding.bottom) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.title.h / 2);
+
+			// special clause. We want to adjust the title to be slightly higher in the event of their being a subtitle
+			if (_hasSubtitle) {
+//				_componentDimensions.subtitle.h = _getTitleHeight();
+//				var titleSubtitlePlusPaddingHeight = _componentDimensions.subtitle.h + _options.misc.titleSubtitlePadding + _componentDimensions.title.h;
+				//y -= (subtitleHeight / 2);
+			}
+
+		} else {
+			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : _options.misc.canvasPadding.top + _componentDimensions.title.h;
+		}
 
 		_svg.select("#title")
 			.attr("x", x)
 			.attr("y", y);
 	};
+
 
 	var _addSubtitle = function() {
 		if (_options.header.subtitle.text === "") {
@@ -324,8 +367,8 @@
 			.data([_options.header.subtitle])
 			.enter()
 			.append("text")
-			.attr("x", 0)
-			.attr("y", -1000)
+			.attr("x", _offscreenCoord)
+			.attr("y", _offscreenCoord)
 			.attr("id", "subtitle")
 			.attr("class", "subtitle")
 			.attr("text-anchor", function() {
@@ -341,8 +384,6 @@
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-
-		_whenIdExists("subtitle", _positionSubtitle);
 	};
 
 	var _positionSubtitle = function() {
@@ -369,8 +410,8 @@
 			.data([_options.footer])
 			.enter()
 			.append("text")
-			.attr("x", 0)
-			.attr("y", -1000)
+			.attr("x", _offscreenCoord)
+			.attr("y", _offscreenCoord)
 			.attr("id", "footer")
 			.attr("class", "footer")
 			.attr("text-anchor", function() {
@@ -459,7 +500,11 @@
 	var _getSegmentRotationAngle = function(index, data, totalSize) {
 		var val = 0;
 		for (var i=0; i<index; i++) {
-			val += data[i].value;
+			try {
+				val += data[i].value;
+			} catch (e) {
+				console.error("error in _getSegmentRotationAngle:", data, i);
+			}
 		}
 		return (val / totalSize) * 360;
 	};
@@ -471,8 +516,10 @@
 	 * @private
 	 */
 	var _createPie = function() {
+		_totalSize = _getTotalPieSize(_options.data);
+
 		var pieChartElement = _svg.append("g")
-			.attr("transform", _getSVGCenter)
+			.attr("transform", _getPieTranslateCenter)
 			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
@@ -545,7 +592,7 @@
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
 			})
-			.attr("transform", _getSVGCenter);
+			.attr("transform", _getPieTranslateCenter);
 
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
@@ -731,7 +778,7 @@
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup")
-			.attr("transform", _getSVGCenter);
+			.attr("transform", _getPieTranslateCenter);
 
 		var lineFunction = d3.svg.line()
 			.interpolate("basis")
@@ -756,7 +803,6 @@
 	};
 
 	var _addSegmentEventHandlers = function() {
-
 		$(".arc").on("click", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 			var isExpanded = $segment.attr("class") === "expanded";
@@ -809,24 +855,23 @@
 		return radians * (180 / Math.PI);
 	};
 
-	var _getSVGCenter = function() {
+	var _getPieTranslateCenter = function() {
 		var pieCenter = _getPieCenter();
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
 	};
 
 	/**
 	 * Used to determine where on the canvas the center of the pie chart should be. It takes into account the
-	 * height and position of the title, subtitle and footer.
+	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
 	var _getPieCenter = function() {
-		var hasTopTitle = (_options.header.title.text !== "" && _options.header.location !== "pie-center");
-		var hasTopSubtitle = (_options.header.subtitle.text !== "" && _options.header.location !== "pie-center");
-		var hasFooter = (_options.footer.text !== "");
+		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
+		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
 
-		var headerOffset = 0;
+		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10);
+			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10) + _options.misc.titleSubtitlePadding;
 		} else if (hasTopTitle) {
 			headerOffset = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
 		} else if (hasTopSubtitle) {
@@ -834,13 +879,13 @@
 		}
 
 		var footerOffset = 0;
-		if (hasFooter) {
+		if (_hasFooter) {
 			footerOffset = _getFooterHeight() + _options.misc.canvasPadding.bottom;
 		}
 
 		return {
-			x: _options.size.canvasWidth / 2,
-			y: ((_options.size.canvasHeight - headerOffset - footerOffset) / 2) + headerOffset
+			x: ((_options.size.canvasWidth - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left,
+			y: ((_options.size.canvasHeight - footerOffset) / 2) + headerOffset
 		}
 	};
 
@@ -894,7 +939,6 @@
 		//console.log(_getPieCenter());
 		//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
 	};
-
 
 	var _processObj = function(obj, is, value) {
 		if (typeof is == 'string') {
