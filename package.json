@@ -1,14 +1,14 @@
 {
-  "name": "d3-pie-charts",
+  "name": "d3pie",
   "version": "0.1.0",
-  "description": "A D3 pie chart script and generator.",
+  "description": "A pie chart script and generator build on d3.js.",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benkeen/d3-pie-charts.git"
+    "url": "https://github.com/benkeen/d3pie.git"
   },
   "keywords": [
     "d3",
@@ -19,11 +19,10 @@
   "author": "Ben Keen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/benkeen/d3-pie-charts/issues"
+    "url": "https://github.com/benkeen/d3pie/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-template": "~0.2.2",
-    "grunt-md5": "~0.1.11"
+    "grunt-includes": "~0.4.1"
   }
 }

@@ -56,6 +56,5 @@ require.config({
 
 		eventsTab: "pages/generator/tabEvents",
 		eventsTabTemplate: "pages/generator/tabEventsTemplate.hbs"
-
 	}
 });
