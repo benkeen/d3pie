@@ -17,24 +17,33 @@
 
 <div class="row">
 	<div class="col-md-6">
-		<label for="labelLocation" class="control-label">Label Location</label>
+		<label for="labelLocation" class="control-label">Label Outside</label>
 		<div class="form-group padRight30">
 			<select id="labelLocation" class="form-control">
-				<option value="inside" {{#compare config.labels.location "inside"}}selected="selected"{{/compare}}>Inside</option>
-				<option value="outside" {{#compare config.labels.location "outside"}}selected="selected"{{/compare}}>Outside</option>
+				<option value="none">None</option>
+				<option value="label">Label</option>
+				<option value="value">Value</option>
+				<option value="percentage">Percentage</option>
+				<option value="label">label, value (same line)</option>
+				<option value="label-value1">label, value (separate lines)</option>
+				<option value="label-percentage1">label, percentage (same line)</option>
+				<option value="label-percentage2">label, percentage (separate lines)</option>
 			</select>
 		</div>
 	</div>
 	<div class="col-md-6">
-		<label for="labelFormat" class="control-label">Label Format</label>
+		<label for="labelFormat" class="control-label">Label Inside</label>
 		<div class="form-group padRight30">
 			<select id="labelFormatExample" class="form-control">
-				<option value="">Examples</option>
-				<option value="{L}">Label only</option>
-				<option value="{L} {%}">Label plus percentage</option>
-				<option value="{L} {V}">Label plus segment value</option>
+				<option value="none">None</option>
+				<option value="label">Label</option>
+				<option value="value">Value</option>
+				<option value="percentage">Percentage</option>
+				<option value="label">label, value (same line)</option>
+				<option value="label-value1">label, value (separate lines)</option>
+				<option value="label-percentage1">label, percentage (same line)</option>
+				<option value="label-percentage2">label, percentage (separate lines)</option>
 			</select>
-			<input type="text" id="labelFormat" value="{{config.labels.format}}" />
 		</div>
 	</div>
 </div>
@@ -43,36 +52,31 @@
 	<label for="labelLocation" class="control-label">Label component colors</label>
 </div>
 <div class="row">
-	<div class="col-md-3">
-		<label for="labelColor">Main label</label>
+	<div class="col-md-4">
+		<label for="labelColor">Label</label>
 	</div>
-	<div class="col-md-1">{L}</div>
-	<div class="col-md-8">
+	<div class="col-md-4">
+		<label for="labelPercentageColor">Percentage</label>
+	</div>
+	<div class="col-md-4">
+		<label for="labelSegmentValueColor">Value</label>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
 		<div id="labelColorGroup" class="colorGroup input-group">
 			<input type="text" id="labelColor" value="{{config.labels.labelColor}}" class="form-control" />
 			<span class="input-group-addon"><i></i></span>
 		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-md-3">
-		<label for="labelPercentageColor">Percentage</label>
-	</div>
-	<div class="col-md-1">{%}</div>
-	<div class="col-md-8">
+	<div class="col-md-4">
 		<div id="labelPercentageColorGroup" class="colorGroup input-group">
 			<input type="text" id="labelPercentageColor" value="{{config.labels.labelPercentageColor}}" class="form-control" />
 			<span class="input-group-addon"><i></i></span>
 		</div>
 	</div>
-</div>
-
-<div class="row form-group">
-	<div class="col-md-3">
-		<label for="labelSegmentValueColor">Segment value</label>
-	</div>
-	<div class="col-md-1">{V}</div>
-	<div class="col-md-8">
+	<div class="col-md-4">
 		<div id="labelSegmentValueColor" class="colorGroup input-group">
 			<input type="text" id="labelSegmentValueColor" value="{{config.labels.labelSegmentValueColor}}" class="form-control" />
 			<span class="input-group-addon"><i></i></span>

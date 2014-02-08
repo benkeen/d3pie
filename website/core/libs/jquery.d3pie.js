@@ -9,90 +9,33 @@
 	"use strict";
 
 	var _pluginName = "d3pie";
-	var _defaultSettings = {
-		header: {
-			title: {
-				color:    "#333333",
-				fontSize: "14px",
-				font:     "helvetica"
-			},
-			subtitle: {
-				color:    "#333333",
-				fontSize: "14px",
-				font:     "helvetica"
-			},
-			location: "top-left"
-		},
-		footer: {
-			text: ""
-		},
-		size: {
-			canvasHeight: 500,
-			canvasWidth: 500,
-			pieInnerRadius: "100%",
-			pieOuterRadius: null
-		},
-		labels: {
-			enable: false,
-			location: "inside",
-			format: "{L} {%}",
-			hideLabelsForSmallSegments: false,
-			hideLabelsForSmallSegmentSize: "0%"
-		},
-		styles: {
-			backgroundColor: null,
-			colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
-		},
-		effects: {
-			load: {
-				effect: "default", // none / default
-				speed: 1000
-			},
-			pullOutSegmentOnClick: {
-				effect: "linear", // none / linear / bounce /
-				speed: 400
-			},
 
-			highlightSegmentOnMouseover: false,
-			labelFadeInTime: 400
-		},
-		tooltips: {
-			enable: false
-		},
-		callbacks: {
-			onload: null,
-			onMouseoverSegment: null,
-			onMouseoutSegment: null,
-			onClickSegment: null
-		},
-		misc: {
-//			enableTooltips: false,
-//			dataSortOrder: "none",
-//			hideLabelsForSmallSegments: false,
-//			hideLabelsForSmallSegmentSize: "5%",
-//			preventTextSelection: true
+	// include: [DEFAULT SETTINGS]
 
-			cssPrefix: "auto", //
-			dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
-			canvasPadding: {
-				top: 5,
-				right: 5,
-				bottom: 5,
-				left: 5
-			},
-			titleSubtitlePadding: 5, // the padding between the title and subtitle
-			footerPiePadding: 0,
-			labelPieDistance: 16,
-			textSelectable: false
-		}
-	};
+	// -------------------------------
 
-	// to be populated on first render
-	var _componentDimensions = {
+	// to be populated when each item is first rendered on the canvas
+	var computedSizes = {
 		title: { h: 0, w: 0 },
 		subtitle: { h: 0, w: 0 },
 		topHeaderGroup: { h: 0, w: 0 }
 	};
+
+	var _pieMetadata = {
+		totalSize: 0,
+		innerRadius: 0,
+		outerRadius: 0,
+		hasTitle: false,
+		hasSubtitle: false,
+		hasFooter: false
+	};
+
+	var _arc, _svg,  _options;
+	var _offscreenCoord = -10000;
+
+
+	// -------------------------------
+
 
 	// our constructor
 	function d3pie(element, options) {
@@ -105,9 +48,7 @@
 			return;
 		}
 
-		// TODO confirm the required parameters have been set
-
-		// TODO format all colours so they begin with #
+		// validate here
 
 		this._defaults = _defaultSettings;
 		this._name = _pluginName;
@@ -144,7 +85,6 @@
 	// intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
 	// just redraw the single element
 	d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
-
 		switch (propKey) {
 			case "header.title.text":
 				var oldValue = _processObj(this.options, propKey);
@@ -174,15 +114,7 @@
 	};
 
 
-
 	// ----- private functions -----
-
-	// TODO these are temporary. They'll need to attach to the instance, I think. Either way, this is feeling very klutzy
-	var _arc, _svg, _totalSize, _innerRadius, _outerRadius, _options,
-		_hasTitle, _hasSubtitle, _hasFooter;
-
-
-	var _offscreenCoord = -10000;
 
 
 	d3pie.prototype.init = function() {
@@ -192,27 +124,49 @@
 		_sortPieData();
 		_addSVGSpace(this.element);
 
-		_hasTitle    = _options.header.title.text !== "";
-		_hasSubtitle = _options.header.subtitle.text !== "";
-		_hasFooter   = _options.footer.text !== "";
+		_pieData.hasTitle    = _options.header.title.text !== "";
+		_pieData.hasSubtitle = _options.header.subtitle.text !== "";
+		_pieData.hasFooter   = _options.footer.text !== "";
 
-
-		// Step 1: add all text components offscreen. We need to know their widths/heights for later computation,
-		// so adding them to the
+		// 2. add all text components offscreen. We need to know their widths/heights for later computation
 		_addTextElementsOffscreen();
-		// _storeTextElementDimensions();
+		_addFooter(); // the footer never moves- just put it in place now.
+
+		// 3. now we have all the data we need, compute the available space for the pie chart
+		_computePieRadius();
+
+		// position the title + subtitle. These two are interdependent
+		_positionTitle();
+		_positionSubtitle();
+
+		// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
+		// functions took a little time
+		setTimeout(function() {
+			_createPie();
+			_addFilter();
+			_addLabels();
+			_addSegmentEventHandlers();
+		}, 5);
+	};
 
 
+	var _addTextElementsOffscreen = function() {
+		if (_hasTitle) {
+			_addTitle();
+		}
+		if (_hasSubtitle) {
+			_addSubtitle();
+		}
+	};
 
+	var _computePieRadius = function() {
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
 		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
 
 		// first, calculate the default _outerRadius
 		var w = _options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right;
-		var h = _options.size.canvasHeight - headerHeight - _options.misc.canvasPadding.bottom - footerHeight);
-
-
+		var h = _options.size.canvasHeight; // - headerHeight - _options.misc.canvasPadding.bottom - footerHeight);
 
 		_outerRadius = ((w < h) ? w : h) / 2.8;
 
@@ -239,35 +193,6 @@
 		} else {
 			_innerRadius = parseInt(_options.size.pieInnerRadius, 10);
 		}
-
-
-		// position the title + subtitle. These two are interdependent
-		_whenIdExists("title", _positionTitle);
-		_whenIdExists("subtitle", _positionSubtitle);
-
-
-
-
-		// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
-		// functions took a little time
-		setTimeout(function() {
-			_createPie();
-			_addFilter();
-			_addLabels();
-			_addSegmentEventHandlers();
-		}, 5);
-	};
-
-
-	var _addTextElementsOffscreen = function() {
-		if (_hasTitle) {
-			_addTitle();
-		}
-		if (_hasSubtitle) {
-			_addSubtitle();
-		}
-
-		_addFooter();
 	};
 
 	var _sortPieData = function() {
@@ -297,10 +222,11 @@
 	var _addSVGSpace = function(element) {
 		_svg = d3.select(element).append("svg:svg")
 			.attr("width", _options.size.canvasWidth)
-			.attr("height", _options.size.canvasHeight)
-			.style("background-color", function() {
-				return (_options.styles.backgroundColor === "transparent") ? "" : _options.styles.backgroundColor;
-			});
+			.attr("height", _options.size.canvasHeight);
+
+		if (_options.styles.backgroundColor !== "transparent") {
+			_svg.style("background-color", function() { return _options.styles.backgroundColor; });
+		}
 	};
 
 	/**
@@ -331,6 +257,7 @@
 			.style("font-family", function(d) { return d.font; });
 	};
 
+
 	var _positionTitle = function() {
 		_componentDimensions.title.h = _getTitleHeight();
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
@@ -357,6 +284,24 @@
 			.attr("y", y);
 	};
 
+	var _positionSubtitle = function() {
+		var subtitleElement = document.getElementById("subtitle");
+		var dimensions = subtitleElement.getBBox();
+		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
+
+		// when positioning the subtitle, take into account whether there's a title or not
+		var y;
+		if (_options.header.title.text !== "") {
+			var titleY = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.titleSubtitlePadding + titleY;
+		} else {
+			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.canvasPadding.top;
+		}
+
+		_svg.select("#subtitle")
+			.attr("x", x)
+			.attr("y", y);
+	};
 
 	var _addSubtitle = function() {
 		if (_options.header.subtitle.text === "") {
@@ -384,25 +329,6 @@
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-	};
-
-	var _positionSubtitle = function() {
-		var subtitleElement = document.getElementById("subtitle");
-		var dimensions = subtitleElement.getBBox();
-		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-
-		// when positioning the subtitle, take into account whether there's a title or not
-		var y;
-		if (_options.header.title.text !== "") {
-		 	var titleY = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.titleSubtitlePadding + titleY;
-		} else {
-		 	y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.canvasPadding.top;
-		}
-
-		_svg.select("#subtitle")
-			.attr("x", x)
-			.attr("y", y);
 	};
 
 	var _addFooter = function() {
@@ -847,13 +773,6 @@
 		} catch(e) { }
 	};
 
-	var _toRadians = function(degrees) {
-		return degrees * (Math.PI / 180);
-	};
-
-	var _toDegrees = function(radians) {
-		return radians * (180 / Math.PI);
-	};
 
 	var _getPieTranslateCenter = function() {
 		var pieCenter = _getPieCenter();
@@ -889,8 +808,15 @@
 		}
 	};
 
+
+	var _addFilter = function() {
+		//console.log(_getPieCenter());
+		//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
+	};
+
+
 	// can only be called after the footer has been added to the SVG document
-	var _getFooterHeight = function() {
+/*	var _getFooterHeight = function() {
 		var dimensions = document.getElementById("footer").getBBox();
 		return dimensions.height;
 	};
@@ -904,52 +830,6 @@
 		var dimensions = document.getElementById("subtitle").getBBox();
 		return dimensions.height;
 	};
-
-	var _whenIdExists = function(id, callback) {
-		var inc = 1;
-		var giveupTime = 1000;
-		var interval = setInterval(function () {
-			if (document.getElementById(id)) {
-				clearInterval(interval);
-				callback();
-			}
-			if (inc > giveupTime) {
-				clearInterval(interval);
-			}
-			inc++;
-		}, 1);
-	};
-
-	var _shuffleArray = function(array) {
-		var currentIndex = array.length, tmpVal, randomIndex;
-
-		while (0 !== currentIndex) {
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex -= 1;
-
-			// and swap it with the current element
-			tmpVal = array[currentIndex];
-			array[currentIndex] = array[randomIndex];
-			array[randomIndex] = tmpVal;
-		}
-		return array;
-	};
-
-	var _addFilter = function() {
-		//console.log(_getPieCenter());
-		//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
-	};
-
-	var _processObj = function(obj, is, value) {
-		if (typeof is == 'string') {
-			return _processObj(obj, is.split('.'), value);
-		} else if (is.length == 1 && value !== undefined) {
-			return obj[is[0]] = value;
-		} else if (is.length == 0) {
-			return obj;
-		} else {
-			return _processObj(obj[is[0]], is.slice(1), value);
-		}
-	};
+	*/
 
 })(jQuery, window, document);

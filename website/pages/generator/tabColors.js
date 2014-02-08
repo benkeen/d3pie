@@ -32,7 +32,7 @@ define([
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 			}
 		});
-		$("input[name=backgroundColor]").on("change", function() {
+		$("input[name=backgroundColorType]").on("change", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
@@ -62,7 +62,7 @@ define([
 		}
 
 		var backgroundColor = null;
-		var selectedBackgroundColorType = $("input[name=backgroundColor]:checked").val();
+		var selectedBackgroundColorType = $("input[name=backgroundColorType]:checked").val();
 		if (selectedBackgroundColorType === "solid") {
 			backgroundColor = $("#backgroundColor").val();
 		}
