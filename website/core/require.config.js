@@ -1,11 +1,13 @@
 require.config({
-	baseUrl: "",
+	baseUrl: "website/",
 	paths: {
 
+		// library stuff
+		text: "libs/text",
+		hbs: "libs/hbs",
+		handlebars: "libs/handlebars.dev",
+
 		// core stuff
-		text: "core/libs/text",
-		hbs: "core/libs/hbs",
-		handlebars: "core/libs/handlebars.dev",
 		handlebarsHelpers: "core/handlebarsHelpers",
 		constants: "core/constants",
 		mediator: "core/mediator",

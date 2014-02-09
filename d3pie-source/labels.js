@@ -1,12 +1,12 @@
 // --------- labels.js -----------
-d3pie.labels = function() {
+d3pie.labels = {
 
 	/**
 	 * Add the labels to the pie.
 	 * @param options
 	 * @private
 	 */
-	var _addLabels = function() {
+	add: function() {
 
 		// 1. Add the main label (not positioned yet)
 		var labelGroup = _svg.selectAll(".labelGroup")
@@ -20,7 +20,7 @@ d3pie.labels = function() {
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
 			})
-			.attr("transform", _getPieTranslateCenter);
+			.attr("transform", d3pie.helpers.getPieTranslateCenter);
 
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
@@ -78,15 +78,14 @@ d3pie.labels = function() {
 
 		}, loadSpeed);
 
-
 		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
-		// text elements in place prior to
-		setTimeout(_addLabelLines, 1);
-	};
+		// text elements in place
+		setTimeout(d3pie.labels.addLabelLines, 1);
+	},
 
 
 	// this both adds the lines and positions the labels
-	var _addLabelLines = function() {
+	addLabelLines: function() {
 		var lineMidPointDistance = _options.misc.labelPieDistance - (_options.misc.labelPieDistance / 4);
 		var circleCoordGroups = [];
 
@@ -95,10 +94,10 @@ d3pie.labels = function() {
 			.attr("dx", function(d, i) {
 				var labelDimensions = document.getElementById("label" + i).getBBox();
 
-				var angle = _getSegmentRotationAngle(i, _options.data, _totalSize);
+				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
 				var nextAngle = 360;
 				if (i < _options.data.length - 1) {
-					nextAngle = _getSegmentRotationAngle(i+1, _options.data, _totalSize);
+					nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
 				}
 
 				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
@@ -110,28 +109,28 @@ d3pie.labels = function() {
 				var p1, p2, p3, labelX;
 				switch (quarter) {
 					case 0:
-						var calc1 = Math.sin(_toRadians(remainderAngle));
+						var calc1 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
 						labelX = calc1 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
 						p1     = calc1 * _outerRadius;
 						p2     = calc1 * (_outerRadius + lineMidPointDistance);
 						p3     = calc1 * (_outerRadius + _options.misc.labelPieDistance) + 5;
 						break;
 					case 1:
-						var calc2 = Math.cos(_toRadians(remainderAngle));
+						var calc2 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
 						labelX = calc2 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
 						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) + 5;
 						break;
 					case 2:
-						var calc3 = Math.sin(_toRadians(remainderAngle));
+						var calc3 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
 						labelX = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc3 * _outerRadius;
 						p2     = -calc3 * (_outerRadius + lineMidPointDistance);
 						p3     = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - 5;
 						break;
 					case 3:
-						var calc4 = Math.cos(_toRadians(remainderAngle));
+						var calc4 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
 						labelX = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
@@ -150,10 +149,10 @@ d3pie.labels = function() {
 				var labelDimensions = document.getElementById("label" + i).getBBox();
 				var heightOffset = labelDimensions.height / 5;
 
-				var angle = _getSegmentRotationAngle(i, _options.data, _totalSize);
+				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
 				var nextAngle = 360;
 				if (i < _options.data.length - 1) {
-					nextAngle = _getSegmentRotationAngle(i+1, _options.data, _totalSize);
+					nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
 				}
 				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
 				var remainderAngle = (segmentCenterAngle % 90);
@@ -162,28 +161,28 @@ d3pie.labels = function() {
 
 				switch (quarter) {
 					case 0:
-						var calc1 = Math.cos(_toRadians(remainderAngle));
+						var calc1 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
 						labelY = -calc1 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = -calc1 * _outerRadius;
 						p2     = -calc1 * (_outerRadius + lineMidPointDistance);
 						p3     = -calc1 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 1:
-						var calc2 = Math.sin(_toRadians(remainderAngle));
+						var calc2 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
 						labelY = calc2 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
 						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 2:
-						var calc3 = Math.cos(_toRadians(remainderAngle));
+						var calc3 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
 						labelY = calc3 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = calc3 * _outerRadius;
 						p2     = calc3 * (_outerRadius + lineMidPointDistance);
 						p3     = calc3 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 3:
-						var calc4 = Math.sin(_toRadians(remainderAngle));
+						var calc4 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
 						labelY = -calc4 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
@@ -206,7 +205,7 @@ d3pie.labels = function() {
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup")
-			.attr("transform", _getPieTranslateCenter);
+			.attr("transform", d3pie.helpers.getPieTranslateCenter);
 
 		var lineFunction = d3.svg.line()
 			.interpolate("basis")
@@ -228,9 +227,5 @@ d3pie.labels = function() {
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
 		}, loadSpeed);
-	};
-
-	return {
-		addLabels: _addLabels
-	};
+	}
 };

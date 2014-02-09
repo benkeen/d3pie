@@ -8,12 +8,13 @@
 ;(function($, window, document) {
 	"use strict";
 
-	<%=core%>
 	<%=defaultSettings%>
 	<%=validate%>
 	<%=helpers%>
 	<%=math%>
 	<%=labels%>
 	<%=segments%>
+	<%=text%>
+	<%=core%>
 
 })(jQuery, window, document);

@@ -3,9 +3,9 @@
 /**
  * Contains all the math needed to figure out where to place things, etc.
  */
-d3pie.math = function() {
+d3pie.math = {
 
-	var _computePieRadius = function() {
+	computePieRadius: function() {
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
 		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
@@ -14,7 +14,8 @@ d3pie.math = function() {
 		var w = _options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right;
 		var h = _options.size.canvasHeight; // - headerHeight - _options.misc.canvasPadding.bottom - footerHeight);
 
-		_outerRadius = ((w < h) ? w : h) / 2.8;
+		var outerRadius = ((w < h) ? w : h) / 2.8;
+		var innerRadius;
 
 		// if the user specified something, use that instead
 		if (_options.size.pieOuterRadius !== null) {
@@ -23,10 +24,10 @@ d3pie.math = function() {
 				percent = (percent > 99) ? 99 : percent;
 				percent = (percent < 0) ? 0 : percent;
 				var smallestDimension = (w < h) ? w : h;
-				_outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
+				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
 				// blurgh! TODO bounds checking
-				_outerRadius = parseInt(_options.size.pieOuterRadius, 10);
+				outerRadius = parseInt(_options.size.pieOuterRadius, 10);
 			}
 		}
 
@@ -35,21 +36,26 @@ d3pie.math = function() {
 			var percent = parseInt(_options.size.pieInnerRadius.replace(/[\D]/, ""), 10);
 			percent = (percent > 99) ? 99 : percent;
 			percent = (percent < 0) ? 0 : percent;
-			_innerRadius = Math.floor((_outerRadius / 100) * percent);
+			innerRadius = Math.floor((outerRadius / 100) * percent);
 		} else {
-			_innerRadius = parseInt(_options.size.pieInnerRadius, 10);
+			innerRadius = parseInt(_options.size.pieInnerRadius, 10);
 		}
-	};
 
-	var _getTotalPieSize = function(data) {
+		return {
+			inner: innerRadius,
+			outer: outerRadius
+		};
+	},
+
+	getTotalPieSize: function(data) {
 		var totalSize = 0;
 		for (var i=0; i<data.length; i++) {
 			totalSize += data[i].value;
 		}
 		return totalSize;
-	};
+	},
 
-	var _sortPieData = function(data, sortOrder) {
+	sortPieData: function(data, sortOrder) {
 		switch (sortOrder) {
 			case "none":
 				// do nothing.
@@ -71,19 +77,19 @@ d3pie.math = function() {
 				break;
 		}
 		return data;
-	}
+	},
 
-	var _getPieTranslateCenter = function() {
+	getPieTranslateCenter: function() {
 		var pieCenter = _getPieCenter();
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
-	};
+	},
 
 	/**
 	 * Used to determine where on the canvas the center of the pie chart should be. It takes into account the
 	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
-	var _getPieCenter = function() {
+	getPieCenter: function() {
 		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
 		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
 
@@ -105,16 +111,16 @@ d3pie.math = function() {
 			x: ((_options.size.canvasWidth - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left,
 			y: ((_options.size.canvasHeight - footerOffset) / 2) + headerOffset
 		}
-	};
+	},
 
-	var _arcTween = function(b) {
+	arcTween: function(b) {
 		var i = d3.interpolate({ value: 0 }, b);
 		return function(t) {
 			return _arc(i(t));
 		};
-	};
+	},
 
-	var _getSegmentRotationAngle = function(index, data, totalSize) {
+	getSegmentRotationAngle: function(index, data, totalSize) {
 		var val = 0;
 		for (var i=0; i<index; i++) {
 			try {
@@ -124,15 +130,5 @@ d3pie.math = function() {
 			}
 		}
 		return (val / totalSize) * 360;
-	};
-
-	return {
-		computePieRadius: _computePieRadius,
-		getTotalPieSize: _getTotalPieSize,
-		sortPieData: _sortPieData,
-		getPieTranslateCenter: _getPieTranslateCenter,
-		getPieCenter: _getPieCenter,
-		arcTween: _arcTween,
-		getSegmentRotationAngle: _getSegmentRotationAngle
-	};
+	}
 };

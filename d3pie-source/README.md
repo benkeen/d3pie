@@ -31,6 +31,6 @@ and all the code for actually generating the pie.
 will end up here.
 * `labels.js` - code relating to the pie chart labels, label lines.
 * `math.js` - hard stuff which I'm ashamed to say I'd largely forgotten from high school.
-* `defaultSettings.js` the default settings for the
+* `default-settings.js` the default settings for the
 * `validate.js` - code for validating the user's pie chart configuration object.
 * `segments.js` - code relating to the pie chart segments.
