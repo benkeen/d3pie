@@ -8,9 +8,9 @@ d3pie.segments = {
 	 * @private
 	 */
 	create: function() {
-		console.log(d3pie.math.getPieTranslateCenter());
 
-		var pieChartElement = _svg.append("g")
+		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
+		var pieChartElement = _svg.insert("g", "#title")
 			.attr("transform", d3pie.math.getPieTranslateCenter)
 			.attr("class", "pieChart");
 
@@ -114,7 +114,7 @@ d3pie.segments = {
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
-			d3pie.pie.closeSegment($(".expanded")[0]);
+			d3pie.segments.closeSegment($(".expanded")[0]);
 		}
 
 		d3.select(segment).transition()

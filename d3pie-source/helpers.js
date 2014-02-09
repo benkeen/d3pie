@@ -1,4 +1,8 @@
-// --------- helpers.js -----------
+/**
+ *  --------- helpers.js -----------
+ *
+ * Misc helper functions.
+ */
 d3pie.helpers = {
 
 	// creates the SVG element
@@ -10,14 +14,6 @@ d3pie.helpers = {
 		if (_options.styles.backgroundColor !== "transparent") {
 			_svg.style("background-color", function() { return color; });
 		}
-	},
-
-	toRadians: function(degrees) {
-		return degrees * (Math.PI / 180);
-	},
-
-	toDegrees: function(radians) {
-		return radians * (180 / Math.PI);
 	},
 
 	whenIdExists: function(id, callback) {
@@ -87,21 +83,16 @@ d3pie.helpers = {
 		}
 	},
 
-	getHeight: function(id) {
-		var dimensions = document.getElementById(id).getBBox();
-		return dimensions.height;
-	},
-
-	getWidth: function(id) {
-		var dimensions = document.getElementById(id).getBBox();
-		return dimensions.width;
-	},
-
 	getDimensions: function(id) {
-		var dimensions = document.getElementById(id).getBBox();
-		return {
-			w: dimensions.width,
-			h: dimensions.height
+		var el = document.getElementById(id);
+		var w = 0, h = 0;
+		if (el) {
+			var dimensions = el.getBBox();
+			w = dimensions.width;
+			h = dimensions.height;
+		} else {
+			console.log("error: getDimensions() " + id + " not found.");
 		}
+		return { w: w, h: h };
 	}
 };

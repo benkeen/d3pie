@@ -1,6 +1,8 @@
-// --------- core.js -----------
-
-// these vars are accessible to all JS files as "globals"
+/**
+ * --------- core.js -----------
+ *
+ * This contains the main control flow for the script, and all the core jQuery functionality - public + private.
+ */
 var _pluginName = "d3pie";
 var _componentDimensions = {
 	title:    { h: 0, w: 0 },
@@ -113,17 +115,42 @@ d3pie.prototype.init = function() {
 	_innerRadius = radii.inner;
 	_outerRadius = radii.outer;
 
-	// position the title + subtitle. These two are interdependent
-	d3pie.text.positionTitle();
-	d3pie.text.positionSubtitle();
 
-	// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
-	// functions took a little time
-	d3pie.helpers.whenElementsExist(["title", "subtitle", "footer"], function() {
+	// STEP 2: now create the pie chart and position everything accordingly
+	var requiredElements = [];
+	if (_hasTitle) { requiredElements.push("title"); }
+	if (_hasSubtitle) { requiredElements.push("subtitle"); }
+	if (_hasFooter) { requiredElements.push("footer"); }
+
+	d3pie.helpers.whenElementsExist(requiredElements, function() {
+		_storeDimensions();
+
+		d3pie.text.positionTitle();
+		d3pie.text.positionSubtitle();
+
 		d3pie.segments.create();
 		d3pie.labels.add();
 		d3pie.segments.addSegmentEventHandlers();
 	});
+};
+
+
+var _storeDimensions = function() {
+	if (_hasTitle) {
+		var d1 = d3pie.helpers.getDimensions("title");
+		_componentDimensions.title.h = d1.h;
+		_componentDimensions.title.w = d1.w;
+	}
+	if (_hasSubtitle) {
+		var d2 = d3pie.helpers.getDimensions("subtitle");
+		_componentDimensions.subtitle.h = d2.h;
+		_componentDimensions.subtitle.w = d2.w;
+	}
+	if (_hasFooter) {
+		var d3 = d3pie.helpers.getDimensions("footer");
+		_componentDimensions.footer.h = d3.h;
+		_componentDimensions.footer.w = d3.w;
+	}
 };
 
 

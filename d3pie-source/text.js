@@ -43,32 +43,22 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-
-
-		var dimens = d3pie.helpers.getDimensions("title");
-		_componentDimensions.title.h = dimens.height;
-		_componentDimensions.title.w = dimens.width;
 	},
 
 	positionTitle: function() {
-		_componentDimensions.title.h = d3pie.helpers.getHeight("title");
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-		var y;
+		var y = _options.misc.canvasPadding.top + _componentDimensions.title.h;
 
 		if (_options.header.location === "pie-center") {
+			var pieCenter = d3pie.math.getPieCenter();
+			y = pieCenter.y;
 
-			// this is the exact vertical center
-			y = ((_options.size.canvasHeight - _options.misc.canvasPadding.bottom) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.title.h / 2);
-
-			// special clause. We want to adjust the title to be slightly higher in the event of their being a subtitle
 			if (_hasSubtitle) {
-	//				_componentDimensions.subtitle.h = _getTitleHeight();
-	//				var titleSubtitlePlusPaddingHeight = _componentDimensions.subtitle.h + _options.misc.titleSubtitlePadding + _componentDimensions.title.h;
-				//y -= (subtitleHeight / 2);
+				var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
+			} else {
+				y -= (_componentDimensions.title.h/2);
 			}
-
-		} else {
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : _options.misc.canvasPadding.top + _componentDimensions.title.h;
 		}
 
 		_svg.select("#title")
@@ -76,27 +66,8 @@ d3pie.text = {
 			.attr("y", y);
 	},
 
-	positionSubtitle: function() {
-		var subtitleElement = document.getElementById("subtitle");
-		var dimensions = subtitleElement.getBBox();
-		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-
-		// when positioning the subtitle, take into account whether there's a title or not
-		var y;
-		if (_options.header.title.text !== "") {
-			var titleY = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.titleSubtitlePadding + titleY;
-		} else {
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.canvasPadding.top;
-		}
-
-		_svg.select("#subtitle")
-			.attr("x", x)
-			.attr("y", y);
-	},
-
 	addSubtitle: function() {
-		if (_options.header.subtitle.text === "") {
+		if (!_hasSubtitle) {
 			return;
 		}
 
@@ -121,11 +92,35 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-
-		var dimens = d3pie.helpers.getDimensions("subtitle");
-		_componentDimensions.subtitle.h = dimens.height;
-		_componentDimensions.subtitle.w = dimens.width;
 	},
+
+	positionSubtitle: function() {
+		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
+
+		var y;
+		if (_hasTitle) {
+			var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			if (_options.header.location === "pie-center") {
+				var pieCenter = d3pie.math.getPieCenter();
+				y = pieCenter.y;
+				y = y - (totalTitleHeight / 2) + totalTitleHeight;
+			} else {
+				y = totalTitleHeight;
+			}
+		} else {
+			if (_options.header.location === "pie-center") {
+				var footerPlusPadding = _options.misc.canvasPadding.bottom + _componentDimensions.footer.h;
+				y = ((_options.size.canvasHeight - footerPlusPadding) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.subtitle.h / 2);
+			} else {
+				y = _options.misc.canvasPadding.top + _componentDimensions.subtitle.h;
+			}
+		}
+
+		_svg.select("#subtitle")
+			.attr("x", x)
+			.attr("y", y);
+	},
+
 
 	addFooter: function() {
 		_svg.selectAll(".footer")
@@ -156,10 +151,6 @@ d3pie.text = {
 	},
 
 	positionFooter: function() {
-		var dimens = d3pie.helpers.getDimensions("footer");
-		_componentDimensions.footer.h = dimens.h;
-		_componentDimensions.footer.w = dimens.w;
-
 		var x;
 		if (_options.footer.location === "bottom-left") {
 			x = _options.misc.canvasPadding.left;

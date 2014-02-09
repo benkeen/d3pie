@@ -5,6 +5,14 @@
  */
 d3pie.math = {
 
+	toRadians: function(degrees) {
+		return degrees * (Math.PI / 180);
+	},
+
+	toDegrees: function(radians) {
+		return radians * (180 / Math.PI);
+	},
+
 	computePieRadius: function() {
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
@@ -92,29 +100,27 @@ d3pie.math = {
 	getPieCenter: function() {
 
 		// TODO MEMOIZE (needs invalidation, too)
-
 		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
 		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += parseInt(_componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h, 10);
+			headerOffset += _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += parseInt(_componentDimensions.title.h, 10);
+			headerOffset += _componentDimensions.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = parseInt(_componentDimensions.subtitle.h, 10);
+			headerOffset = _componentDimensions.subtitle.h;
 		}
 
 		var footerOffset = 0;
 		if (_hasFooter) {
 			footerOffset = _componentDimensions.footer.h + _options.misc.canvasPadding.bottom;
-			console.log(_componentDimensions.footer.h, _options.misc.canvasPadding.bottom);	_componentDimensions.footer.h
 		}
 
-		return {
-			x: ((_options.size.canvasWidth - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left,
-			y: ((_options.size.canvasHeight - footerOffset) / 2) + headerOffset
-		}
+		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
+		var y = ((_options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
+
+		return { x: x, y: y };
 	},
 
 	arcTween: function(b) {

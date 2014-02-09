@@ -1,4 +1,9 @@
-// --------- defaultSettings.js -----------
+/**
+ *  --------- defaultSettings.js -----------
+ *
+ * Contains the out-the-box settings for the script. Any of these settings that aren't explicitly overridden for the
+ * d3pie instance will inherit from these.
+ */
 var _defaultSettings = {
 	header: {
 		title: {
@@ -24,7 +29,7 @@ var _defaultSettings = {
 	},
 	labels: {
 		inside: "percentage",
-		outisde: "label",
+		outside: "label",
 		hideLabelsForSmallSegments: false,
 		hideLabelsForSmallSegmentSize: "0%"
 	},

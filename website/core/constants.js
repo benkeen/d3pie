@@ -27,7 +27,7 @@ define([], function() {
 					location: "pie-center"
 				},
 				footer: {
-					text: "* This was curious. Ever we're not sure why over 400 people regard chickens as a Top 15 Fear.",
+					text: "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
 					color:    "#999999",
 					fontSize: "10px",
 					font:     "open sans",
@@ -47,7 +47,8 @@ define([], function() {
 					{ label: "Learning Objective-C", value: 5 },
 					{ label: "Donald Rumsfeld", value: 4 },
 					{ label: "The Zombie Apocalypse", value: 4 },
-					{ label: "Chickens *", value: 3 }
+					{ label: "The City of Winnipeg *", value: 3 },
+					{ label: "IE 6", value: 2 }
 				],
 				labels: {
 					location: "inside", // inside/outside
@@ -84,6 +85,7 @@ define([], function() {
 						left: 5
 					},
 					labelPieDistance: 40,
+					titleSubtitlePadding: 6,
 					preventTextSelection: true
 				}
 			}
@@ -173,6 +175,7 @@ define([], function() {
 						left: 5
 					},
 					labelPieDistance: 40,
+					titleSubtitlePadding: 6,
 					preventTextSelection: true
 				}
 			}
@@ -253,7 +256,8 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					labelPieDistance: 16
+					labelPieDistance: 16,
+					titleSubtitlePadding: 6
 				}
 			}
 		}

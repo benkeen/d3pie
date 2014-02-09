@@ -36,7 +36,7 @@
 .removeRow {
     width: 24px;
     height: 24px;
-    background-image: url(../website/images/remove-icon.png);
+    background-image: url(../images/remove-icon.png);
     background-size: 100%;
     display: inline-block;
     opacity: 0.5;
@@ -138,7 +138,7 @@ body .colorGroup {
     color: #999999;
 }
 .handle {
-    background: transparent url(../website/images/drag.png) 50% 50% no-repeat;
+    background: transparent url(../images/drag.png) 50% 50% no-repeat;
     cursor: pointer;
 }
 .clear {

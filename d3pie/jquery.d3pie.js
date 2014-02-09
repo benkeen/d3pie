@@ -8,7 +8,12 @@
 ;(function($, window, document) {
 	"use strict";
 
-	// --------- defaultSettings.js -----------
+	/**
+ *  --------- defaultSettings.js -----------
+ *
+ * Contains the out-the-box settings for the script. Any of these settings that aren't explicitly overridden for the
+ * d3pie instance will inherit from these.
+ */
 var _defaultSettings = {
 	header: {
 		title: {
@@ -34,7 +39,7 @@ var _defaultSettings = {
 	},
 	labels: {
 		inside: "percentage",
-		outisde: "label",
+		outside: "label",
 		hideLabelsForSmallSegments: false,
 		hideLabelsForSmallSegmentSize: "0%"
 	},
@@ -90,7 +95,11 @@ var _defaultSettings = {
 d3pie.validate = {
 
 };
-	// --------- helpers.js -----------
+	/**
+ *  --------- helpers.js -----------
+ *
+ * Misc helper functions.
+ */
 d3pie.helpers = {
 
 	// creates the SVG element
@@ -102,14 +111,6 @@ d3pie.helpers = {
 		if (_options.styles.backgroundColor !== "transparent") {
 			_svg.style("background-color", function() { return color; });
 		}
-	},
-
-	toRadians: function(degrees) {
-		return degrees * (Math.PI / 180);
-	},
-
-	toDegrees: function(radians) {
-		return radians * (180 / Math.PI);
 	},
 
 	whenIdExists: function(id, callback) {
@@ -179,22 +180,17 @@ d3pie.helpers = {
 		}
 	},
 
-	getHeight: function(id) {
-		var dimensions = document.getElementById(id).getBBox();
-		return dimensions.height;
-	},
-
-	getWidth: function(id) {
-		var dimensions = document.getElementById(id).getBBox();
-		return dimensions.width;
-	},
-
 	getDimensions: function(id) {
-		var dimensions = document.getElementById(id).getBBox();
-		return {
-			w: dimensions.width,
-			h: dimensions.height
+		var el = document.getElementById(id);
+		var w = 0, h = 0;
+		if (el) {
+			var dimensions = el.getBBox();
+			w = dimensions.width;
+			h = dimensions.height;
+		} else {
+			console.log("error: getDimensions() " + id + " not found.");
 		}
+		return { w: w, h: h };
 	}
 };
 
@@ -204,6 +200,14 @@ d3pie.helpers = {
  * Contains all the math needed to figure out where to place things, etc.
  */
 d3pie.math = {
+
+	toRadians: function(degrees) {
+		return degrees * (Math.PI / 180);
+	},
+
+	toDegrees: function(radians) {
+		return radians * (180 / Math.PI);
+	},
 
 	computePieRadius: function() {
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
@@ -292,29 +296,27 @@ d3pie.math = {
 	getPieCenter: function() {
 
 		// TODO MEMOIZE (needs invalidation, too)
-
 		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
 		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += parseInt(_componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h, 10);
+			headerOffset += _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += parseInt(_componentDimensions.title.h, 10);
+			headerOffset += _componentDimensions.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = parseInt(_componentDimensions.subtitle.h, 10);
+			headerOffset = _componentDimensions.subtitle.h;
 		}
 
 		var footerOffset = 0;
 		if (_hasFooter) {
 			footerOffset = _componentDimensions.footer.h + _options.misc.canvasPadding.bottom;
-			console.log(_componentDimensions.footer.h, _options.misc.canvasPadding.bottom);	_componentDimensions.footer.h
 		}
 
-		return {
-			x: ((_options.size.canvasWidth - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left,
-			y: ((_options.size.canvasHeight - footerOffset) / 2) + headerOffset
-		}
+		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
+		var y = ((_options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
+
+		return { x: x, y: y };
 	},
 
 	arcTween: function(b) {
@@ -447,28 +449,28 @@ d3pie.labels = {
 				var p1, p2, p3, labelX;
 				switch (quarter) {
 					case 0:
-						var calc1 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
+						var calc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
 						labelX = calc1 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
 						p1     = calc1 * _outerRadius;
 						p2     = calc1 * (_outerRadius + lineMidPointDistance);
 						p3     = calc1 * (_outerRadius + _options.misc.labelPieDistance) + 5;
 						break;
 					case 1:
-						var calc2 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
+						var calc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
 						labelX = calc2 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
 						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) + 5;
 						break;
 					case 2:
-						var calc3 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
+						var calc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
 						labelX = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc3 * _outerRadius;
 						p2     = -calc3 * (_outerRadius + lineMidPointDistance);
 						p3     = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - 5;
 						break;
 					case 3:
-						var calc4 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
+						var calc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
 						labelX = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
@@ -499,28 +501,28 @@ d3pie.labels = {
 
 				switch (quarter) {
 					case 0:
-						var calc1 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
+						var calc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
 						labelY = -calc1 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = -calc1 * _outerRadius;
 						p2     = -calc1 * (_outerRadius + lineMidPointDistance);
 						p3     = -calc1 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 1:
-						var calc2 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
+						var calc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
 						labelY = calc2 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance);
 						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 2:
-						var calc3 = Math.cos(d3pie.helpers.toRadians(remainderAngle));
+						var calc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
 						labelY = calc3 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = calc3 * _outerRadius;
 						p2     = calc3 * (_outerRadius + lineMidPointDistance);
 						p3     = calc3 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset;
 						break;
 					case 3:
-						var calc4 = Math.sin(d3pie.helpers.toRadians(remainderAngle));
+						var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
 						labelY = -calc4 * (_outerRadius + _options.misc.labelPieDistance);
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance);
@@ -577,9 +579,9 @@ d3pie.segments = {
 	 * @private
 	 */
 	create: function() {
-		console.log(d3pie.math.getPieTranslateCenter());
 
-		var pieChartElement = _svg.append("g")
+		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
+		var pieChartElement = _svg.insert("g", "#title")
 			.attr("transform", d3pie.math.getPieTranslateCenter)
 			.attr("class", "pieChart");
 
@@ -683,7 +685,7 @@ d3pie.segments = {
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
-			d3pie.pie.closeSegment($(".expanded")[0]);
+			d3pie.segments.closeSegment($(".expanded")[0]);
 		}
 
 		d3.select(segment).transition()
@@ -757,32 +759,22 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-
-
-		var dimens = d3pie.helpers.getDimensions("title");
-		_componentDimensions.title.h = dimens.height;
-		_componentDimensions.title.w = dimens.width;
 	},
 
 	positionTitle: function() {
-		_componentDimensions.title.h = d3pie.helpers.getHeight("title");
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-		var y;
+		var y = _options.misc.canvasPadding.top + _componentDimensions.title.h;
 
 		if (_options.header.location === "pie-center") {
+			var pieCenter = d3pie.math.getPieCenter();
+			y = pieCenter.y;
 
-			// this is the exact vertical center
-			y = ((_options.size.canvasHeight - _options.misc.canvasPadding.bottom) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.title.h / 2);
-
-			// special clause. We want to adjust the title to be slightly higher in the event of their being a subtitle
 			if (_hasSubtitle) {
-	//				_componentDimensions.subtitle.h = _getTitleHeight();
-	//				var titleSubtitlePlusPaddingHeight = _componentDimensions.subtitle.h + _options.misc.titleSubtitlePadding + _componentDimensions.title.h;
-				//y -= (subtitleHeight / 2);
+				var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
+			} else {
+				y -= (_componentDimensions.title.h/2);
 			}
-
-		} else {
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : _options.misc.canvasPadding.top + _componentDimensions.title.h;
 		}
 
 		_svg.select("#title")
@@ -790,27 +782,8 @@ d3pie.text = {
 			.attr("y", y);
 	},
 
-	positionSubtitle: function() {
-		var subtitleElement = document.getElementById("subtitle");
-		var dimensions = subtitleElement.getBBox();
-		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-
-		// when positioning the subtitle, take into account whether there's a title or not
-		var y;
-		if (_options.header.title.text !== "") {
-			var titleY = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.titleSubtitlePadding + titleY;
-		} else {
-			y = (_options.header.location === "pie-center") ? _options.size.canvasHeight / 2 : dimensions.height + _options.misc.canvasPadding.top;
-		}
-
-		_svg.select("#subtitle")
-			.attr("x", x)
-			.attr("y", y);
-	},
-
 	addSubtitle: function() {
-		if (_options.header.subtitle.text === "") {
+		if (!_hasSubtitle) {
 			return;
 		}
 
@@ -835,11 +808,35 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
-
-		var dimens = d3pie.helpers.getDimensions("subtitle");
-		_componentDimensions.subtitle.h = dimens.height;
-		_componentDimensions.subtitle.w = dimens.width;
 	},
+
+	positionSubtitle: function() {
+		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
+
+		var y;
+		if (_hasTitle) {
+			var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			if (_options.header.location === "pie-center") {
+				var pieCenter = d3pie.math.getPieCenter();
+				y = pieCenter.y;
+				y = y - (totalTitleHeight / 2) + totalTitleHeight;
+			} else {
+				y = totalTitleHeight;
+			}
+		} else {
+			if (_options.header.location === "pie-center") {
+				var footerPlusPadding = _options.misc.canvasPadding.bottom + _componentDimensions.footer.h;
+				y = ((_options.size.canvasHeight - footerPlusPadding) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.subtitle.h / 2);
+			} else {
+				y = _options.misc.canvasPadding.top + _componentDimensions.subtitle.h;
+			}
+		}
+
+		_svg.select("#subtitle")
+			.attr("x", x)
+			.attr("y", y);
+	},
+
 
 	addFooter: function() {
 		_svg.selectAll(".footer")
@@ -870,10 +867,6 @@ d3pie.text = {
 	},
 
 	positionFooter: function() {
-		var dimens = d3pie.helpers.getDimensions("footer");
-		_componentDimensions.footer.h = dimens.h;
-		_componentDimensions.footer.w = dimens.w;
-
 		var x;
 		if (_options.footer.location === "bottom-left") {
 			x = _options.misc.canvasPadding.left;
@@ -887,9 +880,11 @@ d3pie.text = {
 			.attr("y", _options.size.canvasHeight - _options.misc.canvasPadding.bottom);
 	}
 };
-	// --------- core.js -----------
-
-// these vars are accessible to all JS files as "globals"
+	/**
+ * --------- core.js -----------
+ *
+ * This contains the main control flow for the script, and all the core jQuery functionality - public + private.
+ */
 var _pluginName = "d3pie";
 var _componentDimensions = {
 	title:    { h: 0, w: 0 },
@@ -1002,17 +997,42 @@ d3pie.prototype.init = function() {
 	_innerRadius = radii.inner;
 	_outerRadius = radii.outer;
 
-	// position the title + subtitle. These two are interdependent
-	d3pie.text.positionTitle();
-	d3pie.text.positionSubtitle();
 
-	// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
-	// functions took a little time
-	d3pie.helpers.whenElementsExist(["title", "subtitle", "footer"], function() {
+	// STEP 2: now create the pie chart and position everything accordingly
+	var requiredElements = [];
+	if (_hasTitle) { requiredElements.push("title"); }
+	if (_hasSubtitle) { requiredElements.push("subtitle"); }
+	if (_hasFooter) { requiredElements.push("footer"); }
+
+	d3pie.helpers.whenElementsExist(requiredElements, function() {
+		_storeDimensions();
+
+		d3pie.text.positionTitle();
+		d3pie.text.positionSubtitle();
+
 		d3pie.segments.create();
 		d3pie.labels.add();
 		d3pie.segments.addSegmentEventHandlers();
 	});
+};
+
+
+var _storeDimensions = function() {
+	if (_hasTitle) {
+		var d1 = d3pie.helpers.getDimensions("title");
+		_componentDimensions.title.h = d1.h;
+		_componentDimensions.title.w = d1.w;
+	}
+	if (_hasSubtitle) {
+		var d2 = d3pie.helpers.getDimensions("subtitle");
+		_componentDimensions.subtitle.h = d2.h;
+		_componentDimensions.subtitle.w = d2.w;
+	}
+	if (_hasFooter) {
+		var d3 = d3pie.helpers.getDimensions("footer");
+		_componentDimensions.footer.h = d3.h;
+		_componentDimensions.footer.w = d3.w;
+	}
 };
 
 
