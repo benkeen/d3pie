@@ -1,5 +1,3 @@
-// --------- core.js -----------
-
 var _pluginName = "d3pie";
 
 // to be populated when each item is first rendered on the canvas

@@ -1,4 +1,3 @@
-// --------- defaultSettings.js -----------
 var _defaultSettings = {
 	header: {
 		title: {

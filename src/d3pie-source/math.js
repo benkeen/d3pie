@@ -1,5 +1,3 @@
-// --------- math.js -----------
-
 /**
  * Contains all the math needed to figure out where to place things, etc.
  */

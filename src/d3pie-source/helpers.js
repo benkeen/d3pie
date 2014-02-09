@@ -1,4 +1,3 @@
-// --------- helpers.js -----------
 d3pie.helpers = function() {
 
 	var _toRadians = function(degrees) {

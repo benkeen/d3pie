@@ -8,13 +8,12 @@
 ;(function($, window, document) {
 	"use strict";
 
-	// include the JS files
-	{{core}}
-	{{defaultSettings}}
-	{{validate}}
-	{{helpers}}
-	{{math}}
-	{{labels}}
-	{{segments}}
+	<%=core%>
+	<%=defaultSettings%>
+	<%=validate%>
+	<%=helpers%>
+	<%=math%>
+	<%=labels%>
+	<%=segments%>
 
 })(jQuery, window, document);

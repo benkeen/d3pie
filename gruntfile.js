@@ -1,26 +1,37 @@
 module.exports = function(grunt) {
 	"use strict";
 
+	var fs = require("fs");
+
+	var _createD3PieFiles = function() {
+		config.template.options.data.core = fs.readFileSync("d3pie-source/core.js", 'utf8');
+		config.template.options.data.defaultSettings = fs.readFileSync("d3pie-source/defaultSettings.js", 'utf8');
+		config.template.options.data.helpers = fs.readFileSync("d3pie-source/helpers.js", 'utf8');
+		config.template.options.data.labels = fs.readFileSync("d3pie-source/labels.js", 'utf8');
+		config.template.options.data.math = fs.readFileSync("d3pie-source/math.js", 'utf8');
+		config.template.options.data.segments = fs.readFileSync("d3pie-source/segments.js", 'utf8');
+		config.template.options.data.validate = fs.readFileSync("d3pie-source/validate.js", 'utf8');
+
+		grunt.task.run("template");
+	};
+
+
 	var config = {
-		includes: {
-			files: {
-				options: {
-					debug: true,
-					template: "d3pie-source/gruntWrapper.js",
-					filenameSuffix: "js",
-					includePath: "d3pie-source"
-				},
+		template: {
+			options: {
+				data: {}
+			},
+			bundle: {
 				files: {
-//					src: "d3pie-source/*",
-					dest: "d3pie/jquery.d3pie.js"
+					'd3pie/jquery.d3pie.js': ['d3pie-source/source-template.js']
 				}
 			}
 		}
 	};
 
 	grunt.initConfig(config);
-	grunt.loadNpmTasks('grunt-includes');
+	grunt.loadNpmTasks('grunt-template');
 
-
-	grunt.registerTask('default', ['includes']);
+	grunt.registerTask('createD3PieFiles', _createD3PieFiles);
+	grunt.registerTask('default', ['createD3PieFiles']);
 };

@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-includes": "~0.4.1"
+    "grunt-template": "~0.2.3"
   }
 }
