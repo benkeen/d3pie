@@ -43,6 +43,11 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
+
+
+		var dimens = d3pie.helpers.getDimensions("title");
+		_componentDimensions.title.h = dimens.height;
+		_componentDimensions.title.w = dimens.width;
 	},
 
 	positionTitle: function() {
@@ -116,6 +121,10 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
+
+		var dimens = d3pie.helpers.getDimensions("subtitle");
+		_componentDimensions.subtitle.h = dimens.height;
+		_componentDimensions.subtitle.w = dimens.width;
 	},
 
 	addFooter: function() {
@@ -147,12 +156,15 @@ d3pie.text = {
 	},
 
 	positionFooter: function() {
+		var dimens = d3pie.helpers.getDimensions("footer");
+		_componentDimensions.footer.h = dimens.h;
+		_componentDimensions.footer.w = dimens.w;
+
 		var x;
 		if (_options.footer.location === "bottom-left") {
 			x = _options.misc.canvasPadding.left;
 		} else if (_options.footer.location === "bottom-right") {
-			var dims = document.getElementById("footer").getBBox();
-			x = _options.size.canvasWidth - dims.width - _options.misc.canvasPadding.right;
+			x = _options.size.canvasWidth - _componentDimensions.footer.w - _options.misc.canvasPadding.right;
 		} else {
 			x = _options.size.canvasWidth / 2;
 		}

@@ -80,7 +80,7 @@ d3pie.math = {
 	},
 
 	getPieTranslateCenter: function() {
-		var pieCenter = _getPieCenter();
+		var pieCenter = d3pie.math.getPieCenter();
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
 	},
 
@@ -90,21 +90,25 @@ d3pie.math = {
 	 * @private
 	 */
 	getPieCenter: function() {
+
+		// TODO MEMOIZE (needs invalidation, too)
+
 		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
 		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10) + _options.misc.titleSubtitlePadding;
+			headerOffset += parseInt(_componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h, 10);
 		} else if (hasTopTitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+			headerOffset += parseInt(_componentDimensions.title.h, 10);
 		} else if (hasTopSubtitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10);
+			headerOffset = parseInt(_componentDimensions.subtitle.h, 10);
 		}
 
 		var footerOffset = 0;
 		if (_hasFooter) {
-			footerOffset = _getFooterHeight() + _options.misc.canvasPadding.bottom;
+			footerOffset = _componentDimensions.footer.h + _options.misc.canvasPadding.bottom;
+			console.log(_componentDimensions.footer.h, _options.misc.canvasPadding.bottom);	_componentDimensions.footer.h
 		}
 
 		return {

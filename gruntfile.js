@@ -4,11 +4,12 @@ module.exports = function(grunt) {
 	// load what we need
 	grunt.loadNpmTasks('grunt-template');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-
-	var fs = require("fs");
 
 	var _createD3PieFiles = function() {
+		var fs = require("fs");
+
 		config.template.options.data.core = fs.readFileSync("d3pie-source/core.js", 'utf8');
 		config.template.options.data.defaultSettings = fs.readFileSync("d3pie-source/default-settings.js", 'utf8');
 		config.template.options.data.helpers = fs.readFileSync("d3pie-source/helpers.js", 'utf8');
@@ -24,9 +25,7 @@ module.exports = function(grunt) {
 
 	var config = {
 		template: {
-			options: {
-				data: {}
-			},
+			options: { data: {} },
 			bundle: {
 				files: {
 					'd3pie/jquery.d3pie.js': ['d3pie-source/source-template.js']
@@ -38,6 +37,12 @@ module.exports = function(grunt) {
 				files: "d3pie-source/*.js",
 				tasks: ["createD3PieFiles"]
 			}
+		},
+		uglify: {
+			d3pie: {
+				src: 'd3pie/jquery.d3pie.js',
+				dest: 'd3pie/jquery.d3pie.min.js'
+			}
 		}
 	};
 
@@ -45,5 +50,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('createD3PieFiles', _createD3PieFiles);
 	grunt.registerTask('default', ['createD3PieFiles']);
-	//grunt.registerTask('dev', ['createD3PieFiles']);
+	grunt.registerTask('dev', ['createD3PieFiles', 'uglify:d3pie']);
 };

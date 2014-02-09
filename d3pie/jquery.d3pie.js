@@ -115,7 +115,8 @@ d3pie.helpers = {
 	whenIdExists: function(id, callback) {
 		var inc = 1;
 		var giveupTime = 1000;
-		var interval = setInterval(function () {
+
+		var interval = setInterval(function() {
 			if (document.getElementById(id)) {
 				clearInterval(interval);
 				callback();
@@ -125,6 +126,30 @@ d3pie.helpers = {
 			}
 			inc++;
 		}, 1);
+	},
+
+	whenElementsExist: function(els, callback) {
+		var inc = 1;
+		var giveupTime = 1000;
+
+		var interval = setInterval(function() {
+			var allExist = true;
+			for (var i=0; i<els.length; i++) {
+				if (!document.getElementById(els[i])) {
+					allExist = false;
+					break;
+				}
+			}
+			if (allExist) {
+				clearInterval(interval);
+				callback();
+			}
+			if (inc > giveupTime) {
+				clearInterval(interval);
+			}
+			inc++;
+		}, 1);
+
 	},
 
 	shuffleArray: function(array) {
@@ -162,6 +187,14 @@ d3pie.helpers = {
 	getWidth: function(id) {
 		var dimensions = document.getElementById(id).getBBox();
 		return dimensions.width;
+	},
+
+	getDimensions: function(id) {
+		var dimensions = document.getElementById(id).getBBox();
+		return {
+			w: dimensions.width,
+			h: dimensions.height
+		}
 	}
 };
 
@@ -247,7 +280,7 @@ d3pie.math = {
 	},
 
 	getPieTranslateCenter: function() {
-		var pieCenter = _getPieCenter();
+		var pieCenter = d3pie.math.getPieCenter();
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
 	},
 
@@ -257,21 +290,25 @@ d3pie.math = {
 	 * @private
 	 */
 	getPieCenter: function() {
+
+		// TODO MEMOIZE (needs invalidation, too)
+
 		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
 		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10) + _options.misc.titleSubtitlePadding;
+			headerOffset += parseInt(_componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h, 10);
 		} else if (hasTopTitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("title")).attr("y"), 10);
+			headerOffset += parseInt(_componentDimensions.title.h, 10);
 		} else if (hasTopSubtitle) {
-			headerOffset = parseInt(d3.select(document.getElementById("subtitle")).attr("y"), 10);
+			headerOffset = parseInt(_componentDimensions.subtitle.h, 10);
 		}
 
 		var footerOffset = 0;
 		if (_hasFooter) {
-			footerOffset = _getFooterHeight() + _options.misc.canvasPadding.bottom;
+			footerOffset = _componentDimensions.footer.h + _options.misc.canvasPadding.bottom;
+			console.log(_componentDimensions.footer.h, _options.misc.canvasPadding.bottom);	_componentDimensions.footer.h
 		}
 
 		return {
@@ -313,15 +350,15 @@ d3pie.labels = {
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
 			_options.data.filter(function(d) { return d.value; }),
-			function(d) { return d.label; }
-		)
+				function(d) { return d.label; }
+			)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup")
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
 			})
-			.attr("transform", d3pie.helpers.getPieTranslateCenter);
+			.attr("transform", d3pie.math.getPieTranslateCenter);
 
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
@@ -506,7 +543,7 @@ d3pie.labels = {
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup")
-			.attr("transform", d3pie.helpers.getPieTranslateCenter);
+			.attr("transform", d3pie.math.getPieTranslateCenter);
 
 		var lineFunction = d3.svg.line()
 			.interpolate("basis")
@@ -540,11 +577,11 @@ d3pie.segments = {
 	 * @private
 	 */
 	create: function() {
-		var pieChartElement = _svg.append("g")
-			.attr("transform", d3pie.helpers.getPieTranslateCenter)
-			.attr("class", "pieChart");
+		console.log(d3pie.math.getPieTranslateCenter());
 
-		console.log(_innerRadius, _outerRadius);
+		var pieChartElement = _svg.append("g")
+			.attr("transform", d3pie.math.getPieTranslateCenter)
+			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
 			.innerRadius(_innerRadius)
@@ -557,9 +594,9 @@ d3pie.segments = {
 
 		var g = pieChartElement.selectAll(".arc")
 			.data(
-			_options.data.filter(function(d) { return d.value; }),
-			function(d) { return d.label; }
-		)
+				_options.data.filter(function(d) { return d.value; }),
+				function(d) { return d.label; }
+			)
 			.enter()
 			.append("g")
 			.attr("class", function() {
@@ -720,6 +757,11 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
+
+
+		var dimens = d3pie.helpers.getDimensions("title");
+		_componentDimensions.title.h = dimens.height;
+		_componentDimensions.title.w = dimens.width;
 	},
 
 	positionTitle: function() {
@@ -793,6 +835,10 @@ d3pie.text = {
 			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
+
+		var dimens = d3pie.helpers.getDimensions("subtitle");
+		_componentDimensions.subtitle.h = dimens.height;
+		_componentDimensions.subtitle.w = dimens.width;
 	},
 
 	addFooter: function() {
@@ -824,12 +870,15 @@ d3pie.text = {
 	},
 
 	positionFooter: function() {
+		var dimens = d3pie.helpers.getDimensions("footer");
+		_componentDimensions.footer.h = dimens.h;
+		_componentDimensions.footer.w = dimens.w;
+
 		var x;
 		if (_options.footer.location === "bottom-left") {
 			x = _options.misc.canvasPadding.left;
 		} else if (_options.footer.location === "bottom-right") {
-			var dims = document.getElementById("footer").getBBox();
-			x = _options.size.canvasWidth - dims.width - _options.misc.canvasPadding.right;
+			x = _options.size.canvasWidth - _componentDimensions.footer.w - _options.misc.canvasPadding.right;
 		} else {
 			x = _options.size.canvasWidth / 2;
 		}
@@ -843,9 +892,9 @@ d3pie.text = {
 // these vars are accessible to all JS files as "globals"
 var _pluginName = "d3pie";
 var _componentDimensions = {
-	title: { h: 0, w: 0 },
+	title:    { h: 0, w: 0 },
 	subtitle: { h: 0, w: 0 },
-	topHeaderGroup: { h: 0, w: 0 }
+	footer:   { h: 0, w: 0 }
 };
 var _hasTitle = false;
 var _hasSubtitle = false;
@@ -959,16 +1008,15 @@ d3pie.prototype.init = function() {
 
 	// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
 	// functions took a little time
-	setTimeout(function() {
+	d3pie.helpers.whenElementsExist(["title", "subtitle", "footer"], function() {
 		d3pie.segments.create();
 		d3pie.labels.add();
 		d3pie.segments.addSegmentEventHandlers();
-	}, 5);
+	});
 };
 
 
 var _addFilter = function() {
-	//console.log(_getPieCenter());
 	//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
 };
 

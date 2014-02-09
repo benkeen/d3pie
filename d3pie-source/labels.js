@@ -12,15 +12,15 @@ d3pie.labels = {
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
 			_options.data.filter(function(d) { return d.value; }),
-			function(d) { return d.label; }
-		)
+				function(d) { return d.label; }
+			)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup")
 			.attr("id", function(d, i) {
 				return "labelGroup" + i;
 			})
-			.attr("transform", d3pie.helpers.getPieTranslateCenter);
+			.attr("transform", d3pie.math.getPieTranslateCenter);
 
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
@@ -205,7 +205,7 @@ d3pie.labels = {
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup")
-			.attr("transform", d3pie.helpers.getPieTranslateCenter);
+			.attr("transform", d3pie.math.getPieTranslateCenter);
 
 		var lineFunction = d3.svg.line()
 			.interpolate("basis")

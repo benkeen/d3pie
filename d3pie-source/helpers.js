@@ -23,7 +23,8 @@ d3pie.helpers = {
 	whenIdExists: function(id, callback) {
 		var inc = 1;
 		var giveupTime = 1000;
-		var interval = setInterval(function () {
+
+		var interval = setInterval(function() {
 			if (document.getElementById(id)) {
 				clearInterval(interval);
 				callback();
@@ -33,6 +34,30 @@ d3pie.helpers = {
 			}
 			inc++;
 		}, 1);
+	},
+
+	whenElementsExist: function(els, callback) {
+		var inc = 1;
+		var giveupTime = 1000;
+
+		var interval = setInterval(function() {
+			var allExist = true;
+			for (var i=0; i<els.length; i++) {
+				if (!document.getElementById(els[i])) {
+					allExist = false;
+					break;
+				}
+			}
+			if (allExist) {
+				clearInterval(interval);
+				callback();
+			}
+			if (inc > giveupTime) {
+				clearInterval(interval);
+			}
+			inc++;
+		}, 1);
+
 	},
 
 	shuffleArray: function(array) {
@@ -70,5 +95,13 @@ d3pie.helpers = {
 	getWidth: function(id) {
 		var dimensions = document.getElementById(id).getBBox();
 		return dimensions.width;
+	},
+
+	getDimensions: function(id) {
+		var dimensions = document.getElementById(id).getBBox();
+		return {
+			w: dimensions.width,
+			h: dimensions.height
+		}
 	}
 };

@@ -3,9 +3,9 @@
 // these vars are accessible to all JS files as "globals"
 var _pluginName = "d3pie";
 var _componentDimensions = {
-	title: { h: 0, w: 0 },
+	title:    { h: 0, w: 0 },
 	subtitle: { h: 0, w: 0 },
-	topHeaderGroup: { h: 0, w: 0 }
+	footer:   { h: 0, w: 0 }
 };
 var _hasTitle = false;
 var _hasSubtitle = false;
@@ -119,15 +119,14 @@ d3pie.prototype.init = function() {
 
 	// STEP 2: now create the pie chart and add the labels. We have to place this in a timeout because the previous
 	// functions took a little time
-	setTimeout(function() {
+	d3pie.helpers.whenElementsExist(["title", "subtitle", "footer"], function() {
 		d3pie.segments.create();
 		d3pie.labels.add();
 		d3pie.segments.addSegmentEventHandlers();
-	}, 5);
+	});
 };
 
 
 var _addFilter = function() {
-	//console.log(_getPieCenter());
 	//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
 };

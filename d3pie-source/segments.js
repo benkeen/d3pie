@@ -8,11 +8,11 @@ d3pie.segments = {
 	 * @private
 	 */
 	create: function() {
-		var pieChartElement = _svg.append("g")
-			.attr("transform", d3pie.helpers.getPieTranslateCenter)
-			.attr("class", "pieChart");
+		console.log(d3pie.math.getPieTranslateCenter());
 
-		console.log(_innerRadius, _outerRadius);
+		var pieChartElement = _svg.append("g")
+			.attr("transform", d3pie.math.getPieTranslateCenter)
+			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
 			.innerRadius(_innerRadius)
@@ -25,9 +25,9 @@ d3pie.segments = {
 
 		var g = pieChartElement.selectAll(".arc")
 			.data(
-			_options.data.filter(function(d) { return d.value; }),
-			function(d) { return d.label; }
-		)
+				_options.data.filter(function(d) { return d.value; }),
+				function(d) { return d.label; }
+			)
 			.enter()
 			.append("g")
 			.attr("class", function() {
