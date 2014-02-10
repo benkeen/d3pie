@@ -127,6 +127,8 @@ body .colorGroup {
 
 #generatorPieChart {
     display: inline-block;
+    position: absolute;
+    z-index: 2;
 }
 #generatorPieChart {
     border: 1px solid #ffffff;
@@ -174,4 +176,11 @@ body .disabledText {
 
 .misc .col-lg-3 {
 	padding-right: 10px;
+}
+
+#birdyBackground canvas{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
 }

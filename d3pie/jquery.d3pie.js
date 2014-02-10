@@ -743,8 +743,8 @@ d3pie.text = {
 		title.enter()
 			.append("text")
 			.attr("id", "title")
-			.attr("x", d3.text.offscreenCoord)
-			.attr("y", d3.text.offscreenCoord)
+			.attr("x", d3pie.text.offscreenCoord)
+			.attr("y", d3pie.text.offscreenCoord)
 			.attr("class", "title")
 			.attr("text-anchor", function() {
 				var location;
@@ -769,11 +769,12 @@ d3pie.text = {
 			var pieCenter = d3pie.math.getPieCenter();
 			y = pieCenter.y;
 
+			// still not fully correct.
 			if (_hasSubtitle) {
 				var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
 				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
 			} else {
-				y -= (_componentDimensions.title.h/2);
+				y += (_componentDimensions.title.h / 4);
 			}
 		}
 
@@ -791,8 +792,8 @@ d3pie.text = {
 			.data([_options.header.subtitle])
 			.enter()
 			.append("text")
-			.attr("x", d3.text.offscreenCoord)
-			.attr("y", d3.text.offscreenCoord)
+			.attr("x", d3pie.text.offscreenCoord)
+			.attr("y", d3pie.text.offscreenCoord)
 			.attr("id", "subtitle")
 			.attr("class", "subtitle")
 			.attr("text-anchor", function() {
@@ -843,8 +844,8 @@ d3pie.text = {
 			.data([_options.footer])
 			.enter()
 			.append("text")
-			.attr("x", d3.text.offscreenCoord)
-			.attr("y", d3.text.offscreenCoord)
+			.attr("x", d3pie.text.offscreenCoord)
+			.attr("y", d3pie.text.offscreenCoord)
 			.attr("id", "footer")
 			.attr("class", "footer")
 			.attr("text-anchor", function() {

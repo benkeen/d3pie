@@ -45,17 +45,38 @@ define([], function() {
 					{ label: "Sharks", value: 8 },
 					{ label: "Alien invasion", value: 8 },
 					{ label: "Learning Objective-C", value: 5 },
+					{ label: "Public speaking", value: 3 },
 					{ label: "Donald Rumsfeld", value: 4 },
 					{ label: "The Zombie Apocalypse", value: 4 },
 					{ label: "The City of Winnipeg *", value: 3 },
-					{ label: "IE 6", value: 2 }
+					{ label: "IE 6", value: 2 },
+					{ label: "Snakes on or off a plane", value: 5 },
+					{ label: "Heights", value: 3 },
+					{ label: "Chickadees", value: 4 }
 				],
 				labels: {
-					location: "inside", // inside/outside
-					format: "{L}", // {L} = label, {%} = percentage, {V} = value,
-					labelColor: "#333333",
-					labelPercentageColor: "#999999",
-					labelSegmentValueColor: "#cccccc"
+					enableTooltips: true,
+					inside: "none",
+					outside: "label",
+					mainLabel: {
+						color: "#333333",
+						font: "Open sans",
+						fontSize: "8"
+					},
+					percentage: {
+						color: "#999999",
+						font: "Open sans",
+						fontSize: "8"
+					},
+					value: {
+						color: "#cccc44",
+						font: "Open sans",
+						fontSize: "8"
+					},
+					lines: {
+						enabled: true,
+						color: "segment" // "segment" or a hex color
+					}
 				},
 				styles: {
 					backgroundColor: null,

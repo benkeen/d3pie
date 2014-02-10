@@ -1,85 +1,165 @@
 <h4>Labels</h4>
 
 <div class="row form-group">
-	<div class="col-md-4">
-		<input type="radio" name="labelType" id="labelType1" value="labels" checked="checked" />
-		<label for="labelType1">Labels</label>
-	</div>
-	<div class="col-md-4">
-		<input type="radio" name="labelType" id="labelType2" value="legend" />
-		<label for="labelType2">Legend</label>
-	</div>
-	<div class="col-md-4">
-		<input type="radio" name="labelType" id="labelType3" value="none" />
-		<label for="labelType3">Nothin'</label>
+	<div class="col-md-6">
+		<input type="checkbox" id="enableTooltips" {{#compare config.labels.enableTooltips true}}checked="checked"{{/compare}} />
+		<label for="enableTooltips">Include mouseover tooltips</label>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-6">
-		<label for="labelLocation" class="control-label">Label Outside</label>
+		<label for="insideLabel" class="control-label">Inside Label</label>
 		<div class="form-group padRight30">
-			<select id="labelLocation" class="form-control">
-				<option value="none">None</option>
-				<option value="label">Label</option>
-				<option value="value">Value</option>
-				<option value="percentage">Percentage</option>
-				<option value="label">label, value (same line)</option>
-				<option value="label-value1">label, value (separate lines)</option>
-				<option value="label-percentage1">label, percentage (same line)</option>
-				<option value="label-percentage2">label, percentage (separate lines)</option>
+			<select id="insideLabel" class="form-control">
+				<option value="none" {{#compare config.labels.inside "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="label" {{#compare config.labels.inside "label"}}selected="selected"{{/compare}}>Label</option>
+				<option value="value" {{#compare config.labels.inside "value"}}selected="selected"{{/compare}}>Value</option>
+				<option value="percentage" {{#compare config.labels.inside "percentage"}}selected="selected"{{/compare}}>Percentage</option>
+				<option value="label-value1" {{#compare config.labels.inside "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
+				<option value="label-value2" {{#compare config.labels.inside "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
+				<option value="label-percentage1" {{#compare config.labels.inside "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
+				<option value="label-percentage2" {{#compare config.labels.inside "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
 			</select>
 		</div>
 	</div>
 	<div class="col-md-6">
-		<label for="labelFormat" class="control-label">Label Inside</label>
+		<label for="outsideLabel" class="control-label">Outside Label</label>
 		<div class="form-group padRight30">
-			<select id="labelFormatExample" class="form-control">
-				<option value="none">None</option>
-				<option value="label">Label</option>
-				<option value="value">Value</option>
-				<option value="percentage">Percentage</option>
-				<option value="label">label, value (same line)</option>
-				<option value="label-value1">label, value (separate lines)</option>
-				<option value="label-percentage1">label, percentage (same line)</option>
-				<option value="label-percentage2">label, percentage (separate lines)</option>
+			<select id="outsideLabel" class="form-control">
+				<option value="none" {{#compare config.labels.outside "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="label" {{#compare config.labels.outside "label"}}selected="selected"{{/compare}}>Label</option>
+				<option value="value" {{#compare config.labels.outside "value"}}selected="selected"{{/compare}}>Value</option>
+				<option value="percentage" {{#compare config.labels.outside "percentage"}}selected="selected"{{/compare}}>Percentage</option>
+				<option value="label-value1" {{#compare config.labels.outside "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
+				<option value="label-value2" {{#compare config.labels.outside "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
+				<option value="label-percentage1" {{#compare config.labels.outside "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
+				<option value="label-percentage2" {{#compare config.labels.outside "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
 			</select>
 		</div>
 	</div>
 </div>
 
-<div class="row col-md-12">
-	<label for="labelLocation" class="control-label">Label component colors</label>
+
+<div class="row col-md-12" style="padding-top: 10px">
+	<h4>Label Styles</h4>
 </div>
-<div class="row">
-	<div class="col-md-4">
-		<label for="labelColor">Label</label>
+
+<div id="labelStyles" style="padding-right: 30px">
+	<div class="md-col-12"></div>
+
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3"><label>Color</label></div>
+		<div class="col-md-4"><label>Font</label></div>
+		<div class="col-md-3"><label>Font Size</label></div>
 	</div>
-	<div class="col-md-4">
-		<label for="labelPercentageColor">Percentage</label>
+
+	<div class="row">
+		<div class="col-md-2"><label for="labelColor">Label</label></div>
+		<div class="col-md-3">
+			<div id="labelColorGroup" class="colorGroup input-group">
+				<input type="text" id="labelColor" value="{{config.labels.mainLabel.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<select id="mainLabelFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.mainLabel.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.mainLabel.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.mainLabel.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.mainLabel.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.mainLabel.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.mainLabel.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.mainLabel.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="mainLabelFontSize" type="number" class="pixelSizeField updateNoAnimation" value="{{numbersOnly config.labels.mainLabel.fontSize}}" />
+			<label for="mainLabelFontSize">px</label>
+		</div>
 	</div>
-	<div class="col-md-4">
-		<label for="labelSegmentValueColor">Value</label>
+
+	<div class="row">
+		<div class="col-md-2"><label for="labelPercentageColor">Percentage</label></div>
+		<div class="col-md-3">
+			<div id="labelPercentageColorGroup" class="colorGroup input-group">
+				<input type="text" id="labelPercentageColor" value="{{config.labels.percentage.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<select id="labelPercentageFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.percentage.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.percentage.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.percentage.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.percentage.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.percentage.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.percentage.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.percentage.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="labelPercentageFontSize" type="number" class="pixelSizeField updateNoAnimation" value="{{numbersOnly config.labels.percentage.fontSize}}" />
+			<label for="labelPercentageFontSize">px</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-2"><label for="subtitleColor">Value</label></div>
+		<div class="col-md-3">
+			<div id="labelValueColor" class="colorGroup input-group">
+				<input type="text" id="labelValueColor" value="{{config.labels.value.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<select id="labelValueFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="labelValueFontSize" type="number" class="pixelSizeField updateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
+			<label for="labelValueFontSize">px</label>
+		</div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-4">
-		<div id="labelColorGroup" class="colorGroup input-group">
-			<input type="text" id="labelColor" value="{{config.labels.labelColor}}" class="form-control" />
-			<span class="input-group-addon"><i></i></span>
-		</div>
+
+<div class="row col-md-12" style="padding-top: 10px">
+	<h4>Label Lines</h4>
+</div>
+
+<div class="row form-group">
+	<div class="col-md-12">
+		<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} />
+		<label for="showLabelLines">Show label lines</label>
 	</div>
-	<div class="col-md-4">
-		<div id="labelPercentageColorGroup" class="colorGroup input-group">
-			<input type="text" id="labelPercentageColor" value="{{config.labels.labelPercentageColor}}" class="form-control" />
-			<span class="input-group-addon"><i></i></span>
-		</div>
+</div>
+
+<div class="row form-group">
+	<div class="col-md-2">
+		<label>Color:</label>
 	</div>
-	<div class="col-md-4">
-		<div id="labelSegmentValueColor" class="colorGroup input-group">
-			<input type="text" id="labelSegmentValueColor" value="{{config.labels.labelSegmentValueColor}}" class="form-control" />
-			<span class="input-group-addon"><i></i></span>
+	<div class="col-md-5">
+		<input type="radio" name="labelLineColorType" id="labelLineColor1" value="segment" style="float: left; margin-right: 8px"
+			{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
+		<label for="labelLineColor1" style="margin-left: 5px">Same color as segment</label>
+	</div>
+	<div class="col-md-5">
+		<div class="form-group">
+			<input type="radio" name="backgroundColorType" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
+				   value="color" {{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
+			<div id="backgroundColorGroup" class="colorGroup input-group">
+				<input type="text" id="labelLinesColor" value="{{#compare config.labels.lines.color "segment" operator="!="}}{{config.labels.lines.color}}{{/compare}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
 		</div>
 	</div>
 </div>
