@@ -56,10 +56,10 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-2"><label for="labelColor">Label</label></div>
+		<div class="col-md-2"><label for="mainLabelColor">Label</label></div>
 		<div class="col-md-3">
 			<div id="labelColorGroup" class="colorGroup input-group">
-				<input type="text" id="labelColor" value="{{config.labels.mainLabel.color}}" class="form-control" />
+				<input type="text" id="mainLabelColor" value="{{config.labels.mainLabel.color}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
@@ -148,15 +148,15 @@
 		<label>Color:</label>
 	</div>
 	<div class="col-md-5">
-		<input type="radio" name="labelLineColorType" id="labelLineColor1" value="segment" style="float: left; margin-right: 8px"
+		<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
 			{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
-		<label for="labelLineColor1" style="margin-left: 5px">Same color as segment</label>
+		<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
 	</div>
 	<div class="col-md-5">
 		<div class="form-group">
-			<input type="radio" name="backgroundColorType" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
-				   value="color" {{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
-			<div id="backgroundColorGroup" class="colorGroup input-group">
+			<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
+				{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
+			<div id="labelLinesColorGroup" class="colorGroup input-group">
 				<input type="text" id="labelLinesColor" value="{{#compare config.labels.lines.color "segment" operator="!="}}{{config.labels.lines.color}}{{/compare}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>
 			</div>

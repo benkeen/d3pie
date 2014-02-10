@@ -13,6 +13,7 @@ define([
 		$("#labelColorGroup").colorpicker();
 		$("#labelPercentageColorGroup").colorpicker();
 		$("#labelValueColor").colorpicker();
+		$("#labelLinesColorGroup").colorpicker();
 
 		$("#labelFormatExample").on("change", function() {
 			$("#labelFormat").val(this.value);
@@ -20,40 +21,34 @@ define([
 	};
 
 	var _getTabData = function() {
-
-			/*
-			enableTooltips: true,
-			inside: "none",
-			outside: "label",
-			mainLabel: {
-			color: "#333333",
-				font: "",
-				fontSize: ""
-			},
-			percentage: {
-				color: "#999999",
-				font: "",
-				fontSize: ""
-			},
-			value: {
-				color: "#cccc44",
-					font: "",
-					fontSize: ""
-			},
-			lines: {
-				enabled: true,
-					color: "segment" // "segment" or a hex color
-			}
-			*/
-
+		var lineColor = "segment";
+		if ($("#labelLineColorType2")[0].checked) {
+			lineColor = $("#labelLinesColor").val();
+		}
 
 		return {
 			enableTooltips: $("#enableTooltips")[0].checked,
 			inside:         $("#insideLabel").val(),
 			outside:        $("#outsideLabel").val(),
-			labelColor: $("#labelColor").val(),
-			labelPercentageColor: $("#labelPercentageColor").val(),
-			labelSegmentValueColor: $("#labelSegmentValueColor").val()
+			mainLabel: {
+				color:    $("#mainLabelColor").val(),
+				font:     $("#mainLabelFont").val(),
+				fontSize: $("#mainLabelFontSize").val()
+			},
+			percentage: {
+				color:    $("#labelPercentageColor").val(),
+				font:     $("#labelPercentageFont").val(),
+				fontSize: $("#labelPercentageFontSize").val()
+			},
+			value: {
+				color:    $("#labelValueColor").val(),
+				font:     $("#labelValueFont").val(),
+				fontSize: $("#labelValueFontSize").val()
+			},
+			lines: {
+				enabled: $("#showLabelLines")[0].checked,
+				color:   lineColor
+			}
 		};
 	};
 

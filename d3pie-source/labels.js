@@ -22,6 +22,7 @@ d3pie.labels = {
 			})
 			.attr("transform", d3pie.math.getPieTranslateCenter);
 
+		// TODO add x and y offscreen
 		labelGroup.append("text")
 			.attr("class", "segmentLabel")
 			.attr("id", function(d, i) { return "label" + i; })
@@ -84,8 +85,12 @@ d3pie.labels = {
 	},
 
 
-	// this both adds the lines and positions the labels
+	// this both adds the lines and positions the labels [TODO]
 	addLabelLines: function() {
+		if (!_options.labels.lines.enabled) {
+			return;
+		}
+
 		var lineMidPointDistance = _options.misc.labelPieDistance - (_options.misc.labelPieDistance / 4);
 		var circleCoordGroups = [];
 
@@ -214,7 +219,15 @@ d3pie.labels = {
 
 		lineGroup.append("path")
 			.attr("d", lineFunction)
-			.attr("stroke", "#666666")
+			.attr("stroke", function(d, i) {
+				var color = null;
+				if (_options.labels.lines.color === "segment") {
+					color = _options.styles.colors[i];
+				} else {
+					color = _options.labels.lines.color;
+				}
+				return color;
+			})
 			.attr("stroke-width", 1)
 			.attr("fill", "none");
 

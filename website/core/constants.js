@@ -27,7 +27,7 @@ define([], function() {
 					location: "pie-center"
 				},
 				footer: {
-					text: "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
+					text:     "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
 					color:    "#999999",
 					fontSize: "10px",
 					font:     "open sans",
@@ -80,7 +80,10 @@ define([], function() {
 				},
 				styles: {
 					backgroundColor: null,
-					colors: ["#333333", "#444444", "#555555", "#666666", "#777777", "#888888", "#999999", "#cb2121", "#830909", "#923e99", "#ae83d5"]
+					colors: [
+						"#333333", "#444444", "#555555", "#666666", "#777777", "#888888", "#999999", "#cb2121",
+						"#830909", "#923e99", "#ae83d5", "#111111", "#050505"
+					]
 				},
 				effects: {
 					load: {
