@@ -7,19 +7,15 @@
  */
 define([], function() {
 
-	// TODO
-	var SCREEN_WIDTH = 650,
-		SCREEN_HEIGHT = 500;
-
-
-	var _camera, _scene, _renderer, _birds, _bird;
-	var _boids;
+	var _camera, _scene, _renderer, _birds, _boids, _requestId;
 	var _numBirds = 250;
-	var _requestId;
 
 
-	var _init = function() {
-		_camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
+	var _init = function(screenWidth, screenHeight) {
+		_screenWidth = screenWidth;
+		_screenHeight = screenHeight;
+
+		_camera = new THREE.PerspectiveCamera(75, screenWidth / screenHeight, 1, 10000);
 		_camera.position.z = 250;
 
 		_scene = new THREE.Scene();
@@ -47,7 +43,7 @@ define([], function() {
 
 	var _start = function() {
 		_renderer = new THREE.CanvasRenderer();
-		_renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+		_renderer.setSize(_screenWidth, _screenHeight);
 
 		document.getElementById("birdyBackground").appendChild(_renderer.domElement);
 		animate();

@@ -28,10 +28,28 @@ var _defaultSettings = {
 		pieOuterRadius: null
 	},
 	labels: {
-		inside: "percentage",
+		enableTooltips: true,
+		inside: "none",
 		outside: "label",
-		hideLabelsForSmallSegments: false,
-		hideLabelsForSmallSegmentSize: "0%"
+		mainLabel: {
+			color: "#333333",
+			font: "Open sans",
+			fontSize: "8"
+		},
+		percentage: {
+			color: "#999999",
+			font: "Open sans",
+			fontSize: "8"
+		},
+		value: {
+			color: "#cccc44",
+			font: "Open sans",
+			fontSize: "8"
+		},
+		lines: {
+			enabled: true,
+			color: "segment" // "segment" or a hex color
+		}
 	},
 	styles: {
 		backgroundColor: null,
@@ -46,18 +64,11 @@ var _defaultSettings = {
 			effect: "linear", // none / linear / bounce /
 			speed: 400
 		},
-
 		highlightSegmentOnMouseover: false,
 		labelFadeInTime: 400
 	},
 	tooltips: {
 		enable: false
-	},
-	callbacks: {
-		onload: null,
-		onMouseoverSegment: null,
-		onMouseoutSegment: null,
-		onClickSegment: null
 	},
 	misc: {
 //			enableTooltips: false,
@@ -78,5 +89,11 @@ var _defaultSettings = {
 		footerPiePadding: 0,
 		labelPieDistance: 16,
 		textSelectable: false
+	},
+	callbacks: {
+		onload: null,
+		onMouseoverSegment: null,
+		onMouseoutSegment: null,
+		onClickSegment: null
 	}
 };

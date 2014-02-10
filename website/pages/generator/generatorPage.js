@@ -13,10 +13,11 @@ define([
 	"effectsTab",
 	"eventsTab",
 	"miscTab",
+	"examplePies",
 	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate"
 ], function(C, mediator, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab, miscTab,
-			examplePiesTemplate, generatorPageTemplate) {
+			EXAMPLE_PIES, examplePiesTemplate, generatorPageTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "generatorPage";
@@ -30,18 +31,18 @@ define([
 	 */
 	var _init = function() {
 		$("#generatorPage").html(generatorPageTemplate({
-			examples: examplePiesTemplate({ examples: C.EXAMPLE_PIES })
+			examples: examplePiesTemplate({ examples: EXAMPLE_PIES })
 		}));
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
-		_loadDemoPie(C.EXAMPLE_PIES[0]);
+		_loadDemoPie(EXAMPLE_PIES[0]);
 
 		// now fade in the three sections: nav, main content & footer row
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
 		$("#exampleDropdown").on("click", "ul li a", function(e) {
 			var index = parseInt($(e.target).data("index"), 10);
-			_loadDemoPie(C.EXAMPLE_PIES[index]);
+			_loadDemoPie(EXAMPLE_PIES[index]);
 		});
 
 		// focus on the title field, just to be nice
@@ -64,6 +65,7 @@ define([
 		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
+
 	};
 
 	var _onKeyupNumberFieldUpdateNoAnimation = function(e) {
@@ -94,6 +96,12 @@ define([
 
 	var _renderPie = function(includeStartAnimation, config) {
 
+		// notify anyone that's interested that the data changed and we're going to do a re-render
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.DATA_CHANGE, {
+			includeStartAnimation: includeStartAnimation,
+			config: config
+		});
+
 		// if we don't want to include the start animation, just override the values in the UI. This is useful for
 		// automatically showing the user's latest changes to the pie settings and not having to see the animation
 		// each and every time
@@ -106,7 +114,7 @@ define([
 		}
 
 		_demoD3Pie = $("#generatorPieChart").d3pie(config);
-		$("#generatorPieChartPad").css({ width: config.size.canvasWidth, height: config.size.canvasHeight });
+		$("#generatorPieChartPad,#generatorPieChart").css({ width: config.size.canvasWidth, height: config.size.canvasHeight });
 		_isCreated = true;
 	};
 
@@ -132,6 +140,8 @@ define([
 
 	var _loadDemoPie = function(pieConfiguration) {
 		var config = pieConfiguration.config;
+
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.EXAMPLE_CHANGE, { config: config });
 
 		// render the generator tabs
 		titleTab.render(config);

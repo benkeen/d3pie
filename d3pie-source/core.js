@@ -146,11 +146,6 @@ var _storeDimensions = function() {
 		_componentDimensions.subtitle.h = d2.h;
 		_componentDimensions.subtitle.w = d2.w;
 	}
-	if (_hasFooter) {
-		var d3 = d3pie.helpers.getDimensions("footer");
-		_componentDimensions.footer.h = d3.h;
-		_componentDimensions.footer.w = d3.w;
-	}
 };
 
 

@@ -23,13 +23,17 @@ define([
 			}
 		});
 
-		$("#footerColor").on("input", function() {
+		var $footerColor = $("#footerColor");
+		$footerColor.on("input", function() {
 			var newValue = this.value;
 			_footerColorManuallyChanged = true;
 			if (_previousTitleColor !== newValue && newValue.length === 7) {
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 				_previousTitleColor = newValue;
 			}
+		});
+		$footerColor.on("focus", function() {
+			$("#footerColorGroup").colorpicker("show");
 		});
 		$("#footerColorGroup").colorpicker().on("changeColor", _onFooterColorChangeViaColorpicker);
 	};

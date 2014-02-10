@@ -29,6 +29,7 @@ require.config({
 		// Generator page
 		generatorPage: "pages/generator/generatorPage",
 		generatorTabs: "pages/generator/generatorTabs",
+		examplePies: "pages/generator/examplePies",
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 

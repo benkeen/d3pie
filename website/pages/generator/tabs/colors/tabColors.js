@@ -11,8 +11,44 @@ define([
 	var _proofEnabled = false;
 	var _proofLoading = true;
 
+	var _canvasHeight = null;
+	var _canvasWidth = null;
+
+
+	/**
+	 * Self-called. See end of file. [urgh. Need to formally structure this a bit better].
+	 */
+	var _init = function() {
+		mediator.register(_MODULE_ID);
+
+		var subscriptions = {};
+		subscriptions[C.EVENT.DEMO_PIE.DATA_CHANGE] = _onDataChange;
+		subscriptions[C.EVENT.DEMO_PIE.EXAMPLE_CHANGE] = _onExampleChange;
+		mediator.subscribe(_MODULE_ID, subscriptions);
+	};
+
+
+	/**
+	 * Listen for data changes so we can keep track of the current canvas size.
+	 * @param msg
+	 * @private
+	 */
+	var _onDataChange = function(msg) {
+		_canvasWidth = msg.data.config.size.canvasWidth;
+		_canvasHeight = msg.data.config.size.canvasHeight;
+	};
+
+	var _onExampleChange = function() {
+		if (_proofEnabled) {
+			_stop();
+		}
+	};
+
+
 	var _render = function(config) {
 		$("#colorsTab").html(colorsTabTemplate({ config: config }));
+		_canvasWidth = config.size.canvasWidth;
+		_canvasHeight = config.size.canvasHeight;
 
 		$("#deleteColorZone").sortable({
 			connectWith: "#segmentColors",
@@ -43,7 +79,9 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
-		$("#transparencyProof").on("click", _toggleProof);
+		if (Modernizr.webgl) {
+			$("#transparencyProof").removeClass("hidden").on("click", _toggleProof);
+		}
 	};
 
 	var _onBackgroundColorChangeViaColorPicker = function(e) {
@@ -100,11 +138,7 @@ define([
 
 		// label-danger
 		if (_proofEnabled) {
-			$("#transparencyProof").removeClass("label-danger").addClass("label-default").html("Prove it again.");
-			require(["birds"], function(birds) {
-				birds.stop();
-			});
-			_proofEnabled = false;
+			_stop();
 		} else {
 			$("#transparencyProof").removeClass("label-default").addClass("label-danger").html("Alright, stop the birds!");
 
@@ -112,7 +146,7 @@ define([
 				if ($("#three_js").length !== 0) {
 					clearInterval(interval);
 					require(["birds"], function(birds) {
-						birds.init();
+						birds.init(_canvasWidth, _canvasHeight);
 						birds.start();
 						_proofEnabled = true;
 						_proofLoading = false;
@@ -122,7 +156,16 @@ define([
 		}
 	};
 
-	mediator.register(_MODULE_ID);
+	var _stop = function() {
+		$("#transparencyProof").removeClass("label-danger").addClass("label-default").html("Prove it again.");
+		require(["birds"], function(birds) {
+			birds.stop();
+		});
+		_proofEnabled = false;
+	};
+
+	_init();
+
 
 	return {
 		render: _render,

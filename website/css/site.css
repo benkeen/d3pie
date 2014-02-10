@@ -189,3 +189,6 @@ body .disabledText {
 #transparencyProof {
 	cursor: pointer;
 }
+.hidden {
+	display: none;
+}

@@ -32,7 +32,6 @@ define([
 	};
 
 
-
 	var _render = function(config) {
 
 		// tack on the callbacks. These can't be edited - they're just included so the user (developer, really)
@@ -99,8 +98,6 @@ define([
 					break;
 			}
 		}
-
-		console.log("setting " + prop + ", ", func);
 
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
 			prop: prop,
