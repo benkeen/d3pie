@@ -46,7 +46,8 @@ define([
 		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
 		// or by selecting a color via the colorpicker. The former still triggers a "changed" event on the colorpicker
 		// so we need to tell it that the user just did it manually. That prevents unnecessary re-draws.
-		$("#titleColor").on("input", function() {
+		var $titleColor = $("#titleColor");
+		$titleColor.on("input", function() {
 			var newValue = this.value;
 			_titleColorManuallyChanged = true;
 			if (_previousTitleColor !== newValue && newValue.length === 7) {
@@ -54,9 +55,13 @@ define([
 				_previousTitleColor = newValue;
 			}
 		});
+		$titleColor.on("focus", function() {
+			$("#titleColorGroup").colorpicker("show");
+		});
 		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
 
-		$("#subtitleColor").on("input", function() {
+		var $subtitleColor = $("#subtitleColor");
+		$subtitleColor.on("input", function() {
 			var newValue = this.value;
 			_subtitleColorManuallyChanged = true;
 			if (_previousSubtitleColor !== newValue && newValue.length === 7) {
@@ -64,7 +69,11 @@ define([
 				_previousSubtitleColor = newValue;
 			}
 		});
+		$subtitleColor.on("focus", function() {
+			$("#subtitleColorGroup").colorpicker("show");
+		});
 		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
+
 	};
 
 	var _onTitleColorChangeViaColorpicker = function(e) {

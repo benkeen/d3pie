@@ -32,33 +32,34 @@ require.config({
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
+
 		// --- tabs ---
-		titleTab: "pages/generator/tabTitle",
-		titleTabTemplate: "pages/generator/tabTitleTemplate.hbs",
+		titleTab: "pages/generator/tabs/title/tabTitle",
+		titleTabTemplate: "pages/generator/tabs/title/tabTitleTemplate.hbs",
 
-		sizeTab: "pages/generator/tabSize",
-		sizeTabTemplate: "pages/generator/tabSizeTemplate.hbs",
+		sizeTab: "pages/generator/tabs/size/tabSize",
+		sizeTabTemplate: "pages/generator/tabs/size/tabSizeTemplate.hbs",
 
-		miscTab: "pages/generator/tabMisc",
-		miscTabTemplate: "pages/generator/tabMiscTemplate.hbs",
+		miscTab: "pages/generator/tabs/misc/tabMisc",
+		miscTabTemplate: "pages/generator/tabs/misc/tabMiscTemplate.hbs",
 
-		dataTab: "pages/generator/tabData",
-		dataTabTemplate: "pages/generator/tabDataTemplate.hbs",
+		dataTab: "pages/generator/tabs/data/tabData",
+		dataTabTemplate: "pages/generator/tabs/data/tabDataTemplate.hbs",
 
-		labelsTab: "pages/generator/tabLabels",
-		labelsTabTemplate: "pages/generator/tabLabelsTemplate.hbs",
+		labelsTab: "pages/generator/tabs/labels/tabLabels",
+		labelsTabTemplate: "pages/generator/tabs/labels/tabLabelsTemplate.hbs",
 
-		footerTab: "pages/generator/tabFooter",
-		footerTabTemplate: "pages/generator/tabFooterTemplate.hbs",
+		footerTab: "pages/generator/tabs/footer/tabFooter",
+		footerTabTemplate: "pages/generator/tabs/footer/tabFooterTemplate.hbs",
 
-		colorsTab: "pages/generator/tabColors",
-		colorsTabTemplate: "pages/generator/tabColorsTemplate.hbs",
+		colorsTab: "pages/generator/tabs/colors/tabColors",
+		colorsTabTemplate: "pages/generator/tabs/colors/tabColorsTemplate.hbs",
 
-		effectsTab: "pages/generator/tabEffects",
-		effectsTabTemplate: "pages/generator/tabEffectsTemplate.hbs",
+		effectsTab: "pages/generator/tabs/effects/tabEffects",
+		effectsTabTemplate: "pages/generator/tabs/effects/tabEffectsTemplate.hbs",
 
-		eventsTab: "pages/generator/tabEvents",
-		eventsTabTemplate: "pages/generator/tabEventsTemplate.hbs",
+		eventsTab: "pages/generator/tabs/events/tabEvents",
+		eventsTabTemplate: "pages/generator/tabs/events/tabEventsTemplate.hbs",
 
 		// misc
 		birds: "pages/generator/birds"

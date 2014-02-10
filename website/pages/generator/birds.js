@@ -7,24 +7,28 @@
  */
 define([], function() {
 
+	// TODO
 	var SCREEN_WIDTH = 650,
 		SCREEN_HEIGHT = 500;
-	var camera, scene, renderer, birds, bird;
-	var boid, boids;
+
+
+	var _camera, _scene, _renderer, _birds, _bird;
+	var _boids;
 	var _numBirds = 250;
 	var _requestId;
 
 
 	var _init = function() {
-		camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
-		camera.position.z = 250;
+		_camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
+		_camera.position.z = 250;
 
-		scene = new THREE.Scene();
-		birds = [];
-		boids = [];
+		_scene = new THREE.Scene();
+		_birds = [];
+		_boids = [];
 
+		var boid;
 		for (var i=0; i<_numBirds; i++) {
-			boid = boids[i] = new Boid();
+			boid = _boids[i] = new Boid();
 			boid.position.x = Math.random() * 300 - 150;
 			boid.position.y = Math.random() * 300 - 150;
 			boid.position.z = Math.random() * 300 - 150;
@@ -34,25 +38,24 @@ define([], function() {
 			boid.setAvoidWalls(true);
 			boid.setWorldSize(400, 400, 200);
 
-			bird = birds[i] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
+			bird = _birds[i] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
 			bird.phase = Math.floor( Math.random() * 64 );
-			bird.position = boids[i].position;
-			scene.add(bird);
+			bird.position = _boids[i].position;
+			_scene.add(bird);
 		}
-
-		renderer = new THREE.CanvasRenderer();
-		renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-		document.getElementById("birdyBackground").appendChild(renderer.domElement);
 	}
 
 	var _start = function() {
+		_renderer = new THREE.CanvasRenderer();
+		_renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		document.getElementById("birdyBackground").appendChild(_renderer.domElement);
 		animate();
 	};
 
 	var _stop = function() {
-		console.log("cancelling");
 		window.cancelRequestAnimationFrame(_requestId);
+		$("#birdyBackground").html("");
 	};
 
 	// --------------------------------------------------------------------------------------------
@@ -305,20 +308,20 @@ define([], function() {
 	}
 
 	function render() {
-		for (var i = 0, il = birds.length; i < il; i++) {
-			boid = boids[ i ];
-			boid.run( boids );
-			bird = birds[ i ];
+		for (var i = 0, il = _birds.length; i < il; i++) {
+			boid = _boids[i];
+			boid.run(_boids);
+			bird = _birds[i];
 
 			color = bird.material.color;
 			color.r = color.g = color.b = ( 500 - bird.position.z ) / 1000;
 
 			bird.rotation.y = Math.atan2( - boid.velocity.z, boid.velocity.x );
 			bird.rotation.z = Math.asin( boid.velocity.y / boid.velocity.length() );
-			bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 )  ) % 62.83;
-			bird.geometry.vertices[ 5 ].y = bird.geometry.vertices[ 4 ].y = Math.sin( bird.phase ) * 5;
-			}
-		renderer.render( scene, camera );
+			bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z) + 0.1)) % 62.83;
+			bird.geometry.vertices[5].y = bird.geometry.vertices[4].y = Math.sin(bird.phase) * 5;
+		}
+		_renderer.render( _scene, _camera );
 	}
 
 	return {
