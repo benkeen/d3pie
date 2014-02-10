@@ -7,12 +7,13 @@
 </div>
 
 <div class="row">
-	<div class="col-md-5">
+	<div class="col-md-7">
 		<input type="radio" name="backgroundColorType" id="backgroundColor1" value="transparent" style="float: left; margin-right: 8px"
 			value="transparent" {{#compare config.backgroundColor null operator="=="}}checked="checked"{{/compare}} />
 		<label for="backgroundColor1" style="margin-left:5px">Transparent</label>
+		<span class="label label-default" id="transparencyProof" style="margin-left: 10px">It looks white! Prove it!</span>
 	</div>
-	<div class="col-md-7">
+	<div class="col-md-5">
 		<div class="form-group">
 			<input type="radio" name="backgroundColorType" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
 				value="color" {{#compare config.backgroundColor null operator="!="}}checked="checked"{{/compare}} />

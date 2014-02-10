@@ -8,7 +8,8 @@ define([
 	var _MODULE_ID = "colorsTab";
 	var _previousBackgroundColor = null;
 	var _backgroundColorManuallyChanged = null;
-
+	var _proofEnabled = false;
+	var _proofLoading = true;
 
 	var _render = function(config) {
 		$("#colorsTab").html(colorsTabTemplate({ config: config }));
@@ -41,6 +42,8 @@ define([
 			$("#backgroundColorGroup").colorpicker("show");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
+
+		$("#transparencyProof").on("click", _toggleProof);
 	};
 
 	var _onBackgroundColorChangeViaColorPicker = function(e) {
@@ -84,8 +87,40 @@ define([
 			rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
 			return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 		}
-	}
+	};
 
+	var _toggleProof = function() {
+		if ($("#three_js").length === 0) {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.src = "website/libs/three.js";
+			script.id = "three_js";
+			document.body.appendChild(script);
+		}
+
+		// label-danger
+		if (_proofEnabled) {
+			$("#transparencyProof").removeClass("label-danger").addClass("label-default").html("Prove it again.");
+			require(["birds"], function(birds) {
+				birds.stop();
+			});
+			_proofEnabled = false;
+		} else {
+			$("#transparencyProof").removeClass("label-default").addClass("label-danger").html("Alright, stop the birds!");
+
+			var interval = setTimeout(function() {
+				if ($("#three_js").length !== 0) {
+					clearInterval(interval);
+					require(["birds"], function(birds) {
+						birds.init();
+						birds.start();
+						_proofEnabled = true;
+						_proofLoading = false;
+					});
+				}
+			}, 50);
+		}
+	};
 
 	mediator.register(_MODULE_ID);
 

@@ -106,6 +106,7 @@ define([
 		}
 
 		_demoD3Pie = $("#generatorPieChart").d3pie(config);
+		$("#generatorPieChartPad").css({ width: config.size.canvasWidth, height: config.size.canvasHeight });
 		_isCreated = true;
 	};
 

@@ -183,4 +183,9 @@ body .disabledText {
     left: 0px;
     top: 0px;
     z-index: 1;
+	margin-left: 18px;
+}
+
+#transparencyProof {
+	cursor: pointer;
 }

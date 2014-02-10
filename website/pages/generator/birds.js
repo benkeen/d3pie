@@ -7,35 +7,35 @@
  */
 define([], function() {
 
-
 	var SCREEN_WIDTH = 650,
 		SCREEN_HEIGHT = 500;
 	var camera, scene, renderer, birds, bird;
 	var boid, boids;
-
+	var _numBirds = 250;
+	var _requestId;
 
 
 	var _init = function() {
-		camera = new THREE.PerspectiveCamera( 75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000 );
-		camera.position.z = 450;
+		camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
+		camera.position.z = 250;
 
 		scene = new THREE.Scene();
 		birds = [];
 		boids = [];
 
-		for (var i=0; i<200; i++) {
+		for (var i=0; i<_numBirds; i++) {
 			boid = boids[i] = new Boid();
-			boid.position.x = Math.random() * 400 - 200;
-			boid.position.y = Math.random() * 400 - 200;
-			boid.position.z = Math.random() * 400 - 200;
-			boid.velocity.x = Math.random() * 1.5 - 1;
-			boid.velocity.y = Math.random() * 1.5 - 1;
-			boid.velocity.z = Math.random() * 1.5 - 1;
-			boid.setAvoidWalls( true );
-			boid.setWorldSize( 500, 500, 400 );
+			boid.position.x = Math.random() * 300 - 150;
+			boid.position.y = Math.random() * 300 - 150;
+			boid.position.z = Math.random() * 300 - 150;
+			boid.velocity.x = Math.random() * 1.2 - 1;
+			boid.velocity.y = Math.random() * 1.2 - 1;
+			boid.velocity.z = Math.random() * 1.2 - 1;
+			boid.setAvoidWalls(true);
+			boid.setWorldSize(400, 400, 200);
 
 			bird = birds[i] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
-			bird.phase = Math.floor( Math.random() * 62.83 );
+			bird.phase = Math.floor( Math.random() * 64 );
 			bird.position = boids[i].position;
 			scene.add(bird);
 		}
@@ -48,12 +48,12 @@ define([], function() {
 
 	var _start = function() {
 		animate();
-	}
+	};
 
 	var _stop = function() {
-
-	}
-
+		console.log("cancelling");
+		window.cancelRequestAnimationFrame(_requestId);
+	};
 
 	// --------------------------------------------------------------------------------------------
 
@@ -300,7 +300,7 @@ define([], function() {
 
 
 	function animate() {
-		requestAnimationFrame(animate);
+		_requestId = requestAnimationFrame(animate);
 		render();
 	}
 

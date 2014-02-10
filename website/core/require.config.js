@@ -11,6 +11,7 @@ require.config({
 		handlebarsHelpers: "core/handlebarsHelpers",
 		constants: "core/constants",
 		mediator: "core/mediator",
+		utils: "core/utils",
 		pageHelper: "core/pageHelper",
 
 		// About page
@@ -57,6 +58,9 @@ require.config({
 		effectsTabTemplate: "pages/generator/tabEffectsTemplate.hbs",
 
 		eventsTab: "pages/generator/tabEvents",
-		eventsTabTemplate: "pages/generator/tabEventsTemplate.hbs"
+		eventsTabTemplate: "pages/generator/tabEventsTemplate.hbs",
+
+		// misc
+		birds: "pages/generator/birds"
 	}
 });

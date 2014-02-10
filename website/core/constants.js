@@ -50,7 +50,7 @@ define([], function() {
 					{ label: "The Zombie Apocalypse", value: 4 },
 					{ label: "The City of Winnipeg *", value: 3 },
 					{ label: "IE 6", value: 2 },
-					{ label: "Snakes on or off a plane", value: 5 },
+					{ label: "Planes, with/without snakes", value: 5 },
 					{ label: "Heights", value: 3 },
 					{ label: "Chickadees", value: 4 }
 				],
