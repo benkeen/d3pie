@@ -148,6 +148,9 @@ d3pie.labels = {
 					{ x: p3, y: null }
 				];
 
+				if (_options.data[i].xOffset) {
+					labelX -= _options.data[i].xOffset;
+				}
 				return labelX;
 			})
 			.attr("dy", function(d, i) {
@@ -198,6 +201,9 @@ d3pie.labels = {
 				circleCoordGroups[i][1].y = p2;
 				circleCoordGroups[i][2].y = p3;
 
+				if (_options.data[i].yOffset) {
+					labelY += _options.data[i].yOffset;
+				}
 				return labelY;
 			});
 

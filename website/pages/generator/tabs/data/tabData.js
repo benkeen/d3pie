@@ -24,10 +24,13 @@ define([
 		var data = [];
 		var trs = $("#sortableDataList li");
 		for (var i=0; i<trs.length; i++) {
+			var row = $(trs[i]);
 			data.push({
-				label:   $(trs[i]).find(".dataLabel").val(),
-				value:   parseInt($(trs[i]).find(".dataValue").val(), 10), // TODO - need validation
-				tooltip: $(trs[i]).find(".dataTooltip").val()
+				label:   row.find(".dataLabel").val(),
+				value:   parseInt(row.find(".dataValue").val(), 10), // TODO - need validation
+				tooltip: row.find(".dataTooltip").val(),
+				xOffset: row.find(".dataOffsetX").val(),
+				yOffset: row.find(".dataOffsetY").val()
 			})
 		}
 		return data;

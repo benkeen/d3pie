@@ -65,7 +65,6 @@ define([
 		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
 		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
-
 	};
 
 	var _onKeyupNumberFieldUpdateNoAnimation = function(e) {
