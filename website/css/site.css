@@ -41,6 +41,7 @@
     display: inline-block;
     opacity: 0.5;
     cursor: pointer;
+    margin-bottom: -7px;
 }
 .colorGroup {
     width: 120px;
@@ -76,6 +77,7 @@ input.ib, .ib {
     margin: 0px;
     padding: 0px;
 }
+
 
 #segmentColors li {
     float: left;
@@ -157,13 +159,69 @@ body .colorGroup {
 #sortableDataList {
 	list-style: none;
 	padding: 0px;
+    border: 1px solid #dddddd;
 }
+#sortableDataList input {
+    padding: 2px;
+}
+#sortableDataList li {
+    border-bottom: 1px solid #dddddd;
+    padding: 3px;
+}
+#sortableDataList li:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+#sortableDataList .handle {
+    width: 15px;
+    height: 17px;
+    display: inline-block;
+    background: transparent url(../images/drag_sm.png) 50% 50% no-repeat;
+    cursor: pointer;
+    margin: 3px 0px -3px;
+}
+
 #sortableDataListHeader {
 	list-style: none;
 	padding: 0px;
+    color: #777777;
+    font-size: 12px;
+    border-top: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    height: 30px;
+    margin-bottom: 0px;
 }
-#sortableDataListHeader {
+#sortableDataListHeader li {
+    float: left;
+    padding: 6px;
+    border-right: 1px solid #dddddd;
+}
+#sortableDataListHeader li.col0 {
+    width: 22px;
+    height: 29px;
+}
+#sortableDataListHeader li.col1 {
+    width: 241px;
+}
+#sortableDataListHeader li.col2 {
+    width: 83px;
+}
+#sortableDataListHeader li.col3 {
+    width: 40px;
+}
+#sortableDataListHeader li.col4 {
+    width: 40px;
+}
 
+.dataLabel {
+    width: 239px;
+}
+.dataValue {
+    width: 80px;
+}
+.dataOffsetX, .dataOffsetY {
+    width: 35px;
 }
 
 .callbackCode {

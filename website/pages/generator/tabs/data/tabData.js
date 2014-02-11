@@ -9,11 +9,17 @@ define([
 
 	var _render = function(config) {
 		$("#dataTab").html(dataTabTemplate({ config: config }));
+
+		// make the data vertically sortable
+		$("#sortableDataList").sortable({
+			handle: ".handle",
+			axis: "y"
+		});
 	};
 
 	var _getTabData = function() {
 		var data = [];
-		var trs = $("#data-table tbody tr");
+		var trs = $("#sortableDataList li");
 		for (var i=0; i<trs.length; i++) {
 			data.push({
 				label:   $(trs[i]).find(".dataLabel").val(),

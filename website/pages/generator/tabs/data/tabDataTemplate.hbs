@@ -22,39 +22,30 @@
     <h4>Data</h4>
 </div>
 
+<div class="clear" />
+
 <ul id="sortableDataListHeader">
-	<li>Label</li>
-	<li>Value</li>
+	<li class="col0"></li>
+	<li class="col1">Label</li>
+	<li class="col2">Value</li>
+	<li class="col3">+/- x</li>
+	<li class="col4">+/- y</li>
 </ul>
+
+<div class="clear" />
+
 <ul id="sortableDataList">
 {{#each config.data}}
 	<li>
-		<span class="dataHandle"></span>
+		<span class="handle"></span>
 		<span><input type="text" class="dataLabel" value="{{label}}" /></span>
-		<span><input type="text" class="dataValue" value="{{label}}" /></span>
+		<span><input type="text" class="dataValue" value="{{value}}" /></span>
+		<span><input type="text" class="dataOffsetX" value="" /></span>
+		<span><input type="text" class="dataOffsetY" value="" /></span>
 		<span class="removeRow"></span>
 	</li>
 {{/each}}
 </ul>
-
-<table id="data-table" class="table table-striped table-bordered table-hover">
-	<thead>
-	<tr>
-		<th style="width:30%">Label</th>
-		<th style="width:20%">Value</th>
-		<th></th>
-	</tr>
-	</thead>
-	<tbody>
-	{{#each config.data}}
-		<tr>
-			<td><input type="text" class="dataLabel" value="{{label}}" /></td>
-			<td><input type="text" class="dataValue" value="{{value}}" /></td>
-			<td><span class="removeRow"></span></td>
-		</tr>
-	{{/each}}
-	</tbody>
-</table>
 
 <ul class="pager">
 	<li class="previous"><a href="#">Add row &raquo;</a></li>
