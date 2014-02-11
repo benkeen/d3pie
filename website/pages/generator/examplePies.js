@@ -49,7 +49,8 @@ define([], function() {
 					{ label: "IE 6", value: 2 },
 					{ label: "Planes, with/without snakes", value: 5 },
 					{ label: "Heights", value: 3 },
-					{ label: "Chickadees", value: 4 }
+					{ label: "Chickadees", value: 4 },
+					{ label: "A never-ending Harper Government", value: 1 }
 				],
 				labels: {
 					enableTooltips: true,

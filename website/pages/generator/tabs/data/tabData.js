@@ -13,7 +13,10 @@ define([
 		// make the data vertically sortable
 		$("#sortableDataList").sortable({
 			handle: ".handle",
-			axis: "y"
+			axis: "y",
+			update: function() {
+				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+			}
 		});
 	};
 

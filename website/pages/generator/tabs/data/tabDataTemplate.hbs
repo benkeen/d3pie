@@ -40,8 +40,8 @@
 		<span class="handle"></span>
 		<span><input type="text" class="dataLabel" value="{{label}}" /></span>
 		<span><input type="text" class="dataValue" value="{{value}}" /></span>
-		<span><input type="text" class="dataOffsetX" value="" /></span>
-		<span><input type="text" class="dataOffsetY" value="" /></span>
+		<span><input type="number" class="dataOffsetX" value="{{#if x}}{{x}}{{else}}0{{/if}}" /></span>
+		<span><input type="number" class="dataOffsetY" value="{{#if y}}{{y}}{{else}}0{{/if}}" /></span>
 		<span class="removeRow"></span>
 	</li>
 {{/each}}
