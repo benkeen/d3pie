@@ -2,13 +2,12 @@ require([
 	"constants",
 	"mediator",
 	"utils",
-	"pageHelper",
 	"aboutPage",
 	"generatorPage",
 	"downloadPage",
 	"documentationPage",
 	"handlebarsHelpers"
-], function(C, mediator, utils, pageHelper, aboutPage, generatorPage, downloadPage, documentationPage) {
+], function(C, mediator, utils, aboutPage, generatorPage, downloadPage, documentationPage) {
 	"use strict";
 
 	// initialize our pages
@@ -18,5 +17,5 @@ require([
 	documentationPage.init();
 
 	// select the default one (for local dev work, really)
-	pageHelper.selectPage("about");
+	utils.selectPage("about");
 });

@@ -1,22 +1,21 @@
 define([
 	"constants",
 	"mediator",
+	"utils",
 	"hbs!labelsTabTemplate"
-], function(C, mediator, labelsTabTemplate) {
+], function(C, mediator, utils, labelsTabTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "labelsTab";
-	var _previousLineColor = null;
-	var _lineColorManuallyChanged = false;
 
 
 	var _render = function(config) {
 		$("#labelsTab").html(labelsTabTemplate({ config: config }));
 
-		$("#labelColorGroup").colorpicker();
-		$("#labelPercentageColorGroup").colorpicker();
-		$("#labelValueColor").colorpicker();
-		$("#labelLinesColorGroup").colorpicker().on("changeColor", _onLabelLinesColorChangeViaColorPicker);
+		utils.addColorpicker("mainLabelColor");
+		utils.addColorpicker("labelPercentageColor");
+		utils.addColorpicker("labelValueColor");
+		utils.addColorpicker("labelLinesColor");
 
 		$("#labelFormatExample").on("change", function() {
 			$("#labelFormat").val(this.value);
@@ -26,21 +25,11 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
-		$("#labelLinesColor").on("focus", function() {
-			$("#labelLineColorType2")[0].checked = true;
-			$("#labelLinesColorGroup").colorpicker("show");
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-		});
-	};
-
-	var _onLabelLinesColorChangeViaColorPicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousLineColor !== newValue && newValue.length === 7 && !_lineColorManuallyChanged) {
-			$("#backgroundColor2")[0].checked = true;
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-			_previousLineColor = newValue;
-		}
-		_lineColorManuallyChanged = false;
+//		$("#labelLinesColor").on("focus", function() {
+//			$("#labelLineColorType2")[0].checked = true;
+//			$("#labelLinesColorGroup").colorpicker("show");
+//			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+//		});
 	};
 
 

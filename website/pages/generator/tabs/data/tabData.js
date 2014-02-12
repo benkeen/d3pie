@@ -1,11 +1,19 @@
 define([
 	"constants",
 	"mediator",
-	"hbs!dataTabTemplate"
-], function(C, mediator, dataTabTemplate) {
+	"handlebars",
+	"hbs!dataTabTemplate",
+	"hbs!dataRowPartial"
+], function(C, mediator, Handlebars, dataTabTemplate, dataRowPartial) {
 	"use strict";
 
 	var _MODULE_ID = "dataTab";
+
+
+	var _init = function() {
+		Handlebars.registerPartial("data-row", dataRowPartial);
+		mediator.register(_MODULE_ID);
+	};
 
 	var _render = function(config) {
 		$("#dataTab").html(dataTabTemplate({ config: config }));
@@ -18,6 +26,19 @@ define([
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 			}
 		});
+
+		$("#sortableDataList").on("click", ".removeRow", _removeRow);
+		$("#addRow").on("click", _addRow);
+	};
+
+	var _addRow = function(e) {
+		e.preventDefault();
+		$("#sortableDataList").append(dataRowPartial());
+	};
+
+	var _removeRow = function(e) {
+		$(e.target).closest("li").remove();
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
 	var _getTabData = function() {
@@ -37,7 +58,8 @@ define([
 	};
 
 
-	mediator.register(_MODULE_ID);
+
+	_init();
 
 	return {
 		render: _render,

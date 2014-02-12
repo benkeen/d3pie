@@ -1,17 +1,13 @@
 define([
 	"constants",
 	"mediator",
+	"utils",
 	"hbs!footerTabTemplate"
-], function(C, mediator, footerTabTemplate) {
+], function(C, mediator, utils, footerTabTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "footerTab";
-
-	// used for tracking the state of each field and knowing when to trigger a repaint of the pie chart
 	var _previousFooterText = null;
-	var _previousFooterColor = null;
-	var _footerColorManuallyChanged = null;
-
 
 	var _render = function(config) {
 		$("#footerTab").html(footerTabTemplate({ config: config }));
@@ -23,28 +19,7 @@ define([
 			}
 		});
 
-		var $footerColor = $("#footerColor");
-		$footerColor.on("input", function() {
-			var newValue = this.value;
-			_footerColorManuallyChanged = true;
-			if (_previousTitleColor !== newValue && newValue.length === 7) {
-				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-				_previousTitleColor = newValue;
-			}
-		});
-		$footerColor.on("focus", function() {
-			$("#footerColorGroup").colorpicker("show");
-		});
-		$("#footerColorGroup").colorpicker().on("changeColor", _onFooterColorChangeViaColorpicker);
-	};
-
-	var _onFooterColorChangeViaColorpicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousFooterColor !== newValue && newValue.length === 7 && !_footerColorManuallyChanged) {
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-			_previousFooterColor = newValue;
-		}
-		_footerColorManuallyChanged = false;
+		utils.addColorpicker("footerColor");
 	};
 
 

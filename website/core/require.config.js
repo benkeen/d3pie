@@ -12,7 +12,6 @@ require.config({
 		constants: "core/constants",
 		mediator: "core/mediator",
 		utils: "core/utils",
-		pageHelper: "core/pageHelper",
 
 		// About page
 		aboutPage: "pages/about/aboutPage",
@@ -46,6 +45,7 @@ require.config({
 
 		dataTab: "pages/generator/tabs/data/tabData",
 		dataTabTemplate: "pages/generator/tabs/data/tabDataTemplate.hbs",
+		dataRowPartial: "pages/generator/tabs/data/dataRowPartial.hbs",
 
 		labelsTab: "pages/generator/tabs/labels/tabLabels",
 		labelsTabTemplate: "pages/generator/tabs/labels/tabLabelsTemplate.hbs",

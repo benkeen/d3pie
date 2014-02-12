@@ -36,17 +36,10 @@
 
 <ul id="sortableDataList">
 {{#each config.data}}
-	<li>
-		<span class="handle"></span>
-		<span><input type="text" class="dataLabel" value="{{label}}" /></span>
-		<span><input type="text" class="dataValue" value="{{value}}" /></span>
-		<span><input type="number" class="dataOffsetX changeUpdateNoAnimation" value="{{#if x}}{{x}}{{else}}0{{/if}}" /></span>
-		<span><input type="number" class="dataOffsetY changeUpdateNoAnimation" value="{{#if y}}{{y}}{{else}}0{{/if}}" /></span>
-		<span class="removeRow"></span>
-	</li>
+	{{> data-row }}
 {{/each}}
 </ul>
 
 <ul class="pager">
-	<li class="previous"><a href="#">Add row &raquo;</a></li>
+	<li class="previous"><a href="#" id="addRow">Add row &raquo;</a></li>
 </ul>

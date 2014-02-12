@@ -1,28 +1,18 @@
 define([
 	"constants",
 	"mediator",
+	"utils",
 	"hbs!titleTabTemplate"
-], function(C, mediator, titleTabTemplate) {
+], function(C, mediator, utils, titleTabTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "titleTab";
-
-
 	var _previousTitle = null;
 	var _previousSubtitle = null;
-	var _previousTitleColor = null;
-	var _previousSubtitleColor = null;
-	var _titleColorManuallyChanged = null;
-	var _subtitleColorManuallyChanged = null;
 
 
 	var _render = function(config) {
 		$("#titleTab").html(titleTabTemplate({ config: config }));
-
-		_previousTitle = config.header.title.text;
-		_previousSubtitle = config.header.subtitle.text;
-		_previousTitleColor = config.header.title.color;
-		_previousSubtitleColor = config.header.subtitle.text;
 
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {
@@ -43,57 +33,9 @@ define([
 			}
 		});
 
-		// bit confusing, but necessary. The color can be changed via two methods: by editing the input field
-		// or by selecting a color via the colorpicker. The former still triggers a "changed" event on the colorpicker
-		// so we need to tell it that the user just did it manually. That prevents unnecessary re-draws.
-		var $titleColor = $("#titleColor");
-		$titleColor.on("input", function() {
-			var newValue = this.value;
-			_titleColorManuallyChanged = true;
-			if (_previousTitleColor !== newValue && newValue.length === 7) {
-				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-				_previousTitleColor = newValue;
-			}
-		});
-		$titleColor.on("focus", function() {
-			$("#titleColorGroup").colorpicker("show");
-		});
-		$("#titleColorGroup").colorpicker().on("changeColor", _onTitleColorChangeViaColorpicker);
-
-		var $subtitleColor = $("#subtitleColor");
-		$subtitleColor.on("input", function() {
-			var newValue = this.value;
-			_subtitleColorManuallyChanged = true;
-			if (_previousSubtitleColor !== newValue && newValue.length === 7) {
-				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-				_previousSubtitleColor = newValue;
-			}
-		});
-		$subtitleColor.on("focus", function() {
-			$("#subtitleColorGroup").colorpicker("show");
-		});
-		$("#subtitleColorGroup").colorpicker().on("changeColor", _onSubtitleColorChangeViaColorpicker);
-
+		utils.addColorpicker("titleColor");
+		utils.addColorpicker("subtitleColor");
 	};
-
-	var _onTitleColorChangeViaColorpicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousTitleColor !== newValue && newValue.length === 7 && !_titleColorManuallyChanged) {
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-			_previousTitleColor = newValue;
-		}
-		_titleColorManuallyChanged = false;
-	};
-
-	var _onSubtitleColorChangeViaColorpicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousSubtitleColor !== newValue && newValue.length === 7 && !_subtitleColorManuallyChanged) {
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-			_previousSubtitleColor = newValue;
-		}
-		_subtitleColorManuallyChanged = false;
-	};
-
 
 	var _getTabData = function() {
 		return {

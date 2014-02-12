@@ -48,7 +48,7 @@ define([], function() {
 					{ label: "The City of Winnipeg *", value: 3 },
 					{ label: "IE 6", value: 2 },
 					{ label: "Planes, with/without snakes", value: 5 },
-					{ label: "Heights", value: 3 },
+					{ label: "Off-by-one errors", value: 3 },
 					{ label: "Chickadees", value: 4 },
 					{ label: "A never-ending Harper Government", value: 1 }
 				],
@@ -59,17 +59,17 @@ define([], function() {
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
-						fontSize: "8"
+						fontSize: "11"
 					},
 					percentage: {
 						color: "#999999",
 						font: "Open sans",
-						fontSize: "8"
+						fontSize: "11"
 					},
 					value: {
 						color: "#cccc44",
 						font: "Open sans",
-						fontSize: "8"
+						fontSize: "11"
 					},
 					lines: {
 						enabled: true,

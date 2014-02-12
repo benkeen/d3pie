@@ -1,4 +1,57 @@
-require([], function() {
+/**
+ * Misc utility functions, used throughout the code.
+ */
+define([
+	"constants",
+	"mediator"
+], function(C, mediator) {
+	"use strict";
+
+	var _MODULE_ID = "utils";
+	var _colorpickers = {};
+
+
+	var _selectPage = function(page) {
+
+	};
+
+
+	var _addColorpicker = function(id) {
+		var $inputField = $("#" + id);
+
+		// this just overwrites any older one that happened to be there with the same ID
+		_colorpickers[id] = {
+			manuallyChanged: false,
+			previousColor: ""
+		};
+
+		$inputField.on("input", function() {
+			var newValue = this.value;
+			_colorpickers[id].manuallyChanged = true;
+			if (_colorpickers[id].previousColor !== newValue && newValue.length === 7) {
+				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+				_colorpickers[id].previousColor = newValue;
+			}
+		});
+		$inputField.on("focus", function() {
+			$("#" + id + "Group").colorpicker("show");
+		});
+
+		$("#" + id + "Group").colorpicker().on("changeColor", _onColorChangeViaColorPicker);
+	};
+
+	var _onColorChangeViaColorPicker = function(e) {
+		var newValue = e.color.toHex();
+		var id = e.target.id.replace(/Group$/, "");
+		if (_colorpickers[id].previousColor !== newValue && newValue.length === 7 && !_colorpickers[id].manuallyChanged) {
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+			_colorpickers[id].previousColor = newValue;
+		}
+		_colorpickers[id].manuallyChanged = false;
+	};
+
+
+	// ------------------------------------------
 
 	/**
 	 * Provides requestAnimationFrame/cancelRequestAnimation in a cross browser way.
@@ -29,4 +82,11 @@ require([], function() {
 		})();
 	}
 
+	// ------------------------------------------
+
+
+	return {
+		selectPage: _selectPage,
+		addColorpicker: _addColorpicker
+	};
 });

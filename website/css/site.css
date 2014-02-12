@@ -1,3 +1,11 @@
+#mainNav1 {
+    width: 102px;
+}
+#mainNav2 {
+    width: 90px;
+}
+
+
 /* for the UI */
 #generatorTabs {
     margin: 0px 0px 15px;
@@ -42,6 +50,9 @@
     opacity: 0.5;
     cursor: pointer;
     margin-bottom: -7px;
+}
+.removeRow:hover {
+    opacity: 0.8;
 }
 .colorGroup {
     width: 120px;
@@ -160,6 +171,7 @@ body .colorGroup {
 	list-style: none;
 	padding: 0px;
     border: 1px solid #dddddd;
+    border-bottom: 0px;
 }
 #sortableDataList input {
     padding: 2px;
@@ -205,7 +217,7 @@ body .colorGroup {
     width: 241px;
 }
 #sortableDataListHeader li.col2 {
-    width: 83px;
+    width: 84px;
 }
 #sortableDataListHeader li.col3 {
     width: 40px;

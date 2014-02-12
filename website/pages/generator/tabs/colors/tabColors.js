@@ -1,16 +1,14 @@
 define([
 	"constants",
 	"mediator",
+	"utils",
 	"hbs!colorsTabTemplate"
-], function(C, mediator, colorsTabTemplate) {
+], function(C, mediator, utils, colorsTabTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "colorsTab";
-	var _previousBackgroundColor = null;
-	var _backgroundColorManuallyChanged = null;
 	var _proofEnabled = false;
 	var _proofLoading = true;
-
 	var _canvasHeight = null;
 	var _canvasWidth = null;
 
@@ -26,7 +24,6 @@ define([
 		subscriptions[C.EVENT.DEMO_PIE.EXAMPLE_CHANGE] = _onExampleChange;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
-
 
 	/**
 	 * Listen for data changes so we can keep track of the current canvas size.
@@ -44,7 +41,6 @@ define([
 		}
 	};
 
-
 	var _render = function(config) {
 		$("#colorsTab").html(colorsTabTemplate({ config: config }));
 		_canvasWidth = config.size.canvasWidth;
@@ -61,7 +57,9 @@ define([
 			e.preventDefault();
 		});
 
-		$("#backgroundColorGroup").colorpicker().on("changeColor", _onBackgroundColorChangeViaColorPicker);
+
+		utils.addColorpicker("backgroundColor");
+
 		$("#segmentColors").sortable({
 			handle: ".handle",
 			connectWith: "#deleteColorZone",
@@ -84,16 +82,6 @@ define([
 		}
 	};
 
-	var _onBackgroundColorChangeViaColorPicker = function(e) {
-		var newValue = e.color.toHex();
-		if (_previousBackgroundColor !== newValue && newValue.length === 7 && !_backgroundColorManuallyChanged) {
-			$("#backgroundColor2")[0].checked = true;
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-			_previousBackgroundColor = newValue;
-		}
-		_backgroundColorManuallyChanged = false;
-	};
-
 	var _getTabData = function() {
 		var colors = [];
 
@@ -113,7 +101,6 @@ define([
 			colors: colors
 		};
 	};
-
 
 	var _rgb2hex = function(rgb) {
 		function hex(x) {

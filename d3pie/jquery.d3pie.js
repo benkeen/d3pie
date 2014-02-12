@@ -384,8 +384,8 @@ d3pie.labels = {
 			.attr("class", "segmentLabel")
 			.attr("id", function(d, i) { return "label" + i; })
 			.text(function(d) { return d.label; })
-			.style("font-size", "8pt")
-			.style("fill", _options.labels.labelColor)
+			.style("font-size", _options.labels.mainLabel.fontSize)
+			.style("fill", _options.labels.mainLabel.color)
 			.style("opacity", 0);
 
 		// 2. Add the percentage label (not positioned yet)
