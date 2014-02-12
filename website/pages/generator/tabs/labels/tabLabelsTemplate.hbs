@@ -137,22 +137,31 @@
 </div>
 
 <div class="row form-group">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
 		<label for="showLabelLines">Show label lines</label>
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-md-3">
+		<label for="labelLineLength">Line length</label>
+	</div>
+	<div class="col-md-7">
+		<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField updateNoAnimation" />
+	</div>
+</div>
+
 <div class="row form-group">
-	<div class="col-md-2">
-		<label>Color:</label>
+	<div class="col-md-3">
+		<label>Color</label>
 	</div>
 	<div class="col-md-5">
 		<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
 			{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
 		<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
 	</div>
-	<div class="col-md-5">
+	<div class="col-md-4">
 		<div class="form-group">
 			<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
 				{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />

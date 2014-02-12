@@ -73,6 +73,7 @@ define([], function() {
 					},
 					lines: {
 						enabled: true,
+						length: 16,
 						color: "#777777"
 					}
 				},
@@ -106,7 +107,6 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					labelPieDistance: 40,
 					titleSubtitlePadding: 6,
 					preventTextSelection: true
 				}
@@ -180,6 +180,7 @@ define([], function() {
 					},
 					lines: {
 						enabled: true,
+						length: 16,
 						color: "segment"
 					}
 				},
@@ -216,7 +217,6 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					labelPieDistance: 40,
 					titleSubtitlePadding: 6,
 					preventTextSelection: true
 				}
@@ -286,6 +286,7 @@ define([], function() {
 					},
 					lines: {
 						enabled: true,
+						length: 16,
 						color: "#cccccc"
 					}
 				},
@@ -318,7 +319,6 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					labelPieDistance: 16,
 					titleSubtitlePadding: 6
 				}
 			}

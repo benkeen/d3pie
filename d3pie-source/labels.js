@@ -92,7 +92,7 @@ d3pie.labels = {
 			return;
 		}
 
-		var lineMidPointDistance = _options.misc.labelPieDistance - (_options.misc.labelPieDistance / 4);
+		var lineMidPointDistance = _options.labels.lines.length - (_options.labels.lines.length / 4);
 		var circleCoordGroups = [];
 
 		d3.selectAll(".segmentLabel")
@@ -117,31 +117,31 @@ d3pie.labels = {
 				switch (quarter) {
 					case 0:
 						var calc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelX = calc1 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
+						labelX = calc1 * (_outerRadius + _options.labels.lines.length) + labelXMargin;
 						p1     = calc1 * _outerRadius;
 						p2     = calc1 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = calc1 * (_outerRadius + _options.misc.labelPieDistance) + 5 + xOffset;
+						p3     = calc1 * (_outerRadius + _options.labels.lines.length) + 5 + xOffset;
 						break;
 					case 1:
 						var calc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelX = calc2 * (_outerRadius + _options.misc.labelPieDistance) + labelXMargin;
+						labelX = calc2 * (_outerRadius + _options.labels.lines.length) + labelXMargin;
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) + 5 + xOffset;
+						p3     = calc2 * (_outerRadius + _options.labels.lines.length) + 5 + xOffset;
 						break;
 					case 2:
 						var calc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelX = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
+						labelX = -calc3 * (_outerRadius + _options.labels.lines.length) - labelDimensions.width - labelXMargin;
 						p1     = -calc3 * _outerRadius;
 						p2     = -calc3 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = -calc3 * (_outerRadius + _options.misc.labelPieDistance) - 5 + xOffset;
+						p3     = -calc3 * (_outerRadius + _options.labels.lines.length) - 5 + xOffset;
 						break;
 					case 3:
 						var calc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelX = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - labelDimensions.width - labelXMargin;
+						labelX = -calc4 * (_outerRadius + _options.labels.lines.length) - labelDimensions.width - labelXMargin;
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - 5 + xOffset;
+						p3     = -calc4 * (_outerRadius + _options.labels.lines.length) - 5 + xOffset;
 						break;
 				}
 				circleCoordGroups[i] = [
@@ -171,31 +171,31 @@ d3pie.labels = {
 				switch (quarter) {
 					case 0:
 						var calc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelY = -calc1 * (_outerRadius + _options.misc.labelPieDistance);
+						labelY = -calc1 * (_outerRadius + _options.labels.lines.length);
 						p1     = -calc1 * _outerRadius;
 						p2     = -calc1 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = -calc1 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset + yOffset;
+						p3     = -calc1 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
 						break;
 					case 1:
 						var calc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelY = calc2 * (_outerRadius + _options.misc.labelPieDistance);
+						labelY = calc2 * (_outerRadius + _options.labels.lines.length);
 						p1     = calc2 * _outerRadius;
 						p2     = calc2 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = calc2 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset + yOffset;
+						p3     = calc2 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
 						break;
 					case 2:
 						var calc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelY = calc3 * (_outerRadius + _options.misc.labelPieDistance);
+						labelY = calc3 * (_outerRadius + _options.labels.lines.length);
 						p1     = calc3 * _outerRadius;
 						p2     = calc3 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = calc3 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset + yOffset;
+						p3     = calc3 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
 						break;
 					case 3:
 						var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelY = -calc4 * (_outerRadius + _options.misc.labelPieDistance);
+						labelY = -calc4 * (_outerRadius + _options.labels.lines.length);
 						p1     = -calc4 * _outerRadius;
 						p2     = -calc4 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = -calc4 * (_outerRadius + _options.misc.labelPieDistance) - heightOffset + yOffset;
+						p3     = -calc4 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
 						break;
 				}
 				circleCoordGroups[i][0].y = p1;

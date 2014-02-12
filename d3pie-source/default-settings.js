@@ -48,6 +48,7 @@ var _defaultSettings = {
 		},
 		lines: {
 			enabled: true,
+			length: 16,
 			color: "segment" // "segment" or a hex color
 		}
 	},
@@ -87,7 +88,6 @@ var _defaultSettings = {
 		},
 		titleSubtitlePadding: 5, // the padding between the title and subtitle
 		footerPiePadding: 0,
-		labelPieDistance: 16,
 		textSelectable: false
 	},
 	callbacks: {

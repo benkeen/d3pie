@@ -60,6 +60,7 @@ define([
 			},
 			lines: {
 				enabled: $("#showLabelLines")[0].checked,
+				length:  parseInt($("#labelLineLength").val(), 10),
 				color:   lineColor
 			}
 		};
