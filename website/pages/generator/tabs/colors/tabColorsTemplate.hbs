@@ -31,20 +31,15 @@
 
 <ul id="segmentColors">
 	{{#each config.styles.colors}}
-	<li>
-		<div>
-			<span class="handle"></span>
-			<span class="color" style="background-color:{{this}}"></span>
-		</div>
-	</li>
+		{{> color-item}}
 	{{/each}}
 </ul>
 
 
 <div class="clear"></div>
-<div style="border-top: 1px solid #efefef; clear: both; margin-top: 8px; padding-top: 8px;">
+<div style="border-top: 1px solid #efefef; clear: both; margin-top: 8px; padding-top: 0px;">
 	<ul class="pager">
-		<li class="previous"><a href="#">Add color &raquo;</a></li>
+		<li class="previous"><a href="#" id="addColor">Add color &raquo;</a></li>
 	</ul>
 
 	<ul id="deleteColorZone" style="border: 1px dashed #cccccc; padding: 20px 30px">

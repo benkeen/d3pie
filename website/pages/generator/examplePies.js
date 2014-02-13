@@ -5,6 +5,117 @@ define([], function() {
 
 		// ----------------------------------------------------------------------------------------
 
+
+		{
+			label: "Programming Languages",
+			config: {
+				header: {
+					title: {
+						text:     "Programming languages",
+						color:    "#333333",
+						fontSize: "24px",
+						font:     "open sans"
+					},
+					subtitle: {
+						text:     "A bunch of arbitrary programming languages ordered by whatever I could think of first.",
+						color:    "#999999",
+						fontSize: "12px",
+						font:     "open sans"
+					},
+					location: "top-center"
+				},
+				footer: {
+					text: "",
+					color:    "#999999",
+					fontSize: "10px",
+					font:     "open sans",
+					location: "bottom-left"
+				},
+				size: {
+					canvasWidth: 650,
+					canvasHeight: 500,
+					pieInnerRadius: "0%",
+					pieOuterRadius: "66%"
+				},
+				data: [
+					{ label: "JavaScript", value: 264131 },
+					{ label: "Ruby", value: 218812 },
+					{ label: "Java", value: 157618  },
+					{ label: "PHP", value: 114384  },
+					{ label: "Python", value: 95002 },
+					{ label: "C+", value: 78327 },
+					{ label: "C", value: 67706 },
+					{ label: "Objective-C", value: 36344 },
+					{ label: "C#", value: 32170 },
+					{ label: "Shell", value: 28561 }
+				],
+				labels: {
+					enableTooltips: true,
+					inside: "value",
+					outside: "label",
+					mainLabel: {
+						color: "#333333",
+						font: "Open sans",
+						fontSize: "11px"
+					},
+					percentage: {
+						color: "#999999",
+						font: "Open sans",
+						fontSize: "11px"
+					},
+					value: {
+						color: "#cccc44",
+						font: "Open sans",
+						fontSize: "11px"
+					},
+					lines: {
+						enabled: true,
+						length: 32,
+						color: "segment"
+					}
+				},
+				styles: {
+					backgroundColor: null,
+					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121", "#830909", "#923e99", "#ae83d5"]
+				},
+				effects: {
+					load: {
+						effect: "default", // none / default
+						speed: 1000
+					},
+					pullOutSegmentOnClick: {
+						effect: "linear", // none / linear / bounce /
+						speed: 400
+					},
+					highlightSegmentOnMouseover: true,
+					labelFadeInTime: 400
+				},
+				callbacks: {
+					onload: "function() { console.log(\"pie chart loaded.\"); }",
+					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
+					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
+					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
+				},
+				misc: {
+					enableTooltips: false,
+					dataSortOrder: "none",
+					hideLabelsForSmallSegments: false,
+					hideLabelsForSmallSegmentSize: "5%",
+					canvasPadding: {
+						top: 5,
+						right: 5,
+						bottom: 5,
+						left: 5
+					},
+					titleSubtitlePadding: 9,
+					preventTextSelection: true
+				}
+			}
+		},
+
+
+		// ----------------------------------------------------------------------------------------
+
 		{
 			label: "Top 15 Fears",
 			config: {
@@ -99,116 +210,6 @@ define([], function() {
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "label-asc",
-					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%",
-					canvasPadding: {
-						top: 5,
-						right: 5,
-						bottom: 5,
-						left: 5
-					},
-					titleSubtitlePadding: 6,
-					preventTextSelection: true
-				}
-			}
-		},
-
-		// ----------------------------------------------------------------------------------------
-
-
-		{
-			label: "Programming Languages",
-			config: {
-				header: {
-					title: {
-						text:     "Programming languages",
-						color:    "#333333",
-						fontSize: "24px",
-						font:     "open sans"
-					},
-					subtitle: {
-						text:     "A bunch of arbitrary programming languages",
-						color:    "#999999",
-						fontSize: "12px",
-						font:     "open sans"
-					},
-					location: "top-center"
-				},
-				footer: {
-					text: "",
-					color:    "#999999",
-					fontSize: "10px",
-					font:     "open sans",
-					location: "bottom-left"
-				},
-				size: {
-					canvasWidth: 650,
-					canvasHeight: 500,
-					pieInnerRadius: "40%",
-					pieOuterRadius: "66%"
-				},
-				data: [
-					{ label: "JavaScript", value: 264131 },
-					{ label: "Ruby", value: 218812 },
-					{ label: "Java", value: 157618  },
-					{ label: "PHP", value: 114384  },
-					{ label: "Python", value: 95002 },
-					{ label: "C+", value: 78327 },
-					{ label: "C", value: 67706 },
-					{ label: "Objective-C", value: 36344 },
-					{ label: "C#", value: 32170 },
-					{ label: "Shell", value: 28561 }
-				],
-				labels: {
-					enableTooltips: true,
-					inside: "none",
-					outside: "label",
-					mainLabel: {
-						color: "#333333",
-						font: "Open sans",
-						fontSize: "8"
-					},
-					percentage: {
-						color: "#999999",
-						font: "Open sans",
-						fontSize: "8"
-					},
-					value: {
-						color: "#cccc44",
-						font: "Open sans",
-						fontSize: "8"
-					},
-					lines: {
-						enabled: true,
-						length: 16,
-						color: "segment"
-					}
-				},
-				styles: {
-					backgroundColor: null,
-					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121", "#830909", "#923e99", "#ae83d5"]
-				},
-				effects: {
-					load: {
-						effect: "default", // none / default
-						speed: 1000
-					},
-					pullOutSegmentOnClick: {
-						effect: "linear", // none / linear / bounce /
-						speed: 400
-					},
-					highlightSegmentOnMouseover: true,
-					labelFadeInTime: 400
-				},
-				callbacks: {
-					onload: "function() { console.log(\"pie chart loaded.\"); }",
-					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
-					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
-					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
-				},
-				misc: {
-					enableTooltips: false,
-					dataSortOrder: "none",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%",
 					canvasPadding: {

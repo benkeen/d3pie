@@ -2,8 +2,10 @@ define([
 	"constants",
 	"mediator",
 	"utils",
-	"hbs!colorsTabTemplate"
-], function(C, mediator, utils, colorsTabTemplate) {
+	"handlebars",
+	"hbs!colorsTabTemplate",
+	"hbs!colorItemPartial"
+], function(C, mediator, utils, Handlebars, colorsTabTemplate, colorItemPartial) {
 	"use strict";
 
 	var _MODULE_ID = "colorsTab";
@@ -18,6 +20,7 @@ define([
 	 */
 	var _init = function() {
 		mediator.register(_MODULE_ID);
+		Handlebars.registerPartial("color-item", colorItemPartial);
 
 		var subscriptions = {};
 		subscriptions[C.EVENT.DEMO_PIE.DATA_CHANGE] = _onDataChange;
@@ -57,8 +60,11 @@ define([
 			e.preventDefault();
 		});
 
-
 		utils.addColorpicker("backgroundColor");
+		$(".segmentColor").colorpicker().on("changeColor", function(e) {
+			$(e.target).css("background-color", e.color.toHex());
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
 
 		$("#segmentColors").sortable({
 			handle: ".handle",
@@ -75,6 +81,13 @@ define([
 			$("#backgroundColor2")[0].checked = true;
 			$("#backgroundColorGroup").colorpicker("show");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
+
+		$("#addColor").on("click", function(e) {
+			e.preventDefault();
+			$("#segmentColors").append(colorItemPartial({
+				color: "#000000"
+			}));
 		});
 
 		if (Modernizr.webgl) {

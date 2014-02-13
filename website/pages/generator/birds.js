@@ -87,7 +87,7 @@ define([], function() {
 		}
 	};
 
-	Bird.prototype = Object.create( THREE.Geometry.prototype );
+	Bird.prototype = Object.create(THREE.Geometry.prototype);
 
 
 	// Based on http://www.openprocessing.org/visuals/?visualID=6910

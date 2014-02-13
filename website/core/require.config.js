@@ -55,6 +55,7 @@ require.config({
 
 		colorsTab: "pages/generator/tabs/colors/tabColors",
 		colorsTabTemplate: "pages/generator/tabs/colors/tabColorsTemplate.hbs",
+		colorItemPartial: "pages/generator/tabs/colors/colorItemPartial.hbs",
 
 		effectsTab: "pages/generator/tabs/effects/tabEffects",
 		effectsTabTemplate: "pages/generator/tabs/effects/tabEffectsTemplate.hbs",
