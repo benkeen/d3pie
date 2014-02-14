@@ -40,7 +40,7 @@ define([
 		}
 
 		return {
-			enableTooltips: $("#enableTooltips")[0].checked,
+			enableTooltips: false, //$("#enableTooltips")[0].checked,
 			inside:         $("#insideLabel").val(),
 			outside:        $("#outsideLabel").val(),
 			mainLabel: {

@@ -6,36 +6,73 @@ d3pie.labels = {
 	 * @param options
 	 * @private
 	 */
-	add: function() {
+	addOuter: function() {
+		var addMainLabel  = false;
+		var addValue      = false;
+		var addPercentage = false;
 
-		// 1. Add the main label (not positioned yet)
+		switch (_options.labels.outside) {
+			case "label":
+				addMainLabel = true;
+				break;
+			case "value":
+				addValue = true;
+				break;
+			case "percentage":
+				addPercentage = true;
+				break;
+			case "label-value1":
+			case "label-value2":
+				addMainLabel = true;
+				addValue = true;
+				break;
+			case "label-percentage1":
+			case "label-percentage2":
+				addMainLabel = true;
+				addPercentage = true;
+				break;
+		}
+
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
-			_options.data.filter(function(d) { return d.value; }),
+				_options.data.filter(function(d) { return d.value; }),
 				function(d) { return d.label; }
 			)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup")
-			.attr("id", function(d, i) {
-				return "labelGroup" + i;
-			})
+			.attr("id", function(d, i) { return "labelGroup" + i; })
 			.attr("transform", d3pie.math.getPieTranslateCenter);
 
-		// TODO add x and y offscreen
-		labelGroup.append("text")
-			.attr("class", "segmentLabel")
-			.attr("id", function(d, i) { return "label" + i; })
-			.text(function(d) { return d.label; })
-			.style("font-size", _options.labels.mainLabel.fontSize)
-			.style("font-family", _options.labels.mainLabel.font)
-			.style("fill", _options.labels.mainLabel.color)
-			.style("opacity", 0);
+		// 1. Add the main label
+		if (addMainLabel) {
+			labelGroup.append("text")
+				.attr("class", "segmentOuterLabel")
+				.attr("id", function(d, i) { return "label" + i; })
+				.text(function(d) { return d.label; })
+				.style("font-size", _options.labels.mainLabel.fontSize)
+				.style("font-family", _options.labels.mainLabel.font)
+				.style("fill", _options.labels.mainLabel.color)
+				.style("opacity", 0);
+		}
 
-		// 2. Add the percentage label (not positioned yet)
+		// 2. Add the percentage label
+		if (addPercentage) {
+			labelGroup.append("text")
+				.attr("class", "segmentOuterLabel")
+				.attr("id", function(d, i) { return "label" + i; })
+				.text(function(d) { return d.label; })
+				.style("font-size", _options.labels.mainLabel.fontSize)
+				.style("font-family", _options.labels.mainLabel.font)
+				.style("fill", _options.labels.mainLabel.color)
+				.style("opacity", 0);
+		}
 
+		// 3. Add the value label
+		if (addValue) {
 
-		// 3. Add the value label (not positioned yet)
+		}
+
 
 		/*
 		 labelGroup.append("text")
@@ -64,7 +101,9 @@ d3pie.labels = {
 		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
 		setTimeout(function() {
 			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
-			d3.selectAll("text.segmentLabel")
+
+			// should apply to the labelGroup
+			d3.selectAll("text.segmentOuterLabel")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
@@ -85,17 +124,20 @@ d3pie.labels = {
 		setTimeout(d3pie.labels.addLabelLines, 1);
 	},
 
+	addInner: function() {
+
+	},
 
 	// this both adds the lines and positions the labels [TODO]
 	addLabelLines: function() {
-		if (!_options.labels.lines.enabled) {
+		if (!_options.labels.lines.enabled || _options.labels.outside === "none") {
 			return;
 		}
 
 		var lineMidPointDistance = _options.labels.lines.length - (_options.labels.lines.length / 4);
 		var circleCoordGroups = [];
 
-		d3.selectAll(".segmentLabel")
+		d3.selectAll(".segmentOuterLabel")
 			.style("opacity", 0)
 			.attr("dx", function(d, i) {
 				var labelDimensions = document.getElementById("label" + i).getBBox();

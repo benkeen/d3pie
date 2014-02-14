@@ -129,7 +129,8 @@ d3pie.prototype.init = function() {
 		d3pie.text.positionSubtitle();
 
 		d3pie.segments.create();
-		d3pie.labels.add();
+		d3pie.labels.addInner();
+		d3pie.labels.addOuter();
 		d3pie.segments.addSegmentEventHandlers();
 	});
 };
