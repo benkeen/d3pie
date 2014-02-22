@@ -624,7 +624,7 @@ d3pie.labels = {
 		lineGroup.append("path")
 			.attr("d", lineFunction)
 			.attr("stroke", function(d, i) {
-				var color = null;
+				var color;
 				if (_options.labels.lines.color === "segment") {
 					color = _options.styles.colors[i];
 				} else {
@@ -1052,6 +1052,18 @@ d3pie.prototype.getOpenPieSegment = function() {
 	}
 };
 
+
+d3pie.prototype.openSegment = function(index) {
+	// TODO error checking
+	var index = parseInt(index, 10);
+	if (index < 0 || index > this.options.data.length-1) {
+		return;
+	}
+
+	d3pie.segments.openSegment($("#segment" + index)[0]);
+};
+
+
 // this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
 // intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
 // just redraw the single element
@@ -1079,8 +1091,11 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		case "callbacks.onMouseoverSegment":
 		case "callbacks.onMouseoutSegment":
 		case "callbacks.onClickSegment":
+		case "effects.pullOutSegmentOnClick.effect":
+		case "effects.pullOutSegmentOnClick.speed":
 			d3pie.helpers.processObj(this.options, propKey, value);
 			break;
+
 	}
 };
 

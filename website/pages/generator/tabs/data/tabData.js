@@ -16,7 +16,8 @@ define([
 	};
 
 	var _render = function(config) {
-		$("#dataTab").html(dataTabTemplate({ config: config }));
+		var $dataTab = $("#dataTab");
+		$dataTab.html(dataTabTemplate({ config: config }));
 
 		// make the data vertically sortable
 		$("#sortableDataList").sortable({
@@ -56,7 +57,6 @@ define([
 		}
 		return data;
 	};
-
 
 
 	_init();

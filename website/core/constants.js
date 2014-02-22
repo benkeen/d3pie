@@ -21,7 +21,8 @@ define([], function() {
 				UPDATE_PROP: 'demo-pie-render-update-prop'
 			},
 			DATA_CHANGE: 'demo-pie-data-change',
-			EXAMPLE_CHANGE: 'demo-pie-example-change'
+			EXAMPLE_CHANGE: 'demo-pie-example-change',
+			SELECT_SEGMENT: 'demo-pie-select-segment'
 		}
 	};
 

@@ -10,20 +10,31 @@ define([
 	var _render = function(config) {
 		$("#effectsTab").html(effectsTabTemplate({ config: config }));
 
-		$("#loadEffectBtn").on("change", function() {
+		// row 1
+		$("#loadEffect").on("change", function() {
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.load.effect", value: this.value });
+		});
+		$("#loadEffectSpeed").on("change", function() {
+			var speed = parseInt(this.value, 10); // TODO validate
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.load.speed", value: speed });
+		});
+		$("#loadEffectBtn").on("click", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 		});
+
+		// row 2
 		$("#pullOutSegmentOnClickEffect").on("change", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.effect", value: this.value });
 		});
-		$("#pullOutSegmentOnClickEffectBtn").on("click", _runPieSegmentClickEffect);
+		$("#pullOutSegmentOnClickEffectSpeed").on("change", function() {
+			var speed = parseInt(this.value, 10); // TODO validate
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.speed", value: speed });
+		});
+		$("#pullOutSegmentOnClickEffectBtn").on("click", function() {
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.SELECT_SEGMENT);
+		});
 	};
 
-	var _runPieSegmentClickEffect = function() {
-		console.log($("#generatorPieChart").data("d3pie").getOpenPieSegment());
-
-		//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
-	};
 
 	var _getTabData = function() {
 		return {

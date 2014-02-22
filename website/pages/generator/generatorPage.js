@@ -52,6 +52,7 @@ define([
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION]   = _renderWithNoAnimation;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION] = _renderWithAnimation;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP]    = _updateProperty;
+		subscriptions[C.EVENT.DEMO_PIE.SELECT_SEGMENT]        = _selectPieSegment;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
@@ -64,16 +65,19 @@ define([
 
 		// general event handlers used in any old tab
 		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
-		$(".updateNoAnimation").on("keyup change", _onKeyupNumberFieldUpdateNoAnimation);
+		$(".keyupUpdateNoAnimation").on("keyup change", _onKeyupUpdateNoAnimation);
 	};
 
-	var _onKeyupNumberFieldUpdateNoAnimation = function(e) {
+	var _onKeyupUpdateNoAnimation = function(e) {
 		var val = e.target.value;
+		var isNumberField = $(e.target).hasClass("numbers");
 
 		// check it's not empty and contains only numbers
-		if (/[^\d]/.test(val) || val === "") {
-			$(e.target).addClass("hasError");
-			return;
+		if (isNumberField) {
+			if (/[^\d]/.test(val) || val === "") {
+				$(e.target).addClass("hasError");
+				return;
+			}
 		}
 
 		$(e.target).removeClass("hasError");
@@ -92,8 +96,6 @@ define([
 		//_demoD3Pie.updateProp(msg.data.prop, msg.data.value);
 		$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
 	};
-
-
 
 	var _renderPie = function(includeStartAnimation, config) {
 
@@ -160,6 +162,23 @@ define([
 
 		// always add the event handlers. This is because the tab content is recreated every time this function is called
 		_addTabEventHandlers();
+	};
+
+	var _selectPieSegment = function() {
+		var openSegmentInfo = $("#generatorPieChart").data("d3pie").getOpenPieSegment();
+		if (openSegmentInfo === null) {
+			$("#generatorPieChart").data("d3pie").openSegment(0);
+		} else {
+			var nextIndex = openSegmentInfo.index + 1;
+
+			// assumption here is that the dataset in the generator is an accurate reflection of what's in the
+			// demo pie. It's reasonable. Or I screwed up somewhere.
+			var data = dataTab.getTabData();
+			if (nextIndex > data.length-1) {
+				nextIndex -= data.length;
+			}
+			$("#generatorPieChart").data("d3pie").openSegment(nextIndex);
+		}
 	};
 
 

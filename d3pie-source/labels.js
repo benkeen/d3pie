@@ -267,7 +267,7 @@ d3pie.labels = {
 		lineGroup.append("path")
 			.attr("d", lineFunction)
 			.attr("stroke", function(d, i) {
-				var color = null;
+				var color;
 				if (_options.labels.lines.color === "segment") {
 					color = _options.styles.colors[i];
 				} else {
