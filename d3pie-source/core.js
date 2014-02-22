@@ -57,6 +57,28 @@ d3pie.prototype.recreate = function() {
 	this.init();
 };
 
+/**
+ * Returns all pertinent info about the current open info. Returns null if nothing's open, or if one is, an object of
+ * the following form:
+ * 	{
+ * 	  element: DOM NODE,
+ * 	  index: N,
+ * 	  data: {}
+ * 	}
+ */
+d3pie.prototype.getOpenPieSegment = function() {
+	var segment = d3pie.segments.currentlyOpenSegment;
+	if (segment !== null) {
+		var index = parseInt($(segment).data("index"), 10);
+		return {
+			element: segment,
+			index: index,
+			data: this.options.data[index]
+		}
+	} else {
+		return null;
+	}
+};
 
 // this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
 // intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
@@ -118,9 +140,9 @@ d3pie.prototype.init = function() {
 
 	// STEP 2: now create the pie chart and position everything accordingly
 	var requiredElements = [];
-	if (_hasTitle) { requiredElements.push("title"); }
+	if (_hasTitle)    { requiredElements.push("title"); }
 	if (_hasSubtitle) { requiredElements.push("subtitle"); }
-	if (_hasFooter) { requiredElements.push("footer"); }
+	if (_hasFooter)   { requiredElements.push("footer"); }
 
 	d3pie.helpers.whenElementsExist(requiredElements, function() {
 		_storeDimensions();

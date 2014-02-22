@@ -16,13 +16,13 @@
 	<div class="col-md-4">
 		<label for="loadEffectSpeed" class="control-label">Speed</label>
 		<div class="form-group padRight30">
-			<input type="number" id="loadEffectSpeed" class="form-control ib smallField" value="{{config.effects.load.speed}}" />
+			<input type="number" id="loadEffectSpeed" class="form-control ib smallField" step="10" value="{{config.effects.load.speed}}" />
 			<label>ms</label>
 		</div>
 	</div>
 	<div class="col-md-2">
 		<label>&nbsp;</label>
-		<button id="pieSegmentClickEffectBtn" class="btn btn-xs btn-primary btn-info">View &raquo;</button>
+		<button id="loadEffectBtn" class="btn btn-xs btn-primary btn-info">View &raquo;</button>
 	</div>
 </div>
 
@@ -43,14 +43,14 @@
 	<div class="col-md-4">
 		<label for="loadEffectSpeed" class="control-label">Speed</label>
 		<div class="form-group padRight30">
-			<input type="number" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib smallField" value="{{config.effects.pullOutSegmentOnClick.speed}}" />
+			<input type="number" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib smallField" step="10" value="{{config.effects.pullOutSegmentOnClick.speed}}" />
 			<label>ms</label>
 		</div>
 	</div>
 
 	<div class="col-md-2">
 		<label>&nbsp;</label>
-		<button class="btn btn-xs btn-primary btn-info">View &raquo;</button>
+		<button id="pullOutSegmentOnClickEffectBtn" class="btn btn-xs btn-primary btn-info">View &raquo;</button>
 	</div>
 </div>
 

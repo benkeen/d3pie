@@ -13,16 +13,16 @@ define([
 		$("#loadEffectBtn").on("change", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 		});
-
 		$("#pullOutSegmentOnClickEffect").on("change", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.effect", value: this.value });
-
 		});
-		$("#pieSegmentClickEffectBtn").on("click", _runPieSegmentClickEffect);
+		$("#pullOutSegmentOnClickEffectBtn").on("click", _runPieSegmentClickEffect);
 	};
 
 	var _runPieSegmentClickEffect = function() {
-		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
+		console.log($("#generatorPieChart").data("d3pie").getOpenPieSegment());
+
+		//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 	};
 
 	var _getTabData = function() {

@@ -1,6 +1,8 @@
 // --------- segments.js -----------
 d3pie.segments = {
 
+	currentlyOpenSegment: null,
+
 	/**
 	 * Creates the pie chart segments and displays them according to the selected load effect.
 	 * @param element
@@ -130,6 +132,7 @@ d3pie.segments = {
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.each("end", function(d, i) {
+				d3pie.segments.currentlyOpenSegment = segment;
 				$(this).attr("class", "expanded");
 			});
 	},
@@ -140,6 +143,7 @@ d3pie.segments = {
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				$(this).attr("class", "");
+				d3pie.segments.currentlyOpenSegment = null;
 			});
 	}
 };

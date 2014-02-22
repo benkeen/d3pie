@@ -93,6 +93,8 @@ define([
 		$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
 	};
 
+
+
 	var _renderPie = function(includeStartAnimation, config) {
 
 		// notify anyone that's interested that the data changed and we're going to do a re-render
