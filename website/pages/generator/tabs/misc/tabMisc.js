@@ -7,8 +7,8 @@ define([
 
 	var _MODULE_ID = "miscTab";
 
-	var _render = function(config) {
-		$("#miscTab").html(miscTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(miscTabTemplate({ config: config }));
 	};
 
 	var _getTabData = function() {

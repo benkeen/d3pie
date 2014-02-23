@@ -30,7 +30,7 @@ define([
 	 * @private
 	 */
 	var _init = function() {
-		$("#generatorPage").html(generatorPageTemplate({
+		$("#generator").html(generatorPageTemplate({
 			examples: examplePiesTemplate({ examples: EXAMPLE_PIES })
 		}));
 
@@ -147,15 +147,15 @@ define([
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.EXAMPLE_CHANGE, { config: config });
 
 		// render the generator tabs
-		titleTab.render(config);
-		sizeTab.render(config);
-		dataTab.render(config);
-		colorsTab.render(config);
-		labelsTab.render(config);
-		footerTab.render(config);
-		effectsTab.render(config);
-		eventsTab.render(config);
-		miscTab.render(config);
+		titleTab.render("#generatorTitle", config);
+		sizeTab.render("#generatorSize", config);
+		dataTab.render("#generatorData", config);
+		colorsTab.render("#generatorColors", config);
+		labelsTab.render("#generatorLabels", config);
+		footerTab.render("#generatorFooter", config);
+		effectsTab.render("#generatorEffects", config);
+		eventsTab.render("#generatorEvents", config);
+		miscTab.render("#generatorMisc", config);
 
 		// render the pie!
 		_renderWithAnimation();

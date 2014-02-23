@@ -9,8 +9,8 @@ define([
 	var _MODULE_ID = "labelsTab";
 
 
-	var _render = function(config) {
-		$("#labelsTab").html(labelsTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(labelsTabTemplate({ config: config }));
 
 		utils.addColorpicker("mainLabelColor");
 		utils.addColorpicker("labelPercentageColor");

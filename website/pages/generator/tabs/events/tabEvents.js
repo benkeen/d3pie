@@ -32,7 +32,7 @@ define([
 	};
 
 
-	var _render = function(config) {
+	var _render = function(tabEl, config) {
 
 		// tack on the callbacks. These can't be edited - they're just included so the user (developer, really)
 		// can see them get fired & so that they're included in the
@@ -43,7 +43,7 @@ define([
 			onClickSegment: _callbackInfo.onClickSegment.displayStr
 		};
 
-		$("#eventsTab").html(eventsTabTemplate({
+		$(tabEl).html(eventsTabTemplate({
 			config: config
 		}));
 

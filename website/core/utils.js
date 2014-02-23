@@ -11,10 +11,6 @@ define([
 	var _colorpickers = {};
 
 
-	var _selectPage = function(page) {
-
-	};
-
 
 	var _addColorpicker = function(id) {
 		var $inputField = $("#" + id);
@@ -86,7 +82,6 @@ define([
 
 
 	return {
-		selectPage: _selectPage,
 		addColorpicker: _addColorpicker
 	};
 });

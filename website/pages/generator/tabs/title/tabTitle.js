@@ -11,8 +11,8 @@ define([
 	var _previousSubtitle = null;
 
 
-	var _render = function(config) {
-		$("#titleTab").html(titleTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(titleTabTemplate({ config: config }));
 
 		$("#pieTitle").on("keyup", function() {
 			if (_previousTitle !== this.value) {

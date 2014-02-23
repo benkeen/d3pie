@@ -9,8 +9,8 @@ define([
 	var _MODULE_ID = "footerTab";
 	var _previousFooterText = null;
 
-	var _render = function(config) {
-		$("#footerTab").html(footerTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(footerTabTemplate({ config: config }));
 
 		$("#footerText").on("keyup", function() {
 			if (_previousFooterText !== this.value) {

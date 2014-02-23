@@ -4,7 +4,7 @@ define([
 	"use strict";
 
 	var _init = function() {
-		$("#documentationPage").html(documentationPageTemplate());
+		$("#docs").html(documentationPageTemplate());
 	};
 
 	return {

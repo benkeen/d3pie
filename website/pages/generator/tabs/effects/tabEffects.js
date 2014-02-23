@@ -7,8 +7,8 @@ define([
 
 	var _MODULE_ID = "effectsTab";
 
-	var _render = function(config) {
-		$("#effectsTab").html(effectsTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(effectsTabTemplate({ config: config }));
 
 		// row 1
 		$("#loadEffect").on("change", function() {

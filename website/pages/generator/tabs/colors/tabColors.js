@@ -44,8 +44,8 @@ define([
 		}
 	};
 
-	var _render = function(config) {
-		$("#colorsTab").html(colorsTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(colorsTabTemplate({ config: config }));
 		_canvasWidth = config.size.canvasWidth;
 		_canvasHeight = config.size.canvasHeight;
 

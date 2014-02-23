@@ -8,8 +8,8 @@ define([
 	var _MODULE_ID = "sizeTab";
 
 
-	var _render = function(config) {
-		$("#sizeTab").html(sizeTabTemplate({ config: config }));
+	var _render = function(tabEl, config) {
+		$(tabEl).html(sizeTabTemplate({ config: config }));
 
 		$("#showCanvasOutline").on("click", function(e) {
 			if (e.target.checked) {

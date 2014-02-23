@@ -4,7 +4,7 @@ define([
 	"use strict";
 
 	var _init = function() {
-		$("#downloadPage").html(downloadPageTemplate());
+		$("#download").html(downloadPageTemplate());
 	};
 
 	return {

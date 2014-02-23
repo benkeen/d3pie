@@ -12,6 +12,7 @@ require.config({
 		constants: "core/constants",
 		mediator: "core/mediator",
 		utils: "core/utils",
+		pageHelper: "core/pageHelper",
 
 		// About page
 		aboutPage: "pages/about/aboutPage",

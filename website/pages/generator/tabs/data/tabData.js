@@ -15,8 +15,8 @@ define([
 		mediator.register(_MODULE_ID);
 	};
 
-	var _render = function(config) {
-		var $dataTab = $("#dataTab");
+	var _render = function(tabEl, config) {
+		var $dataTab = $(tabEl);
 		$dataTab.html(dataTabTemplate({ config: config }));
 
 		// make the data vertically sortable
