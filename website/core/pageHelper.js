@@ -20,7 +20,10 @@ define([
 		},
 		{
 			page: "generator",
-			children: ["title", "size", "data", "colors", "labels", "footer", "effects", "events", "misc" ]
+			children: [
+				"generatorTitle", "generatorSize", "generatorData", "generatorColors", "generatorLabels",
+				"generatorFooter", "generatorEffects", "generatorEvents", "generatorMisc"
+			]
 		},
 		{
 			page: "download"
@@ -93,7 +96,7 @@ define([
 			setTimeout(function() {
 				$("#" + oldPage).addClass("hidden");
 
-				// show the new one. Good fucking lord. Nested setTimeouts?
+				// show the new one. Good fucking lord. Nested setTimeouts? What the gibbering fuck...
 				setTimeout(function() {
 					_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
 					$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
@@ -148,7 +151,6 @@ define([
 		}
 	};
 
-	// urgh.
 	var _isValidPage = function(page) {
 		for (var i=0; i<_pages.length; i++) {
 			if (_pages[i].page === page) {

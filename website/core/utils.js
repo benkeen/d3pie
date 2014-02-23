@@ -11,7 +11,6 @@ define([
 	var _colorpickers = {};
 
 
-
 	var _addColorpicker = function(id) {
 		var $inputField = $("#" + id);
 

@@ -24,12 +24,14 @@ define([
 	var _isCreated = false;
 	var _demoD3Pie = null;
 
-
 	/**
 	 * Our initialization function. Called on page load.
 	 * @private
 	 */
 	var _init = function() {
+
+		_addTabEventHandlers();
+
 		$("#generator").html(generatorPageTemplate({
 			examples: examplePiesTemplate({ examples: EXAMPLE_PIES })
 		}));
@@ -65,9 +67,12 @@ define([
 	 */
 	var _addTabEventHandlers = function() {
 
+		// add our sub tab event handler (here?)
+
+
 		// general event handlers used in any old tab
-		$(".changeUpdateNoAnimation").on("change", _renderWithNoAnimation);
-		$(".keyupUpdateNoAnimation").on("keyup change", _onKeyupUpdateNoAnimation);
+		$(document).on("change", ".changeUpdateNoAnimation", _renderWithNoAnimation);
+		$(document).on("keyup change", ".keyupUpdateNoAnimation", _onKeyupUpdateNoAnimation);
 	};
 
 	var _onKeyupUpdateNoAnimation = function(e) {
@@ -120,7 +125,6 @@ define([
 
 		_demoD3Pie = $("#generatorPieChart").d3pie(config);
 		$("#generatorPieChartPad,#generatorPieChart").css({ width: config.size.canvasWidth, height: config.size.canvasHeight });
-		_isCreated = true;
 	};
 
 
@@ -161,9 +165,6 @@ define([
 
 		// render the pie!
 		_renderWithAnimation();
-
-		// always add the event handlers. This is because the tab content is recreated every time this function is called
-		_addTabEventHandlers();
 	};
 
 	var _selectPieSegment = function() {
@@ -184,11 +185,20 @@ define([
 	};
 
 	var _onPageSelected = function(msg) {
+		if (msg.data.page !== "generator") {
+			return;
+		}
 
-		//mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, oldPage: oldPage, subPage: subPage });
-		if (msg.data.page === "generator") {
+		// if we just switched to the generator tab, render the pie chart. If it's on page load (i.e. oldPage isn't
+		// defined), we do it with animation
+		if (!_isCreated) {
+			_renderWithAnimation();
+			_isCreated = true;
+		} else if (msg.data.oldPage !== "generator") {
 			_renderWithNoAnimation();
 		}
+
+		
 	};
 
 	mediator.register(_MODULE_ID);
