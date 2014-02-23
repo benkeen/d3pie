@@ -18,6 +18,5 @@ require([
 	documentationPage.init();
 
 	// select the default one (for local dev work, really)
-	pageHelper.initTabs();
-	pageHelper.showStartPage();
+	pageHelper.initPage();
 });
