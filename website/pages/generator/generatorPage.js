@@ -34,9 +34,6 @@ define([
 			examples: examplePiesTemplate({ examples: EXAMPLE_PIES })
 		}));
 
-		// always initialize the sidebar with whatever's in the selected example (always first item right now)
-		_loadDemoPie(EXAMPLE_PIES[0]);
-
 		// now fade in the three sections: nav, main content & footer row
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
@@ -44,6 +41,9 @@ define([
 			var index = parseInt($(e.target).data("index"), 10);
 			_loadDemoPie(EXAMPLE_PIES[index]);
 		});
+
+		// always initialize the sidebar with whatever's in the selected example (always first item right now)
+		_loadDemoPie(EXAMPLE_PIES[0]);
 
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
@@ -53,6 +53,8 @@ define([
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION] = _renderWithAnimation;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP]    = _updateProperty;
 		subscriptions[C.EVENT.DEMO_PIE.SELECT_SEGMENT]        = _selectPieSegment;
+		subscriptions[C.EVENT.PAGE.LOAD]                      = _onPageSelected;
+
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
@@ -181,6 +183,13 @@ define([
 		}
 	};
 
+	var _onPageSelected = function(msg) {
+
+		//mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, oldPage: oldPage, subPage: subPage });
+		if (msg.data.page === "generator") {
+			_renderWithNoAnimation();
+		}
+	};
 
 	mediator.register(_MODULE_ID);
 

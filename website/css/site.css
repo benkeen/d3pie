@@ -259,10 +259,30 @@ body .disabledText {
 #transparencyProof {
 	cursor: pointer;
 }
+body .pager {
+	margin: 16px 0px;
+}
+
+
+/* an ACTION. This hides an element with (hardware-accelerated) CSS */
+.fadeOut {
+	-webkit-transition: opacity .2s ease-in-out;
+	-moz-transition: opacity .2s ease-in-out;
+	-ms-transition: opacity .2s ease-in-out;
+	-o-transition: opacity .2s ease-in-out;
+	opacity: 0;
+}
 .hidden {
 	display: none;
 }
 
-body .pager {
-	margin: 16px 0px;
+body .fadeIn {
+	-webkit-transition: opacity .3s ease-in-out;
+	-moz-transition: opacity .3s ease-in-out;
+	-ms-transition: opacity .3s ease-in-out;
+	-o-transition: opacity .3s ease-in-out;
+	opacity: 1;
+}
+.topPage, .subPage {
+	opacity: 0;
 }

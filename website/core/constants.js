@@ -23,6 +23,9 @@ define([], function() {
 			DATA_CHANGE: 'demo-pie-data-change',
 			EXAMPLE_CHANGE: 'demo-pie-example-change',
 			SELECT_SEGMENT: 'demo-pie-select-segment'
+		},
+		PAGE: {
+			LOAD: 'load-page'
 		}
 	};
 
