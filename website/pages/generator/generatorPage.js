@@ -209,14 +209,26 @@ define([
 		if (!_isCreated) {
 			_renderWithAnimation();
 			_isCreated = true;
-		} else {
+		} else if (msg.data.prevPage !== "generator") {
 			_renderWithNoAnimation();
 		}
 
 		// now show the appropriate tab
 		if (_currentTab == null) {
 			$("#generatorTabs").find("a[href=#" + tab + "]").closest("li").addClass("active");
-			$("#" + tab).removeClass("hidden").addClass("fadeIn");
+			$("#" + tab).removeClass("fadeOut hidden").addClass("fadeIn");
+		} else {
+
+			$("#generatorTabs").find("a[href=#" + _currentTab + "]").closest("li").removeClass("active");
+			$("#generatorTabs").find("a[href=#" + tab + "]").closest("li").addClass("active");
+			$("#" + _currentTab).removeClass("hidden fadeIn").addClass("fadeOut");
+
+			(function(ct) {
+				setTimeout(function() {
+					$("#" + ct).addClass("hidden").removeClass("fadeOut");
+					$("#" + tab).removeClass("hidden fadeOut").addClass("fadeIn");
+				}, C.OTHER.PAGE_LOAD_SPEED);
+			})(_currentTab);
 		}
 
 		_currentTab = tab;

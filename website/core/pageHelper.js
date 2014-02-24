@@ -8,7 +8,6 @@ define([
 
 	var _pages = ["about", "generator", "download", "usageTips", "docs"];
 	var _$topNav;
-	var _pageLoadSpeed = 200;
 	var _currentPage = null;
 	var _currentPageHash = null;
 
@@ -52,6 +51,7 @@ define([
 			return;
 		}
 
+		var publishData = { page: page, prevPage: _currentPage, pageHash: pageCandidateNoHash };
 		if (page !== _currentPage) {
 
 			// fade out the old page, if one was selected (not true for first load)
@@ -67,9 +67,9 @@ define([
 					setTimeout(function() {
 						_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
 						$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
-						mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, pageHash: pageCandidateNoHash });
+						mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, publishData);
 					}, 10);
-				}, _pageLoadSpeed);
+				}, C.OTHER.PAGE_LOAD_SPEED);
 
 			} else {
 				_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
@@ -78,12 +78,12 @@ define([
 				// weird, we need the timeout for the initial page load otherwise it doesn't fade in
 				setTimeout(function() {
 					$("#" + page).addClass("fadeIn");
-					mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, pageHash: pageCandidateNoHash });
+					mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, publishData);
 				}, 10);
 			}
 
 		} else {
-			mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, pageHash: pageCandidateNoHash });
+			mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, publishData);
 		}
 
 		window.location.hash = pageCandidate;

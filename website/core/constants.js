@@ -29,5 +29,9 @@ define([], function() {
 		}
 	};
 
+	C.OTHER = {
+		PAGE_LOAD_SPEED: 200
+	};
+
 	return C;
 });
