@@ -1,9 +1,3 @@
-/**
- * General page-level helper functions. This file's a little irksome because technically it only handles the
- * top level navigation, but since we want to be able to link to individual tabs in the generator, it actually
- * contains a list of all possible pages, then passes off work to load the individual page tab to the appropriate
- * module via pub-sub. Not great, but not too bad.
- */
 define([
 	"constants",
 	"mediator"
@@ -12,33 +6,11 @@ define([
 
 	var _MODULE_ID = "pageHelper";
 
-	// the page hierarchy. The page values map to the unique IDs for the nav items. Right now it only permits
-	// one level deep nesting. Each page string needs to be unique across the whole system.
-	var _pages = [
-		{
-			page: "about"
-		},
-		{
-			page: "generator",
-			children: [
-				"generatorTitle", "generatorSize", "generatorData", "generatorColors", "generatorLabels",
-				"generatorFooter", "generatorEffects", "generatorEvents", "generatorMisc"
-			]
-		},
-		{
-			page: "download"
-		},
-		{
-			page: "usageTips"
-		},
-		{
-			page: "docs"
-		}
-	];
-
-	// DOM nodes
+	var _pages = ["about", "generator", "download", "usageTips", "docs"];
 	var _$topNav;
 	var _pageLoadSpeed = 200;
+	var _currentPage = null;
+	var _currentPageHash = null;
 
 
 	/**
@@ -48,19 +20,17 @@ define([
 	 */
 	var _initPage = function() {
 		_$topNav = $("#topNav");
-
-		// set up the page navigation event handlers
 		_initPageNavEventHandlers();
-
-		var url = document.location.toString();
-		var page = "about";
-		if (url.match("#")) {
-			page = url.split("#")[1];
-		}
-
-		_selectPage(page);
+		_selectPage(document.location.hash);
 	};
 
+	// this catches ALL nav clicks, not just in the main navbar
+	var _initPageNavEventHandlers = function() {
+		$(document).on("click", ".selectPage", function(e) {
+			e.preventDefault();
+			_selectPage(this.hash);
+		})
+	};
 
 	/**
 	 * Our main, hideous, navigation function. This accepts a page identifier (string) listed in the _pages array
@@ -71,101 +41,58 @@ define([
 	var _selectPage = function(pageCandidate) {
 
 		// remove any hashes that may be there
-		pageCandidate = pageCandidate.replace(/#/, "");
+		var pageCandidateNoHash = pageCandidate.replace(/#/, "");
 
-		// yuck.
-		var page, subPage;
-		if (_isValidPage(pageCandidate)) {
-			page = _getTopLevelPage(pageCandidate);
-			if (page != pageCandidate) {
-				subPage = pageCandidate;
-			}
-		} else {
-			page = "about";
+		var hashParts = pageCandidateNoHash.split("-");
+		var page = hashParts[0];
+
+		// check the page is valid. If not, default to the About page
+		page = ($.inArray(page, _pages) !== -1) ? page : "about";
+		if (pageCandidate === _currentPageHash) {
+			return;
 		}
 
-		var selectedNav = _$topNav.find(".active");
-		var oldPage     = selectedNav.find("a").attr("href");
+		if (page !== _currentPage) {
 
-		// fade out the old page
-		if (oldPage) {
-			oldPage = oldPage.replace(/#/, "");
-			selectedNav.removeClass("active");
-			$("#" + oldPage).removeClass("hidden fadeIn").addClass("fadeOut");
+			// fade out the old page, if one was selected (not true for first load)
+			if (_currentPage) {
 
-			setTimeout(function() {
-				$("#" + oldPage).addClass("hidden");
+				_$topNav.find(".active").removeClass("active");
+				$("#" + _currentPage).removeClass("hidden fadeIn").addClass("fadeOut");
 
-				// show the new one. Good fucking lord. Nested setTimeouts? What the gibbering fuck...
 				setTimeout(function() {
-					_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
-					$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
-					mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, oldPage: oldPage, subPage: subPage });
+					$("#" + _currentPage).addClass("hidden");
 
+					// show the new one. Good fucking lord. Nested setTimeouts? What the gibbering fuck...
+					setTimeout(function() {
+						_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
+						$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
+						mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, pageHash: pageCandidateNoHash });
+					}, 10);
+				}, _pageLoadSpeed);
+
+			} else {
+				_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
+				$("#" + page).removeClass("hidden fadeOut");
+
+				// weird, we need the timeout for the initial page load otherwise it doesn't fade in
+				setTimeout(function() {
+					$("#" + page).addClass("fadeIn");
+					mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, pageHash: pageCandidateNoHash });
 				}, 10);
-			}, _pageLoadSpeed);
-		} else {
-			_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
-			$("#" + page).removeClass("hidden fadeOut");
-
-			// weird, we need the timeout for the initial page load otherwise it appears immediately
-			setTimeout(function() {
-				$("#" + page).addClass("fadeIn");
-				mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, oldPage: oldPage, subPage: subPage });
-			}, 10); // select the page
-		}
-
-		if (subPage) {
-			window.location.hash = "#" + subPage;
-		} else {
-			window.location.hash = "#" + page;
-		}
-	};
-
-
-	var _initPageNavEventHandlers = function() {
-		$(document).on("click", ".selectPage", function(e) {
-			e.preventDefault();
-			_selectPage(this.hash);
-		})
-	};
-
-
-	/**
-	 * Looks at a page identifier string and figures out if it's a nested page, and if so returns the parent
-	 * identifier - or null if not.
-	 * @param page
-	 * @private
-	 */
-	var _getTopLevelPage = function(page) {
-		for (var i=0; i<_pages.length; i++) {
-			if (_pages[i].page === page) {
-				return page;
-			} else if (_pages[i].hasOwnProperty("children")) {
-				for (var j=0; j<_pages[i].children.length; j++) {
-					if (_pages[i].children[j] === page) {
-						return _pages[i].page;
-					}
-				}
 			}
+
+		} else {
+			mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, { page: page, pageHash: pageCandidateNoHash });
 		}
+
+		window.location.hash = pageCandidate;
+
+		// store the current page & full hash
+		_currentPage = page;
+		_currentPageHash = pageCandidate;
 	};
 
-	var _isValidPage = function(page) {
-		for (var i=0; i<_pages.length; i++) {
-			if (_pages[i].page === page) {
-				return true;
-			} else if (_pages[i].hasOwnProperty("children")) {
-				for (var j=0; j<_pages[i].children.length; j++) {
-					if (_pages[i].children[j] === page) {
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
 
 	return {
 		initPage: _initPage,

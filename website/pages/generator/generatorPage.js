@@ -23,6 +23,11 @@ define([
 	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
 	var _demoD3Pie = null;
+	var _tabs = [
+		"generator-title", "generator-size", "generator-data", "generator-colors", "generator-labels",
+		"generator-footer", "generator-effects", "generator-events", "generator-misc"
+	];
+	var _currentTab;
 
 	/**
 	 * Our initialization function. Called on page load.
@@ -153,15 +158,15 @@ define([
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.EXAMPLE_CHANGE, { config: config });
 
 		// render the generator tabs
-		titleTab.render("#generatorTitle", config);
-		sizeTab.render("#generatorSize", config);
-		dataTab.render("#generatorData", config);
-		colorsTab.render("#generatorColors", config);
-		labelsTab.render("#generatorLabels", config);
-		footerTab.render("#generatorFooter", config);
-		effectsTab.render("#generatorEffects", config);
-		eventsTab.render("#generatorEvents", config);
-		miscTab.render("#generatorMisc", config);
+		titleTab.render("#generator-title", config);
+		sizeTab.render("#generator-size", config);
+		dataTab.render("#generator-data", config);
+		colorsTab.render("#generator-colors", config);
+		labelsTab.render("#generator-labels", config);
+		footerTab.render("#generator-footer", config);
+		effectsTab.render("#generator-effects", config);
+		eventsTab.render("#generator-events", config);
+		miscTab.render("#generator-misc", config);
 
 		// render the pie!
 		_renderWithAnimation();
@@ -189,16 +194,32 @@ define([
 			return;
 		}
 
-		// if we just switched to the generator tab, render the pie chart. If it's on page load (i.e. oldPage isn't
-		// defined), we do it with animation
+		var pageHash = msg.data.pageHash;
+		var tab = "generator-title";
+		if ($.inArray(pageHash, _tabs) !== -1) {
+			tab = pageHash;
+		}
+
+		// if the tab hasn't changed, do nothing
+		if (tab === _currentTab) {
+			return;
+		}
+
+		// if this is the first time we loaded the generator tab, render it all pretty like
 		if (!_isCreated) {
 			_renderWithAnimation();
 			_isCreated = true;
-		} else if (msg.data.oldPage !== "generator") {
+		} else {
 			_renderWithNoAnimation();
 		}
 
-		
+		// now show the appropriate tab
+		if (_currentTab == null) {
+			$("#generatorTabs").find("a[href=#" + tab + "]").closest("li").addClass("active");
+			$("#" + tab).removeClass("hidden").addClass("fadeIn");
+		}
+
+		_currentTab = tab;
 	};
 
 	mediator.register(_MODULE_ID);
