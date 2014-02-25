@@ -5,30 +5,7 @@ d3pie.labels = {
 	 * Add the outer labels to the pie. Un-positioned.
 	 */
 	addOuter: function() {
-		var addMainLabel  = false;
-		var addValue      = false;
-		var addPercentage = false;
-		switch (_options.labels.outside) {
-			case "label":
-				addMainLabel = true;
-				break;
-			case "value":
-				addValue = true;
-				break;
-			case "percentage":
-				addPercentage = true;
-				break;
-			case "label-value1":
-			case "label-value2":
-				addMainLabel = true;
-				addValue = true;
-				break;
-			case "label-percentage1":
-			case "label-percentage2":
-				addMainLabel = true;
-				addPercentage = true;
-				break;
-		}
+		var include = d3pie.labels.getIncludes(_options.labels.outside);
 
 		// group the label groups into a single element (just for tidiness)
 		var outerLabel = _svg.insert("g", ".outerLabel")
@@ -46,10 +23,10 @@ d3pie.labels = {
 			.attr("transform", d3pie.math.getPieTranslateCenter);
 
 		// 1. Add the main label
-		if (addMainLabel) {
+		if (include.mainLabel) {
 			labelGroup.append("text")
 				.attr("class", "segmentOuterLabel")
-				.attr("id", function(d, i) { return "label" + i; })
+				.attr("id", function(d, i) { return "labelMain" + i; })
 				.text(function(d) { return d.label; })
 				.style("font-size", _options.labels.mainLabel.fontSize)
 				.style("font-family", _options.labels.mainLabel.font)
@@ -58,10 +35,10 @@ d3pie.labels = {
 		}
 
 		// 2. Add the percentage label
-		if (addPercentage) {
+		if (include.percentage) {
 			labelGroup.append("text")
 				.attr("class", "segmentOuterLabel")
-				.attr("id", function(d, i) { return "label" + i; })
+				.attr("id", function(d, i) { return "labelPercentage" + i; })
 				.text(function(d) {
 					return parseInt((d.value / _totalSize) * 100).toFixed(0) + "%";
 				})
@@ -72,10 +49,10 @@ d3pie.labels = {
 		}
 
 		// 3. Add the value label
-		if (addValue) {
+		if (include.value) {
 			labelGroup.append("text")
 				.attr("class", "segmentOuterLabel")
-				.attr("id", function(d, i) { return "label" + i; })
+				.attr("id", function(d, i) { return "labelValue" + i; })
 				.text(function(d) { return d.value; })
 				.style("font-size", _options.labels.value.fontSize)
 				.style("font-family", _options.labels.value.font)
@@ -88,6 +65,11 @@ d3pie.labels = {
 	 * Add the inner labels to the pie. Un-positioned.
 	 */
 	addInner: function() {
+		var include = d3pie.labels.getIncludes(_options.labels.inside);
+
+		// group the label groups into a single element (just for tidiness)
+		var outerLabel = _svg.insert("g", ".innerLabel")
+			.attr("class", "innerLabel");
 
 	},
 
@@ -103,7 +85,7 @@ d3pie.labels = {
 		d3.selectAll(".outerLabelGroup")
 			.style("opacity", 0)
 			.attr("dx", function(d, i) {
-				var labelDimensions = document.getElementById("label" + i).getBBox();
+				var labelDimensions = document.getElementById("outerLabelGroup" + i).getBBox();
 
 				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
 				var nextAngle = 360;
@@ -159,7 +141,7 @@ d3pie.labels = {
 				return labelX;
 			})
 			.attr("dy", function(d, i) {
-				var labelDimensions = document.getElementById("label" + i).getBBox();
+				var labelDimensions = document.getElementById("outerLabelGroup" + i).getBBox();
 				var heightOffset = labelDimensions.height / 5;
 
 				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
@@ -269,6 +251,39 @@ d3pie.labels = {
 			}
 
 		}, loadSpeed);
+	},
+
+
+	getIncludes: function(val) {
+		var addMainLabel  = false;
+		var addValue      = false;
+		var addPercentage = false;
+		switch (val) {
+			case "label":
+				addMainLabel = true;
+				break;
+			case "value":
+				addValue = true;
+				break;
+			case "percentage":
+				addPercentage = true;
+				break;
+			case "label-value1":
+			case "label-value2":
+				addMainLabel = true;
+				addValue = true;
+				break;
+			case "label-percentage1":
+			case "label-percentage2":
+				addMainLabel = true;
+				addPercentage = true;
+				break;
+		}
+		return {
+			mainLabel: addMainLabel,
+			value: addValue,
+			percentage: addPercentage
+		};
 	}
 
 };
