@@ -33,6 +33,8 @@ d3pie.labels = {
 				break;
 		}
 
+		console.log(_options.labels);
+
 		var labelGroup = _svg.selectAll(".labelGroup")
 			.data(
 				_options.data.filter(function(d) { return d.value; }),
@@ -61,16 +63,25 @@ d3pie.labels = {
 			labelGroup.append("text")
 				.attr("class", "segmentOuterLabel")
 				.attr("id", function(d, i) { return "label" + i; })
-				.text(function(d) { return d.label; })
-				.style("font-size", _options.labels.mainLabel.fontSize)
-				.style("font-family", _options.labels.mainLabel.font)
-				.style("fill", _options.labels.mainLabel.color)
+				.text(function(d) {
+					return parseInt((d.value / _totalSize) * 100).toFixed(0) + "%";
+				})
+				.style("font-size", _options.labels.percentage.fontSize)
+				.style("font-family", _options.labels.percentage.font)
+				.style("fill", _options.labels.percentage.color)
 				.style("opacity", 0);
 		}
 
 		// 3. Add the value label
 		if (addValue) {
-
+			labelGroup.append("text")
+				.attr("class", "segmentOuterLabel")
+				.attr("id", function(d, i) { return "label" + i; })
+				.text(function(d) { return d.value; })
+				.style("font-size", _options.percentage.fontSize)
+				.style("font-family", _options.percentage.mainLabel.font)
+				.style("fill", _options.percentage.mainLabel.color)
+				.style("opacity", 0);
 		}
 
 

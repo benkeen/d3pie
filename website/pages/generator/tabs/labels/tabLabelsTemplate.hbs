@@ -13,7 +13,7 @@
 	<div class="col-md-6">
 		<label for="insideLabel" class="control-label">Inside Label</label>
 		<div class="form-group padRight30">
-			<select id="insideLabel" class="form-control">
+			<select id="insideLabel" class="form-control changeUpdateNoAnimation">
 				<option value="none" {{#compare config.labels.inside "none"}}selected="selected"{{/compare}}>None</option>
 				<option value="label" {{#compare config.labels.inside "label"}}selected="selected"{{/compare}}>Label</option>
 				<option value="value" {{#compare config.labels.inside "value"}}selected="selected"{{/compare}}>Value</option>
@@ -28,7 +28,7 @@
 	<div class="col-md-6">
 		<label for="outsideLabel" class="control-label">Outside Label</label>
 		<div class="form-group padRight30">
-			<select id="outsideLabel" class="form-control">
+			<select id="outsideLabel" class="form-control changeUpdateNoAnimation">
 				<option value="none" {{#compare config.labels.outside "none"}}selected="selected"{{/compare}}>None</option>
 				<option value="label" {{#compare config.labels.outside "label"}}selected="selected"{{/compare}}>Label</option>
 				<option value="value" {{#compare config.labels.outside "value"}}selected="selected"{{/compare}}>Value</option>
@@ -77,7 +77,7 @@
 			</select>
 		</div>
 		<div class="col-md-3">
-			<input id="mainLabelFontSize" type="number" class="pixelSizeField updateNoAnimation" value="{{numbersOnly config.labels.mainLabel.fontSize}}" />
+			<input id="mainLabelFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.mainLabel.fontSize}}" />
 			<label for="mainLabelFontSize">px</label>
 		</div>
 	</div>
@@ -102,7 +102,7 @@
 			</select>
 		</div>
 		<div class="col-md-3">
-			<input id="labelPercentageFontSize" type="number" class="pixelSizeField updateNoAnimation" value="{{numbersOnly config.labels.percentage.fontSize}}" />
+			<input id="labelPercentageFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.percentage.fontSize}}" />
 			<label for="labelPercentageFontSize">px</label>
 		</div>
 	</div>
@@ -127,7 +127,7 @@
 			</select>
 		</div>
 		<div class="col-md-3">
-			<input id="labelValueFontSize" type="number" class="pixelSizeField updateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
+			<input id="labelValueFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
 			<label for="labelValueFontSize">px</label>
 		</div>
 	</div>
@@ -150,7 +150,7 @@
 		<label for="labelLineLength">Line length</label>
 	</div>
 	<div class="col-md-7">
-		<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField updateNoAnimation" />
+		<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
 	</div>
 </div>
 

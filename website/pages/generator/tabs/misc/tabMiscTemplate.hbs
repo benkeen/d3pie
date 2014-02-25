@@ -1,4 +1,19 @@
 <div class="row col-lg-12">
+	<h4>Misc</h4>
+</div>
+
+<div class="row col-lg-12 form-group">
+	<input type="checkbox" id="preventTextSection" {{#compare config.misc.preventTextSelection true}}checked="checked"{{/compare}} />
+	<label for="preventTextSection" class="control-label">Prevent selection of text</label>
+</div>
+
+<div class="row col-lg-12 form-group">
+	<label for="percentageDecimalPlace" class="control-label">Percentage: Decimal places</label>
+	<input type="number" id="percentageDecimalPlace" class="smallField" value="0" />
+</div>
+
+
+<div class="row col-lg-12">
 	<h4>Padding</h4>
 </div>
 
@@ -20,29 +35,31 @@
 
 	<div class="row form-group">
 		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0" class="smallField updateNoAnimation" />
+			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0"
+				class="smallField keyupUpdateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" min="0" class="smallField updateNoAnimation" />
+			<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" min="0"
+				class="smallField keyupUpdateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" min="0" class="smallField updateNoAnimation" />
+			<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" min="0"
+				class="smallField keyupUpdateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" min="0" class="smallField updateNoAnimation" />
+			<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" min="0"
+				class="smallField keyupUpdateNoAnimation" />
 		</div>
 	</div>
-
 
 	<div class="row">
 		<div class="col-lg-3">
 			<label>Footer-text pad</label>
 		</div>
 		<div class="col-lg-3">
-
+			<label>Title-subtitle pad</label>
 		</div>
 		<div class="col-lg-3">
-			<label>Title-subtitle pad</label>
 		</div>
 		<div class="col-lg-3">
 		</div>
@@ -50,27 +67,17 @@
 
 	<div class="row form-group">
 		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0" class="smallField updateNoAnimation" />
+			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0"
+				class="smallField keyupUpdateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
-
+			<input type="number" id="titleSubtitlePadding" value="{{config.misc.titleSubtitlePadding}}" min="0"
+				   class="smallField keyupUpdateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
-			<input type="number" id="titleSubtitlePadding" value="{{config.misc.titleSubtitlePadding}}" min="0" class="smallField updateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
 		</div>
-	</div>
-
-
-	<div class="row col-lg-12">
-		<h4>Misc</h4>
-	</div>
-
-
-	<div class="row col-lg-12 form-group">
-		<input type="checkbox" id="preventTextSection" {{#compare config.misc.preventTextSelection true}}checked="checked"{{/compare}} />
-		<label for="preventTextSection" class="control-label">Prevent selection of text</label>
 	</div>
 
 </div>
