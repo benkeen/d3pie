@@ -195,7 +195,7 @@ define([
 		}
 
 		var pageHash = msg.data.pageHash;
-		var tab = "generator-title";
+		var tab = (_currentTab) ? _currentTab : "generator-title";
 		if ($.inArray(pageHash, _tabs) !== -1) {
 			tab = pageHash;
 		}

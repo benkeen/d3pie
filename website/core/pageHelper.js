@@ -60,16 +60,18 @@ define([
 				_$topNav.find(".active").removeClass("active");
 				$("#" + _currentPage).removeClass("hidden fadeIn").addClass("fadeOut");
 
-				setTimeout(function() {
-					$("#" + _currentPage).addClass("hidden");
-
-					// show the new one. Good fucking lord. Nested setTimeouts? What the gibbering fuck...
+				(function(cp) {
 					setTimeout(function() {
-						_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
-						$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
-						mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, publishData);
-					}, 10);
-				}, C.OTHER.PAGE_LOAD_SPEED);
+						$("#" + cp).addClass("hidden").removeClass("fadeOut");
+
+						// show the new one. Good fucking lord. Nested setTimeouts? What the gibbering fuck...
+						setTimeout(function() {
+							_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
+							$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
+							mediator.publish(_MODULE_ID, C.EVENT.PAGE.LOAD, publishData);
+						}, 10);
+					}, C.OTHER.PAGE_LOAD_SPEED);
+				})(_currentPage);
 
 			} else {
 				_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
