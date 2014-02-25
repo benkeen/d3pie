@@ -359,15 +359,12 @@ d3pie.math = {
 d3pie.labels = {
 
 	/**
-	 * Add the labels to the pie.
-	 * @param options
-	 * @private
+	 * Add the outer labels to the pie. Un-positioned.
 	 */
 	addOuter: function() {
 		var addMainLabel  = false;
 		var addValue      = false;
 		var addPercentage = false;
-
 		switch (_options.labels.outside) {
 			case "label":
 				addMainLabel = true;
@@ -390,17 +387,19 @@ d3pie.labels = {
 				break;
 		}
 
-		console.log(_options.labels);
+		// group the label groups into a single element (just for tidiness)
+		var outerLabel = _svg.insert("g", ".outerLabel")
+			.attr("class", "outerLabel");
 
-		var labelGroup = _svg.selectAll(".labelGroup")
+		var labelGroup = outerLabel.selectAll(".outerLabelGroup")
 			.data(
 				_options.data.filter(function(d) { return d.value; }),
 				function(d) { return d.label; }
 			)
 			.enter()
 			.append("g")
-			.attr("class", "labelGroup")
-			.attr("id", function(d, i) { return "labelGroup" + i; })
+			.attr("class", "outerLabelGroup")
+			.attr("id", function(d, i) { return "outerLabelGroup" + i; })
 			.attr("transform", d3pie.math.getPieTranslateCenter);
 
 		// 1. Add the main label
@@ -435,68 +434,21 @@ d3pie.labels = {
 				.attr("class", "segmentOuterLabel")
 				.attr("id", function(d, i) { return "label" + i; })
 				.text(function(d) { return d.value; })
-				.style("font-size", _options.percentage.fontSize)
-				.style("font-family", _options.percentage.mainLabel.font)
-				.style("fill", _options.percentage.mainLabel.color)
+				.style("font-size", _options.labels.value.fontSize)
+				.style("font-family", _options.labels.value.font)
+				.style("fill", _options.labels.value.color)
 				.style("opacity", 0);
 		}
-
-
-		/*
-		 labelGroup.append("text")
-		 .text(function(d) {
-		 return Math.round((d.value / _totalSize) * 100) + "%";
-		 })
-		 .attr("class", "pieShare")
-		 .attr("transform", function(d, i) {
-		 var angle = _getSegmentRotationAngle(d, i, _data, _totalSize);
-		 var labelRadius = _outerRadius + 30;
-		 var c = _arc.centroid(d),
-		 x = c[0],
-		 y = c[1],
-		 h = Math.sqrt(x*x + y*y); // pythagorean theorem for hypotenuse
-
-		 return "translate(" + (x/h * labelRadius) +  ',' + (y/h * labelRadius) +  ") rotate(" + -angle + ")";
-		 })
-		 .style("fill", options.labels.labelPercentageColor)
-		 .style("font-size", "8pt")
-		 .style("opacity", function() {
-		 return (options.effects.loadEffect === "fadein") ? 0 : 1;
-		 });
-		 */
-
-		// fade in the labels when the load effect is complete - or immediately if there's no load effect
-		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
-		setTimeout(function() {
-			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
-
-			// should apply to the labelGroup
-			d3.selectAll("text.segmentOuterLabel")
-				.transition()
-				.duration(labelFadeInTime)
-				.style("opacity", 1);
-
-			// once everything's done loading, trigger the onload callback if defined
-			if ($.isFunction(_options.callbacks.onload)) {
-				setTimeout(function() {
-					try {
-						_options.callbacks.onload();
-					} catch (e) { }
-				}, labelFadeInTime);
-			}
-
-		}, loadSpeed);
-
-		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
-		// text elements in place
-		setTimeout(d3pie.labels.addLabelLines, 1);
 	},
 
+	/**
+	 * Add the inner labels to the pie. Un-positioned.
+	 */
 	addInner: function() {
 
 	},
 
-	// this both adds the lines and positions the labels [TODO]
+	// this both adds the lines
 	addLabelLines: function() {
 		if (!_options.labels.lines.enabled || _options.labels.outside === "none") {
 			return;
@@ -505,7 +457,7 @@ d3pie.labels = {
 		var lineMidPointDistance = _options.labels.lines.length - (_options.labels.lines.length / 4);
 		var circleCoordGroups = [];
 
-		d3.selectAll(".segmentOuterLabel")
+		d3.selectAll(".outerLabelGroup")
 			.style("opacity", 0)
 			.attr("dx", function(d, i) {
 				var labelDimensions = document.getElementById("label" + i).getBBox();
@@ -645,17 +597,37 @@ d3pie.labels = {
 			})
 			.attr("stroke-width", 1)
 			.attr("fill", "none");
+	},
 
+	fadeInLabelsAndLines: function() {
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
 		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
 		setTimeout(function() {
 			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
+
+			// should apply to the labelGroup
+			d3.selectAll("text.segmentOuterLabel")
+				.transition()
+				.duration(labelFadeInTime)
+				.style("opacity", 1);
+
 			d3.selectAll("g.lineGroups")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
+
+			// once everything's done loading, trigger the onload callback if defined
+			if ($.isFunction(_options.callbacks.onload)) {
+				setTimeout(function() {
+					try {
+						_options.callbacks.onload();
+					} catch (e) { }
+				}, labelFadeInTime);
+			}
+
 		}, loadSpeed);
 	}
+
 };
 	// --------- segments.js -----------
 d3pie.segments = {
@@ -1128,9 +1100,10 @@ d3pie.prototype.init = function() {
 
 	// 2. add all text components offscreen. We need to know their widths/heights for later computation
 	d3pie.text.addTextElementsOffscreen();
-	d3pie.text.addFooter(); // the footer never moves - just put it in place now.
+	d3pie.text.addFooter(); // the footer never moves - just put it in place now
 
-	// now
+	// TODO this just computes the max available space. Later functionality looks at label size to finish
+	// the computation. RENAME. Also, we shouldn't need inner at this stage.
 	var radii = d3pie.math.computePieRadius();
 	_innerRadius = radii.inner;
 	_outerRadius = radii.outer;
@@ -1151,6 +1124,13 @@ d3pie.prototype.init = function() {
 		d3pie.segments.create();
 		d3pie.labels.addInner();
 		d3pie.labels.addOuter();
+
+		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
+		// text elements in place
+		setTimeout(d3pie.labels.addLabelLines, 1);
+
+		d3pie.labels.fadeInLabelsAndLines();
+
 		d3pie.segments.addSegmentEventHandlers();
 	});
 };

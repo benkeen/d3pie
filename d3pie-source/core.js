@@ -145,9 +145,10 @@ d3pie.prototype.init = function() {
 
 	// 2. add all text components offscreen. We need to know their widths/heights for later computation
 	d3pie.text.addTextElementsOffscreen();
-	d3pie.text.addFooter(); // the footer never moves - just put it in place now.
+	d3pie.text.addFooter(); // the footer never moves - just put it in place now
 
-	// now
+	// TODO this just computes the max available space. Later functionality looks at label size to finish
+	// the computation. RENAME. Also, we shouldn't need inner at this stage.
 	var radii = d3pie.math.computePieRadius();
 	_innerRadius = radii.inner;
 	_outerRadius = radii.outer;
@@ -168,6 +169,13 @@ d3pie.prototype.init = function() {
 		d3pie.segments.create();
 		d3pie.labels.addInner();
 		d3pie.labels.addOuter();
+
+		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
+		// text elements in place
+		setTimeout(d3pie.labels.addLabelLines, 1);
+
+		d3pie.labels.fadeInLabelsAndLines();
+
 		d3pie.segments.addSegmentEventHandlers();
 	});
 };
