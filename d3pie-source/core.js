@@ -174,6 +174,7 @@ d3pie.prototype.init = function() {
 		// text elements in place
 		setTimeout(d3pie.labels.addLabelLines, 1);
 
+		d3pie.labels.positionOuterLabelElementsRelatively();
 		d3pie.labels.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();

@@ -1,6 +1,8 @@
 // --------- labels.js -----------
 d3pie.labels = {
 
+	dimensions: [],
+
 	/**
 	 * Add the outer labels to the pie. Un-positioned.
 	 */
@@ -20,44 +22,42 @@ d3pie.labels = {
 			.append("g")
 			.attr("class", "outerLabelGroup")
 			.attr("id", function(d, i) { return "outerLabelGroup" + i; })
-			.attr("transform", d3pie.math.getPieTranslateCenter);
+			.attr("transform", d3pie.math.getPieTranslateCenter)
+			.style("opacity", 0);
 
 		// 1. Add the main label
 		if (include.mainLabel) {
 			labelGroup.append("text")
-				.attr("class", "segmentOuterLabel")
+				.attr("class", "segmentOuterMainLabel")
 				.attr("id", function(d, i) { return "labelMain" + i; })
 				.text(function(d) { return d.label; })
 				.style("font-size", _options.labels.mainLabel.fontSize)
 				.style("font-family", _options.labels.mainLabel.font)
-				.style("fill", _options.labels.mainLabel.color)
-				.style("opacity", 0);
+				.style("fill", _options.labels.mainLabel.color);
 		}
 
 		// 2. Add the percentage label
 		if (include.percentage) {
 			labelGroup.append("text")
-				.attr("class", "segmentOuterLabel")
+				.attr("class", "segmentOuterPercentage")
 				.attr("id", function(d, i) { return "labelPercentage" + i; })
 				.text(function(d) {
 					return parseInt((d.value / _totalSize) * 100).toFixed(0) + "%";
 				})
 				.style("font-size", _options.labels.percentage.fontSize)
 				.style("font-family", _options.labels.percentage.font)
-				.style("fill", _options.labels.percentage.color)
-				.style("opacity", 0);
+				.style("fill", _options.labels.percentage.color);
 		}
 
 		// 3. Add the value label
 		if (include.value) {
 			labelGroup.append("text")
-				.attr("class", "segmentOuterLabel")
+				.attr("class", "segmentOuterValue")
 				.attr("id", function(d, i) { return "labelValue" + i; })
 				.text(function(d) { return d.value; })
 				.style("font-size", _options.labels.value.fontSize)
 				.style("font-family", _options.labels.value.font)
-				.style("fill", _options.labels.value.color)
-				.style("opacity", 0);
+				.style("fill", _options.labels.value.color);
 		}
 	},
 
@@ -70,6 +70,37 @@ d3pie.labels = {
 		// group the label groups into a single element (just for tidiness)
 		var outerLabel = _svg.insert("g", ".innerLabel")
 			.attr("class", "innerLabel");
+	},
+
+	positionOuterLabelElementsRelatively: function() {
+
+		d3pie.labels.dimensions = [];
+
+		// get the latest widths, heights
+		var outerLabelGroups = $(".outerLabelGroup");
+		for (var i=0; i<outerLabelGroups.length; i++) {
+			var row = {};
+			var mainLabel = $(outerLabelGroups[i]).find(".segmentOuterMainLabel");
+			row.outerMainLabel = (mainLabel.length > 0) ? row.outerMainLabel = mainLabel[0].getBBox() : null;
+
+			var percentage = $(outerLabelGroups[i]).find(".segmentOuterPercentage");
+			row.outerPercentage = (percentage.length > 0) ? row.outerPercentage = percentage[0].getBBox() : null;
+
+			var value = $(outerLabelGroups[i]).find(".segmentOuterValue");
+			row.outerValue = (value.length > 0) ? row.outerValue = value[0].getBBox() : null;
+
+
+
+			d3pie.labels.dimensions.push(row);
+		}
+
+		console.log(d3pie.labels.dimensions);
+
+//
+//		outerMainLabel:  null,
+//		outerPercentage: null,
+//		outerValue:      null
+
 
 	},
 
@@ -230,8 +261,7 @@ d3pie.labels = {
 		setTimeout(function() {
 			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
 
-			// should apply to the labelGroup
-			d3.selectAll("text.segmentOuterLabel")
+			d3.selectAll(".outerLabelGroup")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);

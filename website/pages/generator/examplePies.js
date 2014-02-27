@@ -5,7 +5,6 @@ define([], function() {
 
 		// ----------------------------------------------------------------------------------------
 
-
 		{
 			label: "Programming Languages",
 			config: {
@@ -76,7 +75,10 @@ define([], function() {
 				},
 				styles: {
 					backgroundColor: null,
-					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121", "#830909", "#923e99", "#ae83d5"]
+					colors: [
+						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
+						"#830909", "#923e99", "#ae83d5"
+					]
 				},
 				effects: {
 					load: {
