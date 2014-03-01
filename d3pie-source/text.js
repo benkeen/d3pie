@@ -122,7 +122,6 @@ d3pie.text = {
 			.attr("y", y);
 	},
 
-
 	addFooter: function() {
 		_svg.selectAll(".footer")
 			.data([_options.footer])

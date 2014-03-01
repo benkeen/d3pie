@@ -1,6 +1,7 @@
 // --------- labels.js -----------
 d3pie.labels = {
 
+	circleCoordGroups: [],
 	dimensions: [],
 
 	/**
@@ -89,13 +90,10 @@ d3pie.labels = {
 			var value = $(outerLabelGroups[i]).find(".segmentOuterValue");
 			row.outerValue = (value.length > 0) ? row.outerValue = value[0].getBBox() : null;
 
-
-
 			d3pie.labels.dimensions.push(row);
 		}
 
-		console.log(d3pie.labels.dimensions);
-
+		//if (label-value1)
 //
 //		outerMainLabel:  null,
 //		outerPercentage: null,
@@ -110,118 +108,13 @@ d3pie.labels = {
 			return;
 		}
 
-		var lineMidPointDistance = _options.labels.lines.length - (_options.labels.lines.length / 4);
-		var circleCoordGroups = [];
+		// reset
+		d3pie.labels.circleCoordGroups = [];
 
 		d3.selectAll(".outerLabelGroup")
 			.style("opacity", 0)
-			.attr("dx", function(d, i) {
-				var labelDimensions = document.getElementById("outerLabelGroup" + i).getBBox();
-
-				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
-				var nextAngle = 360;
-				if (i < _options.data.length - 1) {
-					nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
-				}
-
-				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
-				var remainderAngle = segmentCenterAngle % 90;
-				var quarter = Math.floor(segmentCenterAngle / 90);
-
-				var labelXMargin = 10; // the x-distance of the label from the end of the line [TODO configurable?]
-				var xOffset = (_options.data[i].xOffset) ? _options.data[i].xOffset : 0;
-
-				var p1, p2, p3, labelX;
-				switch (quarter) {
-					case 0:
-						var calc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelX = calc1 * (_outerRadius + _options.labels.lines.length) + labelXMargin;
-						p1     = calc1 * _outerRadius;
-						p2     = calc1 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = calc1 * (_outerRadius + _options.labels.lines.length) + 5 + xOffset;
-						break;
-					case 1:
-						var calc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelX = calc2 * (_outerRadius + _options.labels.lines.length) + labelXMargin;
-						p1     = calc2 * _outerRadius;
-						p2     = calc2 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = calc2 * (_outerRadius + _options.labels.lines.length) + 5 + xOffset;
-						break;
-					case 2:
-						var calc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelX = -calc3 * (_outerRadius + _options.labels.lines.length) - labelDimensions.width - labelXMargin;
-						p1     = -calc3 * _outerRadius;
-						p2     = -calc3 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = -calc3 * (_outerRadius + _options.labels.lines.length) - 5 + xOffset;
-						break;
-					case 3:
-						var calc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelX = -calc4 * (_outerRadius + _options.labels.lines.length) - labelDimensions.width - labelXMargin;
-						p1     = -calc4 * _outerRadius;
-						p2     = -calc4 * (_outerRadius + lineMidPointDistance) + xOffset;
-						p3     = -calc4 * (_outerRadius + _options.labels.lines.length) - 5 + xOffset;
-						break;
-				}
-				circleCoordGroups[i] = [
-					{ x: p1, y: null },
-					{ x: p2, y: null },
-					{ x: p3, y: null }
-				];
-
-				labelX += xOffset;
-				return labelX;
-			})
-			.attr("dy", function(d, i) {
-				var labelDimensions = document.getElementById("outerLabelGroup" + i).getBBox();
-				var heightOffset = labelDimensions.height / 5;
-
-				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
-				var nextAngle = 360;
-				if (i < _options.data.length - 1) {
-					nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
-				}
-				var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
-				var remainderAngle = (segmentCenterAngle % 90);
-				var quarter = Math.floor(segmentCenterAngle / 90);
-				var p1, p2, p3, labelY;
-				var yOffset = (_options.data[i].yOffset) ? _options.data[i].yOffset : 0;
-
-				switch (quarter) {
-					case 0:
-						var calc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelY = -calc1 * (_outerRadius + _options.labels.lines.length);
-						p1     = -calc1 * _outerRadius;
-						p2     = -calc1 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = -calc1 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
-						break;
-					case 1:
-						var calc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelY = calc2 * (_outerRadius + _options.labels.lines.length);
-						p1     = calc2 * _outerRadius;
-						p2     = calc2 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = calc2 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
-						break;
-					case 2:
-						var calc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
-						labelY = calc3 * (_outerRadius + _options.labels.lines.length);
-						p1     = calc3 * _outerRadius;
-						p2     = calc3 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = calc3 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
-						break;
-					case 3:
-						var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
-						labelY = -calc4 * (_outerRadius + _options.labels.lines.length);
-						p1     = -calc4 * _outerRadius;
-						p2     = -calc4 * (_outerRadius + lineMidPointDistance) + yOffset;
-						p3     = -calc4 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
-						break;
-				}
-				circleCoordGroups[i][0].y = p1;
-				circleCoordGroups[i][1].y = p2;
-				circleCoordGroups[i][2].y = p3;
-
-				labelY += yOffset;
-				return labelY;
+			.attr("transform", function(d, i) {
+				return d3pie.labels.getLabelGroupTransform(d, i);
 			});
 
 		var lineGroups = _svg.insert("g", ".pieChart")
@@ -229,7 +122,7 @@ d3pie.labels = {
 			.style("opacity", 0);
 
 		var lineGroup = lineGroups.selectAll(".lineGroup")
-			.data(circleCoordGroups)
+			.data(d3pie.labels.circleCoordGroups)
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup")
@@ -314,6 +207,99 @@ d3pie.labels = {
 			value: addValue,
 			percentage: addPercentage
 		};
+	},
+
+
+	getLabelGroupTransform: function(d, i) {
+		var labelDimensions = document.getElementById("outerLabelGroup" + i).getBBox();
+		var lineMidPointDistance = _options.labels.lines.length - (_options.labels.lines.length / 4);
+		var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+		var nextAngle = 360;
+		if (i < _options.data.length - 1) {
+			nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
+		}
+		var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
+		var remainderAngle = segmentCenterAngle % 90;
+		var quarter = Math.floor(segmentCenterAngle / 90);
+
+		var labelXMargin = 10; // the x-distance of the label from the end of the line [TODO configurable?]
+		var xOffset = (_options.data[i].xOffset) ? _options.data[i].xOffset : 0;
+		var heightOffset = labelDimensions.height / 5;
+		var yOffset = (_options.data[i].yOffset) ? _options.data[i].yOffset : 0;
+
+		var x1, x2, x3, groupX, y1, y2, y3, groupY;
+		switch (quarter) {
+			case 0:
+				var xCalc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
+				groupX = xCalc1 * (_outerRadius + _options.labels.lines.length) + labelXMargin;
+				x1     = xCalc1 * _outerRadius;
+				x2     = xCalc1 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x3     = xCalc1 * (_outerRadius + _options.labels.lines.length) + 5 + xOffset;
+
+				var yCalc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
+				groupY = -yCalc1 * (_outerRadius + _options.labels.lines.length);
+				y1     = -yCalc1 * _outerRadius;
+				y2     = -yCalc1 * (_outerRadius + lineMidPointDistance) + yOffset;
+				y3     = -yCalc1 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
+				break;
+
+			case 1:
+				var xCalc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
+				groupX = xCalc2 * (_outerRadius + _options.labels.lines.length) + labelXMargin;
+				x1     = xCalc2 * _outerRadius;
+				x2     = xCalc2 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x3     = xCalc2 * (_outerRadius + _options.labels.lines.length) + 5 + xOffset;
+
+				var yCalc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
+				groupY = yCalc2 * (_outerRadius + _options.labels.lines.length);
+				y1     = yCalc2 * _outerRadius;
+				y2     = yCalc2 * (_outerRadius + lineMidPointDistance) + yOffset;
+				y3     = yCalc2 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
+				break;
+
+			case 2:
+				var xCalc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
+				groupX = -xCalc3 * (_outerRadius + _options.labels.lines.length) - labelDimensions.width - labelXMargin;
+				x1     = -xCalc3 * _outerRadius;
+				x2     = -xCalc3 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x3     = -xCalc3 * (_outerRadius + _options.labels.lines.length) - 5 + xOffset;
+
+				var yCalc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
+				groupY = yCalc3 * (_outerRadius + _options.labels.lines.length);
+				y1     = yCalc3 * _outerRadius;
+				y2     = yCalc3 * (_outerRadius + lineMidPointDistance) + yOffset;
+				y3     = yCalc3 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
+				break;
+
+			case 3:
+				var xCalc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
+				groupX = -xCalc4 * (_outerRadius + _options.labels.lines.length) - labelDimensions.width - labelXMargin;
+				x1     = -xCalc4 * _outerRadius;
+				x2     = -xCalc4 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x3     = -xCalc4 * (_outerRadius + _options.labels.lines.length) - 5 + xOffset;
+
+				var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
+				groupY = -calc4 * (_outerRadius + _options.labels.lines.length);
+				y1     = -calc4 * _outerRadius;
+				y2     = -calc4 * (_outerRadius + lineMidPointDistance) + yOffset;
+				y3     = -calc4 * (_outerRadius + _options.labels.lines.length) - heightOffset + yOffset;
+				break;
+		}
+
+		d3pie.labels.circleCoordGroups[i] = [
+			{ x: x1, y: y1 },
+			{ x: x2, y: y2 },
+			{ x: x3, y: y3 }
+		];
+
+		groupX += xOffset;
+		groupY += yOffset;
+
+		var center = d3pie.math.getPieCenter();
+		groupX += center.x;
+		groupY += center.y;
+
+		return "translate(" + groupX + "," + groupY + ")";
 	}
 
 };
