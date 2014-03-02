@@ -181,12 +181,19 @@ d3pie.prototype.init = function() {
 		l.positionLabelElements("inner", _options.labels.inside);
 		l.positionLabelElements("outer", _options.labels.outside);
 
-		l.positionLabelGroups("inner");
 		l.positionLabelGroups("outer");
+
+		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
 
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
+
+		setTimeout(function() {
+
+			d3pie.labels.funWithForces();
+
+		}, 2000);
 	});
 };
 

@@ -167,7 +167,6 @@ d3pie.helpers = {
 			}
 			inc++;
 		}, 1);
-
 	},
 
 	shuffleArray: function(array) {
@@ -209,6 +208,7 @@ d3pie.helpers = {
 		}
 		return { w: w, h: h };
 	}
+
 };
 
 	// --------- math.js -----------
@@ -353,6 +353,24 @@ d3pie.math = {
 			}
 		}
 		return (val / totalSize) * 360;
+	},
+
+	// from: http://stackoverflow.com/questions/19792552/d3-put-arc-labels-in-a-pie-chart-if-there-is-enough-space
+	pointIsInArc: function(pt, ptData, d3Arc) {
+		// Center of the arc is assumed to be 0,0
+		// (pt.x, pt.y) are assumed to be relative to the center
+		var r1 = d3Arc.innerRadius()(ptData), // Note: Using the innerRadius
+			r2 = d3Arc.outerRadius()(ptData),
+			theta1 = d3Arc.startAngle()(ptData),
+			theta2 = d3Arc.endAngle()(ptData);
+
+		var dist = pt.x * pt.x + pt.y * pt.y,
+			angle = Math.atan2(pt.x, -pt.y); // Note: different coordinate system.
+
+		angle = (angle < 0) ? (angle + Math.PI * 2) : angle;
+
+		return (r1 * r1 <= dist) && (dist <= r2 * r2) &&
+			(theta1 <= angle) && (angle <= theta2);
 	}
 };
 	// --------- labels.js -----------
@@ -467,11 +485,6 @@ d3pie.labels = {
 		}
 	},
 
-
-	// add Label Lines
-
-	// add outer labels
-
 	computeOuterCoords: function() {
 		d3pie.labels.lineCoordGroups = []; // probably need one for inner + outer, correct?
 
@@ -479,10 +492,8 @@ d3pie.labels = {
 			.each(function(d, i) { return d3pie.labels.getLabelGroupTransform(d, i); });
 	},
 
-
 	addLabelLines: function() {
-
-		var lineGroups = _svg.insert("g", ".pieChart")// meaning, BEFORE .pieChart
+		var lineGroups = _svg.insert("g", ".pieChart") // meaning, BEFORE .pieChart
 			.attr("class", "lineGroups")
 			.style("opacity", 0);
 
@@ -516,7 +527,20 @@ d3pie.labels = {
 	positionLabelGroups: function(section) {
 		d3.selectAll(".labelGroup-" + section)
 			.style("opacity", 0)
-			.attr("transform", function(d, i) { return d3pie.labels.getOuterLabelTranslate(i); });
+			.attr("transform", function(d, i) {
+				var x, y;
+				if (section === "outer") {
+					x = d3pie.labels.outerGroupTranslateX[i];
+					y = d3pie.labels.outerGroupTranslateY[i];
+				} else {
+					var center = d3pie.math.getPieCenter();
+					var diff = (_outerRadius - _innerRadius) / 2;
+
+					x = (d3pie.labels.lineCoordGroups[i][0].x / 2) + center.x;
+					y = (d3pie.labels.lineCoordGroups[i][0].y / 2) + center.y;
+				}
+				return "translate(" + x + "," + y + ")";
+			});
 	},
 
 	fadeInLabelsAndLines: function() {
@@ -546,7 +570,6 @@ d3pie.labels = {
 			}
 		}, loadSpeed);
 	},
-
 
 	getIncludes: function(val) {
 		var addMainLabel  = false;
@@ -678,8 +701,65 @@ d3pie.labels = {
 		d3pie.labels.outerGroupTranslateY[i] = groupY + yOffset + center.y;
 	},
 
-	getOuterLabelTranslate: function(i) {
-		return "translate(" + d3pie.labels.outerGroupTranslateX[i] + "," + d3pie.labels.outerGroupTranslateY[i] + ")";
+	funWithForces: function() {
+
+		var nodes = d3.selectAll(".labelGroup-outer");
+		var force = d3.layout.force()
+			.gravity(0.05)
+			.charge(function(d, i) { return i ? 0 : -2000; })
+			.nodes(nodes)
+			.size([_options.size.canvasWidth, _options.size.canvasHeight]);
+
+//			var root = nodes[0];
+//			root.radius = 0;
+//			root.fixed = true;
+
+		force.start();
+
+		var center = d3pie.math.getPieCenter();
+		force.on("tick", function(e) {
+			var q = d3.geom.quadtree(nodes);
+			var i = 0;
+			var n = nodes.length;
+
+			while (++i < n) {
+				q.visit(d3pie.labels.preventCollisions(nodes[i]));
+			}
+
+
+//			_svg.selectAll(".labelGroup-outer")
+//				.attr("transform", function(d, i) {
+//					return "translate(" + (d.x + center.x) + "," + (d.y + center.y) +  + ")";
+//				});
+		});
+	},
+
+	preventCollisions: function(node) {
+		var r = node.radius + 16,
+			nx1 = node.x - r,
+			nx2 = node.x + r,
+			ny1 = node.y - r,
+			ny2 = node.y + r;
+
+		return function(quad, x1, y1, x2, y2) {
+			if (quad.point && (quad.point !== node)) {
+				var x = node.x - quad.point.x,
+					y = node.y - quad.point.y,
+					l = Math.sqrt(x * x + y * y),
+					r = node.radius + quad.point.radius;
+				if (l < r) {
+					l = (l - r) / l * .5;
+					node.x -= x *= l;
+					node.y -= y *= l;
+					quad.point.x += x;
+					quad.point.y += y;
+				}
+			}
+			return x1 > nx2
+				|| x2 < nx1
+				|| y1 > ny2
+				|| y2 < ny1;
+		};
 	}
 };
 	// --------- segments.js -----------
@@ -829,6 +909,14 @@ d3pie.segments = {
 				$(this).attr("class", "");
 				d3pie.segments.currentlyOpenSegment = null;
 			});
+	},
+
+	getCentroid: function(el) {
+		var bbox = el.getBBox();
+		return {
+			x: bbox.x + bbox.width / 2,
+			y: bbox.y + bbox.height / 2
+		};
 	}
 };
 	// --------- text.js -----------
@@ -1188,12 +1276,19 @@ d3pie.prototype.init = function() {
 		l.positionLabelElements("inner", _options.labels.inside);
 		l.positionLabelElements("outer", _options.labels.outside);
 
-		l.positionLabelGroups("inner");
 		l.positionLabelGroups("outer");
+
+		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
 
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
+
+		setTimeout(function() {
+
+			d3pie.labels.funWithForces();
+
+		}, 2000);
 	});
 };
 

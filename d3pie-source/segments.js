@@ -145,5 +145,13 @@ d3pie.segments = {
 				$(this).attr("class", "");
 				d3pie.segments.currentlyOpenSegment = null;
 			});
+	},
+
+	getCentroid: function(el) {
+		var bbox = el.getBBox();
+		return {
+			x: bbox.x + bbox.width / 2,
+			y: bbox.y + bbox.height / 2
+		};
 	}
 };

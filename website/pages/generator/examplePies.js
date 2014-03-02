@@ -51,7 +51,7 @@ define([], function() {
 				labels: {
 					enableTooltips: true,
 					inside: "value",
-					outside: "label-percentage2",
+					outside: "label-value1",
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",

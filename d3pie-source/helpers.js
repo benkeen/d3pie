@@ -53,7 +53,6 @@ d3pie.helpers = {
 			}
 			inc++;
 		}, 1);
-
 	},
 
 	shuffleArray: function(array) {
@@ -95,4 +94,5 @@ d3pie.helpers = {
 		}
 		return { w: w, h: h };
 	}
+
 };
