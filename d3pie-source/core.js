@@ -134,7 +134,7 @@ d3pie.prototype.init = function() {
 
 	// 1. Prep-work
 	_options.data = d3pie.math.sortPieData(_options.data, _options.misc.dataSortOrder);
-	_totalSize = d3pie.math.getTotalPieSize(_options.data);
+	_totalSize    = d3pie.math.getTotalPieSize(_options.data);
 
 	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.styles.backgroundColor);
 
@@ -167,15 +167,24 @@ d3pie.prototype.init = function() {
 		d3pie.text.positionSubtitle();
 
 		d3pie.segments.create();
-		d3pie.labels.addInner();
-		d3pie.labels.addOuter();
+		var l = d3pie.labels;
+		l.add("inner", _options.labels.inside);
+		l.add("outer", _options.labels.outside);
 
-		// now place the labels in reasonable locations. This needs to run in a timeout because we need the actual
-		// text elements in place
-		setTimeout(d3pie.labels.addLabelLines, 1);
+		l.computeOuterCoords(); // used for both outer labels + label lines
 
-		d3pie.labels.positionOuterLabelElementsRelatively();
-		d3pie.labels.fadeInLabelsAndLines();
+		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
+			l.addLabelLines();
+		}
+
+		// these position the label elements relatively within their individual group (label, percentage, value)
+		l.positionLabelElements("inner", _options.labels.inside);
+		l.positionLabelElements("outer", _options.labels.outside);
+
+		l.positionLabelGroups("inner");
+		l.positionLabelGroups("outer");
+
+		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
 	});

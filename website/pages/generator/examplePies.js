@@ -51,7 +51,7 @@ define([], function() {
 				labels: {
 					enableTooltips: true,
 					inside: "value",
-					outside: "label",
+					outside: "label-percentage2",
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
@@ -63,7 +63,7 @@ define([], function() {
 						fontSize: "11px"
 					},
 					value: {
-						color: "#cccc44",
+						color: "#adadad",
 						font: "Open sans",
 						fontSize: "11px"
 					},
@@ -86,7 +86,7 @@ define([], function() {
 						speed: 1000
 					},
 					pullOutSegmentOnClick: {
-						effect: "linear", // none / linear / bounce /
+						effect: "linear", // none / linear / bounce
 						speed: 400
 					},
 					highlightSegmentOnMouseover: true,
