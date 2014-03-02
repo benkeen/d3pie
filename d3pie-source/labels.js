@@ -328,7 +328,7 @@ d3pie.labels = {
 
 	funWithForces: function() {
 
-		var nodes = d3.selectAll(".labelGroup-outer");
+		var nodes = d3.selectAll(".segmentMainLabel-outer");
 		var force = d3.layout.force()
 			.gravity(0.05)
 			.charge(function(d, i) { return i ? 0 : -2000; })
@@ -351,11 +351,11 @@ d3pie.labels = {
 				q.visit(d3pie.labels.preventCollisions(nodes[i]));
 			}
 
-
-//			_svg.selectAll(".labelGroup-outer")
-//				.attr("transform", function(d, i) {
+			_svg.selectAll(".segmentMainLabel-outer")
+				.attr("transform", function(d, i) {
+//					console.log("row: ", arguments);
 //					return "translate(" + (d.x + center.x) + "," + (d.y + center.y) +  + ")";
-//				});
+				});
 		});
 	},
 
