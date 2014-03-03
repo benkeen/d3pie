@@ -37,7 +37,7 @@ define([], function() {
 					pieOuterRadius: "66%"
 				},
 				data: [
-					{ label: "JavaScript", value: 264131 },
+					{ label: "JavaScript", value: 264131, x: 60 },
 					{ label: "Ruby", value: 218812 },
 					{ label: "Java", value: 157618  },
 					{ label: "PHP", value: 114384  },
@@ -46,11 +46,11 @@ define([], function() {
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
 					{ label: "C#", value: 32170 },
-					{ label: "Shell", value: 28561 }
+					{ label: "Shell", value: 28561, x: 100 }
 				],
 				labels: {
 					enableTooltips: true,
-					inside: "value",
+					inside: "percentage",
 					outside: "label-value1",
 					mainLabel: {
 						color: "#333333",

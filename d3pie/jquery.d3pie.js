@@ -207,8 +207,14 @@ d3pie.helpers = {
 			console.log("error: getDimensions() " + id + " not found.");
 		}
 		return { w: w, h: h };
-	}
+	},
 
+	intersectRect: function(r1, r2) {
+		return !(r2.left > r1.right ||
+			r2.right < r1.left ||
+			r2.top > r1.bottom ||
+			r2.bottom < r1.top);
+	}
 };
 
 	// --------- math.js -----------
@@ -343,6 +349,7 @@ d3pie.math = {
 		};
 	},
 
+	// TODO move to segment, I think...
 	getSegmentRotationAngle: function(index, data, totalSize) {
 		var val = 0;
 		for (var i=0; i<index; i++) {
@@ -354,6 +361,29 @@ d3pie.math = {
 		}
 		return (val / totalSize) * 360;
 	},
+
+	/**
+	 * Rotates a point (x, y) around an axis (xm, ym) by degrees (a).
+	 * @param x
+	 * @param y
+	 * @param xm
+	 * @param ym
+	 * @param a angle in degrees
+	 * @returns {Array}
+	 */
+	rotate: function(x, y, xm, ym, a) {
+		var cos = Math.cos,
+			sin = Math.sin,
+
+		a = a * Math.PI / 180, // convert to radians
+
+		// subtract midpoints, so that midpoint is translated to origin and add it in the end again
+		xr = (x - xm) * cos(a) - (y - ym) * sin(a) + xm,
+		yr = (x - xm) * sin(a) + (y - ym) * cos(a) + ym;
+
+		return [xr, yr];
+	},
+
 
 	// from: http://stackoverflow.com/questions/19792552/d3-put-arc-labels-in-a-pie-chart-if-there-is-enough-space
 	pointIsInArc: function(pt, ptData, d3Arc) {
@@ -462,7 +492,7 @@ d3pie.labels = {
 			});
 		}
 
-		var singleLinePad = 5; // TODO errr....
+		var singleLinePad = 5;
 		var dims = d3pie.labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
@@ -482,7 +512,7 @@ d3pie.labels = {
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
-		}
+	 	}
 	},
 
 	computeOuterCoords: function() {
@@ -525,6 +555,7 @@ d3pie.labels = {
 	},
 
 	positionLabelGroups: function(section) {
+
 		d3.selectAll(".labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
@@ -532,16 +563,41 @@ d3pie.labels = {
 				if (section === "outer") {
 					x = d3pie.labels.outerGroupTranslateX[i];
 					y = d3pie.labels.outerGroupTranslateY[i];
+
 				} else {
-					var center = d3pie.math.getPieCenter();
+					var center = d3pie.segments.getCentroid(document.getElementById("segment" + i));
+
+					//console.log(i, _options.data, _totalSize);
+					var rotationAngle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+
+//					var center = d3pie.math.getPieCenter();
 					var diff = (_outerRadius - _innerRadius) / 2;
 
 					x = (d3pie.labels.lineCoordGroups[i][0].x / 2) + center.x;
 					y = (d3pie.labels.lineCoordGroups[i][0].y / 2) + center.y;
 				}
+
 				return "translate(" + x + "," + y + ")";
 			});
+
+		// now for some basic collision handling
+		d3pie.labels.resolveLabelCollisions(section);
 	},
+
+
+	resolveOuterLabelCollisions: function() {
+		if (section === "inner") {
+			return;
+		}
+
+		var labels = d3.selectAll(".labelGroup-" + section)[0];
+
+		var x, y;
+		for (var i=1; i<labels.length; i++) {
+			console.log($(labels[i]).attr("transform"));
+		}
+	},
+
 
 	fadeInLabelsAndLines: function() {
 
@@ -604,25 +660,29 @@ d3pie.labels = {
 	},
 
 
-	// move to "math". Pass in DOM element dimensions.
 	getLabelGroupTransform: function(d, i) {
+
 		var labelDimensions = document.getElementById("labelGroup" + i + "-outer").getBBox();
+
 		var lineLength = _options.labels.lines.length;
 		var lineMidPointDistance = lineLength - (lineLength / 4);
 		var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+
 		var nextAngle = 360;
 		if (i < _options.data.length - 1) {
 			nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
 		}
+
 		var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
 		var remainderAngle = segmentCenterAngle % 90;
 		var quarter = Math.floor(segmentCenterAngle / 90);
+
 
 		var labelXMargin = 10; // the x-distance of the label from the end of the line [TODO configurable?]
 		var xOffset = (_options.data[i].xOffset) ? _options.data[i].xOffset : 0;
 		var heightOffset = labelDimensions.height / 5;
 		var yOffset = (_options.data[i].yOffset) ? _options.data[i].yOffset : 0;
-
+		var center = d3pie.math.getPieCenter();
 
 		/*
 		x1 / y1: the x/y coords of the start of the line, at the mid point of the segments arc on the pie circumference
@@ -631,13 +691,13 @@ d3pie.labels = {
 		groupX / groupX: the coords of the label group
 		*/
 
-		var x1, x2, x3, groupX, y1, y2, y3, groupY;
+		var x1, x2, x3, groupX, y1, y2, y3, groupY, outerGroupX, outerGroupY;
 		switch (quarter) {
 			case 0:
 				var xCalc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
 				groupX = xCalc1 * (_outerRadius + lineLength) + labelXMargin;
 				x1     = xCalc1 * _outerRadius;
-				x2     = xCalc1 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x2     = xCalc1 * (_outerRadius + lineMidPointDistance);
 				x3     = xCalc1 * (_outerRadius + lineLength) + 5 + xOffset; // TODO what's this mysterious "5"?
 
 				var yCalc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
@@ -651,7 +711,7 @@ d3pie.labels = {
 				var xCalc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
 				groupX = xCalc2 * (_outerRadius + lineLength) + labelXMargin;
 				x1     = xCalc2 * _outerRadius;
-				x2     = xCalc2 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x2     = xCalc2 * (_outerRadius + lineMidPointDistance);
 				x3     = xCalc2 * (_outerRadius + lineLength) + 5 + xOffset;
 
 				var yCalc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
@@ -665,7 +725,7 @@ d3pie.labels = {
 				var xCalc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
 				groupX = -xCalc3 * (_outerRadius + lineLength) - labelDimensions.width - labelXMargin;
 				x1     = -xCalc3 * _outerRadius;
-				x2     = -xCalc3 * (_outerRadius + lineMidPointDistance) + xOffset;
+				x2     = -xCalc3 * (_outerRadius + lineMidPointDistance);
 				x3     = -xCalc3 * (_outerRadius + lineLength) - 5 + xOffset;
 
 				var yCalc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
@@ -679,14 +739,15 @@ d3pie.labels = {
 				var xCalc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
 				groupX = -xCalc4 * (_outerRadius + lineLength) - labelDimensions.width - labelXMargin;
 				x1     = -xCalc4 * _outerRadius;
-				x2     = -xCalc4 * (_outerRadius + lineMidPointDistance) + xOffset;
-				x3     = -xCalc4 * (_outerRadius + lineLength) - 5 + xOffset;
+				x2     = -xCalc4 * (_outerRadius + lineMidPointDistance);
+
+				x3 = -xCalc4 * (_outerRadius + lineLength) - 5 + xOffset;
 
 				var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
 				groupY = -calc4 * (_outerRadius + lineLength);
 				y1     = -calc4 * _outerRadius;
 				y2     = -calc4 * (_outerRadius + lineMidPointDistance) + yOffset;
-				y3     = -calc4 * (_outerRadius + lineLength) - heightOffset + yOffset;
+				y3 = -calc4 * (_outerRadius + lineLength) - heightOffset + yOffset;
 				break;
 		}
 
@@ -696,10 +757,11 @@ d3pie.labels = {
 			{ x: x3, y: y3 }
 		];
 
-		var center = d3pie.math.getPieCenter();
 		d3pie.labels.outerGroupTranslateX[i] = groupX + xOffset + center.x;
 		d3pie.labels.outerGroupTranslateY[i] = groupY + yOffset + center.y;
 	},
+
+	// -----------------------------------------
 
 	funWithForces: function() {
 
@@ -1266,29 +1328,27 @@ d3pie.prototype.init = function() {
 		l.add("inner", _options.labels.inside);
 		l.add("outer", _options.labels.outside);
 
+		// these position the label elements relatively within their individual group (label, percentage, value)
+		l.positionLabelElements("inner", _options.labels.inside);
+		l.positionLabelElements("outer", _options.labels.outside);
+
+
 		l.computeOuterCoords(); // used for both outer labels + label lines
 
 		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
 			l.addLabelLines();
 		}
 
-		// these position the label elements relatively within their individual group (label, percentage, value)
-		l.positionLabelElements("inner", _options.labels.inside);
-		l.positionLabelElements("outer", _options.labels.outside);
-
 		l.positionLabelGroups("outer");
-
 		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
 
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
 
-		setTimeout(function() {
-
-			d3pie.labels.funWithForces();
-
-		}, 2000);
+//		setTimeout(function() {
+//			d3pie.labels.funWithForces();
+//		}, 2000);
 	});
 };
 

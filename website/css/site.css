@@ -214,23 +214,23 @@ body .colorGroup {
     height: 29px;
 }
 #sortableDataListHeader li.col1 {
-    width: 241px;
+    width: 179px;
 }
 #sortableDataListHeader li.col2 {
-    width: 84px;
+    width: 69px;
 }
-#sortableDataListHeader li.col3 {
-    width: 40px;
-}
-#sortableDataListHeader li.col4 {
+#sortableDataListHeader li.col3,
+#sortableDataListHeader li.col4,
+#sortableDataListHeader li.col5,
+#sortableDataListHeader li.col6 {
     width: 40px;
 }
 
 .dataLabel {
-    width: 239px;
+    width: 177px;
 }
 .dataValue {
-    width: 80px;
+    width: 65px;
 }
 .dataOffsetX, .dataOffsetY {
     width: 35px;

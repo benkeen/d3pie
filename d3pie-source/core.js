@@ -171,29 +171,27 @@ d3pie.prototype.init = function() {
 		l.add("inner", _options.labels.inside);
 		l.add("outer", _options.labels.outside);
 
+		// these position the label elements relatively within their individual group (label, percentage, value)
+		l.positionLabelElements("inner", _options.labels.inside);
+		l.positionLabelElements("outer", _options.labels.outside);
+
+
 		l.computeOuterCoords(); // used for both outer labels + label lines
 
 		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
 			l.addLabelLines();
 		}
 
-		// these position the label elements relatively within their individual group (label, percentage, value)
-		l.positionLabelElements("inner", _options.labels.inside);
-		l.positionLabelElements("outer", _options.labels.outside);
-
 		l.positionLabelGroups("outer");
-
 		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
 
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
 
-		setTimeout(function() {
-
-			d3pie.labels.funWithForces();
-
-		}, 2000);
+//		setTimeout(function() {
+//			d3pie.labels.funWithForces();
+//		}, 2000);
 	});
 };
 
