@@ -46,7 +46,32 @@ define([], function() {
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
 					{ label: "C#", value: 32170 },
+					{ label: "Shell", value: 28561, x: 100 },
+
+					{ label: "JavaScript 2", value: 264131 },
+					{ label: "Ruby", value: 218812 },
+					{ label: "Java", value: 157618  },
+					{ label: "PHP", value: 114384  },
+					{ label: "Python", value: 95002 },
+					{ label: "C+", value: 78327 },
+					{ label: "C", value: 67706 },
+					{ label: "Objective-C", value: 36344 },
+					{ label: "C#", value: 32170 },
+					{ label: "Shell", value: 28561, x: 100 },
+
+					{ label: "JavaScript 3", value: 264131 },
+					{ label: "Ruby", value: 218812 },
+					{ label: "Java", value: 157618  },
+					{ label: "PHP", value: 114384  },
+					{ label: "Python", value: 95002 },
+					{ label: "C+", value: 78327 },
+					{ label: "C", value: 67706 },
+					{ label: "Objective-C", value: 36344 },
+					{ label: "C#", value: 32170 },
 					{ label: "Shell", value: 28561, x: 100 }
+
+
+
 				],
 				labels: {
 					enableTooltips: true,
@@ -77,7 +102,48 @@ define([], function() {
 					backgroundColor: null,
 					colors: [
 						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
-						"#830909", "#923e99", "#ae83d5"
+						"#830909", "#923e99", "#ae83d5",
+
+						"#5F10E6",
+						"#BF273E",
+						"#CE2AEB",
+						"#BCA44A",
+						"#A8C427",
+						"#618D1B",
+						"#1EE67B",
+						"#B0EC44",
+						"#A4A0C9",
+						"#322849",
+						"#86F71A",
+						"#D1C87F",
+						"#7D9058",
+						"#44B9B0",
+						"#7C37C0",
+						"#CC9FB1",
+						"#E65414",
+						"#8B6834",
+						"#248838",
+						"#D9439C",
+						"#F96E8B",
+						"#D01593",
+						"#E5AC0D",
+						"#0E7EBD",
+						"#573972",
+						"#83EE1B",
+						"#3FF8AD",
+						"#C03D6D",
+						"#B769AD",
+						"#3BA310",
+						"#33312C",
+						"#30B9AE",
+						"#852ECC",
+						"#0E125C",
+						"#24CB14",
+						"#F2D2FF",
+						"#E4C04C",
+						"#9BAB4A"
+
+
 					]
 				},
 				effects: {

@@ -130,18 +130,6 @@ d3pie.math = {
 		};
 	},
 
-	// TODO move to segment, I think...
-	getSegmentRotationAngle: function(index, data, totalSize) {
-		var val = 0;
-		for (var i=0; i<index; i++) {
-			try {
-				val += data[i].value;
-			} catch (e) {
-				console.error("error in _getSegmentRotationAngle:", data, i);
-			}
-		}
-		return (val / totalSize) * 360;
-	},
 
 	/**
 	 * Rotates a point (x, y) around an axis (xm, ym) by degrees (a).
@@ -162,7 +150,7 @@ d3pie.math = {
 		xr = (x - xm) * cos(a) - (y - ym) * sin(a) + xm,
 		yr = (x - xm) * sin(a) + (y - ym) * cos(a) + ym;
 
-		return [xr, yr];
+		return { x: xr, y: yr };
 	},
 
 

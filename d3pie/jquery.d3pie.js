@@ -349,18 +349,6 @@ d3pie.math = {
 		};
 	},
 
-	// TODO move to segment, I think...
-	getSegmentRotationAngle: function(index, data, totalSize) {
-		var val = 0;
-		for (var i=0; i<index; i++) {
-			try {
-				val += data[i].value;
-			} catch (e) {
-				console.error("error in _getSegmentRotationAngle:", data, i);
-			}
-		}
-		return (val / totalSize) * 360;
-	},
 
 	/**
 	 * Rotates a point (x, y) around an axis (xm, ym) by degrees (a).
@@ -381,7 +369,7 @@ d3pie.math = {
 		xr = (x - xm) * cos(a) - (y - ym) * sin(a) + xm,
 		yr = (x - xm) * sin(a) + (y - ym) * cos(a) + ym;
 
-		return [xr, yr];
+		return { x: xr, y: yr };
 	},
 
 
@@ -406,8 +394,7 @@ d3pie.math = {
 	// --------- labels.js -----------
 d3pie.labels = {
 
-	outerGroupTranslateX: [],
-	outerGroupTranslateY: [],
+	outerLabelPositions: [],
 	lineCoordGroups: [],
 
 	/**
@@ -425,10 +412,7 @@ d3pie.labels = {
 			.attr("class", "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll(".labelGroup-" + section)
-			.data(
-				_options.data.filter(function(d) { return d.value; }),
-				function(d) { return d.label; }
-			)
+			.data(_options.data)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup-" + section)
@@ -515,13 +499,6 @@ d3pie.labels = {
 	 	}
 	},
 
-	computeOuterCoords: function() {
-		d3pie.labels.lineCoordGroups = []; // probably need one for inner + outer, correct?
-
-		d3.selectAll(".labelGroup-outer")
-			.each(function(d, i) { return d3pie.labels.getLabelGroupTransform(d, i); });
-	},
-
 	addLabelLines: function() {
 		var lineGroups = _svg.insert("g", ".pieChart") // meaning, BEFORE .pieChart
 			.attr("class", "lineGroups")
@@ -561,14 +538,13 @@ d3pie.labels = {
 			.attr("transform", function(d, i) {
 				var x, y;
 				if (section === "outer") {
-					x = d3pie.labels.outerGroupTranslateX[i];
-					y = d3pie.labels.outerGroupTranslateY[i];
-
+					x = d3pie.labels.outerLabelPositions[i].x;
+					y = d3pie.labels.outerLabelPositions[i].y;
 				} else {
 					var center = d3pie.segments.getCentroid(document.getElementById("segment" + i));
 
 					//console.log(i, _options.data, _totalSize);
-					var rotationAngle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+					var rotationAngle = d3pie.segments.getSegmentAngle(i);
 
 //					var center = d3pie.math.getPieCenter();
 					var diff = (_outerRadius - _innerRadius) / 2;
@@ -579,23 +555,6 @@ d3pie.labels = {
 
 				return "translate(" + x + "," + y + ")";
 			});
-
-		// now for some basic collision handling
-		d3pie.labels.resolveLabelCollisions(section);
-	},
-
-
-	resolveOuterLabelCollisions: function() {
-		if (section === "inner") {
-			return;
-		}
-
-		var labels = d3.selectAll(".labelGroup-" + section)[0];
-
-		var x, y;
-		for (var i=1; i<labels.length; i++) {
-			console.log($(labels[i]).attr("transform"));
-		}
 	},
 
 
@@ -660,17 +619,133 @@ d3pie.labels = {
 	},
 
 
-	getLabelGroupTransform: function(d, i) {
+	/**
+	 * This does the heavy-lifting to compute the actual coordinates for the outer label groups. It does two things:
+	 * 1. Make a first pass and position them in the ideal positions, based on the pie sizes
+	 * 2. Do some basic collision avoidance.
+	 */
+	computeOuterLabelCoords: function() {
+		//d3pie.labels.lineCoordGroups = [];
 
+		// 1. figure out the ideal positions for the outer labels
+		d3.selectAll(".labelGroup-outer")
+			.each(function(d, i) { return d3pie.labels.getIdealOuterLabelPositions(i); });
+
+		// 2. now adjust those positions to try to accommodate conflicts
+		d3pie.labels.resolveOuterLabelCollisions();
+	},
+
+
+	/**
+	 * This attempts to resolve label positioning collisions.
+	 */
+	resolveOuterLabelCollisions: function() {
+		var dir = d3pie.labels.getCollisionDetectionCheckDirection();
+		if (dir === "start") {
+
+		} else {
+
+//			var conflictsResolved = checkConflict(0, _options.data.length);
+		}
+	},
+
+
+	checkConflict: function(index, size) {
+
+		// compare 0 to index
+
+
+
+	},
+
+
+
+	// helper function to make an educated guess about where the label space conflicts are most going to lie: at the
+	// start or end?
+	getCollisionDetectionCheckDirection: function() {
+
+		// this examines the full data set to see which half of the pie contains the most labels. Used in the collision
+		// sort algorithm
+		var getLargerPieSide = function() {
+			var leftCount = 0;
+			var rightCount = 0;
+			for (var i=0; i<_options.data.length; i++) {
+				var midpointAngle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
+				if (midpointAngle > 180) {
+					leftCount++
+				} else {
+					rightCount++
+				}
+			}
+
+			console.log("left: ", leftCount, " - right: ", rightCount);
+
+			return (leftCount > rightCount) ? "left" : "right";
+		};
+
+		var algorithmStartPoint = "start";
+		if (_options.misc.dataSortOrder == "value-asc") {
+			algorithmStartPoint = "start";
+		} else if (_options.misc.dataSortOrder == "value-desc") {
+			algorithmStartPoint = "end";
+		} else {
+			algorithmStartPoint = (getLargerPieSide() === "left") ? "end" : "start";
+		}
+
+		return algorithmStartPoint;
+	},
+
+
+	/**
+	 *
+	 * @param i 0-N where N is the dataset size - 1.
+	 */
+	getIdealOuterLabelPositions: function(i) {
+		try {
+			var labelGroupDims = document.getElementById("labelGroup" + i + "-outer").getBBox();
+		} catch (e) {
+			console.log(i, "not oun");
+		}
+		var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
+
+		var center = d3pie.math.getPieCenter();
+		var lineLength = _options.labels.lines.length;
+
+		var originalX = center.x;
+		var originalY = center.y - (_outerRadius + lineLength);
+
+		var newCoords = d3pie.math.rotate(originalX, originalY, center.x, center.y, angle);
+
+		// if the label is on the left half of the pie, adjust for the
+		if (angle > 180) {
+			newCoords.x -= labelGroupDims.width;
+		}
+
+		d3pie.labels.outerLabelPositions[i] = {
+			x: newCoords.x,
+			y: newCoords.y,
+			w: labelGroupDims.width,
+			h: labelGroupDims.height
+		};
+	}
+
+
+	/**
+	 * TODO: this function is doing too much. It's currently:
+	 * - figuring out the coordinates for the label lines
+	 * - figuring out the coordinates for the outer label groups.
+	 *
+	 * It's also confusing as sod. And badly named. And an asshole.
+	getLabelGroupTransform: function(d, i) {
 		var labelDimensions = document.getElementById("labelGroup" + i + "-outer").getBBox();
 
 		var lineLength = _options.labels.lines.length;
 		var lineMidPointDistance = lineLength - (lineLength / 4);
-		var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+		var angle = d3pie.segments.getSegmentAngle(i);
 
 		var nextAngle = 360;
 		if (i < _options.data.length - 1) {
-			nextAngle = d3pie.math.getSegmentRotationAngle(i+1, _options.data, _totalSize);
+			nextAngle = d3pie.segments.getSegmentAngle(i+1);
 		}
 
 		var segmentCenterAngle = angle + ((nextAngle - angle) / 2);
@@ -684,12 +759,10 @@ d3pie.labels = {
 		var yOffset = (_options.data[i].yOffset) ? _options.data[i].yOffset : 0;
 		var center = d3pie.math.getPieCenter();
 
-		/*
-		x1 / y1: the x/y coords of the start of the line, at the mid point of the segments arc on the pie circumference
-	    x2 / y2: the midpoint of the line
-		x3 / y3: the end of the line; closest point to the label
-		groupX / groupX: the coords of the label group
-		*/
+//		x1 / y1: the x/y coords of the start of the line, at the mid point of the segments arc on the pie circumference
+//	    x2 / y2: the midpoint of the line
+//		x3 / y3: the end of the line; closest point to the label
+//		groupX / groupX: the coords of the label group
 
 		var x1, x2, x3, groupX, y1, y2, y3, groupY, outerGroupX, outerGroupY;
 		switch (quarter) {
@@ -759,70 +832,8 @@ d3pie.labels = {
 
 		d3pie.labels.outerGroupTranslateX[i] = groupX + xOffset + center.x;
 		d3pie.labels.outerGroupTranslateY[i] = groupY + yOffset + center.y;
-	},
-
-	// -----------------------------------------
-
-	funWithForces: function() {
-
-		var nodes = d3.selectAll(".segmentMainLabel-outer");
-		var force = d3.layout.force()
-			.gravity(0.05)
-			.charge(function(d, i) { return i ? 0 : -2000; })
-			.nodes(nodes)
-			.size([_options.size.canvasWidth, _options.size.canvasHeight]);
-
-//			var root = nodes[0];
-//			root.radius = 0;
-//			root.fixed = true;
-
-		force.start();
-
-		var center = d3pie.math.getPieCenter();
-		force.on("tick", function(e) {
-			var q = d3.geom.quadtree(nodes);
-			var i = 0;
-			var n = nodes.length;
-
-			while (++i < n) {
-				q.visit(d3pie.labels.preventCollisions(nodes[i]));
-			}
-
-			_svg.selectAll(".segmentMainLabel-outer")
-				.attr("transform", function(d, i) {
-//					console.log("row: ", arguments);
-//					return "translate(" + (d.x + center.x) + "," + (d.y + center.y) +  + ")";
-				});
-		});
-	},
-
-	preventCollisions: function(node) {
-		var r = node.radius + 16,
-			nx1 = node.x - r,
-			nx2 = node.x + r,
-			ny1 = node.y - r,
-			ny2 = node.y + r;
-
-		return function(quad, x1, y1, x2, y2) {
-			if (quad.point && (quad.point !== node)) {
-				var x = node.x - quad.point.x,
-					y = node.y - quad.point.y,
-					l = Math.sqrt(x * x + y * y),
-					r = node.radius + quad.point.radius;
-				if (l < r) {
-					l = (l - r) / l * .5;
-					node.x -= x *= l;
-					node.y -= y *= l;
-					quad.point.x += x;
-					quad.point.y += y;
-				}
-			}
-			return x1 > nx2
-				|| x2 < nx1
-				|| y1 > ny2
-				|| y2 < ny1;
-		};
 	}
+*/
 };
 	// --------- segments.js -----------
 d3pie.segments = {
@@ -852,10 +863,7 @@ d3pie.segments = {
 			});
 
 		var g = pieChartElement.selectAll(".arc")
-			.data(
-				_options.data.filter(function(d) { return d.value; }),
-				function(d) { return d.label; }
-			)
+			.data(_options.data)
 			.enter()
 			.append("g")
 			.attr("class", function() {
@@ -886,7 +894,11 @@ d3pie.segments = {
 		_svg.selectAll("g.arc")
 			.attr("transform",
 			function(d, i) {
-				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+				var angle = 0;
+				if (i > 0) {
+					i = i-1;
+					angle = d3pie.segments.getSegmentAngle(i);
+				}
 				return "rotate(" + angle + ")";
 			}
 		);
@@ -979,7 +991,51 @@ d3pie.segments = {
 			x: bbox.x + bbox.width / 2,
 			y: bbox.y + bbox.height / 2
 		};
+	},
+
+	/**
+	 * General helper function to return a segment's angle, in various different ways.
+	 * @param index
+	 * @param opts optional object for fine-tuning exactly what you want.
+	 */
+	getSegmentAngle: function(index, opts) {
+		var options = $.extend({
+
+			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
+			compounded: true,
+
+			// optionally returns the midpoint of the angle instead of the full angle
+			midpoint: false
+		}, opts);
+
+		var currValue = _options.data[index].value;
+
+		var fullValue;
+		if (options.compounded) {
+			fullValue = 0;
+
+			// get all values up to and including the specified index
+			for (var i=0; i<=index; i++) {
+				fullValue += _options.data[i].value;
+			}
+		}
+
+		if (typeof fullValue === 'undefined') {
+			fullValue = currValue;
+		}
+
+		// now convert the full value to an angle
+		var angle = (fullValue / _totalSize) * 360;
+
+		// lastly, if we want the midpoint, factor that sucker in
+		if (options.midpoint) {
+			var currAngle = (currValue / _totalSize) * 360;
+			angle -= (currAngle / 2);
+		}
+
+		return angle;
 	}
+
 };
 	// --------- text.js -----------
 
@@ -1328,19 +1384,20 @@ d3pie.prototype.init = function() {
 		l.add("inner", _options.labels.inside);
 		l.add("outer", _options.labels.outside);
 
-		// these position the label elements relatively within their individual group (label, percentage, value)
+		// position the label elements relatively within their individual group (label, percentage, value)
 		l.positionLabelElements("inner", _options.labels.inside);
 		l.positionLabelElements("outer", _options.labels.outside);
 
+		l.computeOuterLabelCoords();
 
-		l.computeOuterCoords(); // used for both outer labels + label lines
+		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
+		l.positionLabelGroups("outer");
 
 		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
-			l.addLabelLines();
+//			l.addLabelLines();
 		}
 
-		l.positionLabelGroups("outer");
-		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
+//		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
 
 		l.fadeInLabelsAndLines();
 

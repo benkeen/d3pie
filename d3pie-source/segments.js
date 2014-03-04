@@ -26,10 +26,7 @@ d3pie.segments = {
 			});
 
 		var g = pieChartElement.selectAll(".arc")
-			.data(
-				_options.data.filter(function(d) { return d.value; }),
-				function(d) { return d.label; }
-			)
+			.data(_options.data)
 			.enter()
 			.append("g")
 			.attr("class", function() {
@@ -60,7 +57,11 @@ d3pie.segments = {
 		_svg.selectAll("g.arc")
 			.attr("transform",
 			function(d, i) {
-				var angle = d3pie.math.getSegmentRotationAngle(i, _options.data, _totalSize);
+				var angle = 0;
+				if (i > 0) {
+					i = i-1;
+					angle = d3pie.segments.getSegmentAngle(i);
+				}
 				return "rotate(" + angle + ")";
 			}
 		);
@@ -153,5 +154,49 @@ d3pie.segments = {
 			x: bbox.x + bbox.width / 2,
 			y: bbox.y + bbox.height / 2
 		};
+	},
+
+	/**
+	 * General helper function to return a segment's angle, in various different ways.
+	 * @param index
+	 * @param opts optional object for fine-tuning exactly what you want.
+	 */
+	getSegmentAngle: function(index, opts) {
+		var options = $.extend({
+
+			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
+			compounded: true,
+
+			// optionally returns the midpoint of the angle instead of the full angle
+			midpoint: false
+		}, opts);
+
+		var currValue = _options.data[index].value;
+
+		var fullValue;
+		if (options.compounded) {
+			fullValue = 0;
+
+			// get all values up to and including the specified index
+			for (var i=0; i<=index; i++) {
+				fullValue += _options.data[i].value;
+			}
+		}
+
+		if (typeof fullValue === 'undefined') {
+			fullValue = currValue;
+		}
+
+		// now convert the full value to an angle
+		var angle = (fullValue / _totalSize) * 360;
+
+		// lastly, if we want the midpoint, factor that sucker in
+		if (options.midpoint) {
+			var currAngle = (currValue / _totalSize) * 360;
+			angle -= (currAngle / 2);
+		}
+
+		return angle;
 	}
+
 };
