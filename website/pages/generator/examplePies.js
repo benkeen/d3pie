@@ -166,7 +166,7 @@ define([], function() {
 				},
 				misc: {
 					enableTooltips: false,
-					dataSortOrder: "none",
+					dataSortOrder: "label-desc",
 					hideLabelsForSmallSegments: false,
 					hideLabelsForSmallSegmentSize: "5%",
 					canvasPadding: {

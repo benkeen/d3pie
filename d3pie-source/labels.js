@@ -1,7 +1,7 @@
 // --------- labels.js -----------
 d3pie.labels = {
 
-	outerLabelPositions: [],
+	outerLabelGroupData: [],
 	lineCoordGroups: [],
 
 	/**
@@ -145,8 +145,8 @@ d3pie.labels = {
 			.attr("transform", function(d, i) {
 				var x, y;
 				if (section === "outer") {
-					x = d3pie.labels.outerLabelPositions[i].x;
-					y = d3pie.labels.outerLabelPositions[i].y;
+					x = d3pie.labels.outerLabelGroupData[i].x;
+					y = d3pie.labels.outerLabelGroupData[i].y;
 				} else {
 					var center = d3pie.segments.getCentroid(document.getElementById("segment" + i));
 
@@ -197,6 +197,8 @@ d3pie.labels = {
 		var addMainLabel  = false;
 		var addValue      = false;
 		var addPercentage = false;
+
+		// TODO refactor... somehow.
 		switch (val) {
 			case "label":
 				addMainLabel = true;
@@ -248,20 +250,54 @@ d3pie.labels = {
 	 */
 	resolveOuterLabelCollisions: function() {
 		var dir = d3pie.labels.getCollisionDetectionCheckDirection();
-		if (dir === "start") {
-
+		if (dir === "start") { // should be "clockwise", "anticlockwise"
+			var allConflictsResolved = d3pie.labels.checkConflict(0, _options.data.length);
 		} else {
 
-//			var conflictsResolved = checkConflict(0, _options.data.length);
 		}
 	},
 
 
 	checkConflict: function(index, size) {
+		var currLabelGroup = d3pie.labels.outerLabelGroupData[index];
+		var nextLabelGroup = d3pie.labels.outerLabelGroupData[index+1];
 
-		// compare 0 to index
+		// right hemisphere: expand the width and height of the currLabelGroup by a huge amount. This will
+		// ensure the
+//		currLabelGroup.h = 10000;
+//		currLabelGroup.w = 10000;
 
+		if (d3pie.helpers.rectIntersect(currLabelGroup, nextLabelGroup)) {
 
+			if (currLabelGroup.hs === "right") {
+				console.log(index + " and next one intersect");
+
+				var labelHeights = d3pie.labels.outerLabelGroupData[index].h;
+
+				// calculate a new position for the next label group
+				var center = d3pie.math.getPieCenter();
+
+				// length of line from origin to new location (and old - it's consistent!)
+				var lineLength = (_outerRadius + _options.labels.lines.length); // var originalY = center.y -
+				var heightChange = labelHeights + 5; // 5 is padding between the two
+				var xDiff = Math.sqrt((lineLength * lineLength) - (heightChange * heightChange));
+
+				var newYPos = currLabelGroup.y - heightChange;
+				var newXPos = center.x + xDiff;
+
+				//console.log("old: ", ); //newXPos, newYPos
+//				d3pie.labels.outerLabelGroupData[index+1].x = newXPos
+//				d3pie.labels.outerLabelGroupData[index+1].y = newYPos;
+			}
+		}
+
+		if (index+1 < size -1) {
+			d3pie.labels.checkConflict(index+1, size);
+		}
+
+	},
+
+	compare: function(r1, r2) {
 
 	},
 
@@ -284,9 +320,7 @@ d3pie.labels = {
 					rightCount++
 				}
 			}
-
 			console.log("left: ", leftCount, " - right: ", rightCount);
-
 			return (leftCount > rightCount) ? "left" : "right";
 		};
 
@@ -308,31 +342,28 @@ d3pie.labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(i) {
-		try {
-			var labelGroupDims = document.getElementById("labelGroup" + i + "-outer").getBBox();
-		} catch (e) {
-			console.log(i, "not oun");
-		}
+		var labelGroupDims = document.getElementById("labelGroup" + i + "-outer").getBBox();
 		var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
 
 		var center = d3pie.math.getPieCenter();
-		var lineLength = _options.labels.lines.length;
-
 		var originalX = center.x;
-		var originalY = center.y - (_outerRadius + lineLength);
+		var originalY = center.y - (_outerRadius + _options.labels.lines.length);
 
 		var newCoords = d3pie.math.rotate(originalX, originalY, center.x, center.y, angle);
 
 		// if the label is on the left half of the pie, adjust for the
+		var hemisphere = "right"; // hemisphere
 		if (angle > 180) {
 			newCoords.x -= labelGroupDims.width;
+			hemisphere = "left";
 		}
 
-		d3pie.labels.outerLabelPositions[i] = {
+		d3pie.labels.outerLabelGroupData[i] = {
 			x: newCoords.x,
 			y: newCoords.y,
 			w: labelGroupDims.width,
-			h: labelGroupDims.height
+			h: labelGroupDims.height,
+			hs: hemisphere
 		};
 	}
 

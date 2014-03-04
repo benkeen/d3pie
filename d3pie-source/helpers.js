@@ -95,10 +95,33 @@ d3pie.helpers = {
 		return { w: w, h: h };
 	},
 
-	intersectRect: function(r1, r2) {
-		return !(r2.left > r1.right ||
-			r2.right < r1.left ||
-			r2.top > r1.bottom ||
-			r2.bottom < r1.top);
+	rectIntersect: function(r1, r2) {
+//		console.log("r2.x > (r1.x + r1.w)", r2.x, (r1.x + r1.w), (r2.x > (r1.x + r1.w)));
+//		console.log("(r2.x + r2.w) < r1.x", (r2.x + r2.w), r1.x, (r2.x + r2.w) < r1.x);
+//		console.log("(r2.y + r2.h) > r1.y", (r2.y + r2.h), r1.y, (r2.y + r2.h) > r1.y);
+//		console.log("r2.y < (r1.y + r1.h)", r2.y, (r1.y + r1.h), r2.y < (r1.y + r1.h));
+
+		var returnVal = (
+			// r2.left > r1.right
+			(r2.x > (r1.x + r1.w)) ||
+
+			// r2.right < r1.left
+			((r2.x + r2.w) < r1.x) ||
+
+			// r2.top < r1.bottom
+			((r2.y + r2.h) < r1.y) ||
+
+			// r2.bottom > r1.top
+			(r2.y > (r1.y + r1.h))
+		);
+
+		return !returnVal;
+	},
+
+	rectIntersect2: function (a, b) {
+		return (a.left <= b.right &&
+			b.left <= a.right &&
+			a.top <= b.bottom &&
+			b.top <= a.bottom)
 	}
 };
