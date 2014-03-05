@@ -542,24 +542,34 @@ d3pie.labels = {
 		var labelXMargin = 6; // the x-distance of the label from the end of the line [TODO configurable]
 
 		var quarter = Math.floor(angle / 90);
-		var x3, y3;
+		var midPoint = 4;
+		var x2, y2, x3, y3;
 		switch (quarter) {
 			case 0:
-				x2 = d3pie.labels.outerLabelGroupData[i].x + lineMidPointDistance;
-				y2 = d3pie.labels.outerLabelGroupData[i].x + lineMidPointDistance;
+				x2 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin - ((d3pie.labels.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
+				y2 = d3pie.labels.outerLabelGroupData[i].y + ((originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / midPoint);
 
 				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 1:
+				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
+				y2 = d3pie.labels.outerLabelGroupData[i].y - (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / 4;
+
 				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 2:
+				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
+				y2 = d3pie.labels.outerLabelGroupData[i].y - (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / 4;
+
 				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 3:
+				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
+				y2 = d3pie.labels.outerLabelGroupData[i].y - (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / 4;
+
 				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
@@ -572,7 +582,7 @@ d3pie.labels = {
 		 */
 		d3pie.labels.lineCoordGroups[i] = [
 			{ x: originCoords.x, y: originCoords.y },
-			{ x: x2, y: y2 },
+			//{ x: x2, y: y2 },
 			{ x: x3, y: y3 }
 		];
 
@@ -739,27 +749,23 @@ d3pie.labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function() {
-		//var dir = d3pie.labels.getCollisionDetectionCheckDirection();
-//		if (dir === "start") { // should be "clockwise", "anticlockwise"
-//			var allConflictsResolved = d3pie.labels.checkConflict(0, _options.data.length);
-//		} else {
-//		}
-
 		var size = _options.data.length;
 		d3pie.labels.checkConflict(0, "clockwise", size);
-//		d3pie.labels.checkConflict(size-1, "anticlockwise", size);
+		d3pie.labels.checkConflict(size-1, "anticlockwise", size);
 	},
 
 
 	checkConflict: function(currIndex, direction, size) {
-		if (direction === "clockwise" && currIndex >= size-2) {
+		if (direction === "clockwise" && currIndex >= Math.floor(size / 2)) {
 			return;
 		}
-		if (direction === "anticlockwise" && currIndex < 2) {
+		if (direction === "anticlockwise" && currIndex <= Math.floor(size / 2)) {
 			return;
 		}
-
 		var nextIndex = (direction === "clockwise") ? currIndex+1 : currIndex-1;
+
+
+//		console.log("checking conflict on ", currIndex, "with", nextIndex);
 
 		// this is the current label group being looked at. We KNOW it's positioned properly (the first item
 		// is always correct)
@@ -772,9 +778,8 @@ d3pie.labels = {
 			labelHeights: d3pie.labels.outerLabelGroupData[0].h,
 			center: d3pie.math.getPieCenter(),
 			lineLength: (_outerRadius + _options.labels.lines.length),
-			heightChange: d3pie.labels.outerLabelGroupData[0].h + 1 // 5 = padding
+			heightChange: d3pie.labels.outerLabelGroupData[0].h + 1 // 1 = padding
 		};
-
 
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
@@ -785,7 +790,7 @@ d3pie.labels = {
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
 				if (d3pie.helpers.rectIntersect(curr, examinedLabelGroup)) {
-					d3pie.labels.shiftLabel(nextIndex, currLabelGroup, info);
+					d3pie.labels.adjustLabelPos(nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
@@ -796,7 +801,7 @@ d3pie.labels = {
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
 				if (d3pie.helpers.rectIntersect(curr, examinedLabelGroup)) {
-					d3pie.labels.shiftLabel(nextIndex, currLabelGroup, info);
+					d3pie.labels.adjustLabelPos(nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
@@ -805,57 +810,20 @@ d3pie.labels = {
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one
-	shiftLabel: function(nextIndex, lastCorrectlyPositionedLabel, info) {
+	adjustLabelPos: function(nextIndex, lastCorrectlyPositionedLabel, info) {
 		var xDiff, yDiff, newXPos, newYPos;
+		newYPos = lastCorrectlyPositionedLabel.y + info.heightChange;
+		yDiff = info.center.y - newYPos;
+		xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
+
 		if (lastCorrectlyPositionedLabel.hs === "right") {
-			newYPos = lastCorrectlyPositionedLabel.y + info.heightChange;
-			yDiff = info.center.y - newYPos;
-			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
 			newXPos = info.center.x + xDiff;
 		} else {
-			newYPos = lastCorrectlyPositionedLabel.y - info.heightChange;
-			yDiff = info.center.y - newYPos;
-			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
-			newXPos = info.center.x - xDiff;
+			newXPos = info.center.x - xDiff - d3pie.labels.outerLabelGroupData[nextIndex].w;
 		}
+
 		d3pie.labels.outerLabelGroupData[nextIndex].x = newXPos;
 		d3pie.labels.outerLabelGroupData[nextIndex].y = newYPos;
-	},
-
-
-	// helper function to make an educated guess about where the label space conflicts are most going to lie: at the
-	// start or end
-
-	// maybe even dump this...
-	getCollisionDetectionCheckDirection: function() {
-
-		// this examines the full data set to see which half of the pie contains the most labels. Used in the collision
-		// sort algorithm
-		var getLargerPieSide = function() {
-			var leftCount = 0;
-			var rightCount = 0;
-			for (var i=0; i<_options.data.length; i++) {
-				var midpointAngle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
-				if (midpointAngle > 180) {
-					leftCount++;
-				} else {
-					rightCount++;
-				}
-			}
-			//console.log("left: ", leftCount, " - right: ", rightCount);
-			return (leftCount > rightCount) ? "left" : "right";
-		};
-
-		var algorithmStartPoint = "start";
-		if (_options.misc.dataSortOrder == "value-asc") {
-			algorithmStartPoint = "start";
-		} else if (_options.misc.dataSortOrder == "value-desc") {
-			algorithmStartPoint = "end";
-		} else {
-			algorithmStartPoint = (getLargerPieSide() === "left") ? "end" : "start";
-		}
-
-		return algorithmStartPoint;
 	},
 
 	/**
