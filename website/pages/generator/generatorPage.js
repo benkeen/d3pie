@@ -45,6 +45,7 @@ define([
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
 		$("#exampleDropdown").on("click", "ul li a", function(e) {
+			e.preventDefault();
 			var index = parseInt($(e.target).data("index"), 10);
 			_loadDemoPie(EXAMPLE_PIES[index]);
 		});

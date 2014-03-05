@@ -10,13 +10,13 @@ define([], function() {
 			config: {
 				header: {
 					title: {
-						text:     "Too many Programming Languages",
+						text:     "Lots of Programming Languages",
 						color:    "#333333",
 						fontSize: "24px",
 						font:     "open sans"
 					},
 					subtitle: {
-						text:     "A large pie chart to show off label collision detection and resolution.",
+						text:     "A full pie chart to show off label collision detection and resolution.",
 						color:    "#999999",
 						fontSize: "12px",
 						font:     "open sans"
@@ -73,7 +73,7 @@ define([], function() {
 				labels: {
 					enableTooltips: true,
 					inside: "percentage",
-					outside: "label-value1",
+					outside: "label-percentage1",
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
@@ -299,21 +299,21 @@ define([], function() {
 					title: {
 						text:     "Spousal Resentment",
 						color:    "#333333",
-						fontSize: "22px",
-						font:     "open sans"
+						fontSize: "22",
+						font:     "verdana"
 					},
 					subtitle: {
 						text:     "Comments my wife has made when I tell her I'm working on this script instead of doing something \"fun\".",
 						color:    "#999999",
-						fontSize: "11px",
-						font:     "open sans"
+						fontSize: "10",
+						font:     "verdana"
 					},
 					location: "top-center"
 				},
 				footer: {
 					text: "Source: me, my room, the last 2 months.",
 					color:    "#999999",
-					fontSize: "10px",
+					fontSize: "11",
 					font:     "open sans",
 					location: "bottom-center"
 				},
@@ -321,7 +321,7 @@ define([], function() {
 					canvasWidth: 600,
 					canvasHeight: 400,
 					pieInnerRadius: "0%",
-					pieOuterRadius: "56%"
+					pieOuterRadius: "67%"
 				},
 				data: [
 					{ label: "When's it going to be done?", value: 8, tooltip: "" },
@@ -333,22 +333,22 @@ define([], function() {
 				],
 				labels: {
 					enableTooltips: true,
-					inside: "none",
+					inside: "value",
 					outside: "label",
 					mainLabel: {
 						color: "#333333",
-						font: "Open sans",
-						fontSize: "8"
+						font: "verdana",
+						fontSize: "10"
 					},
 					percentage: {
 						color: "#999999",
-						font: "Open sans",
-						fontSize: "8"
+						font: "verdana",
+						fontSize: "10"
 					},
 					value: {
 						color: "#cccc44",
-						font: "Open sans",
-						fontSize: "8"
+						font: "verdana",
+						fontSize: "10"
 					},
 					lines: {
 						enabled: true,
@@ -385,7 +385,7 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					titleSubtitlePadding: 6
+					titleSubtitlePadding: 12
 				}
 			}
 		},

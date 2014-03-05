@@ -744,7 +744,6 @@ d3pie.labels = {
 		d3pie.labels.resolveOuterLabelCollisions();
 	},
 
-
 	/**
 	 * This attempts to resolve label positioning collisions.
 	 */
@@ -754,18 +753,14 @@ d3pie.labels = {
 		d3pie.labels.checkConflict(size-1, "anticlockwise", size);
 	},
 
-
 	checkConflict: function(currIndex, direction, size) {
-		if (direction === "clockwise" && currIndex >= Math.floor(size / 2)) {
+		if (direction === "clockwise" && currIndex > Math.floor(size / 2)) {
 			return;
 		}
-		if (direction === "anticlockwise" && currIndex <= Math.floor(size / 2)) {
+		if (direction === "anticlockwise" && currIndex < Math.floor(size / 2)) {
 			return;
 		}
 		var nextIndex = (direction === "clockwise") ? currIndex+1 : currIndex-1;
-
-
-//		console.log("checking conflict on ", currIndex, "with", nextIndex);
 
 		// this is the current label group being looked at. We KNOW it's positioned properly (the first item
 		// is always correct)
@@ -814,12 +809,24 @@ d3pie.labels = {
 		var xDiff, yDiff, newXPos, newYPos;
 		newYPos = lastCorrectlyPositionedLabel.y + info.heightChange;
 		yDiff = info.center.y - newYPos;
+
+
+		// TODO Math.abs doesn't make sense here. Investigate anomalies at bottom of chart
+		//xDiff = Math.sqrt(Math.abs((info.lineLength * info.lineLength) - (yDiff * yDiff)));
 		xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
+
+		if (!xDiff) {
+			console.log((info.lineLength * info.lineLength) - (yDiff * yDiff));
+		}
 
 		if (lastCorrectlyPositionedLabel.hs === "right") {
 			newXPos = info.center.x + xDiff;
 		} else {
 			newXPos = info.center.x - xDiff - d3pie.labels.outerLabelGroupData[nextIndex].w;
+		}
+
+		if (!newXPos) {
+			console.log(lastCorrectlyPositionedLabel.hs, xDiff)
 		}
 
 		d3pie.labels.outerLabelGroupData[nextIndex].x = newXPos;
@@ -838,11 +845,13 @@ d3pie.labels = {
 		var originalY = center.y - (_outerRadius + _options.labels.lines.length);
 		var newCoords = d3pie.math.rotate(originalX, originalY, center.x, center.y, angle);
 
-		// if the label is on the left half of the pie, adjust for the
+		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere
 		if (angle > 180) {
-			newCoords.x -= labelGroupDims.width;
+			newCoords.x -= (labelGroupDims.width + 8);
 			hemisphere = "left";
+		} else {
+			newCoords.x += 8;
 		}
 
 		d3pie.labels.outerLabelGroupData[i] = {
