@@ -181,7 +181,8 @@ d3pie.prototype.init = function() {
 		l.positionLabelGroups("outer");
 
 		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
-//			l.addLabelLines();
+			l.computeLabelLinePositions();
+			l.addLabelLines();
 		}
 
 //		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);

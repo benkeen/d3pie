@@ -10,13 +10,13 @@ define([], function() {
 			config: {
 				header: {
 					title: {
-						text:     "Programming languages",
+						text:     "Too many Programming Languages",
 						color:    "#333333",
 						fontSize: "24px",
 						font:     "open sans"
 					},
 					subtitle: {
-						text:     "A bunch of arbitrary programming languages ordered by whatever I could think of first.",
+						text:     "A large pie chart to show off label collision detection and resolution.",
 						color:    "#999999",
 						fontSize: "12px",
 						font:     "open sans"
@@ -37,7 +37,7 @@ define([], function() {
 					pieOuterRadius: "66%"
 				},
 				data: [
-					{ label: "JavaScript", value: 264131, x: 60 },
+					{ label: "JavaScript", value: 264131 },
 					{ label: "Ruby", value: 218812 },
 					{ label: "Java", value: 157618  },
 					{ label: "PHP", value: 114384  },
@@ -46,18 +46,18 @@ define([], function() {
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
 					{ label: "C#", value: 32170 },
-					{ label: "Shell", value: 28561, x: 100 },
+					{ label: "Shell", value: 28561 },
 
-					{ label: "JavaScript 2", value: 264131 },
-					{ label: "Ruby", value: 218812 },
-					{ label: "Java", value: 157618  },
-					{ label: "PHP", value: 114384  },
-					{ label: "Python", value: 95002 },
+					{ label: "Cobol", value: 264131 },
+					{ label: "Fortran", value: 218812 },
+					{ label: "Coffeescript", value: 157618  },
+					{ label: "Node", value: 114384  },
+					{ label: "SQL", value: 95002 },
 					{ label: "C+", value: 78327 },
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
 					{ label: "C#", value: 32170 },
-					{ label: "Shell", value: 28561, x: 100 },
+					{ label: "Shell", value: 28561 },
 
 					{ label: "JavaScript 3", value: 264131 },
 					{ label: "Ruby", value: 218812 },
@@ -68,10 +68,7 @@ define([], function() {
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
 					{ label: "C#", value: 32170 },
-					{ label: "Shell", value: 28561, x: 100 }
-
-
-
+					{ label: "Shell", value: 28561 }
 				],
 				labels: {
 					enableTooltips: true,
@@ -391,7 +388,115 @@ define([], function() {
 					titleSubtitlePadding: 6
 				}
 			}
-		}
+		},
+
+
+		{
+			label: "The Sun",
+			config: {
+				header: {
+					title: {
+						text:     "The Sun",
+						color:    "#333333",
+						fontSize: "24px",
+						font:     "open sans"
+					},
+					subtitle: {
+						text:     "Chemical composition",
+						color:    "#999999",
+						fontSize: "12px",
+						font:     "open sans"
+					},
+					location: "pie-center"
+				},
+				footer: {
+					text: "",
+					color:    "#999999",
+					fontSize: "10px",
+					font:     "open sans",
+					location: "bottom-left"
+				},
+				size: {
+					canvasWidth: 650,
+					canvasHeight: 500,
+					pieInnerRadius: "0%",
+					pieOuterRadius: "66%"
+				},
+				data: [
+					{ label: "Hydrogen", value: 74.9 },
+					{ label: "Helium", value: 23.8 },
+					{ label: "Oxygen", value: 1  },
+					{ label: "Carbon", value: 0.3  },
+					{ label: "Neon", value: 0.2 },
+					{ label: "Iron", value: 0.2 }
+				],
+				labels: {
+					enableTooltips: true,
+					inside: "percentage",
+					outside: "label-value1",
+					mainLabel: {
+						color: "#333333",
+						font: "Open sans",
+						fontSize: "11px"
+					},
+					percentage: {
+						color: "#999999",
+						font: "Open sans",
+						fontSize: "11px"
+					},
+					value: {
+						color: "#adadad",
+						font: "Open sans",
+						fontSize: "11px"
+					},
+					lines: {
+						enabled: true,
+						length: 32,
+						color: "segment"
+					}
+				},
+				styles: {
+					backgroundColor: null,
+					colors: [
+						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
+						"#830909", "#923e99", "#ae83d5"
+					]
+				},
+				effects: {
+					load: {
+						effect: "default", // none / default
+						speed: 1000
+					},
+					pullOutSegmentOnClick: {
+						effect: "linear", // none / linear / bounce
+						speed: 400
+					},
+					highlightSegmentOnMouseover: true,
+					labelFadeInTime: 400
+				},
+				callbacks: {
+					onload: "function() { console.log(\"pie chart loaded.\"); }",
+					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
+					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
+					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
+				},
+				misc: {
+					enableTooltips: false,
+					dataSortOrder: "label-desc",
+					hideLabelsForSmallSegments: false,
+					hideLabelsForSmallSegmentSize: "5%",
+					canvasPadding: {
+						top: 5,
+						right: 5,
+						bottom: 5,
+						left: 5
+					},
+					titleSubtitlePadding: 9,
+					preventTextSelection: true
+				}
+			}
+		},
+
 	];
 
 	return EXAMPLE_PIES;

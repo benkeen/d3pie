@@ -95,11 +95,14 @@ d3pie.helpers = {
 		return { w: w, h: h };
 	},
 
+
+	/**
+	 * This is based on the SVG coordinate system, where top-left is 0,0 and bottom right is n-n.
+	 * @param r1
+	 * @param r2
+	 * @returns {boolean}
+	 */
 	rectIntersect: function(r1, r2) {
-//		console.log("r2.x > (r1.x + r1.w)", r2.x, (r1.x + r1.w), (r2.x > (r1.x + r1.w)));
-//		console.log("(r2.x + r2.w) < r1.x", (r2.x + r2.w), r1.x, (r2.x + r2.w) < r1.x);
-//		console.log("(r2.y + r2.h) > r1.y", (r2.y + r2.h), r1.y, (r2.y + r2.h) > r1.y);
-//		console.log("r2.y < (r1.y + r1.h)", r2.y, (r1.y + r1.h), r2.y < (r1.y + r1.h));
 
 		var returnVal = (
 			// r2.left > r1.right
