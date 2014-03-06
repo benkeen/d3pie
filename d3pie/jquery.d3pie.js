@@ -754,10 +754,11 @@ d3pie.labels = {
 	},
 
 	checkConflict: function(currIndex, direction, size) {
-		if (direction === "clockwise" && currIndex > Math.floor(size / 2)) {
+		var currIndexHemisphere = d3pie.labels.outerLabelGroupData[currIndex].hs;
+		if (direction === "clockwise" && currIndexHemisphere != "right") {
 			return;
 		}
-		if (direction === "anticlockwise" && currIndex < Math.floor(size / 2)) {
+		if (direction === "anticlockwise" && currIndexHemisphere != "left") {
 			return;
 		}
 		var nextIndex = (direction === "clockwise") ? currIndex+1 : currIndex-1;
@@ -810,14 +811,13 @@ d3pie.labels = {
 		newYPos = lastCorrectlyPositionedLabel.y + info.heightChange;
 		yDiff = info.center.y - newYPos;
 
-
-		// TODO Math.abs doesn't make sense here. Investigate anomalies at bottom of chart
-		//xDiff = Math.sqrt(Math.abs((info.lineLength * info.lineLength) - (yDiff * yDiff)));
-		xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
-
-		if (!xDiff) {
-			console.log((info.lineLength * info.lineLength) - (yDiff * yDiff));
+		if (Math.abs(info.lineLength) > Math.abs(yDiff)) {
+			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
+		} else {
+			xDiff = Math.sqrt((yDiff * yDiff) - (info.lineLength * info.lineLength));
 		}
+
+		// ahhh! info.lineLength is no longer a constant.....
 
 		if (lastCorrectlyPositionedLabel.hs === "right") {
 			newXPos = info.center.x + xDiff;

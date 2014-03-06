@@ -71,6 +71,9 @@
 #pieInnerRadius, #pieOuterRadius {
 	width: 100%;
 }
+input.tinyField {
+	width: 35px;
+}
 input.smallField {
 	width: 60px;
 }
@@ -88,13 +91,11 @@ input.ib, .ib {
     margin: 0px;
     padding: 0px;
 }
-
-
 #segmentColors li {
     float: left;
     display: inline-block;
-    width: 80px;
-    height: 52px;
+    width: 76px;
+    height: 40px;
     padding: 4px;
 }
 #segmentColors li div {
@@ -110,11 +111,12 @@ input.ib, .ib {
 }
 #segmentColors li span.handle {
 	width: 26px;
-	height: 44px;
+	height: 32px;
 }
 #segmentColors li span.color {
-	width: 46px;
-	height: 44px;
+	width: 42px;
+	height: 32px;
+	cursor: pointer;
 }
 
 /* overridden bootstrap CSS */
