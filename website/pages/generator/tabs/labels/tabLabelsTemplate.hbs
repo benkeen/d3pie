@@ -1,37 +1,35 @@
-<h4>Outer Labels</h4>
+<h4 class="panelToggle expanded">Outer Labels<span></span></h4>
 
-<div class="panel panel-default">
-	<div class="panel-body">
-		<div class="row">
-			<div class="col-md-3">
-				<label for="outsideLabel" class="control-label">Content</label>
-			</div>
-			<div class="col-md-9 form-group padRight30">
-				<select id="outsideLabel" class="form-control changeUpdateNoAnimation">
-					<option value="none" {{#compare config.labels.outside "none"}}selected="selected"{{/compare}}>None</option>
-					<option value="label" {{#compare config.labels.outside "label"}}selected="selected"{{/compare}}>Label</option>
-					<option value="value" {{#compare config.labels.outside "value"}}selected="selected"{{/compare}}>Value</option>
-					<option value="percentage" {{#compare config.labels.outside "percentage"}}selected="selected"{{/compare}}>Percentage</option>
-					<option value="label-value1" {{#compare config.labels.outside "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
-					<option value="label-value2" {{#compare config.labels.outside "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
-					<option value="label-percentage1" {{#compare config.labels.outside "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
-					<option value="label-percentage2" {{#compare config.labels.outside "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
-				</select>
-			</div>
+<div>
+	<div class="row">
+		<div class="col-md-3">
+			<label for="outsideLabel" class="control-label">Content</label>
 		</div>
-		<div class="row">
-			<div class="col-md-3">
-				<label for="outsideLabel" class="control-label">Hide Labels</label>
-			</div>
-			<div class="col-md-9">
-				<input type="radio" name="hideLabelCondition" id="hideLabelCondition1" />
-					<label for="hideLabelCondition1" class="padRight30">Never</label>
-				<input type="radio" name="hideLabelCondition" id="hideLabelCondition2" />
-					<label for="hideLabelCondition2">
-						When under
-						<input type="text" class="tinyField" maxlength="2" /> %
-					</label>
-			</div>
+		<div class="col-md-9 form-group padRight30">
+			<select id="outsideLabel" class="form-control changeUpdateNoAnimation">
+				<option value="none" {{#compare config.labels.outside "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="label" {{#compare config.labels.outside "label"}}selected="selected"{{/compare}}>Label</option>
+				<option value="value" {{#compare config.labels.outside "value"}}selected="selected"{{/compare}}>Value</option>
+				<option value="percentage" {{#compare config.labels.outside "percentage"}}selected="selected"{{/compare}}>Percentage</option>
+				<option value="label-value1" {{#compare config.labels.outside "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
+				<option value="label-value2" {{#compare config.labels.outside "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
+				<option value="label-percentage1" {{#compare config.labels.outside "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
+				<option value="label-percentage2" {{#compare config.labels.outside "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<label for="outsideLabel" class="control-label">Hide Labels</label>
+		</div>
+		<div class="col-md-9">
+			<input type="radio" name="hideLabelCondition" id="hideLabelCondition1" />
+				<label for="hideLabelCondition1" class="padRight30">Never</label>
+			<input type="radio" name="hideLabelCondition" id="hideLabelCondition2" />
+				<label for="hideLabelCondition2">
+					When under
+					<input type="text" class="tinyField" maxlength="2" /> %
+				</label>
 		</div>
 	</div>
 </div>
@@ -45,9 +43,9 @@
 </div>
 -->
 
-<h4>Inside Labels</h4>
+<h4 class="panelToggle">Inside Labels<span></span></h4>
 
-<div class="panel panel-default">
+<div class="panel panel-default hidden">
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-3">
@@ -88,9 +86,9 @@
 </div>
 
 
-<h4>Label Styles</h4>
+<h4 class="panelToggle">Label Styles<span></span></h4>
 
-<div class="panel panel-default">
+<div class="panel panel-default hidden">
 	<div class="panel-body">
 
 		<div id="labelStyles" style="padding-right: 30px">
@@ -182,56 +180,65 @@
 </div>
 
 
-<div class="row col-md-12">
-	<h4>Label Lines</h4>
-</div>
+<h4 class="panelToggle">Label Lines<span></span></h4>
 
-<div class="row form-group">
-	<div class="col-md-6">
-		<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
-		<label for="showLabelLines">Show label lines</label>
-	</div>
-</div>
+<div class="panel panel-default hidden">
+	<div class="panel-body">
+		<div class="row form-group">
+			<div class="col-md-6">
+				<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
+				<label for="showLabelLines">Show label lines</label>
+			</div>
+		</div>
 
-<div class="row">
-	<div class="col-md-3">
-		<label for="labelLineLength">Line length</label>
-	</div>
-	<div class="col-md-7">
-		<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
-	</div>
-</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="labelLineLength">Line length</label>
+			</div>
+			<div class="col-md-7">
+				<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
+			</div>
+		</div>
 
-<div class="row">
-	<div class="col-md-3">
-		<label for="labelLineLength">Line style</label>
-	</div>
-	<div class="col-md-7">
-		<input type="radio" name="lineStyle" id="lineStyle1" value="curved" />
-			<label for="lineStyle1">Curved</label>
-		<input type="radio" name="lineStyle" id="lineStyle2" value="straight" />
-			<label for="lineStyle2">Straight</label>
-	</div>
-</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="labelLineLength">Line style</label>
+			</div>
+			<div class="col-md-7">
+				<input type="radio" name="lineStyle" id="lineStyle1" value="curved" class="changeUpdateNoAnimation"
+					{{#compare config.labels.lines.style "curved"}}checked="checked"{{/compare}} />
+					<label for="lineStyle1">Curved</label>
+				<input type="radio" name="lineStyle" id="lineStyle2" value="straight" class="changeUpdateNoAnimation"
+					{{#compare config.labels.lines.style "straight"}}checked="checked"{{/compare}} />
+					<label for="lineStyle2">Straight</label>
+			</div>
+		</div>
 
-
-<div class="row form-group">
-	<div class="col-md-3">
-		<label>Color</label>
-	</div>
-	<div class="col-md-5">
-		<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
-			{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
-		<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
-	</div>
-	<div class="col-md-4">
-		<div class="form-group">
-			<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
-				{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
-			<div id="labelLinesColorGroup" class="colorGroup input-group">
-				<input type="text" id="labelLinesColor" value="{{#compare config.labels.lines.color "segment" operator="!="}}{{config.labels.lines.color}}{{/compare}}" class="form-control" />
-				<span class="input-group-addon"><i></i></span>
+		<div class="row form-group">
+			<div class="col-md-3">
+				<label>Color</label>
+			</div>
+			<div class="col-md-5">
+				<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
+					{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
+				<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
+						{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
+					<div id="labelLinesColorGroup" class="colorGroup input-group">
+						<input type="text" id="labelLinesColor" value="{{#compare config.labels.lines.color "segment" operator="!="}}{{config.labels.lines.color}}{{/compare}}" class="form-control" />
+						<span class="input-group-addon"><i></i></span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<h4 class="panelToggle">Tooltips<span></span></h4>
+
+<div class="panel panel-default hidden">
+</div>
+

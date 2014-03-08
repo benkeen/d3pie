@@ -48,6 +48,7 @@ var _defaultSettings = {
 		},
 		lines: {
 			enabled: true,
+			style: "curved",
 			length: 16,
 			color: "segment" // "segment" or a hex color
 		}

@@ -288,3 +288,38 @@ body .fadeIn {
 .topPage, .subPage {
 	opacity: 0;
 }
+
+.panelToggle {
+	border-bottom: 1px solid #cccccc;
+	padding-bottom: 6px;
+	margin-bottom: 16px;
+}
+.panelToggle span {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #666666;
+	margin-top: 6px;
+	float: right;
+}
+.panelToggle.expanded span {
+	width: 0;
+	height: 0;
+	border-top: none;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #666666;
+}
+
+.panelToggle:hover {
+	cursor: pointer;
+	color: #008cba;
+}
+.panelToggle:hover span {
+	border-top: 10px solid #008cba;
+}
+.panelToggle.expanded:hover span {
+	border-top: none;
+	border-bottom: 10px solid #008cba;
+}

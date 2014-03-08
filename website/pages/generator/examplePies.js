@@ -45,7 +45,6 @@ define([], function() {
 					{ label: "C+", value: 78327 },
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
-					{ label: "C#", value: 32170 },
 					{ label: "Shell", value: 28561 },
 					{ label: "Cobol", value: 24131 },
 					{ label: "C#", value: 100 },
@@ -88,6 +87,7 @@ define([], function() {
 					},
 					lines: {
 						enabled: true,
+						style: "curved",
 						length: 32,
 						color: "segment"
 					}

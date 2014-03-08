@@ -25,6 +25,13 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
+		//
+		$(".panelToggle").on("click", function() {
+			var id = this.id;
+			console.log(id);
+
+		});
+
 //		$("#labelLinesColor").on("focus", function() {
 //			$("#labelLineColorType2")[0].checked = true;
 //			$("#labelLinesColorGroup").colorpicker("show");
@@ -60,6 +67,7 @@ define([
 			},
 			lines: {
 				enabled: $("#showLabelLines")[0].checked,
+				style:   $("input[name=lineStyle]:checked").val(),
 				length:  parseInt($("#labelLineLength").val(), 10),
 				color:   lineColor
 			}

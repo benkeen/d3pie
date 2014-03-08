@@ -117,7 +117,6 @@ d3pie.labels = {
 		var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true});
 		var center = d3pie.math.getPieCenter();
 
-		var lineLength = _options.labels.lines.length;
 		var originCoords = d3pie.math.rotate(center.x, center.y - _outerRadius, center.x, center.y, angle);
 		var heightOffset = d3pie.labels.outerLabelGroupData[i].h / 5; // TODO check
 		var labelXMargin = 6; // the x-distance of the label from the end of the line [TODO configurable]
@@ -135,14 +134,15 @@ d3pie.labels = {
 				break;
 			case 1:
 				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
-				y2 = d3pie.labels.outerLabelGroupData[i].y - (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / 4;
+				y2 = originCoords.y + (d3pie.labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
 
 				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
+
 			case 2:
-				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
-				y2 = d3pie.labels.outerLabelGroupData[i].y - (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / 4;
+				x2 = originCoords.x - (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
+				y2 = originCoords.y + (d3pie.labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
 
 				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
@@ -158,14 +158,21 @@ d3pie.labels = {
 
 		/*
 		 * x1 / y1: the x/y coords of the start of the line, at the mid point of the segments arc on the pie circumference
-		 * x2 / y2: the midpoint of the line
+		 * x2 / y2: if "curved" line style is being used, this is the midpoint of the line. Other
 		 * x3 / y3: the end of the line; closest point to the label
 		 */
-		d3pie.labels.lineCoordGroups[i] = [
-			{ x: originCoords.x, y: originCoords.y },
-			//{ x: x2, y: y2 },
-			{ x: x3, y: y3 }
-		];
+		if (_options.labels.lines.style === "straight") {
+			d3pie.labels.lineCoordGroups[i] = [
+				{ x: originCoords.x, y: originCoords.y },
+				{ x: x3, y: y3 }
+			];
+		} else {
+			d3pie.labels.lineCoordGroups[i] = [
+				{ x: originCoords.x, y: originCoords.y },
+				{ x: x2, y: y2 },
+				{ x: x3, y: y3 }
+			];
+		}
 
 		/*
 		switch (quarter) {
