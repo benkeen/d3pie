@@ -108,13 +108,7 @@ define([], function() {
 					colors: [
 						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
 						"#830909", "#923e99", "#ae83d5", "#5F10E6", "#BF273E", "#CE2AEB", "#BCA44A", "#A8C427", "#618D1B",
-						"#1EE67B", "#B0EC44",
-						"#A4A0C9",
-						"#322849",
-						"#86F71A",
-						"#D1C87F",
-						"#7D9058",
-						"#44B9B0",
+						"#1EE67B", "#B0EC44", "#A4A0C9", "#322849", "#86F71A", "#D1C87F", "#7D9058", "#44B9B0",
 						"#7C37C0",
 						"#CC9FB1",
 						"#E65414",
@@ -162,6 +156,7 @@ define([], function() {
 				},
 				misc: {
 					dataSortOrder: "label-desc",
+					percentageDecimalPlace: 1,
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -280,6 +275,7 @@ define([], function() {
 				},
 				misc: {
 					dataSortOrder: "label-asc",
+					percentageDecimalPlace: 0,
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -387,6 +383,7 @@ define([], function() {
 				},
 				misc: {
 					dataSortOrder: "none",
+					percentageDecimalPlace: 0,
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -501,6 +498,7 @@ define([], function() {
 				},
 				misc: {
 					dataSortOrder: "label-desc",
+					percentageDecimalPlace: 0,
 					canvasPadding: {
 						top: 5,
 						right: 5,

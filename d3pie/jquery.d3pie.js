@@ -90,8 +90,8 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-		cssPrefix: "auto", // needed for?
 		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random [urgh! Wrong location]
+		percentageDecimalPlace: 0,
 		canvasPadding: {
 			top: 5,
 			right: 5,
@@ -384,6 +384,9 @@ d3pie.math = {
 		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
 		var y = ((_options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
 
+		x += _options.misc.pieCenterOffset.x;
+		y += _options.misc.pieCenterOffset.y;
+
 		return { x: x, y: y };
 	},
 
@@ -481,7 +484,8 @@ d3pie.labels = {
 				.attr("class", "segmentPercentage-" + section)
 				.attr("id", function(d, i) { return "segmentPercentage" + i + "-" + section; })
 				.text(function(d) {
-					return parseInt((d.value / _totalSize) * 100).toFixed(0) + "%"; // TODO
+					var percent = (d.value / _totalSize) * 100;
+					return percent.toFixed(_options.misc.percentageDecimalPlace) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize)
 				.style("font-family", settings.percentage.font)
@@ -785,7 +789,7 @@ d3pie.labels = {
 		var info = {
 			labelHeights: d3pie.labels.outerLabelGroupData[0].h,
 			center: d3pie.math.getPieCenter(),
-			lineLength: (_outerRadius + _options.labels.lines.length),
+			lineLength: (_outerRadius + _options.labels.outer.pieDistance),
 			heightChange: d3pie.labels.outerLabelGroupData[0].h + 1 // 1 = padding
 		};
 
@@ -854,7 +858,7 @@ d3pie.labels = {
 
 		var center = d3pie.math.getPieCenter();
 		var originalX = center.x;
-		var originalY = center.y - (_outerRadius + _options.labels.lines.length);
+		var originalY = center.y - (_outerRadius + _options.labels.outer.pieDistance);
 		var newCoords = d3pie.math.rotate(originalX, originalY, center.x, center.y, angle);
 
 		// if the label is on the left half of the pie, adjust the values

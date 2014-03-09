@@ -325,3 +325,6 @@ body .fadeIn {
 #pieIconPie, #pieIconDonut {
 	cursor: pointer;
 }
+.paddedRow {
+	margin-bottom: 6px;
+}

@@ -12,10 +12,9 @@ define([
 	};
 
 	var _getTabData = function() {
-		// TODO validation
-
 		return {
 			dataSortOrder: $("#dataSortOrder").val(),
+			percentageDecimalPlace: parseInt($("#percentageDecimalPlace").val(), 10),
 			canvasPadding: {
 				top: parseInt($("#canvasPaddingTop").val(), 10),
 				right: parseInt($("#canvasPaddingRight").val(), 10),

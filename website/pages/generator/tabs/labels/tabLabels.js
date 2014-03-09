@@ -82,7 +82,8 @@ define([
 			enableTooltips: false, //$("#enableTooltips")[0].checked,
 			outer: {
 				format: $("#outerLabel").val(),
-				hideWhenLessThanPercentage: outerHideWhenLessThanPercentage
+				hideWhenLessThanPercentage: outerHideWhenLessThanPercentage,
+				pieDistance: parseInt($("#pieDistance").val(), 10),
 			},
 			inner: {
 				format: $("#insideLabel").val(),
@@ -106,7 +107,6 @@ define([
 			lines: {
 				enabled: $("#showLabelLines")[0].checked,
 				style:   $("input[name=lineStyle]:checked").val(),
-				length:  parseInt($("#labelLineLength").val(), 10),
 				color:   lineColor
 			}
 		};

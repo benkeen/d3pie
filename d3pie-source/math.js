@@ -120,6 +120,9 @@ d3pie.math = {
 		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
 		var y = ((_options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
 
+		x += _options.misc.pieCenterOffset.x;
+		y += _options.misc.pieCenterOffset.y;
+
 		return { x: x, y: y };
 	},
 

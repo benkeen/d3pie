@@ -80,8 +80,8 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-		cssPrefix: "auto", // needed for?
 		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random [urgh! Wrong location]
+		percentageDecimalPlace: 0,
 		canvasPadding: {
 			top: 5,
 			right: 5,

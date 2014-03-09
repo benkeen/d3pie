@@ -1,11 +1,11 @@
 <h4 class="panelToggle{{#if openSections.panelOuterLabels}} expanded{{/if}}" data-section="panelOuterLabels">Outer Labels<span></span></h4>
 
 <div id="panelOuterLabels" {{#compare openSections.panelOuterLabels false}}class="hidden"{{/compare}}>
-	<div class="row">
-		<div class="col-md-3">
+	<div class="row paddedRow">
+		<div class="col-md-4">
 			<label for="outerLabel" class="control-label">Content</label>
 		</div>
-		<div class="col-md-9 form-group padRight30">
+		<div class="col-md-8 padRight30">
 			<select id="outerLabel" class="form-control changeUpdateNoAnimation">
 				<option value="none" {{#compare config.labels.outer.format "none"}}selected="selected"{{/compare}}>None</option>
 				<option value="label" {{#compare config.labels.outer.format "label"}}selected="selected"{{/compare}}>Label</option>
@@ -18,11 +18,11 @@
 			</select>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-3">
+	<div class="row paddedRow">
+		<div class="col-md-4">
 			<label class="control-label">Hide Labels</label>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<input type="radio" name="hideOuterLabelCondition" id="hideOuterLabelCondition1" class="changeUpdateNoAnimation"
 				{{#compare config.labels.outer.hideWhenLessThanPercentage null}}checked="checked"{{/compare}} />
 				<label for="hideOuterLabelCondition1" class="padRight30">Never</label>
@@ -32,7 +32,14 @@
 				<label for="hideOuterLabelCondition2">When under</label>
 				<input type="number" class="tinyField changeUpdateNoAnimation" id="outerHideWhenLessThanPercentage"
 					min="1" max="99" maxlength="2" value="{{config.labels.outer.hideWhenLessThanPercentage}}" /> %
-
+		</div>
+	</div>
+	<div class="row paddedRow">
+		<div class="col-md-4">
+			<label for="pieDistance">Distance from pie</label>
+		</div>
+		<div class="col-md-8">
+			<input type="number" id="pieDistance" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
 		</div>
 	</div>
 </div>
@@ -175,21 +182,11 @@
 			<label for="showLabelLines">Show label lines</label>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-md-3">
-			<label for="labelLineLength">Line length</label>
+			<label for="lineStyle1">Line style</label>
 		</div>
-		<div class="col-md-7">
-			<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-md-3">
-			<label for="labelLineLength">Line style</label>
-		</div>
-		<div class="col-md-7">
+		<div class="col-md-9">
 			<input type="radio" name="lineStyle" id="lineStyle1" value="curved" class="changeUpdateNoAnimation"
 				{{#compare config.labels.lines.style "curved"}}checked="checked"{{/compare}} />
 				<label for="lineStyle1">Curved</label>
@@ -198,7 +195,6 @@
 				<label for="lineStyle2">Straight</label>
 		</div>
 	</div>
-
 	<div class="row form-group">
 		<div class="col-md-3">
 			<label>Color</label>
