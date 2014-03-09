@@ -89,8 +89,8 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-		cssPrefix: "auto", //
-		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
+		cssPrefix: "auto", // needed for?
+		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random [urgh! Wrong location]
 		canvasPadding: {
 			top: 5,
 			right: 5,
@@ -98,8 +98,7 @@ var _defaultSettings = {
 			left: 5
 		},
 		titleSubtitlePadding: 5, // the padding between the title and subtitle
-		footerPiePadding: 0,
-		textSelectable: false
+		footerPiePadding: 0
 	},
 	callbacks: {
 		onload: null,

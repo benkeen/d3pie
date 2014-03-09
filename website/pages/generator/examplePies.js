@@ -1,9 +1,14 @@
 define([], function() {
 	"use strict";
 
-	var EXAMPLE_PIES = [
 
-		// ----------------------------------------------------------------------------------------
+	/**
+	 * This file contains all the pie chart configurations that show up in the "Examples" dropdown on the
+	 * generator page. Note: these configurations are *exhaustive*: they define every possible setting, even specifying
+	 * the defaults. When using the actual script, people will only have to define those settings they actually need,
+	 * so the "generate code" option will show a subset of all this.
+	 */
+	var EXAMPLE_PIES = [
 
 		{
 			label: "Programming Languages",
@@ -102,13 +107,8 @@ define([], function() {
 					backgroundColor: null,
 					colors: [
 						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
-						"#830909", "#923e99", "#ae83d5", "#5F10E6", "#BF273E",
-						"#CE2AEB",
-						"#BCA44A",
-						"#A8C427",
-						"#618D1B",
-						"#1EE67B",
-						"#B0EC44",
+						"#830909", "#923e99", "#ae83d5", "#5F10E6", "#BF273E", "#CE2AEB", "#BCA44A", "#A8C427", "#618D1B",
+						"#1EE67B", "#B0EC44",
 						"#A4A0C9",
 						"#322849",
 						"#86F71A",
@@ -160,7 +160,6 @@ define([], function() {
 					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
-					enableTooltips: false,
 					dataSortOrder: "label-desc",
 					canvasPadding: {
 						top: 5,
@@ -168,8 +167,11 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					titleSubtitlePadding: 9,
-					preventTextSelection: true
+					pieCenterOffset: {
+						x: 0,
+						y: 0
+					},
+					titleSubtitlePadding: 9
 				}
 			}
 		},
@@ -275,7 +277,6 @@ define([], function() {
 					labelFadeInTime: 400
 				},
 				misc: {
-					enableTooltips: false,
 					dataSortOrder: "label-asc",
 					canvasPadding: {
 						top: 5,
@@ -283,8 +284,11 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					titleSubtitlePadding: 6,
-					preventTextSelection: true
+					pieCenterOffset: {
+						x: 0,
+						y: 0
+					},
+					titleSubtitlePadding: 6
 				}
 			}
 		},
@@ -380,14 +384,16 @@ define([], function() {
 					highlightSegmentOnMouseover: true
 				},
 				misc: {
-					enableTooltips: false,
 					dataSortOrder: "none",
-					preventTextSelection: true,
 					canvasPadding: {
 						top: 5,
 						right: 5,
 						bottom: 5,
 						left: 5
+					},
+					pieCenterOffset: {
+						x: 0,
+						y: 0
 					},
 					titleSubtitlePadding: 12
 				}
@@ -491,7 +497,6 @@ define([], function() {
 					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
-					enableTooltips: false,
 					dataSortOrder: "label-desc",
 					canvasPadding: {
 						top: 5,
@@ -499,11 +504,14 @@ define([], function() {
 						bottom: 5,
 						left: 5
 					},
-					titleSubtitlePadding: 9,
-					preventTextSelection: true
+					pieCenterOffset: {
+						x: 0,
+						y: 0
+					},
+					titleSubtitlePadding: 9
 				}
 			}
-		},
+		}
 
 	];
 

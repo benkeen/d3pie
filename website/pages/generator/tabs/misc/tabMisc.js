@@ -22,6 +22,10 @@ define([
 				bottom: parseInt($("#canvasPaddingBottom").val(), 10),
 				left: parseInt($("#canvasPaddingLeft").val(), 10)
 			},
+			pieCenterOffset: {
+				x: parseInt($("#pieCenterOffsetX").val(), 10),
+				y: parseInt($("#pieCenterOffsetY").val(), 10)
+			},
 			titleSubtitlePadding: parseInt($("#titleSubtitlePadding").val(), 10)
 		};
 	};

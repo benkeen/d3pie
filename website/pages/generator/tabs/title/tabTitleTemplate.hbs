@@ -1,23 +1,27 @@
-<div class="row col-lg-12">
-	<h4>Title</h4>
+<h4>Title</h4>
+
+<div class="row form-group">
+	<div class="col-lg-12">
+		<input type="text" class="form-control" id="pieTitle" value="{{config.header.title.text}}" />
+	</div>
 </div>
 
-<div class="row col-lg-12 form-group">
-	<input type="text" class="form-control" id="pieTitle" value="{{config.header.title.text}}" />
+<div class="row">
+	<div class="col-lg-12">
+		<label for="pieSubtitle" class="control-label">Subtitle</label>
+	</div>
 </div>
-
-<div class="row col-lg-12">
-	<label for="pieSubtitle" class="control-label">Subtitle</label>
-</div>
-<div class="row col-lg-12 form-group">
-	<input type="text" class="form-control" id="pieSubtitle" value="{{config.header.subtitle.text}}" />
+<div class="row form-group">
+	<div class="col-lg-12">
+		<input type="text" class="form-control" id="pieSubtitle" value="{{config.header.subtitle.text}}" />
+	</div>
 </div>
 
 <div class="row col-lg-12">
 	<label for="titleLocation" class="control-label">Title Location</label>
 </div>
-<div class="row col-lg-12 form-group">
-	<div>
+<div class="row form-group">
+	<div class="col-lg-12">
 		<select id="titleLocation" class="form-control changeUpdateNoAnimation">
 			<option value="top-left" {{#compare config.header.location "top-left"}}selected="selected"{{/compare}}>Top-left</option>
 			<option value="top-center" {{#compare config.header.location "top-center"}}selected="selected"{{/compare}}>Top-center</option>
@@ -26,13 +30,10 @@
 	</div>
 </div>
 
-<div class="row col-md-12" style="padding-top: 10px">
-	<h4>Title Styles</h4>
-</div>
 
-<div id="titleStyles" style="padding-right: 30px">
-	<div class="md-col-12"></div>
+<h4 style="padding-top: 10px">Title Styles</h4>
 
+<div id="titleStyles">
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-3"><label>Color</label></div>

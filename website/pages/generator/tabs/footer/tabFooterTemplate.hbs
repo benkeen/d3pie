@@ -1,14 +1,18 @@
 <h4>Footer text</h4>
 
-<div class="row col-lg-12 form-group">
-    <input type="text" class="form-control" id="footerText" value="{{config.footer.text}}" />
+<div class="row form-group">
+	<div class="col-lg-12">
+    	<input type="text" class="form-control" id="footerText" value="{{config.footer.text}}" />
+	</div>
 </div>
 
-<div class="row col-lg-12">
-    <label for="footerLocation" class="control-label">Footer Location</label>
+<div class="row">
+	<div class="col-lg-12">
+    	<label for="footerLocation" class="control-label">Footer Location</label>
+	</div>
 </div>
-<div class="row col-lg-12 form-group">
-    <div>
+<div class="row form-group">
+    <div class="col-lg-12">
         <select id="footerLocation" class="form-control changeUpdateNoAnimation">
             <option value="bottom-left" {{#compare config.footer.location "bottom-left"}}selected="selected"{{/compare}}>Bottom-left</option>
             <option value="bottom-center" {{#compare config.footer.location "bottom-center"}}selected="selected"{{/compare}}>Bottom-center</option>
@@ -26,8 +30,8 @@
 
     <div class="row">
         <div class="col-md-4"><label>Color</label></div>
-        <div class="col-md-4"><label>Font</label></div>
-        <div class="col-md-4"><label>Font Size</label></div>
+        <div class="col-md-5"><label>Font</label></div>
+        <div class="col-md-3"><label>Font Size</label></div>
     </div>
 
     <div class="row">
@@ -37,7 +41,7 @@
                 <span class="input-group-addon"><i></i></span>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <select id="footerFont" class="form-control changeUpdateNoAnimation">
                 <option value="arial" {{#compare config.footer.font "arial"}}selected="selected"{{/compare}}>Arial</option>
                 <option value="open sans" {{#compare config.footer.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
@@ -48,7 +52,7 @@
                 <option value="garamond" {{#compare config.footer.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input id="footerFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.footer.fontSize}}" />
             <label for="footerFontSize">px</label>
         </div>

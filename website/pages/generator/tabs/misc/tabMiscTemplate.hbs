@@ -2,20 +2,15 @@
 	<h4>Misc</h4>
 </div>
 
-<div class="row col-lg-12 form-group">
-	<input type="checkbox" id="preventTextSection" {{#compare config.misc.preventTextSelection true}}checked="checked"{{/compare}} />
-	<label for="preventTextSection" class="control-label">Prevent selection of text</label>
-</div>
-
-<div class="row col-lg-12 form-group">
-	<label for="percentageDecimalPlace" class="control-label">Percentage: Decimal places</label>
-	<input type="number" id="percentageDecimalPlace" class="smallField" value="0" />
+<div class="row form-group">
+	<div class="col-lg-12">
+		<label for="percentageDecimalPlace" class="control-label">Decimal places for percentage values</label>
+		<input type="number" id="percentageDecimalPlace" class="tinyField" value="0" />
+	</div>
 </div>
 
 
-<div class="row col-lg-12">
-	<h4>Padding</h4>
-</div>
+<h4>Padding</h4>
 
 <div class="misc">
 	<div class="row">
@@ -54,57 +49,43 @@
 
 	<div class="row">
 		<div class="col-lg-3">
-			<label>Footer-text pad</label>
-		</div>
-		<div class="col-lg-3">
 			<label>Title-subtitle pad</label>
 		</div>
+		<div class="col-lg-9"></div>
+	</div>
+
+	<div class="row form-group">
 		<div class="col-lg-3">
+			<input type="number" id="titleSubtitlePadding" value="{{config.misc.titleSubtitlePadding}}" min="0"
+				   class="smallField keyupUpdateNoAnimation" />
+		</div>
+		<div class="col-lg-9"></div>
+	</div>
+
+</div>
+
+<h4>Pie Center Offset</h4>
+
+<div class="misc">
+	<div class="row">
+		<div class="col-lg-3">
+			<label>&plusmn; x</label>
 		</div>
 		<div class="col-lg-3">
+			<label>&plusmn; y</label>
 		</div>
 	</div>
 
 	<div class="row form-group">
 		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0"
+			<input type="number" id="pieCenterOffsetX" value="{{config.misc.pieCenterOffset.x}}" min="-500" max="500" step="5"
 				class="smallField keyupUpdateNoAnimation" />
 		</div>
 		<div class="col-lg-3">
-			<input type="number" id="titleSubtitlePadding" value="{{config.misc.titleSubtitlePadding}}" min="0"
-				   class="smallField keyupUpdateNoAnimation" />
+			<input type="number" id="pieCenterOffsetY" value="{{config.misc.pieCenterOffset.y}}" min="-500" max="500" step="5"
+				class="smallField keyupUpdateNoAnimation" />
 		</div>
-		<div class="col-lg-3">
-		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-6">
 		</div>
 	</div>
-
 </div>
-
-<!--
-<div class="row col-lg-12">
-	<h4>Misc Options</h4>
-</div>
-
-<div class="row col-lg-12 form-group">
-	<input type="checkbox" id="hideLabelsForSmallSegments" {{#compare config.misc.hideLabelsForSmallSegments true}}checked="checked"{{/compare}} />
-	<label for="orderData" class="control-label">Hide labels for segments <= </label>
-	<input type="text" id="hideLabelsForSmallSegments" />
-	<select class="form-group">
-		<option value="percent">percent</option>
-		<option value="value">value</option>
-	</select>
-</div>
-
-<div class="row col-lg-12 form-group">
-	<input type="checkbox" id="enableTooltips" {{#compare config.misc.enableTooltips true}}checked="checked"{{/compare}} />
-	<label for="enableTooltips" class="control-label">Enable tooltips</label>
-</div>
--->
-
-
-
-<!--
-orderData: "hightolow", // only one option right now
--->
