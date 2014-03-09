@@ -197,6 +197,10 @@ d3pie.segments = {
 		}
 
 		return angle;
+	},
+
+	getPercentage: function(index) {
+		return Math.floor((_options.data[index].value / _totalSize) * 100);
 	}
 
 };

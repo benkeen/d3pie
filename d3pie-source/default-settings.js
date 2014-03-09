@@ -29,8 +29,14 @@ var _defaultSettings = {
 	},
 	labels: {
 		enableTooltips: true,
-		inside: "none",
-		outside: "label",
+		inner: {
+			format: "percentage",
+			hideWhenLessThanPercentage: null
+		},
+		outer: {
+			format: "label",
+			hideWhenLessThanPercentage: null
+		},
 		mainLabel: {
 			color: "#333333",
 			font: "Open sans",
@@ -73,12 +79,6 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-//			enableTooltips: false,
-//			dataSortOrder: "none",
-//			hideLabelsForSmallSegments: false,
-//			hideLabelsForSmallSegmentSize: "5%",
-//			preventTextSelection: true
-
 		cssPrefix: "auto", //
 		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
 		canvasPadding: {

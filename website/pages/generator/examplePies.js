@@ -68,8 +68,14 @@ define([], function() {
 				],
 				labels: {
 					enableTooltips: true,
-					inside: "percentage",
-					outside: "label-percentage1",
+					outer: {
+						format: "label-percentage1",
+						hideWhenLessThanPercentage: 5
+					},
+					inner: {
+						format: "percentage",
+						hideWhenLessThanPercentage: 5
+					},
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
@@ -96,10 +102,7 @@ define([], function() {
 					backgroundColor: null,
 					colors: [
 						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
-						"#830909", "#923e99", "#ae83d5",
-
-						"#5F10E6",
-						"#BF273E",
+						"#830909", "#923e99", "#ae83d5", "#5F10E6", "#BF273E",
 						"#CE2AEB",
 						"#BCA44A",
 						"#A8C427",
@@ -136,8 +139,6 @@ define([], function() {
 						"#F2D2FF",
 						"#E4C04C",
 						"#9BAB4A"
-
-
 					]
 				},
 				effects: {
@@ -161,8 +162,6 @@ define([], function() {
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "label-desc",
-					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%",
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -227,8 +226,14 @@ define([], function() {
 				],
 				labels: {
 					enableTooltips: true,
-					inside: "none",
-					outside: "label",
+					outer: {
+						format: "label-percentage1",
+						hideWhenLessThanPercentage: 5
+					},
+					inner: {
+						format: "percentage",
+						hideWhenLessThanPercentage: 5
+					},
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
@@ -272,8 +277,6 @@ define([], function() {
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "label-asc",
-					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%",
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -330,8 +333,14 @@ define([], function() {
 				],
 				labels: {
 					enableTooltips: true,
-					inside: "value",
-					outside: "label",
+					outer: {
+						format: "label-percentage1",
+						hideWhenLessThanPercentage: 5
+					},
+					inner: {
+						format: "percentage",
+						hideWhenLessThanPercentage: 5
+					},
 					mainLabel: {
 						color: "#333333",
 						font: "verdana",
@@ -373,8 +382,6 @@ define([], function() {
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "none",
-					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%",
 					preventTextSelection: true,
 					canvasPadding: {
 						top: 5,
@@ -429,8 +436,14 @@ define([], function() {
 				],
 				labels: {
 					enableTooltips: true,
-					inside: "percentage",
-					outside: "label-value1",
+					outer: {
+						format: "label-percentage1",
+						hideWhenLessThanPercentage: 5
+					},
+					inner: {
+						format: "percentage",
+						hideWhenLessThanPercentage: 5
+					},
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
@@ -480,8 +493,6 @@ define([], function() {
 				misc: {
 					enableTooltips: false,
 					dataSortOrder: "label-desc",
-					hideLabelsForSmallSegments: false,
-					hideLabelsForSmallSegmentSize: "5%",
 					canvasPadding: {
 						top: 5,
 						right: 5,

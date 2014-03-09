@@ -103,7 +103,6 @@ d3pie.helpers = {
 	 * @returns {boolean}
 	 */
 	rectIntersect: function(r1, r2) {
-
 		var returnVal = (
 			// r2.left > r1.right
 			(r2.x > (r1.x + r1.w)) ||
@@ -119,12 +118,12 @@ d3pie.helpers = {
 		);
 
 		return !returnVal;
-	},
-
-	rectIntersect2: function (a, b) {
-		return (a.left <= b.right &&
-			b.left <= a.right &&
-			a.top <= b.bottom &&
-			b.top <= a.bottom)
 	}
+
+//	rectIntersect2: function (a, b) {
+//		return (a.left <= b.right &&
+//			b.left <= a.right &&
+//			a.top <= b.bottom &&
+//			b.top <= a.bottom)
+//	}
 };

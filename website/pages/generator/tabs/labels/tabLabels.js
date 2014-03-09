@@ -7,10 +7,20 @@ define([
 	"use strict";
 
 	var _MODULE_ID = "labelsTab";
+	var _openSections = {
+		panelOuterLabels: true,
+		panelInnerLabels: false,
+		panelLabelStyles: false,
+		panelLabelLines: false,
+		panelTooltips: false
+	};
 
 
 	var _render = function(tabEl, config) {
-		$(tabEl).html(labelsTabTemplate({ config: config }));
+		$(tabEl).html(labelsTabTemplate({
+			config: config,
+			openSections: _openSections
+		}));
 
 		utils.addColorpicker("mainLabelColor");
 		utils.addColorpicker("labelPercentageColor");
@@ -25,11 +35,17 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
-		//
 		$(".panelToggle").on("click", function() {
-			var id = this.id;
-			console.log(id);
-
+			var $sectionHeading = $(this);
+			var section = $sectionHeading.data("section");
+			var $el = $("#" + section);
+			if ($sectionHeading.hasClass("expanded")) {
+				$el.hide("blind", function() { $sectionHeading.removeClass("expanded"); });
+				_openSections[section] = false;
+			} else {
+				$el.css("display", "none").removeClass("hidden").show("blind", function() { $sectionHeading.addClass("expanded"); });
+				_openSections[section] = true;
+			}
 		});
 
 //		$("#labelLinesColor").on("focus", function() {
@@ -46,10 +62,35 @@ define([
 			lineColor = $("#labelLinesColor").val();
 		}
 
+		var outerHideWhenLessThanPercentage = null;
+		if ($("#hideOuterLabelCondition2")[0].checked) {
+			var val = $("#outerHideWhenLessThanPercentage").val();
+			if ($.isNumeric(val)) {
+				outerHideWhenLessThanPercentage = val;
+			}
+		}
+
+		var innerHideWhenLessThanPercentage = null;
+		if ($("#hideInnerLabelCondition2")[0].checked) {
+			var val = $("#innerHideWhenLessThanPercentage").val();
+			if ($.isNumeric(val)) {
+				innerHideWhenLessThanPercentage = val;
+			}
+		}
+
+		console.log("outer: ", outerHideWhenLessThanPercentage);
+		console.log("inner: ", innerHideWhenLessThanPercentage);
+
 		return {
 			enableTooltips: false, //$("#enableTooltips")[0].checked,
-			inside:         $("#insideLabel").val(),
-			outside:        $("#outsideLabel").val(),
+			outer: {
+				format: $("#outerLabel").val(),
+				hideWhenLessThanPercentage: outerHideWhenLessThanPercentage
+			},
+			inner: {
+				format: $("#insideLabel").val(),
+				hideWhenLessThanPercentage: innerHideWhenLessThanPercentage
+			},
 			mainLabel: {
 				color:    $("#mainLabelColor").val(),
 				font:     $("#mainLabelFont").val(),

@@ -39,8 +39,14 @@ var _defaultSettings = {
 	},
 	labels: {
 		enableTooltips: true,
-		inside: "none",
-		outside: "label",
+		inner: {
+			format: "percentage",
+			hideWhenLessThanPercentage: null
+		},
+		outer: {
+			format: "label",
+			hideWhenLessThanPercentage: null
+		},
 		mainLabel: {
 			color: "#333333",
 			font: "Open sans",
@@ -83,12 +89,6 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-//			enableTooltips: false,
-//			dataSortOrder: "none",
-//			hideLabelsForSmallSegments: false,
-//			hideLabelsForSmallSegmentSize: "5%",
-//			preventTextSelection: true
-
 		cssPrefix: "auto", //
 		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random
 		canvasPadding: {
@@ -218,7 +218,6 @@ d3pie.helpers = {
 	 * @returns {boolean}
 	 */
 	rectIntersect: function(r1, r2) {
-
 		var returnVal = (
 			// r2.left > r1.right
 			(r2.x > (r1.x + r1.w)) ||
@@ -234,14 +233,14 @@ d3pie.helpers = {
 		);
 
 		return !returnVal;
-	},
-
-	rectIntersect2: function (a, b) {
-		return (a.left <= b.right &&
-			b.left <= a.right &&
-			a.top <= b.bottom &&
-			b.top <= a.bottom)
 	}
+
+//	rectIntersect2: function (a, b) {
+//		return (a.left <= b.right &&
+//			b.left <= a.right &&
+//			a.top <= b.bottom &&
+//			b.top <= a.bottom)
+//	}
 };
 
 	// --------- math.js -----------
@@ -593,38 +592,6 @@ d3pie.labels = {
 				{ x: x3, y: y3 }
 			];
 		}
-
-		/*
-		switch (quarter) {
-			case 0:
-				var xCalc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				x2     = xCalc1 * (_outerRadius + lineMidPointDistance);
-				var yCalc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				y2     = -yCalc1 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-
-			case 1:
-				var xCalc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				x2     = xCalc2 * (_outerRadius + lineMidPointDistance);
-				var yCalc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				y2     = yCalc2 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-
-			case 2:
-				var xCalc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				x2     = -xCalc3 * (_outerRadius + lineMidPointDistance);
-				var yCalc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				y2     = yCalc3 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-
-			case 3:
-				var xCalc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				x2     = -xCalc4 * (_outerRadius + lineMidPointDistance);
-				var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				y2     = -calc4 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-		}
-		*/
 	},
 
 	addLabelLines: function() {
@@ -649,7 +616,12 @@ d3pie.labels = {
 				return (_options.labels.lines.color === "segment") ? _options.styles.colors[i] : _options.labels.lines.color;
 			})
 			.attr("stroke-width", 1)
-			.attr("fill", "none");
+			.attr("fill", "none")
+			.style("opacity", function(d, i) {
+				var percentage = _options.labels.outer.hideWhenLessThanPercentage;
+				var segmentPercentage = d3pie.segments.getPercentage(i);
+				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+			})
 	},
 
 	positionLabelGroups: function(section) {
@@ -682,10 +654,23 @@ d3pie.labels = {
 		setTimeout(function() {
 			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
 
-			d3.selectAll(".labelGroup-outer,.labelGroup-inner")
+			d3.selectAll(".labelGroup-outer")
 				.transition()
 				.duration(labelFadeInTime)
-				.style("opacity", 1);
+				.style("opacity", function(d, i) {
+					var percentage = _options.labels.outer.hideWhenLessThanPercentage;
+					var segmentPercentage = d3pie.segments.getPercentage(i);
+					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+				});
+
+			d3.selectAll(".labelGroup-inner")
+				.transition()
+				.duration(labelFadeInTime)
+				.style("opacity", function(d, i) {
+					var percentage = _options.labels.inner.hideWhenLessThanPercentage;
+					var segmentPercentage = d3pie.segments.getPercentage(i);
+					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+				});
 
 			d3.selectAll("g.lineGroups")
 				.transition()
@@ -1070,6 +1055,10 @@ d3pie.segments = {
 		}
 
 		return angle;
+	},
+
+	getPercentage: function(index) {
+		return Math.floor((_options.data[index].value / _totalSize) * 100);
 	}
 
 };
@@ -1417,19 +1406,19 @@ d3pie.prototype.init = function() {
 
 		d3pie.segments.create();
 		var l = d3pie.labels;
-		l.add("inner", _options.labels.inside);
-		l.add("outer", _options.labels.outside);
+		l.add("inner", _options.labels.inner.format);
+		l.add("outer", _options.labels.outer.format);
 
 		// position the label elements relatively within their individual group (label, percentage, value)
-		l.positionLabelElements("inner", _options.labels.inside);
-		l.positionLabelElements("outer", _options.labels.outside);
+		l.positionLabelElements("inner", _options.labels.inner.format);
+		l.positionLabelElements("outer", _options.labels.outer.format);
 
 		l.computeOuterLabelCoords();
 
 		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
 		l.positionLabelGroups("outer");
 
-		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
+		if (_options.labels.lines.enabled && _options.labels.outer.format !== "none") {
 			l.computeLabelLinePositions();
 			l.addLabelLines();
 		}

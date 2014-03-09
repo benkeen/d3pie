@@ -1,244 +1,236 @@
-<h4 class="panelToggle expanded">Outer Labels<span></span></h4>
+<h4 class="panelToggle{{#if openSections.panelOuterLabels}} expanded{{/if}}" data-section="panelOuterLabels">Outer Labels<span></span></h4>
 
-<div>
+<div id="panelOuterLabels" {{#compare openSections.panelOuterLabels false}}class="hidden"{{/compare}}>
 	<div class="row">
 		<div class="col-md-3">
-			<label for="outsideLabel" class="control-label">Content</label>
+			<label for="outerLabel" class="control-label">Content</label>
 		</div>
 		<div class="col-md-9 form-group padRight30">
-			<select id="outsideLabel" class="form-control changeUpdateNoAnimation">
-				<option value="none" {{#compare config.labels.outside "none"}}selected="selected"{{/compare}}>None</option>
-				<option value="label" {{#compare config.labels.outside "label"}}selected="selected"{{/compare}}>Label</option>
-				<option value="value" {{#compare config.labels.outside "value"}}selected="selected"{{/compare}}>Value</option>
-				<option value="percentage" {{#compare config.labels.outside "percentage"}}selected="selected"{{/compare}}>Percentage</option>
-				<option value="label-value1" {{#compare config.labels.outside "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
-				<option value="label-value2" {{#compare config.labels.outside "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
-				<option value="label-percentage1" {{#compare config.labels.outside "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
-				<option value="label-percentage2" {{#compare config.labels.outside "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
+			<select id="outerLabel" class="form-control changeUpdateNoAnimation">
+				<option value="none" {{#compare config.labels.outer.format "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="label" {{#compare config.labels.outer.format "label"}}selected="selected"{{/compare}}>Label</option>
+				<option value="value" {{#compare config.labels.outer.format "value"}}selected="selected"{{/compare}}>Value</option>
+				<option value="percentage" {{#compare config.labels.outer.format "percentage"}}selected="selected"{{/compare}}>Percentage</option>
+				<option value="label-value1" {{#compare config.labels.outer.format "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
+				<option value="label-value2" {{#compare config.labels.outer.format "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
+				<option value="label-percentage1" {{#compare config.labels.outer.format "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
+				<option value="label-percentage2" {{#compare config.labels.outer.format "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
 			</select>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-3">
-			<label for="outsideLabel" class="control-label">Hide Labels</label>
+			<label class="control-label">Hide Labels</label>
 		</div>
 		<div class="col-md-9">
-			<input type="radio" name="hideLabelCondition" id="hideLabelCondition1" />
-				<label for="hideLabelCondition1" class="padRight30">Never</label>
-			<input type="radio" name="hideLabelCondition" id="hideLabelCondition2" />
-				<label for="hideLabelCondition2">
-					When under
-					<input type="text" class="tinyField" maxlength="2" /> %
-				</label>
-		</div>
-	</div>
-</div>
+			<input type="radio" name="hideOuterLabelCondition" id="hideOuterLabelCondition1" class="changeUpdateNoAnimation"
+				{{#compare config.labels.outer.hideWhenLessThanPercentage null}}checked="checked"{{/compare}} />
+				<label for="hideOuterLabelCondition1" class="padRight30">Never</label>
 
-<!--
-<div class="row form-group">
-	<div class="col-md-6">
-		<input type="checkbox" id="enableTooltips" {{#compare config.labels.enableTooltips true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
-		<label for="enableTooltips">Include mouseover tooltips</label>
-	</div>
-</div>
--->
+			<input type="radio" name="hideOuterLabelCondition" id="hideOuterLabelCondition2" class="changeUpdateNoAnimation"
+				{{#if config.labels.outer.hideWhenLessThanPercentage}}checked="checked"{{/if}} />
+				<label for="hideOuterLabelCondition2">When under</label>
+				<input type="number" class="tinyField changeUpdateNoAnimation" id="outerHideWhenLessThanPercentage"
+					min="1" max="99" maxlength="2" value="{{config.labels.outer.hideWhenLessThanPercentage}}" /> %
 
-<h4 class="panelToggle">Inside Labels<span></span></h4>
-
-<div class="panel panel-default hidden">
-	<div class="panel-body">
-		<div class="row">
-			<div class="col-md-3">
-				<label for="outsideLabel" class="control-label">Content</label>
-			</div>
-			<div class="col-md-9">
-				<div class="form-group">
-					<select id="insideLabel" class="form-control changeUpdateNoAnimation">
-						<option value="none" {{#compare config.labels.inside "none"}}selected="selected"{{/compare}}>None</option>
-						<option value="label" {{#compare config.labels.inside "label"}}selected="selected"{{/compare}}>Label</option>
-						<option value="value" {{#compare config.labels.inside "value"}}selected="selected"{{/compare}}>Value</option>
-						<option value="percentage" {{#compare config.labels.inside "percentage"}}selected="selected"{{/compare}}>Percentage</option>
-						<option value="label-value1" {{#compare config.labels.inside "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
-						<option value="label-value2" {{#compare config.labels.inside "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
-						<option value="label-percentage1" {{#compare config.labels.inside "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
-						<option value="label-percentage2" {{#compare config.labels.inside "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
-					</select>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3">
-				<label for="outsideLabel" class="control-label">Hide Labels</label>
-			</div>
-			<div class="col-md-9">
-				<input type="radio" name="hideLabelCondition" id="hideLabelCondition1" />
-					<label for="hideLabelCondition1" class="padRight30">Never</label>
-
-				<input type="radio" name="hideLabelCondition" id="hideLabelCondition2" />
-				<label for="hideLabelCondition2">
-					When under
-					<input type="text" class="tinyField" maxlength="2" /> %
-				</label>
-			</div>
-		</div>
-
-	</div>
-</div>
-
-
-<h4 class="panelToggle">Label Styles<span></span></h4>
-
-<div class="panel panel-default hidden">
-	<div class="panel-body">
-
-		<div id="labelStyles" style="padding-right: 30px">
-			<div class="md-col-12"></div>
-
-			<div class="row">
-				<div class="col-md-2"></div>
-				<div class="col-md-3"><label>Color</label></div>
-				<div class="col-md-4"><label>Font</label></div>
-				<div class="col-md-3"><label>Font Size</label></div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-2"><label for="mainLabelColor">Label</label></div>
-				<div class="col-md-3">
-					<div id="mainLabelColorGroup" class="colorGroup input-group">
-						<input type="text" id="mainLabelColor" value="{{config.labels.mainLabel.color}}" class="form-control" />
-						<span class="input-group-addon"><i></i></span>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<select id="mainLabelFont" class="form-control form-group changeUpdateNoAnimation">
-						<option value="arial" {{#compare config.labels.mainLabel.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-						<option value="open sans" {{#compare config.labels.mainLabel.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-						<option value="times new roman" {{#compare config.labels.mainLabel.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-						<option value="courier" {{#compare config.labels.mainLabel.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-						<option value="verdana" {{#compare config.labels.mainLabel.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-						<option value="helvetica" {{#compare config.labels.mainLabel.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-						<option value="garamond" {{#compare config.labels.mainLabel.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
-					</select>
-				</div>
-				<div class="col-md-3">
-					<input id="mainLabelFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.mainLabel.fontSize}}" />
-					<label for="mainLabelFontSize">px</label>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-2"><label for="labelPercentageColor">Percentage</label></div>
-				<div class="col-md-3">
-					<div id="labelPercentageColorGroup" class="colorGroup input-group">
-						<input type="text" id="labelPercentageColor" value="{{config.labels.percentage.color}}" class="form-control" />
-						<span class="input-group-addon"><i></i></span>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<select id="labelPercentageFont" class="form-control form-group changeUpdateNoAnimation">
-						<option value="arial" {{#compare config.labels.percentage.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-						<option value="open sans" {{#compare config.labels.percentage.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-						<option value="times new roman" {{#compare config.labels.percentage.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-						<option value="courier" {{#compare config.labels.percentage.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-						<option value="verdana" {{#compare config.labels.percentage.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-						<option value="helvetica" {{#compare config.labels.percentage.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-						<option value="garamond" {{#compare config.labels.percentage.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
-					</select>
-				</div>
-				<div class="col-md-3">
-					<input id="labelPercentageFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.percentage.fontSize}}" />
-					<label for="labelPercentageFontSize">px</label>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-2"><label for="subtitleColor">Value</label></div>
-				<div class="col-md-3">
-					<div id="labelValueColorGroup" class="colorGroup input-group">
-						<input type="text" id="labelValueColor" value="{{config.labels.value.color}}" class="form-control" />
-						<span class="input-group-addon"><i></i></span>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<select id="labelValueFont" class="form-control form-group changeUpdateNoAnimation">
-						<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-						<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-						<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-						<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-						<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-						<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-						<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
-					</select>
-				</div>
-				<div class="col-md-3">
-					<input id="labelValueFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
-					<label for="labelValueFontSize">px</label>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
 
 
-<h4 class="panelToggle">Label Lines<span></span></h4>
+<h4 class="panelToggle{{#if openSections.panelInnerLabels}} expanded{{/if}}" data-section="panelInnerLabels">Inner Labels<span></span></h4>
 
-<div class="panel panel-default hidden">
-	<div class="panel-body">
-		<div class="row form-group">
-			<div class="col-md-6">
-				<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
-				<label for="showLabelLines">Show label lines</label>
+<div id="panelInnerLabels" {{#compare openSections.panelInnerLabels false}}class="hidden"{{/compare}}>
+	<div class="row">
+		<div class="col-md-3">
+			<label for="innerLabel" class="control-label">Content</label>
+		</div>
+		<div class="col-md-9">
+			<div class="form-group">
+				<select id="innerLabel" class="form-control changeUpdateNoAnimation">
+					<option value="none" {{#compare config.labels.inner.format "none"}}selected="selected"{{/compare}}>None</option>
+					<option value="label" {{#compare config.labels.inner.format "label"}}selected="selected"{{/compare}}>Label</option>
+					<option value="value" {{#compare config.labels.inner.format "value"}}selected="selected"{{/compare}}>Value</option>
+					<option value="percentage" {{#compare config.labels.inner.format "percentage"}}selected="selected"{{/compare}}>Percentage</option>
+					<option value="label-value1" {{#compare config.labels.inner.format "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
+					<option value="label-value2" {{#compare config.labels.inner.format "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
+					<option value="label-percentage1" {{#compare config.labels.inner.format "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
+					<option value="label-percentage2" {{#compare config.labels.inner.format "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
+				</select>
 			</div>
 		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<label class="control-label">Hide Labels</label>
+		</div>
+		<div class="col-md-9">
+			<input type="radio" name="hideInnerLabelCondition" id="hideInnerLabelCondition1" class="changeUpdateNoAnimation"
+				{{#compare config.labels.inner.hideWhenLessThanPercentage null}}checked="checked"{{/compare}} />
+				<label for="hideInnerLabelCondition1" class="padRight30">Never</label>
 
-		<div class="row">
-			<div class="col-md-3">
-				<label for="labelLineLength">Line length</label>
-			</div>
-			<div class="col-md-7">
-				<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
+			<input type="radio" name="hideInnerLabelCondition" id="hideInnerLabelCondition2" class="changeUpdateNoAnimation"
+				{{#if config.labels.inner.hideWhenLessThanPercentage}}checked="checked"{{/if}} />
+				<label for="outerHideWhenLessThanPercentage">When under</label>
+				<input type="number" class="tinyField changeUpdateNoAnimation" id="innerHideWhenLessThanPercentage"
+					min="1" max="99" maxlength="2" value="{{config.labels.inner.hideWhenLessThanPercentage}}" /> %
+		</div>
+	</div>
+</div>
+
+
+<h4 class="panelToggle{{#if openSections.panelLabelStyles}} expanded{{/if}}" data-section="panelLabelStyles">Label Styles<span></span></h4>
+
+<div id="panelLabelStyles" {{#compare openSections.panelLabelStyles false}}class="hidden"{{/compare}}>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3"><label>Color</label></div>
+		<div class="col-md-4"><label>Font</label></div>
+		<div class="col-md-3"><label>Font Size</label></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-2"><label for="mainLabelColor">Label</label></div>
+		<div class="col-md-3">
+			<div id="mainLabelColorGroup" class="colorGroup input-group">
+				<input type="text" id="mainLabelColor" value="{{config.labels.mainLabel.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
+		<div class="col-md-4">
+			<select id="mainLabelFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.mainLabel.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.mainLabel.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.mainLabel.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.mainLabel.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.mainLabel.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.mainLabel.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.mainLabel.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="mainLabelFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.mainLabel.fontSize}}" />
+			<label for="mainLabelFontSize">px</label>
+		</div>
+	</div>
 
-		<div class="row">
-			<div class="col-md-3">
-				<label for="labelLineLength">Line style</label>
-			</div>
-			<div class="col-md-7">
-				<input type="radio" name="lineStyle" id="lineStyle1" value="curved" class="changeUpdateNoAnimation"
-					{{#compare config.labels.lines.style "curved"}}checked="checked"{{/compare}} />
-					<label for="lineStyle1">Curved</label>
-				<input type="radio" name="lineStyle" id="lineStyle2" value="straight" class="changeUpdateNoAnimation"
-					{{#compare config.labels.lines.style "straight"}}checked="checked"{{/compare}} />
-					<label for="lineStyle2">Straight</label>
+	<div class="row">
+		<div class="col-md-2"><label for="labelPercentageColor">Percentage</label></div>
+		<div class="col-md-3">
+			<div id="labelPercentageColorGroup" class="colorGroup input-group">
+				<input type="text" id="labelPercentageColor" value="{{config.labels.percentage.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
+		<div class="col-md-4">
+			<select id="labelPercentageFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.percentage.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.percentage.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.percentage.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.percentage.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.percentage.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.percentage.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.percentage.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="labelPercentageFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.percentage.fontSize}}" />
+			<label for="labelPercentageFontSize">px</label>
+		</div>
+	</div>
 
-		<div class="row form-group">
-			<div class="col-md-3">
-				<label>Color</label>
+	<div class="row">
+		<div class="col-md-2"><label for="subtitleColor">Value</label></div>
+		<div class="col-md-3">
+			<div id="labelValueColorGroup" class="colorGroup input-group">
+				<input type="text" id="labelValueColor" value="{{config.labels.value.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
 			</div>
-			<div class="col-md-5">
-				<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
-					{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
-				<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
-			</div>
-			<div class="col-md-4">
-				<div class="form-group">
-					<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
-						{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
-					<div id="labelLinesColorGroup" class="colorGroup input-group">
-						<input type="text" id="labelLinesColor" value="{{#compare config.labels.lines.color "segment" operator="!="}}{{config.labels.lines.color}}{{/compare}}" class="form-control" />
-						<span class="input-group-addon"><i></i></span>
-					</div>
+		</div>
+		<div class="col-md-4">
+			<select id="labelValueFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="labelValueFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
+			<label for="labelValueFontSize">px</label>
+		</div>
+	</div>
+</div>
+
+
+<h4 class="panelToggle{{#if openSections.panelLabelLines}} expanded{{/if}}" data-section="panelLabelLines">Label Lines<span></span></h4>
+
+<div id="panelLabelLines" {{#compare openSections.panelLabelLines false}}class="hidden"{{/compare}}>
+	<div class="row form-group">
+		<div class="col-md-6">
+			<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
+			<label for="showLabelLines">Show label lines</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+			<label for="labelLineLength">Line length</label>
+		</div>
+		<div class="col-md-7">
+			<input type="number" id="labelLineLength" value="{{config.labels.lines.length}}" min="0" class="smallField keyupUpdateNoAnimation" />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+			<label for="labelLineLength">Line style</label>
+		</div>
+		<div class="col-md-7">
+			<input type="radio" name="lineStyle" id="lineStyle1" value="curved" class="changeUpdateNoAnimation"
+				{{#compare config.labels.lines.style "curved"}}checked="checked"{{/compare}} />
+				<label for="lineStyle1">Curved</label>
+			<input type="radio" name="lineStyle" id="lineStyle2" value="straight" class="changeUpdateNoAnimation"
+				{{#compare config.labels.lines.style "straight"}}checked="checked"{{/compare}} />
+				<label for="lineStyle2">Straight</label>
+		</div>
+	</div>
+
+	<div class="row form-group">
+		<div class="col-md-3">
+			<label>Color</label>
+		</div>
+		<div class="col-md-5">
+			<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
+				{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
+			<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
+					{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />
+				<div id="labelLinesColorGroup" class="colorGroup input-group">
+					<input type="text" id="labelLinesColor" value="{{#compare config.labels.lines.color "segment" operator="!="}}{{config.labels.lines.color}}{{/compare}}" class="form-control" />
+					<span class="input-group-addon"><i></i></span>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<h4 class="panelToggle">Tooltips<span></span></h4>
 
-<div class="panel panel-default hidden">
+<h4 class="panelToggle{{#if openSections.panelTooltips}} expanded{{/if}}" data-section="panelTooltips">Tooltips<span></span></h4>
+
+<div id="panelTooltips" {{#compare openSections.panelTooltips false}}class="hidden"{{/compare}}>
+	<div class="row form-group">
+		<div class="col-md-6">
+			<input type="checkbox" id="enableTooltips" {{#compare config.labels.enableTooltips true}}checked="checked"{{/compare}}
+				class="changeUpdateNoAnimation" />
+			<label for="enableTooltips">Include mouseover tooltips</label>
+		</div>
+	</div>
 </div>
 

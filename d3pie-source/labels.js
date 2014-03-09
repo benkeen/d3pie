@@ -173,38 +173,6 @@ d3pie.labels = {
 				{ x: x3, y: y3 }
 			];
 		}
-
-		/*
-		switch (quarter) {
-			case 0:
-				var xCalc1 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				x2     = xCalc1 * (_outerRadius + lineMidPointDistance);
-				var yCalc1 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				y2     = -yCalc1 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-
-			case 1:
-				var xCalc2 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				x2     = xCalc2 * (_outerRadius + lineMidPointDistance);
-				var yCalc2 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				y2     = yCalc2 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-
-			case 2:
-				var xCalc3 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				x2     = -xCalc3 * (_outerRadius + lineMidPointDistance);
-				var yCalc3 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				y2     = yCalc3 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-
-			case 3:
-				var xCalc4 = Math.cos(d3pie.math.toRadians(remainderAngle));
-				x2     = -xCalc4 * (_outerRadius + lineMidPointDistance);
-				var calc4 = Math.sin(d3pie.math.toRadians(remainderAngle));
-				y2     = -calc4 * (_outerRadius + lineMidPointDistance) + yOffset;
-				break;
-		}
-		*/
 	},
 
 	addLabelLines: function() {
@@ -229,7 +197,12 @@ d3pie.labels = {
 				return (_options.labels.lines.color === "segment") ? _options.styles.colors[i] : _options.labels.lines.color;
 			})
 			.attr("stroke-width", 1)
-			.attr("fill", "none");
+			.attr("fill", "none")
+			.style("opacity", function(d, i) {
+				var percentage = _options.labels.outer.hideWhenLessThanPercentage;
+				var segmentPercentage = d3pie.segments.getPercentage(i);
+				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+			})
 	},
 
 	positionLabelGroups: function(section) {
@@ -262,10 +235,23 @@ d3pie.labels = {
 		setTimeout(function() {
 			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
 
-			d3.selectAll(".labelGroup-outer,.labelGroup-inner")
+			d3.selectAll(".labelGroup-outer")
 				.transition()
 				.duration(labelFadeInTime)
-				.style("opacity", 1);
+				.style("opacity", function(d, i) {
+					var percentage = _options.labels.outer.hideWhenLessThanPercentage;
+					var segmentPercentage = d3pie.segments.getPercentage(i);
+					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+				});
+
+			d3.selectAll(".labelGroup-inner")
+				.transition()
+				.duration(labelFadeInTime)
+				.style("opacity", function(d, i) {
+					var percentage = _options.labels.inner.hideWhenLessThanPercentage;
+					var segmentPercentage = d3pie.segments.getPercentage(i);
+					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+				});
 
 			d3.selectAll("g.lineGroups")
 				.transition()

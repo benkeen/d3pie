@@ -168,19 +168,19 @@ d3pie.prototype.init = function() {
 
 		d3pie.segments.create();
 		var l = d3pie.labels;
-		l.add("inner", _options.labels.inside);
-		l.add("outer", _options.labels.outside);
+		l.add("inner", _options.labels.inner.format);
+		l.add("outer", _options.labels.outer.format);
 
 		// position the label elements relatively within their individual group (label, percentage, value)
-		l.positionLabelElements("inner", _options.labels.inside);
-		l.positionLabelElements("outer", _options.labels.outside);
+		l.positionLabelElements("inner", _options.labels.inner.format);
+		l.positionLabelElements("outer", _options.labels.outer.format);
 
 		l.computeOuterLabelCoords();
 
 		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
 		l.positionLabelGroups("outer");
 
-		if (_options.labels.lines.enabled && _options.labels.outside !== "none") {
+		if (_options.labels.lines.enabled && _options.labels.outer.format !== "none") {
 			l.computeLabelLinePositions();
 			l.addLabelLines();
 		}
