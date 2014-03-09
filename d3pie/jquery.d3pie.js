@@ -83,6 +83,7 @@ var _defaultSettings = {
 			speed: 400
 		},
 		highlightSegmentOnMouseover: false,
+		highlightLuminosity: -0.2,
 		labelFadeInTime: 400
 	},
 	tooltips: {
@@ -905,13 +906,7 @@ d3pie.segments = {
 			.data(_options.data)
 			.enter()
 			.append("g")
-			.attr("class", function() {
-				var className = "arc";
-				if (_options.effects.highlightSegmentOnMouseover) {
-					className += " arcHover";
-				}
-				return className;
-			});
+			.attr("class", "arc");
 
 		// if we're not fading in the pie, just set the load speed to 0
 		var loadSpeed = _options.effects.load.speed;
@@ -962,8 +957,12 @@ d3pie.segments = {
 
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-			var index = $segment.data("index");
-			d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(_options.styles.colors[index], -0.4));
+
+			if (_options.effects.highlightSegmentOnMouseover) {
+				var index = $segment.data("index");
+				var segColor = _options.styles.colors[index];
+				d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
+			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
 			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
@@ -971,8 +970,11 @@ d3pie.segments = {
 
 		$arc.on("mouseout", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-			var index = $segment.data("index");
-			d3.select($segment[0]).style("fill", _options.styles.colors[index]);
+
+			if (_options.effects.highlightSegmentOnMouseover) {
+				var index = $segment.data("index");
+				d3.select($segment[0]).style("fill", _options.styles.colors[index]);
+			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
 			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
@@ -1252,9 +1254,6 @@ d3pie.text = {
 		_componentDimensions.footer.h = d3.h;
 		_componentDimensions.footer.w = d3.w;
 
-//		console.log(_options.size.canvasHeight - _options.misc.canvasPadding.bottom);
-//		console.log(_componentDimensions.footer);
-
 		_svg.select("#footer")
 			.attr("x", x)
 			.attr("y", _options.size.canvasHeight - _options.misc.canvasPadding.bottom);
@@ -1383,6 +1382,8 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		case "callbacks.onClickSegment":
 		case "effects.pullOutSegmentOnClick.effect":
 		case "effects.pullOutSegmentOnClick.speed":
+		case "effects.highlightSegmentOnMouseover":
+		case "effects.highlightLuminosity":
 			d3pie.helpers.processObj(this.options, propKey, value);
 			break;
 

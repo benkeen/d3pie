@@ -164,9 +164,6 @@ d3pie.text = {
 		_componentDimensions.footer.h = d3.h;
 		_componentDimensions.footer.w = d3.w;
 
-//		console.log(_options.size.canvasHeight - _options.misc.canvasPadding.bottom);
-//		console.log(_componentDimensions.footer);
-
 		_svg.select("#footer")
 			.attr("x", x)
 			.attr("y", _options.size.canvasHeight - _options.misc.canvasPadding.bottom);

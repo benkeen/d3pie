@@ -26,7 +26,7 @@
 	</div>
 </div>
 
-<div class="row" style="border-bottom: 1px solid #dddddd">
+<div class="row form-group" style="border-bottom: 1px solid #dddddd">
 	<div class="col-md-6">
 		<label for="pullOutSegmentOnClick" class="control-label">Pie segment click effect</label>
 		<div class="form-group padRight30">
@@ -39,7 +39,6 @@
 			</select>
 		</div>
 	</div>
-
 	<div class="col-md-4">
 		<label for="loadEffectSpeed" class="control-label">Speed</label>
 		<div class="form-group padRight30">
@@ -47,22 +46,22 @@
 			<label>ms</label>
 		</div>
 	</div>
-
 	<div class="col-md-2">
 		<label>&nbsp;</label>
 		<button id="pullOutSegmentOnClickEffectBtn" class="btn btn-xs btn-primary btn-info">View &raquo;</button>
 	</div>
 </div>
 
-
 <div class="row col-lg-12">
 	<input type="checkbox" id="highlightSegmentOnMouseover" {{#if config.effects.highlightSegmentOnMouseover}}checked="checked"{{/if}} />
 	<label for="highlightSegmentOnMouseover" class="control-label">Highlight pie segment on mouseover</label>
 </div>
 
-<div class="row" style="padding-left: 15px">
-	<input type="range" class="fullWidthRange" min="-0.99" max="0.99" value="-0.3" step="0.01"
-		{{#compare config.effects.highlightSegmentOnMouseover false}}disabled="disabled"{{/compare}} />
+<div class="row">
+	<div class="col-lg-12">
+		<input type="range" id="highlightLuminosity" class="fullWidthRange" min="-0.99" max="0.99" step="0.01"
+			value="{{config.effects.highlightLuminosity}}" {{#compare config.effects.highlightSegmentOnMouseover false}}disabled="disabled"{{/compare}} />
+	</div>
 </div>
 
 <div class="row">

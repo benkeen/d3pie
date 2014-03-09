@@ -15,7 +15,7 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.load.effect", value: this.value });
 		});
 		$("#loadEffectSpeed").on("change", function() {
-			var speed = parseInt(this.value, 10); // TODO validate
+			var speed = parseInt(this.value, 10);
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.load.speed", value: speed });
 		});
 		$("#loadEffectBtn").on("click", function() {
@@ -27,12 +27,21 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.effect", value: this.value });
 		});
 		$("#pullOutSegmentOnClickEffectSpeed").on("change", function() {
-			var speed = parseInt(this.value, 10); // TODO validate
+			var speed = parseInt(this.value, 10);
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.speed", value: speed });
 		});
 		$("#pullOutSegmentOnClickEffectBtn").on("click", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.SELECT_SEGMENT);
 		});
+
+		$("#highlightSegmentOnMouseover").on("click", function() {
+			$("#highlightLuminosity")[0].disabled = !this.checked;
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.highlightSegmentOnMouseover", value: this.checked });
+		});
+
+		$("#highlightLuminosity").on("change", function() {
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.highlightLuminosity", value: this.value });
+		})
 	};
 
 
@@ -47,6 +56,7 @@ define([
 				speed: $("#pullOutSegmentOnClickEffectSpeed").val()
 			},
 			highlightSegmentOnMouseover: $("#highlightSegmentOnMouseover")[0].checked,
+			highlightLuminosity: $("#highlightLuminosity").val(),
 			labelFadeInTime: 400
 		};
 	};

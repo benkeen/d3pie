@@ -73,6 +73,7 @@ var _defaultSettings = {
 			speed: 400
 		},
 		highlightSegmentOnMouseover: false,
+		highlightLuminosity: -0.2,
 		labelFadeInTime: 400
 	},
 	tooltips: {

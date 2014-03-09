@@ -74,12 +74,12 @@ define([], function() {
 				labels: {
 					enableTooltips: true,
 					outer: {
-						format: "label-percentage1",
-						hideWhenLessThanPercentage: 5
+						format: "label",
+						hideWhenLessThanPercentage: null
 					},
 					inner: {
 						format: "percentage",
-						hideWhenLessThanPercentage: 5
+						hideWhenLessThanPercentage: null
 					},
 					mainLabel: {
 						color: "#333333",
@@ -151,6 +151,7 @@ define([], function() {
 						speed: 400
 					},
 					highlightSegmentOnMouseover: true,
+					highlightLuminosity: -0.2,
 					labelFadeInTime: 400
 				},
 				callbacks: {
@@ -274,6 +275,7 @@ define([], function() {
 						speed: 400
 					},
 					highlightSegmentOnMouseover: true,
+					highlightLuminosity: -0.2,
 					labelFadeInTime: 400
 				},
 				misc: {
@@ -379,9 +381,9 @@ define([], function() {
 						effect: "linear", // none / linear / bounce /
 						speed: 400
 					},
-
 					labelFadeInTime: 400,
-					highlightSegmentOnMouseover: true
+					highlightSegmentOnMouseover: true,
+					highlightLuminosity: -0.2
 				},
 				misc: {
 					dataSortOrder: "none",
@@ -444,11 +446,11 @@ define([], function() {
 					enableTooltips: true,
 					outer: {
 						format: "label-percentage1",
-						hideWhenLessThanPercentage: 5
+						hideWhenLessThanPercentage: null
 					},
 					inner: {
-						format: "percentage",
-						hideWhenLessThanPercentage: 5
+						format: "none",
+						hideWhenLessThanPercentage: null
 					},
 					mainLabel: {
 						color: "#333333",
@@ -488,6 +490,7 @@ define([], function() {
 						speed: 400
 					},
 					highlightSegmentOnMouseover: true,
+					highlightLuminosity: -0.2,
 					labelFadeInTime: 400
 				},
 				callbacks: {

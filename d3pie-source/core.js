@@ -121,6 +121,8 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		case "callbacks.onClickSegment":
 		case "effects.pullOutSegmentOnClick.effect":
 		case "effects.pullOutSegmentOnClick.speed":
+		case "effects.highlightSegmentOnMouseover":
+		case "effects.highlightLuminosity":
 			d3pie.helpers.processObj(this.options, propKey, value);
 			break;
 
