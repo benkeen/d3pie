@@ -36,6 +36,13 @@ define([
 
 		$("#highlightSegmentOnMouseover").on("click", function() {
 			$("#highlightLuminosity")[0].disabled = !this.checked;
+			var $labels = $("#highlightLuminosityScaleLabels").find("label");
+			if (this.checked) {
+				$labels.removeClass("disabled");
+			} else {
+				$labels.addClass("disabled");
+			}
+
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.highlightSegmentOnMouseover", value: this.checked });
 		});
 

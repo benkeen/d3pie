@@ -57,8 +57,8 @@
 .colorGroup {
     width: 120px;
 }
-.padRight30 {
-	padding-right: 30px;
+.padRight {
+	padding-right: 20px;
 }
 #labelFormatExample {
 	width: 100px;
@@ -327,4 +327,7 @@ body .fadeIn {
 }
 .paddedRow {
 	margin-bottom: 6px;
+}
+label.disabled {
+	color: #cccccc;
 }

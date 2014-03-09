@@ -5,7 +5,7 @@
 		<div class="col-md-4">
 			<label for="outerLabel" class="control-label">Content</label>
 		</div>
-		<div class="col-md-8 padRight30">
+		<div class="col-md-8 padRight">
 			<select id="outerLabel" class="form-control changeUpdateNoAnimation">
 				<option value="none" {{#compare config.labels.outer.format "none"}}selected="selected"{{/compare}}>None</option>
 				<option value="label" {{#compare config.labels.outer.format "label"}}selected="selected"{{/compare}}>Label</option>
@@ -25,7 +25,7 @@
 		<div class="col-md-8">
 			<input type="radio" name="hideOuterLabelCondition" id="hideOuterLabelCondition1" class="changeUpdateNoAnimation"
 				{{#compare config.labels.outer.hideWhenLessThanPercentage null}}checked="checked"{{/compare}} />
-				<label for="hideOuterLabelCondition1" class="padRight30">Never</label>
+				<label for="hideOuterLabelCondition1" class="padRight">Never</label>
 
 			<input type="radio" name="hideOuterLabelCondition" id="hideOuterLabelCondition2" class="changeUpdateNoAnimation"
 				{{#if config.labels.outer.hideWhenLessThanPercentage}}checked="checked"{{/if}} />
@@ -48,33 +48,31 @@
 <h4 class="panelToggle{{#if openSections.panelInnerLabels}} expanded{{/if}}" data-section="panelInnerLabels">Inner Labels<span></span></h4>
 
 <div id="panelInnerLabels" {{#compare openSections.panelInnerLabels false}}class="hidden"{{/compare}}>
-	<div class="row">
-		<div class="col-md-3">
+	<div class="row paddedRow">
+		<div class="col-md-4">
 			<label for="innerLabel" class="control-label">Content</label>
 		</div>
-		<div class="col-md-9">
-			<div class="form-group">
-				<select id="innerLabel" class="form-control changeUpdateNoAnimation">
-					<option value="none" {{#compare config.labels.inner.format "none"}}selected="selected"{{/compare}}>None</option>
-					<option value="label" {{#compare config.labels.inner.format "label"}}selected="selected"{{/compare}}>Label</option>
-					<option value="value" {{#compare config.labels.inner.format "value"}}selected="selected"{{/compare}}>Value</option>
-					<option value="percentage" {{#compare config.labels.inner.format "percentage"}}selected="selected"{{/compare}}>Percentage</option>
-					<option value="label-value1" {{#compare config.labels.inner.format "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
-					<option value="label-value2" {{#compare config.labels.inner.format "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
-					<option value="label-percentage1" {{#compare config.labels.inner.format "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
-					<option value="label-percentage2" {{#compare config.labels.inner.format "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
-				</select>
-			</div>
+		<div class="col-md-8">
+			<select id="innerLabel" class="form-control changeUpdateNoAnimation">
+				<option value="none" {{#compare config.labels.inner.format "none"}}selected="selected"{{/compare}}>None</option>
+				<option value="label" {{#compare config.labels.inner.format "label"}}selected="selected"{{/compare}}>Label</option>
+				<option value="value" {{#compare config.labels.inner.format "value"}}selected="selected"{{/compare}}>Value</option>
+				<option value="percentage" {{#compare config.labels.inner.format "percentage"}}selected="selected"{{/compare}}>Percentage</option>
+				<option value="label-value1" {{#compare config.labels.inner.format "label-value1"}}selected="selected"{{/compare}}>label, value (same line)</option>
+				<option value="label-value2" {{#compare config.labels.inner.format "label-value2"}}selected="selected"{{/compare}}>label, value (separate lines)</option>
+				<option value="label-percentage1" {{#compare config.labels.inner.format "label-percentage1"}}selected="selected"{{/compare}}>label, percentage (same line)</option>
+				<option value="label-percentage2" {{#compare config.labels.inner.format "label-percentage2"}}selected="selected"{{/compare}}>label, percentage (separate lines)</option>
+			</select>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-3">
+	<div class="row paddedRow">
+		<div class="col-md-4">
 			<label class="control-label">Hide Labels</label>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<input type="radio" name="hideInnerLabelCondition" id="hideInnerLabelCondition1" class="changeUpdateNoAnimation"
 				{{#compare config.labels.inner.hideWhenLessThanPercentage null}}checked="checked"{{/compare}} />
-				<label for="hideInnerLabelCondition1" class="padRight30">Never</label>
+				<label for="hideInnerLabelCondition1" class="padRight">Never</label>
 
 			<input type="radio" name="hideInnerLabelCondition" id="hideInnerLabelCondition2" class="changeUpdateNoAnimation"
 				{{#if config.labels.inner.hideWhenLessThanPercentage}}checked="checked"{{/if}} />
@@ -176,20 +174,20 @@
 <h4 class="panelToggle{{#if openSections.panelLabelLines}} expanded{{/if}}" data-section="panelLabelLines">Label Lines<span></span></h4>
 
 <div id="panelLabelLines" {{#compare openSections.panelLabelLines false}}class="hidden"{{/compare}}>
-	<div class="row form-group">
+	<div class="row paddedRow">
 		<div class="col-md-6">
 			<input type="checkbox" id="showLabelLines" {{#compare config.labels.lines.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
 			<label for="showLabelLines">Show label lines</label>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row paddedRow">
 		<div class="col-md-3">
 			<label for="lineStyle1">Line style</label>
 		</div>
 		<div class="col-md-9">
 			<input type="radio" name="lineStyle" id="lineStyle1" value="curved" class="changeUpdateNoAnimation"
 				{{#compare config.labels.lines.style "curved"}}checked="checked"{{/compare}} />
-				<label for="lineStyle1">Curved</label>
+				<label for="lineStyle1" class="padRight">Curved</label>
 			<input type="radio" name="lineStyle" id="lineStyle2" value="straight" class="changeUpdateNoAnimation"
 				{{#compare config.labels.lines.style "straight"}}checked="checked"{{/compare}} />
 				<label for="lineStyle2">Straight</label>
@@ -200,9 +198,9 @@
 			<label>Color</label>
 		</div>
 		<div class="col-md-5">
-			<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment" style="float: left; margin-right: 8px"
+			<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment"
 				{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
-			<label for="labelLineColorType1" style="margin-left: 5px">Same color as segment</label>
+			<label for="labelLineColorType1">Same color as segment</label>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">

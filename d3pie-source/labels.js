@@ -129,29 +129,26 @@ d3pie.labels = {
 			case 0:
 				x2 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin - ((d3pie.labels.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
 				y2 = d3pie.labels.outerLabelGroupData[i].y + ((originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / midPoint);
-
 				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 1:
-				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
+				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / midPoint;
 				y2 = originCoords.y + (d3pie.labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-
 				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
-
 			case 2:
-				x2 = originCoords.x - (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
+				var startOfLabelX = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
+				x2 = originCoords.x - (originCoords.x - startOfLabelX) / midPoint;
 				y2 = originCoords.y + (d3pie.labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-
 				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 3:
-				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / 4;
-				y2 = d3pie.labels.outerLabelGroupData[i].y - (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / 4;
-
+				var startOfLabel = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
+				x2 = startOfLabel + ((originCoords.x - startOfLabel) / midPoint);
+				y2 = d3pie.labels.outerLabelGroupData[i].y + (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / midPoint;
 				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
 				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
 				break;
@@ -275,7 +272,7 @@ d3pie.labels = {
 		var addValue      = false;
 		var addPercentage = false;
 
-		// TODO refactor... somehow.
+		// TODO refactor... somehow
 		switch (val) {
 			case "label":
 				addMainLabel = true;

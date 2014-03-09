@@ -2,10 +2,10 @@
 	<h4>Effects</h4>
 </div>
 
-<div class="row" style="border-bottom: 1px solid #dddddd">
+<div class="row paddedRow" style="border-bottom: 1px solid #dddddd">
 	<div class="col-md-6">
 		<label for="loadEffect" class="control-label">Load effect</label>
-		<div class="form-group padRight30">
+		<div class="form-group padRight">
 			<select id="loadEffect" class="form-control">
 				<option value="none" {{#compare config.effects.load.effect "none"}}selected="selected"{{/compare}}>None</option>
 				<option value="default" {{#compare config.effects.load.effect "default"}}selected="selected"{{/compare}}>Default</option>
@@ -15,7 +15,7 @@
 	</div>
 	<div class="col-md-4">
 		<label for="loadEffectSpeed" class="control-label">Speed</label>
-		<div class="form-group padRight30">
+		<div class="form-group padRight">
 			<input type="number" id="loadEffectSpeed" class="form-control ib smallField" step="10" value="{{config.effects.load.speed}}" />
 			<label>ms</label>
 		</div>
@@ -26,10 +26,10 @@
 	</div>
 </div>
 
-<div class="row form-group" style="border-bottom: 1px solid #dddddd">
+<div class="row paddedRow" style="border-bottom: 1px solid #dddddd">
 	<div class="col-md-6">
 		<label for="pullOutSegmentOnClick" class="control-label">Pie segment click effect</label>
-		<div class="form-group padRight30">
+		<div class="form-group padRight">
 			<select id="pullOutSegmentOnClickEffect" class="form-control">
 				<option value="none" {{#compare config.effects.pullOutSegmentOnClick.effect "none"}}selected="selected"{{/compare}}>None</option>
 				<option value="linear" {{#compare config.effects.pullOutSegmentOnClick.effect "linear"}}selected="selected"{{/compare}}>Linear</option>
@@ -41,7 +41,7 @@
 	</div>
 	<div class="col-md-4">
 		<label for="loadEffectSpeed" class="control-label">Speed</label>
-		<div class="form-group padRight30">
+		<div class="form-group padRight">
 			<input type="number" id="pullOutSegmentOnClickEffectSpeed" class="form-control ib smallField" step="10" value="{{config.effects.pullOutSegmentOnClick.speed}}" />
 			<label>ms</label>
 		</div>
@@ -52,9 +52,11 @@
 	</div>
 </div>
 
-<div class="row col-lg-12">
-	<input type="checkbox" id="highlightSegmentOnMouseover" {{#if config.effects.highlightSegmentOnMouseover}}checked="checked"{{/if}} />
-	<label for="highlightSegmentOnMouseover" class="control-label">Highlight pie segment on mouseover</label>
+<div class="row">
+	<div class="col-lg-12">
+		<input type="checkbox" id="highlightSegmentOnMouseover" {{#if config.effects.highlightSegmentOnMouseover}}checked="checked"{{/if}} />
+		<label for="highlightSegmentOnMouseover" class="control-label">Highlight pie segment on mouseover</label>
+	</div>
 </div>
 
 <div class="row">
@@ -63,8 +65,7 @@
 			value="{{config.effects.highlightLuminosity}}" {{#compare config.effects.highlightSegmentOnMouseover false}}disabled="disabled"{{/compare}} />
 	</div>
 </div>
-
-<div class="row">
+<div class="row" id="highlightLuminosityScaleLabels">
 	<div class="col-lg-2"><label>Dark</label></div>
 	<div class="col-lg-8"></div>
 	<div class="col-lg-2" style="text-align: right"><label>Light</label></div>
