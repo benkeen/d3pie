@@ -78,9 +78,6 @@ define([
 			}
 		}
 
-		console.log("outer: ", outerHideWhenLessThanPercentage);
-		console.log("inner: ", innerHideWhenLessThanPercentage);
-
 		return {
 			enableTooltips: false, //$("#enableTooltips")[0].checked,
 			outer: {

@@ -233,14 +233,33 @@ d3pie.helpers = {
 		);
 
 		return !returnVal;
-	}
+	},
 
-//	rectIntersect2: function (a, b) {
-//		return (a.left <= b.right &&
-//			b.left <= a.right &&
-//			a.top <= b.bottom &&
-//			b.top <= a.bottom)
-//	}
+	/**
+	 * Returns a lighter/darker shade of a hex value, based on a luminance value passed.
+	 * @param hex a hex color value such as “#abc” or “#123456″ (the hash is optional)
+	 * @param lum the luminosity factor: -0.1 is 10% darker, 0.2 is 20% lighter, etc.
+	 * @returns {string}
+	 */
+	getColorShade: function(hex, lum) {
+
+		// validate hex string
+		hex = String(hex).replace(/[^0-9a-f]/gi, '');
+		if (hex.length < 6) {
+			hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+		}
+		lum = lum || 0;
+
+		// convert to decimal and change luminosity
+		var newHex = "#";
+		for (var i=0; i<3; i++) {
+			var c = parseInt(hex.substr(i*2, 2), 16);
+			c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+			newHex += ("00" + c).substr(c.length);
+		}
+
+		return newHex;
+	}
 };
 
 	// --------- math.js -----------
@@ -944,12 +963,18 @@ d3pie.segments = {
 
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
+			var index = $segment.data("index");
+			d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(_options.styles.colors[index], -0.4));
+
 			var isExpanded = $segment.attr("class") === "expanded";
 			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
 			var $segment = $(e.currentTarget).find("path");
+			var index = $segment.data("index");
+			d3.select($segment[0]).style("fill", _options.styles.colors[index]);
+
 			var isExpanded = $segment.attr("class") === "expanded";
 			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});

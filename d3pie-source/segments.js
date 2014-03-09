@@ -86,12 +86,18 @@ d3pie.segments = {
 
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
+			var index = $segment.data("index");
+			d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(_options.styles.colors[index], -0.4));
+
 			var isExpanded = $segment.attr("class") === "expanded";
 			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
 			var $segment = $(e.currentTarget).find("path");
+			var index = $segment.data("index");
+			d3.select($segment[0]).style("fill", _options.styles.colors[index]);
+
 			var isExpanded = $segment.attr("class") === "expanded";
 			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});

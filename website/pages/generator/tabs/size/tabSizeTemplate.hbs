@@ -25,23 +25,35 @@
 <div class="row col-lg-12">
 	<label for="pieInnerRadius" class="control-label">Pie Inner Radius</label>
 </div>
-<div class="row col-lg-12 form-group">
-	<input type="range" id="pieInnerRadius" min="0" max="100" value="{{numbersOnly config.size.pieInnerRadius}}" />
-	<div class="row">
-		<div class="col-lg-2">Pie</div>
-		<div class="col-lg-8" id="pieInnerRadiusDisplayValue" style="text-align: center">{{config.size.pieInnerRadius}}</div>
-		<div class="col-lg-2" style="text-align: right">Donut</div>
+<div class="row">
+	<div class="col-lg-12">
+		<input type="range" class="fullWidthRange" id="pieInnerRadius" min="0" max="100" value="{{numbersOnly config.size.pieInnerRadius}}" />
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-2">
+		<img src="website/images/pieIcon-pie.png" width="30" height="30" id="pieIconPie" />
+	</div>
+	<div class="col-lg-8" style="text-align: center">
+		<span class="label label-default" id="pieInnerRadiusDisplayValue">{{config.size.pieInnerRadius}}</span>
+	</div>
+	<div class="col-lg-2" style="text-align: right">
+		<img src="website/images/pieIcon-donut.png" width="30" height="30" id="pieIconDonut" />
 	</div>
 </div>
 
-<div class="row col-lg-12">
-	<label for="pieInnerRadius" class="control-label">Pie Outer Radius</label>
-</div>
-<div class="row col-lg-12 form-group">
-	<input type="range" id="pieOuterRadius" min="1" max="100" value="{{numbersOnly config.size.pieOuterRadius}}" />
+<div class="row">
+	<div class="col-lg-12">
+		<label for="pieInnerRadius" class="control-label">Pie Outer Radius</label>
+	</div>
 </div>
 <div class="row">
-	<div class="col-lg-2"></div>
-	<div class="col-lg-8" id="pieOuterRadiusDisplayValue" style="text-align: center">{{config.size.pieOuterRadius}}</div>
-	<div class="col-lg-2"></div>
+	<div class="col-lg-12">
+		<input type="range" class="fullWidthRange" id="pieOuterRadius" min="1" max="100" value="{{numbersOnly config.size.pieOuterRadius}}" />
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-lg-12" style="text-align: center">
+		<span class="label label-default" id="pieOuterRadiusDisplayValue">{{config.size.pieOuterRadius}}</span>
+	</div>
 </div>

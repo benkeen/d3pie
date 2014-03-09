@@ -20,6 +20,15 @@ define([
 		});
 		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
 		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
+
+		$("#pieIconPie").on("click", function() {
+			$("#pieInnerRadius").val("0");
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
+		$("#pieIconDonut").on("click", function() {
+			$("#pieInnerRadius").val("100");
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
 	};
 
 	var _onChangeInnerRadius = function(e) {
