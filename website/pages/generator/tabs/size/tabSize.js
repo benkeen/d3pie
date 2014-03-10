@@ -7,7 +7,6 @@ define([
 
 	var _MODULE_ID = "sizeTab";
 
-
 	var _render = function(tabEl, config) {
 		$(tabEl).html(sizeTabTemplate({ config: config }));
 
@@ -23,22 +22,28 @@ define([
 
 		$("#pieIconPie").on("click", function() {
 			$("#pieInnerRadius").val("0");
+			_setInnerRadiusDisplayValue("0");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 		$("#pieIconDonut").on("click", function() {
 			$("#pieInnerRadius").val("100");
+			_setInnerRadiusDisplayValue("100");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 	};
 
 	var _onChangeInnerRadius = function(e) {
-		$("#pieInnerRadiusDisplayValue").html(e.target.value + "%");
+		_setInnerRadiusDisplayValue(e.target.value);
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
 	var _onChangeOuterRadius = function(e) {
 		$("#pieOuterRadiusDisplayValue").html(e.target.value + "%");
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+	};
+
+	var _setInnerRadiusDisplayValue = function(val) {
+		$("#pieInnerRadiusDisplayValue").html(val + "%");
 	};
 
 	var _getTabData = function() {
