@@ -1,3 +1,11 @@
+body .navbar {
+	position: fixed;
+	right: 0;
+	left: 0;
+	top: 0;
+	z-index: 1000;
+}
+
 #mainNav1 {
     width: 102px;
 }
@@ -5,13 +13,16 @@
     width: 90px;
 }
 
-
 /* for the UI */
 #generatorTabs {
     margin: 0px 0px 15px;
     padding: 0px;
     height: 40px;
 }
+.container {
+	margin-top: 40px;
+}
+
 #mainContent {
     min-height: 400px;
 }
@@ -317,11 +328,9 @@ body .fadeIn {
 	border-top: none;
 	border-bottom: 10px solid #008cba;
 }
-
 .fullWidthRange {
 	width: 100%;
 }
-
 #pieIconPie, #pieIconDonut {
 	cursor: pointer;
 }
