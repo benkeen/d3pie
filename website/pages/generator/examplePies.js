@@ -326,12 +326,12 @@ define([], function() {
 					pieOuterRadius: "67%"
 				},
 				data: [
-					{ label: "When's it going to be done?", value: 8, tooltip: "" },
-					{ label: "Bennnnn!", value: 5, tooltip: "" },
-					{ label: "Oh, god.", value: 2, tooltip: "" },
-					{ label: "But it's Friday night!", value: 3, tooltip: "" },
-					{ label: "Again?", value: 2, tooltip: "" },
-					{ label: "[baleful stare]", value: 3, tooltip: "" }
+					{ label: "When's it going to be done?", value: 8 },
+					{ label: "Bennnnn!", value: 5 },
+					{ label: "Oh, god.", value: 2  },
+					{ label: "But it's Friday night!", value: 3 },
+					{ label: "Again?", value: 2 },
+					{ label: "[baleful stare]", value: 3 }
 				],
 				labels: {
 					enableTooltips: true,

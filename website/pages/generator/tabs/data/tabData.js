@@ -48,11 +48,8 @@ define([
 		for (var i=0; i<trs.length; i++) {
 			var row = $(trs[i]);
 			data.push({
-				label:   row.find(".dataLabel").val(),
-				value:   parseInt(row.find(".dataValue").val(), 10), // TODO - need validation
-				tooltip: row.find(".dataTooltip").val(),
-				xOffset: parseInt(row.find(".dataOffsetX").val(), 10),
-				yOffset: parseInt(row.find(".dataOffsetY").val(), 10)
+				label: row.find(".dataLabel").val(),
+				value: parseInt(row.find(".dataValue").val(), 10)
 			})
 		}
 		return data;

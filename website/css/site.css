@@ -221,10 +221,10 @@ body .colorGroup {
     height: 29px;
 }
 #sortableDataListHeader li.col1 {
-    width: 179px;
+    width: 270px;
 }
 #sortableDataListHeader li.col2 {
-    width: 69px;
+    width: 133px;
 }
 #sortableDataListHeader li.col3,
 #sortableDataListHeader li.col4,
@@ -232,12 +232,11 @@ body .colorGroup {
 #sortableDataListHeader li.col6 {
     width: 40px;
 }
-
 .dataLabel {
-    width: 177px;
+    width: 268px;
 }
 .dataValue {
-    width: 65px;
+    width: 130px;
 }
 .dataOffsetX, .dataOffsetY {
     width: 35px;
