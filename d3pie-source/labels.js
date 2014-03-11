@@ -212,13 +212,23 @@ d3pie.labels = {
 					x = d3pie.labels.outerLabelGroupData[i].x;
 					y = d3pie.labels.outerLabelGroupData[i].y;
 				} else {
-					var center = d3pie.segments.getCentroid(document.getElementById("segment" + i));
-					//console.log(i, _options.data, _totalSize);
 					var rotationAngle = d3pie.segments.getSegmentAngle(i);
-//					var center = d3pie.math.getPieCenter();
-					var diff = (_outerRadius - _innerRadius) / 2;
-					x = (d3pie.labels.lineCoordGroups[i][0].x / 2) + center.x;
-					y = (d3pie.labels.lineCoordGroups[i][0].y / 2) + center.y;
+					var location = d3pie.segments.getCentroid($("#segment" + i)[0]);
+
+					console.log(location);
+
+					var center = d3pie.math.getPieCenter();
+					var result = d3pie.math.rotate(location.x, location.y, center.x, center.y, rotationAngle);
+
+//					var center = d3pie.segments.getCentroid(document.getElementById("segment" + i));
+//					var rotationAngle = d3pie.segments.getSegmentAngle(i);
+////					var center = d3pie.math.getPieCenter();
+//					var diff = (_outerRadius - _innerRadius) / 2;
+//					x = (d3pie.labels.lineCoordGroups[i][0].x / 2) + center.x;
+//					y = (d3pie.labels.lineCoordGroups[i][0].y / 2) + center.y;
+
+					x = result.x;
+					y = result.y;
 				}
 
 				return "translate(" + x + "," + y + ")";

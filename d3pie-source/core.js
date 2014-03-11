@@ -188,7 +188,8 @@ d3pie.prototype.init = function() {
 			l.addLabelLines();
 		}
 
-//		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
+
+		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
 
 		l.fadeInLabelsAndLines();
 

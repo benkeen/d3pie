@@ -214,5 +214,4 @@ d3pie.segments = {
 	getPercentage: function(index) {
 		return Math.floor((_options.data[index].value / _totalSize) * 100);
 	}
-
 };
