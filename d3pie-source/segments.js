@@ -1,6 +1,7 @@
 // --------- segments.js -----------
 d3pie.segments = {
 
+	isOpening: false,
 	currentlyOpenSegment: null,
 
 	/**
@@ -68,7 +69,6 @@ d3pie.segments = {
 			var isExpanded = $segment.attr("class") === "expanded";
 
 			d3pie.segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
-
 			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
 					d3pie.segments.closeSegment($segment[0]);
@@ -121,6 +121,10 @@ d3pie.segments = {
 	},
 
 	openSegment: function(segment) {
+		if (d3pie.segments.isOpening) {
+			return;
+		}
+		d3pie.segments.isOpening = true;
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
@@ -135,12 +139,13 @@ d3pie.segments = {
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y),
-					pullOutSize = 8;
+					pullOutSize = parseInt(_options.effects.pullOutSegmentOnClick.size, 10);
 
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.each("end", function(d, i) {
 				d3pie.segments.currentlyOpenSegment = segment;
+				d3pie.segments.isOpening = false;
 				$(this).attr("class", "expanded");
 			});
 	},

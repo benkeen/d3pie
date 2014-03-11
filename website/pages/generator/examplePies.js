@@ -142,11 +142,11 @@ define([], function() {
 					},
 					pullOutSegmentOnClick: {
 						effect: "linear", // none / linear / bounce
-						speed: 400
+						speed: 400,
+						size: 8
 					},
 					highlightSegmentOnMouseover: true,
-					highlightLuminosity: -0.2,
-					labelFadeInTime: 400
+					highlightLuminosity: -0.2
 				},
 				callbacks: {
 					onload: "function() { console.log(\"pie chart loaded.\"); }",
@@ -267,11 +267,11 @@ define([], function() {
 					},
 					pullOutSegmentOnClick: {
 						effect: "linear", // none / linear / bounce /
-						speed: 400
+						speed: 400,
+						size: 8
 					},
 					highlightSegmentOnMouseover: true,
-					highlightLuminosity: -0.2,
-					labelFadeInTime: 400
+					highlightLuminosity: -0.2
 				},
 				misc: {
 					dataSortOrder: "label-asc",
@@ -375,9 +375,9 @@ define([], function() {
 					},
 					pullOutSegmentOnClick: {
 						effect: "linear", // none / linear / bounce /
-						speed: 400
+						speed: 400,
+						size: 8
 					},
-					labelFadeInTime: 400,
 					highlightSegmentOnMouseover: true,
 					highlightLuminosity: -0.2
 				},
@@ -484,11 +484,11 @@ define([], function() {
 					},
 					pullOutSegmentOnClick: {
 						effect: "linear", // none / linear / bounce
-						speed: 400
+						speed: 400,
+						size: 8
 					},
 					highlightSegmentOnMouseover: true,
-					highlightLuminosity: -0.2,
-					labelFadeInTime: 400
+					highlightLuminosity: -0.2
 				},
 				callbacks: {
 					onload: "function() { console.log(\"pie chart loaded.\"); }",

@@ -30,6 +30,10 @@ define([
 			var speed = parseInt(this.value, 10);
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.speed", value: speed });
 		});
+		$("#pullOutSegmentOnClickEffectSize").on("change", function() {
+			var size = parseInt(this.value, 10);
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.pullOutSegmentOnClick.size", value: size });
+		});
 		$("#pullOutSegmentOnClickEffectBtn").on("click", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.SELECT_SEGMENT);
 		});
@@ -60,11 +64,11 @@ define([
 			},
 			pullOutSegmentOnClick: {
 				effect: $("#pullOutSegmentOnClickEffect").val(),
-				speed: $("#pullOutSegmentOnClickEffectSpeed").val()
+				speed: $("#pullOutSegmentOnClickEffectSpeed").val(),
+				size: $("#pullOutSegmentOnClickEffectSize").val()
 			},
 			highlightSegmentOnMouseover: $("#highlightSegmentOnMouseover")[0].checked,
-			highlightLuminosity: $("#highlightLuminosity").val(),
-			labelFadeInTime: 400
+			highlightLuminosity: $("#highlightLuminosity").val()
 		};
 	};
 

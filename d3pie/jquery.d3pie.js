@@ -83,8 +83,7 @@ var _defaultSettings = {
 			speed: 400
 		},
 		highlightSegmentOnMouseover: false,
-		highlightLuminosity: -0.2,
-		labelFadeInTime: 400
+		highlightLuminosity: -0.2
 	},
 	tooltips: {
 		enable: false
@@ -672,7 +671,7 @@ d3pie.labels = {
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
 		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
 		setTimeout(function() {
-			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
+			var labelFadeInTime = (_options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
 
 			d3.selectAll(".labelGroup-outer")
 				.transition()
@@ -879,6 +878,7 @@ d3pie.labels = {
 	// --------- segments.js -----------
 d3pie.segments = {
 
+	isOpening: false,
 	currentlyOpenSegment: null,
 
 	/**
@@ -946,7 +946,6 @@ d3pie.segments = {
 			var isExpanded = $segment.attr("class") === "expanded";
 
 			d3pie.segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
-
 			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
 					d3pie.segments.closeSegment($segment[0]);
@@ -999,6 +998,10 @@ d3pie.segments = {
 	},
 
 	openSegment: function(segment) {
+		if (d3pie.segments.isOpening) {
+			return;
+		}
+		d3pie.segments.isOpening = true;
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
@@ -1013,12 +1016,13 @@ d3pie.segments = {
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y),
-					pullOutSize = 8;
+					pullOutSize = parseInt(_options.effects.pullOutSegmentOnClick.size, 10);
 
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.each("end", function(d, i) {
 				d3pie.segments.currentlyOpenSegment = segment;
+				d3pie.segments.isOpening = false;
 				$(this).attr("class", "expanded");
 			});
 	},
@@ -1383,6 +1387,7 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		case "callbacks.onClickSegment":
 		case "effects.pullOutSegmentOnClick.effect":
 		case "effects.pullOutSegmentOnClick.speed":
+		case "effects.pullOutSegmentOnClick.size":
 		case "effects.highlightSegmentOnMouseover":
 		case "effects.highlightLuminosity":
 			d3pie.helpers.processObj(this.options, propKey, value);

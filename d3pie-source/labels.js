@@ -231,7 +231,7 @@ d3pie.labels = {
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
 		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
 		setTimeout(function() {
-			var labelFadeInTime = (_options.effects.load.effect === "default") ? _options.effects.labelFadeInTime : 1;
+			var labelFadeInTime = (_options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
 
 			d3.selectAll(".labelGroup-outer")
 				.transition()

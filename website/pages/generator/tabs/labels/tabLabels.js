@@ -48,11 +48,10 @@ define([
 			}
 		});
 
-//		$("#labelLinesColor").on("focus", function() {
-//			$("#labelLineColorType2")[0].checked = true;
-//			$("#labelLinesColorGroup").colorpicker("show");
-//			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
-//		});
+		$("#labelLinesColor").on("focus", function() {
+			$("#labelLineColorType2")[0].checked = true;
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
 	};
 
 
