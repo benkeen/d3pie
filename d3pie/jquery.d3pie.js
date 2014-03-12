@@ -258,6 +258,11 @@ d3pie.helpers = {
 		}
 
 		return newHex;
+	},
+
+	// for debugging
+	showPoint: function(x, y) {
+		_svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
 	}
 };
 
@@ -654,12 +659,15 @@ d3pie.labels = {
 				} else {
 					var center = d3pie.math.getPieCenter();
 
-					var dims = d3pie.helpers.getDimensions("segment" + i);
+					var dims = d3pie.helpers.getDimensions("labelGroup" + i + "-inner");
+					var xOffset = dims.w / 2;
+					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
-					// quarter?
+					x = center.x + (d3pie.labels.lineCoordGroups[i][0].x - center.x) / 1.8;
+					y = center.y + (d3pie.labels.lineCoordGroups[i][0].y - center.y) / 1.8;
 
-					x = (d3pie.labels.lineCoordGroups[i][0].x / 2) + (center.x / 2);
-					y = (d3pie.labels.lineCoordGroups[i][0].y / 2) + (center.y / 2);
+					x = x - xOffset;
+					y = y + yOffset;
 				}
 
 				return "translate(" + x + "," + y + ")";
@@ -1454,16 +1462,11 @@ d3pie.prototype.init = function() {
 			l.addLabelLines();
 		}
 
-
-		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
+		l.positionLabelGroups("inner");
 
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
-
-//		setTimeout(function() {
-//			d3pie.labels.funWithForces();
-//		}, 2000);
 	});
 };
 

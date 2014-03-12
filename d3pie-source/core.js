@@ -188,16 +188,11 @@ d3pie.prototype.init = function() {
 			l.addLabelLines();
 		}
 
-
-		setTimeout(function() { l.positionLabelGroups("inner"); }, 100);
+		l.positionLabelGroups("inner");
 
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();
-
-//		setTimeout(function() {
-//			d3pie.labels.funWithForces();
-//		}, 2000);
 	});
 };
 

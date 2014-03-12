@@ -50,8 +50,8 @@ define([], function() {
 					{ label: "C+", value: 78327 },
 					{ label: "C", value: 67706 },
 					{ label: "Objective-C", value: 36344 },
-					{ label: "Shell", value: 28561 },
-					{ label: "Cobol", value: 24131 },
+					{ label: "Shell", value: 28561 }
+					/*					{ label: "Cobol", value: 24131 },
 					{ label: "C#", value: 100 },
 					{ label: "Coldfusion", value: 68 },
 					{ label: "Fortran", value: 218812 },
@@ -69,7 +69,7 @@ define([], function() {
 					{ label: "Visual Basic", value: 78327 },
 					{ label: "Scheme", value: 67706 },
 					{ label: "Rust", value: 36344 },
-					{ label: "FoxPro", value: 32170 }
+					{ label: "FoxPro", value: 32170 }*/
 				],
 				labels: {
 					enableTooltips: true,
@@ -87,9 +87,9 @@ define([], function() {
 						fontSize: "11px"
 					},
 					percentage: {
-						color: "#999999",
+						color: "#ffffff",
 						font: "Open sans",
-						fontSize: "11px"
+						fontSize: "10px"
 					},
 					value: {
 						color: "#adadad",

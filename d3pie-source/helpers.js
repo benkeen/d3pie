@@ -144,5 +144,10 @@ d3pie.helpers = {
 		}
 
 		return newHex;
+	},
+
+	// for debugging
+	showPoint: function(x, y) {
+		_svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
 	}
 };
