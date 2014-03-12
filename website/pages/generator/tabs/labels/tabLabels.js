@@ -85,7 +85,7 @@ define([
 				pieDistance: parseInt($("#pieDistance").val(), 10),
 			},
 			inner: {
-				format: $("#insideLabel").val(),
+				format: $("#innerLabel").val(),
 				hideWhenLessThanPercentage: innerHideWhenLessThanPercentage
 			},
 			mainLabel: {
