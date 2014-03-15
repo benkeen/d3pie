@@ -3,7 +3,8 @@
 </div>
 
 <div class="hidden" id="generatorTabs">
-	<ul class="nav nav-pills">
+	<ul class="nav nav-pills nav-stacked">
+		<li><a class="selectPage" href="#generator-start">Start!</a></li>
 		<li><a class="selectPage" href="#generator-title">Title</a></li>
 		<li><a class="selectPage" href="#generator-size">Size</a></li>
 		<li><a class="selectPage" href="#generator-data">Data</a></li>
@@ -13,23 +14,14 @@
 		<li><a class="selectPage" href="#generator-effects">Effects</a></li>
 		<li><a class="selectPage" href="#generator-events">Events</a></li>
 		<li><a class="selectPage" href="#generator-misc">Misc</a></li>
-		<li id="themesDropdown">
-			<a href="#themes" data-toggle="dropdown">Themes <span class="caret"></span></a>
-			<ul class="dropdown-menu pull-right">{{{examples}}}</ul>
-		</li>
-		<li id="exampleDropdown">
-			<a href="#examples" data-toggle="dropdown">Examples <span class="caret"></span></a>
-			<ul class="dropdown-menu pull-right">{{{examples}}}</ul>
-		</li>
-		<li id="generateBtnItem">
-			<button class="btn btn-primary btn-sm btn-info">Generate the code! &raquo;</button>
-		</li>
+		<li><a class="selectPage" href="#generate">Generate</a></li>
 	</ul>
 </div>
 
 <div class="row hidden" id="mainContent">
-	<div class="col-md-5" id="sidebar">
+	<div id="sidebar" style="width: 400px; float: left">
 		<div class="tab-content">
+			<div class="hidden subPage" id="generator-start"></div>
 			<div class="hidden subPage" id="generator-title"></div>
 			<div class="hidden subPage" id="generator-size"></div>
 			<div class="hidden subPage" id="generator-data"></div>

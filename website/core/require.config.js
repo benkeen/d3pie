@@ -35,6 +35,9 @@ require.config({
 
 
 		// --- tabs ---
+		startTab: "pages/generator/tabs/start/tabStart",
+		startTabTemplate: "pages/generator/tabs/start/tabStartTemplate.hbs",
+
 		titleTab: "pages/generator/tabs/title/tabTitle",
 		titleTabTemplate: "pages/generator/tabs/title/tabTitleTemplate.hbs",
 

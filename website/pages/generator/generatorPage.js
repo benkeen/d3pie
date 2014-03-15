@@ -4,6 +4,7 @@
 define([
 	"constants",
 	"mediator",
+	"startTab",
 	"titleTab",
 	"sizeTab",
 	"dataTab",
@@ -14,18 +15,17 @@ define([
 	"eventsTab",
 	"miscTab",
 	"examplePies",
-	"hbs!examplePiesTemplate",
 	"hbs!generatorPageTemplate"
-], function(C, mediator, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab, miscTab,
-			EXAMPLE_PIES, examplePiesTemplate, generatorPageTemplate) {
+], function(C, mediator, startTab, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab,
+			miscTab, EXAMPLE_PIES, generatorPageTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
 	var _demoD3Pie = null;
 	var _tabs = [
-		"generator-title", "generator-size", "generator-data", "generator-colors", "generator-labels",
-		"generator-footer", "generator-effects", "generator-events", "generator-misc"
+		"generator-start", "generator-title", "generator-size", "generator-data", "generator-colors",
+		"generator-labels", "generator-footer", "generator-effects", "generator-events", "generator-misc"
 	];
 	var _currentTab;
 
@@ -34,21 +34,12 @@ define([
 	 * @private
 	 */
 	var _init = function() {
-
 		_addTabEventHandlers();
 
-		$("#generator").html(generatorPageTemplate({
-			examples: examplePiesTemplate({ examples: EXAMPLE_PIES })
-		}));
+		$("#generator").html(generatorPageTemplate());
 
 		// now fade in the three sections: nav, main content & footer row
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
-
-		$("#exampleDropdown").on("click", "ul li a", function(e) {
-			e.preventDefault();
-			var index = parseInt($(e.target).data("index"), 10);
-			_loadDemoPie(EXAMPLE_PIES[index]);
-		});
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
 		_loadDemoPie(EXAMPLE_PIES[0]);
@@ -57,6 +48,7 @@ define([
 		$("#pieTitle").focus();
 
 		var subscriptions = {};
+		subscriptions[C.EVENT.DEMO_PIE.LOAD]                  = _onRequestLoadDemoPie;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION]   = _renderWithNoAnimation;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION] = _renderWithAnimation;
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP]    = _updateProperty;
@@ -152,6 +144,9 @@ define([
 		};
 	};
 
+	var _onRequestLoadDemoPie = function(msg) {
+		_loadDemoPie(EXAMPLE_PIES[msg.data.index]);
+	};
 
 	var _loadDemoPie = function(pieConfiguration) {
 		var config = pieConfiguration.config;
@@ -159,6 +154,7 @@ define([
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.EXAMPLE_CHANGE, { config: config });
 
 		// render the generator tabs
+		startTab.render("#generator-start", config);
 		titleTab.render("#generator-title", config);
 		sizeTab.render("#generator-size", config);
 		dataTab.render("#generator-data", config);

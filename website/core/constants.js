@@ -15,6 +15,7 @@ define([], function() {
 
 	C.EVENT = {
 		DEMO_PIE: {
+			LOAD: 'demo-pie-load',
 			RENDER: {
 				NO_ANIMATION: 'demo-pie-render-no-animation',
 				WITH_ANIMATION: 'demo-pie-render-with-animation',

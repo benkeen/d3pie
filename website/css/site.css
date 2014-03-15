@@ -17,7 +17,9 @@ body .navbar {
 #generatorTabs {
     margin: 0px 0px 15px;
     padding: 0px;
-    height: 40px;
+	width: 105px;
+	float: left;
+	border-right: 1px solid #dddddd;
 }
 .container {
 	margin-top: 40px;
@@ -25,11 +27,7 @@ body .navbar {
 
 #mainContent {
     min-height: 400px;
-}
-#themesDropdown {
-	border-left: 1px solid #cccccc;
-	margin-left: 20px;
-	padding-left: 20px;
+	margin-left: 130px;
 }
 #themesDropdown a, #exampleDropdown a {
     color: #444444;
@@ -149,9 +147,8 @@ body .colorGroup {
     display: inline-block;
     position: absolute;
     z-index: 2;
-}
-#generatorPieChart {
-    border: 1px solid #ffffff;
+	margin-left: 5px;
+	border: 1px solid #ffffff;
 }
 #generatorPieChart.showOutline {
     border: 1px dashed #999999;
@@ -338,4 +335,9 @@ body .fadeIn {
 }
 label.disabled {
 	color: #cccccc;
+}
+
+#currentExamplePieName {
+	color: #007196;
+	padding: 10px;
 }
