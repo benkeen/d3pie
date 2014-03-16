@@ -12,6 +12,7 @@ define([], function() {
 
 		{
 			label: "Programming Languages",
+			showCanvasOutline: true,
 			config: {
 				header: {
 					title: {
@@ -145,6 +146,7 @@ define([], function() {
 
 		{
 			label: "Top 15 Fears",
+			showCanvasOutline: true,
 			config: {
 				header: {
 					title: {
@@ -263,6 +265,7 @@ define([], function() {
 
 		{
 			label: "Spousal Resentment",
+			showCanvasOutline: true,
 			config: {
 				header: {
 					title: {
@@ -373,6 +376,7 @@ define([], function() {
 
 		{
 			label: "The Sun",
+			showCanvasOutline: false,
 			config: {
 				header: {
 					title: {
@@ -383,7 +387,7 @@ define([], function() {
 					},
 					subtitle: {
 						text:     "Chemical composition",
-						color:    "#ff0000",
+						color:    "#b80000",
 						fontSize: "14px",
 						font:     "Helvetica"
 					},

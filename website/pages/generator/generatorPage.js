@@ -154,7 +154,7 @@ define([
 		// render the generator tabs
 		startTab.render("#generator-start", config);
 		titleTab.render("#generator-title", config);
-		sizeTab.render("#generator-size", config);
+		sizeTab.render("#generator-size", config, pieConfiguration.showCanvasOutline); // meh!
 		dataTab.render("#generator-data", config);
 		labelsTab.render("#generator-labels", config);
 		footerTab.render("#generator-footer", config);

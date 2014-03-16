@@ -7,16 +7,18 @@ define([
 
 	var _MODULE_ID = "sizeTab";
 
-	var _render = function(tabEl, config) {
-		$(tabEl).html(sizeTabTemplate({ config: config }));
+	var _render = function(tabEl, config, showOutline) {
+		$(tabEl).html(sizeTabTemplate({
+			config: config,
+			showOutline: showOutline
+		}));
 
+		_toggleOutline(showOutline);
 		$("#showCanvasOutline").on("click", function(e) {
-			if (e.target.checked) {
-				$("#generatorPieChart").addClass("showOutline");
-			} else {
-				$("#generatorPieChart").removeClass("showOutline");
-			}
+			_toggleOutline(e.target.checked);
 		});
+
+
 		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
 		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
 
@@ -44,6 +46,14 @@ define([
 
 	var _setInnerRadiusDisplayValue = function(val) {
 		$("#pieInnerRadiusDisplayValue").html(val + "%");
+	};
+
+	var _toggleOutline = function(show) {
+		if (show) {
+			$("#generatorPieChart").addClass("showOutline");
+		} else {
+			$("#generatorPieChart").removeClass("showOutline");
+		}
 	};
 
 	var _getTabData = function() {
