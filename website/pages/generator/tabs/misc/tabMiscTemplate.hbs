@@ -11,9 +11,10 @@
 		<div class="form-group">
 			<input type="radio" name="backgroundColorType" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
 				   value="color" {{#compare config.misc.colors.background null operator="!="}}checked="checked"{{/compare}} />
-			<label>Solid background:</label>
+			<label for="backgroundColor">Solid background:</label>
 			<div id="backgroundColorGroup" class="colorGroup input-group">
-				<input type="text" id="backgroundColor" value="{{config.misc.colors.background}}" class="form-control" />
+				<input type="text" id="backgroundColor" class="form-control"
+					value="{{#compare config.misc.colors.background null operator="=="}}#ffffff{{/compare}}{{#compare config.misc.colors.background null operator="!="}}{{config.misc.colors.background}}{{/compare}}"  />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
@@ -21,8 +22,14 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<label>Segment stroke color</label>
+	</div>
+	<div class="col-md-6">
+		<div id="segmentStrokeColorGroup" class="colorGroup input-group">
+			<input type="text" id="segmentStrokeColor" value="{{config.misc.colors.segmentStroke}}" class="form-control" />
+			<span class="input-group-addon"><i></i></span>
+		</div>
 	</div>
 </div>
 

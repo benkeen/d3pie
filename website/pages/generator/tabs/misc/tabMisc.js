@@ -1,8 +1,9 @@
 define([
 	"constants",
 	"mediator",
+	"utils",
 	"hbs!miscTabTemplate"
-], function(C, mediator, miscTabTemplate) {
+], function(C, mediator, utils, miscTabTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "miscTab";
@@ -12,30 +13,36 @@ define([
 	var _canvasWidth = null;
 
 
+	var _init = function() {
+		mediator.register(_MODULE_ID);
+
+		var subscriptions = {};
+		subscriptions[C.EVENT.DEMO_PIE.DATA_CHANGE] = _onDataChange;
+		subscriptions[C.EVENT.DEMO_PIE.EXAMPLE_CHANGE] = _onExampleChange;
+		mediator.subscribe(_MODULE_ID, subscriptions);
+	};
+
 	var _render = function(tabEl, config) {
 		_canvasWidth = config.size.canvasWidth;
 		_canvasHeight = config.size.canvasHeight;
 
 		$(tabEl).html(miscTabTemplate({ config: config }));
 
+		utils.addColorpicker("backgroundColor");
 		$("input[name=backgroundColorType]").on("change", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
-
 		$("#backgroundColor").on("focus", function() {
 			$("#backgroundColor2")[0].checked = true;
 			$("#backgroundColorGroup").colorpicker("show");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
+		utils.addColorpicker("segmentStrokeColor");
+
 		if (Modernizr.webgl) {
 			$("#transparencyProof").removeClass("hidden").on("click", _toggleProof);
 		}
-
-		var subscriptions = {};
-		subscriptions[C.EVENT.DEMO_PIE.DATA_CHANGE] = _onDataChange;
-		subscriptions[C.EVENT.DEMO_PIE.EXAMPLE_CHANGE] = _onExampleChange;
-		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
 	var _getTabData = function() {
@@ -47,7 +54,8 @@ define([
 
 		return {
 			colors: {
-				background: backgroundColor
+				background: backgroundColor,
+				segmentStroke: $("#segmentStrokeColor").val()
 			},
 			canvasPadding: {
 				top: parseInt($("#canvasPaddingTop").val(), 10),
@@ -115,7 +123,7 @@ define([
 	};
 
 
-	mediator.register(_MODULE_ID);
+	_init();
 
 	return {
 		render: _render,

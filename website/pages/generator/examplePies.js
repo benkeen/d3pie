@@ -129,7 +129,8 @@ define([], function() {
 				},
 				misc: {
 					colors: {
-						background: null
+						background: null,
+						segmentStroke: "#ffffff"
 					},
 					canvasPadding: {
 						top: 5,
@@ -246,7 +247,8 @@ define([], function() {
 				},
 				misc: {
 					colors: {
-						background: null
+						background: null,
+						segmentStroke: "#ffffff"
 					},
 					canvasPadding: {
 						top: 5,
@@ -357,7 +359,8 @@ define([], function() {
 				},
 				misc: {
 					colors: {
-						background: null
+						background: null,
+						segmentStroke: "#ffffff"
 					},
 					canvasPadding: {
 						top: 5,
@@ -465,7 +468,8 @@ define([], function() {
 				},
 				misc: {
 					colors: {
-						background: null
+						background: null,
+						segmentStroke: "#ffffff"
 					},
 					canvasPadding: {
 						top: 5,

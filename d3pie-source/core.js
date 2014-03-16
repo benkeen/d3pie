@@ -135,8 +135,6 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 d3pie.prototype.init = function() {
 	_options = this.options;
 
-	console.log("...");
-
 	// 1. Prep-work
 	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
 	_options.colors = d3pie.helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
