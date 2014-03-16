@@ -351,3 +351,7 @@ label.disabled {
 	color: #007196;
 	padding: 10px;
 }
+.callbackCode {
+	white-space: pre-wrap;
+	padding: 2px 12px;
+}

@@ -11,22 +11,22 @@ define([
 	var _callbackInfo = {
 		onload: {
 			enabled: false,
-			displayStr: "function() { console.log(\"loaded.\"); }",
+			displayStr: "function() {\n    console.log(\"loaded.\");\n}",
 			func: function() { console.log("loaded."); }
 		},
 		onMouseoverSegment: {
 			enabled: false,
-			displayStr: "function(info) { console.log(\"mouseover:\", info); }",
+			displayStr: "function(info) {\n    console.log(\"mouseover:\", info);\n}",
 			func: function(seg) { console.log("mouseover:", seg); }
 		},
 		onMouseoutSegment: {
 			enabled: false,
-			displayStr: "function(info) { console.log(\"mouseout:\", info); }",
+			displayStr: "function(info) {\n    console.log(\"mouseout:\", info);\n}",
 			func: function(seg) { console.log("mouseout:", seg); }
 		},
 		onClickSegment: {
 			enabled: false,
-			displayStr: "function(info) { console.log(\"click:\", info); }",
+			displayStr: "function(info) {\n    console.log(\"click:\", info);\n}",
 			func: function(seg) { console.log("click:", seg); }
 		}
 	};

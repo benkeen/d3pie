@@ -121,12 +121,6 @@ define([], function() {
 					highlightSegmentOnMouseover: true,
 					highlightLuminosity: -0.2
 				},
-				callbacks: {
-					onload: "function() { console.log(\"pie chart loaded.\"); }",
-					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
-					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
-					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
-				},
 				misc: {
 					colors: {
 						background: null,
@@ -459,12 +453,6 @@ define([], function() {
 					},
 					highlightSegmentOnMouseover: true,
 					highlightLuminosity: -0.2
-				},
-				callbacks: {
-					onload: "function() { console.log(\"pie chart loaded.\"); }",
-					onMouseoverSegment: "function(segmentInfo) { console.log(\"onMouseoverSegment\", segmentInfo); }",
-					onMouseoutSegment: "function(segmentInfo) { console.log(\"onMouseoutSegment\", segmentInfo); }",
-					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
 					colors: {
