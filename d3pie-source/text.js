@@ -55,7 +55,7 @@ d3pie.text = {
 
 			// still not fully correct.
 			if (_hasSubtitle) {
-				var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+				var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
 				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
 			} else {
 				y += (_componentDimensions.title.h / 4);
@@ -100,7 +100,7 @@ d3pie.text = {
 
 		var y;
 		if (_hasTitle) {
-			var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
 			if (_options.header.location === "pie-center") {
 				var pieCenter = d3pie.math.getPieCenter();
 				y = pieCenter.y;

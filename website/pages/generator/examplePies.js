@@ -26,7 +26,8 @@ define([], function() {
 						fontSize: "12px",
 						font:     "open sans"
 					},
-					location: "top-center"
+					location: "top-center",
+					titleSubtitlePadding: 9
 				},
 				footer: {
 					text: "",
@@ -139,8 +140,7 @@ define([], function() {
 					pieCenterOffset: {
 						x: 0,
 						y: 0
-					},
-					titleSubtitlePadding: 9
+					}
 				}
 			}
 		},
@@ -164,7 +164,8 @@ define([], function() {
 						fontSize: "10px",
 						font:     "courier"
 					},
-					location: "pie-center"
+					location: "pie-center",
+					titleSubtitlePadding: 6
 				},
 				footer: {
 					text:     "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
@@ -256,8 +257,7 @@ define([], function() {
 					pieCenterOffset: {
 						x: 0,
 						y: 0
-					},
-					titleSubtitlePadding: 6
+					}
 				}
 			}
 		},
@@ -281,7 +281,8 @@ define([], function() {
 						fontSize: "10",
 						font:     "verdana"
 					},
-					location: "top-center"
+					location: "top-center",
+					titleSubtitlePadding: 12
 				},
 				footer: {
 					text: "Source: me, my room, the last 2 months.",
@@ -367,8 +368,7 @@ define([], function() {
 					pieCenterOffset: {
 						x: 0,
 						y: 0
-					},
-					titleSubtitlePadding: 12
+					}
 				}
 			}
 		},
@@ -390,7 +390,8 @@ define([], function() {
 						fontSize: "12px",
 						font:     "open sans"
 					},
-					location: "pie-center"
+					location: "pie-center",
+					titleSubtitlePadding: 9
 				},
 				footer: {
 					text: "",
@@ -475,8 +476,7 @@ define([], function() {
 					pieCenterOffset: {
 						x: 0,
 						y: 0
-					},
-					titleSubtitlePadding: 9
+					}
 				}
 			}
 		}

@@ -51,7 +51,8 @@ define([
 				fontSize: $("#subtitleFontSize").val() + "px",
 				font:     $("#subtitleFont").val()
 			},
-			location: $("#titleLocation").val()
+			location: $("#titleLocation").val(),
+			titleSubtitlePadding: parseInt($("#titleSubtitlePadding").val(), 10)
 		};
 	};
 

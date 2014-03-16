@@ -16,7 +16,8 @@ var _defaultSettings = {
 			fontSize: "14px",
 			font:     "helvetica"
 		},
-		location: "top-left"
+		location: "top-left",
+		titleSubtitlePadding: 5
 	},
 	footer: {
 		text: ""
@@ -80,7 +81,8 @@ var _defaultSettings = {
 			background: null,
 			segments: [
 				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
-			]
+			],
+			segmentStroke: "#ffffff"
 		},
 		canvasPadding: {
 			top: 5,
@@ -88,7 +90,6 @@ var _defaultSettings = {
 			bottom: 5,
 			left: 5
 		},
-		titleSubtitlePadding: 5, // the padding between the title and subtitle
 		footerPiePadding: 0
 	},
 	callbacks: {

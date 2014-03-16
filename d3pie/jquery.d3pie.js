@@ -26,7 +26,8 @@ var _defaultSettings = {
 			fontSize: "14px",
 			font:     "helvetica"
 		},
-		location: "top-left"
+		location: "top-left",
+		titleSubtitlePadding: 5
 	},
 	footer: {
 		text: ""
@@ -90,7 +91,8 @@ var _defaultSettings = {
 			background: null,
 			segments: [
 				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
-			]
+			],
+			segmentStroke: "#ffffff"
 		},
 		canvasPadding: {
 			top: 5,
@@ -98,7 +100,6 @@ var _defaultSettings = {
 			bottom: 5,
 			left: 5
 		},
-		titleSubtitlePadding: 5, // the padding between the title and subtitle
 		footerPiePadding: 0
 	},
 	callbacks: {
@@ -388,7 +389,7 @@ d3pie.math = {
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			headerOffset += _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
 		} else if (hasTopTitle) {
 			headerOffset += _componentDimensions.title.h;
 		} else if (hasTopSubtitle) {
@@ -965,7 +966,7 @@ d3pie.segments = {
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
 			.style("fill", function(d, index) { return _options.colors[index]; })
-			.style("stroke", "#ffffff")
+			.style("stroke", _options.misc.colors.segmentStroke)
 			.style("stroke-width", 1)
 			.transition()
 			.ease("cubic-in-out")
@@ -1196,7 +1197,7 @@ d3pie.text = {
 
 			// still not fully correct.
 			if (_hasSubtitle) {
-				var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+				var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
 				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
 			} else {
 				y += (_componentDimensions.title.h / 4);
@@ -1241,7 +1242,7 @@ d3pie.text = {
 
 		var y;
 		if (_hasTitle) {
-			var totalTitleHeight = _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
 			if (_options.header.location === "pie-center") {
 				var pieCenter = d3pie.math.getPieCenter();
 				y = pieCenter.y;

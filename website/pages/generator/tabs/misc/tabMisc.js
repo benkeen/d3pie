@@ -58,8 +58,7 @@ define([
 			pieCenterOffset: {
 				x: parseInt($("#pieCenterOffsetX").val(), 10),
 				y: parseInt($("#pieCenterOffsetY").val(), 10)
-			},
-			titleSubtitlePadding: parseInt($("#titleSubtitlePadding").val(), 10)
+			}
 		};
 	};
 

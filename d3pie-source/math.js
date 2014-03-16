@@ -105,7 +105,7 @@ d3pie.math = {
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += _componentDimensions.title.h + _options.misc.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			headerOffset += _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
 		} else if (hasTopTitle) {
 			headerOffset += _componentDimensions.title.h;
 		} else if (hasTopSubtitle) {

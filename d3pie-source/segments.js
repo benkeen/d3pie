@@ -41,7 +41,7 @@ d3pie.segments = {
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
 			.style("fill", function(d, index) { return _options.colors[index]; })
-			.style("stroke", "#ffffff")
+			.style("stroke", _options.misc.colors.segmentStroke)
 			.style("stroke-width", 1)
 			.transition()
 			.ease("cubic-in-out")
