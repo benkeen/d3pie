@@ -23,20 +23,24 @@
 		<select id="colorSets" class="form-control">
 			<option value="">&#8212;</option>
 			<optgroup label="Small sets (10 colors)">
-				<option value="small-rainbow">Rainbow</option>
-				<option value="small-grays">Grays</option>
-				<option value="small-blues">Blues</option>
+				{{#each colorsets.small}}
+					<option value="small-{{@index}}">{{label}}</option>
+				{{/each}}
 			</optgroup>
-			<optgroup label="Medium sets (25 colors)">
-				<option value="small-rainbow">Rainbow</option>
+			<optgroup label="Medium sets (20 colors)">
+				{{#each colorsets.medium}}
+					<option value="medium-{{@index}}">{{label}}</option>
+				{{/each}}
 			</optgroup>
-			<optgroup label="Large sets (50 colors)">
-				<option value="small-rainbow">Rainbow</option>
+			<optgroup label="Large sets (30 colors)">
+				{{#each colorsets.large}}
+					<option value="large-{{@index}}">{{label}}</option>
+				{{/each}}
 			</optgroup>
 		</select>
 	</div>
 	<div class="col-md-3">
-		<button class="btn btn-info btn-sm">Shuffle</button>
+		<button id="shuffleColors" class="btn btn-info btn-sm">Shuffle</button>
 	</div>
 </div>
 

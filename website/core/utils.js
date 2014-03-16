@@ -57,7 +57,21 @@ define([
 		}
 	};
 
+	var _shuffleArray = function(array) {
+		var copy = $.extend(true, [], array);
+		var currentIndex = copy.length, tmpVal, randomIndex;
 
+		while (0 !== currentIndex) {
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// and swap it with the current element
+			tmpVal = copy[currentIndex];
+			copy[currentIndex] = copy[randomIndex];
+			copy[randomIndex] = tmpVal;
+		}
+		return copy;
+	};
 
 	// ------------------------------------------
 
@@ -95,6 +109,7 @@ define([
 
 	return {
 		addColorpicker: _addColorpicker,
-		rgb2hex: _rgb2hex
+		rgb2hex: _rgb2hex,
+		shuffleArray: _shuffleArray
 	};
 });

@@ -284,6 +284,7 @@ d3pie.helpers = {
 			}
 		}
 
+
 		return finalColors;
 	},
 
@@ -574,19 +575,19 @@ d3pie.labels = {
 		var dims = d3pie.labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
-				d3.selectAll(".segmentValue-outer")
+				d3.selectAll(".segmentValue-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-value2":
-				d3.selectAll(".segmentValue-outer")
+				d3.selectAll(".segmentValue-" + section)
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
 			case "label-percentage1":
-				d3.selectAll(".segmentPercentage-outer")
+				d3.selectAll(".segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-percentage2":
-				d3.selectAll(".segmentPercentage-outer")
+				d3.selectAll(".segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
@@ -1462,9 +1463,7 @@ d3pie.prototype.init = function() {
 	// 1. Prep-work
 	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
 	_options.colors = d3pie.helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
-
-	_totalSize    = d3pie.math.getTotalPieSize(_options.data);
-
+	_totalSize      = d3pie.math.getTotalPieSize(_options.data);
 
 	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
 
@@ -1510,13 +1509,15 @@ d3pie.prototype.init = function() {
 		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
 		l.positionLabelGroups("outer");
 
+		// we use the label line positions for other calculations, so ALWAYS compute them (boooo)
+		l.computeLabelLinePositions();
+
+		// only add them if they're actually enabled
 		if (_options.labels.lines.enabled && _options.labels.outer.format !== "none") {
-			l.computeLabelLinePositions();
 			l.addLabelLines();
 		}
 
 		l.positionLabelGroups("inner");
-
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();

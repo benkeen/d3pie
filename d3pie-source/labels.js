@@ -88,19 +88,19 @@ d3pie.labels = {
 		var dims = d3pie.labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
-				d3.selectAll(".segmentValue-outer")
+				d3.selectAll(".segmentValue-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-value2":
-				d3.selectAll(".segmentValue-outer")
+				d3.selectAll(".segmentValue-" + section)
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
 			case "label-percentage1":
-				d3.selectAll(".segmentPercentage-outer")
+				d3.selectAll(".segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-percentage2":
-				d3.selectAll(".segmentPercentage-outer")
+				d3.selectAll(".segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;

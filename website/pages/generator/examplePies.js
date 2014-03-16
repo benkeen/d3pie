@@ -296,13 +296,13 @@ define([], function() {
 				data: {
 					sortOrder: "none",
 					content: [
-						{ label: "When's it going to be done?", value: 8 },
-						{ label: "Bennnnn!", value: 5 },
-						{ label: "Oh, god.", value: 2  },
-						{ label: "But it's Friday night!", value: 3 },
-						{ label: "Again?", value: 2 },
-						{ label: "You realize I'm considering an affair?", value: 1 },
-						{ label: "[baleful stare]", value: 3 }
+						{ label: "When's it going to be done?", value: 8, color: "#000000" },
+						{ label: "Bennnnn!", value: 5, color: "#BDC97A" },
+						{ label: "Oh, god.", value: 2, color: "#DDE32D"},
+						{ label: "But it's Friday night!", value: 3, color: "#39993B" },
+						{ label: "Again?", value: 2, color: "#29263D" },
+						{ label: "I'm considering an affair.", value: 1, color: "#8BAFBD" },
+						{ label: "[baleful stare]", value: 3, color: "#688A51" }
 					]
 				},
 				labels: {
@@ -312,7 +312,7 @@ define([], function() {
 						hideWhenLessThanPercentage: null
 					},
 					inner: {
-						format: "percentage",
+						format: "value",
 						hideWhenLessThanPercentage: null
 					},
 					mainLabel: {
@@ -327,7 +327,7 @@ define([], function() {
 						decimalPlaces: 0
 					},
 					value: {
-						color: "#cccc44",
+						color: "#e1e1e1",
 						font: "verdana",
 						fontSize: "10"
 					},
@@ -377,22 +377,22 @@ define([], function() {
 				header: {
 					title: {
 						text:     "The Sun",
-						color:    "#333333",
-						fontSize: "24px",
-						font:     "open sans"
+						color:    "#000000",
+						fontSize: "50px",
+						font:     "Helvetica"
 					},
 					subtitle: {
 						text:     "Chemical composition",
-						color:    "#999999",
-						fontSize: "12px",
-						font:     "open sans"
+						color:    "#ff0000",
+						fontSize: "14px",
+						font:     "Helvetica"
 					},
 					location: "pie-center",
 					titleSubtitlePadding: 9
 				},
 				footer: {
-					text: "",
-					color:    "#999999",
+					text: "Source: http://en.wikipedia.org/wiki/The_sun",
+					color:    "#666666",
 					fontSize: "10px",
 					font:     "open sans",
 					location: "bottom-left"
@@ -406,12 +406,12 @@ define([], function() {
 				data: {
 					sortOrder: "label-desc",
 					content: [
-						{ label: "Hydrogen", value: 74.9 },
-						{ label: "Helium", value: 23.8 },
-						{ label: "Oxygen", value: 1  },
-						{ label: "Carbon", value: 0.3  },
-						{ label: "Neon", value: 0.2 },
-						{ label: "Iron", value: 0.2 }
+						{ label: "Hydrogen", value: 74.9, color: "#fdd000" },
+						{ label: "Helium", value: 23.8, color: "#ccab12" },
+						{ label: "Oxygen", value: 1, color: "#dd8d11" },
+						{ label: "Carbon", value: 0.3, color: "#999999"  },
+						{ label: "Neon", value: 0.2, color: "#999999" },
+						{ label: "Iron", value: 0.2, color: "#999999" }
 					]
 				},
 				labels: {
@@ -425,15 +425,20 @@ define([], function() {
 						hideWhenLessThanPercentage: null
 					},
 					mainLabel: {
-						color: "#333333",
+						color: "#bbbbbb",
 						font: "Open sans",
 						fontSize: "11px"
+					},
+					value: {
+						color: "#e1e1e1",
+						font: "verdana",
+						fontSize: "10"
 					},
 					percentage: {
 						color: "#999999",
 						font: "Open sans",
 						fontSize: "11px",
-						decimalPlaces: 0
+						decimalPlaces: 5
 					},
 					lines: {
 						enabled: true,
@@ -456,8 +461,8 @@ define([], function() {
 				},
 				misc: {
 					colors: {
-						background: null,
-						segmentStroke: "#ffffff"
+						background: "#000000",
+						segmentStroke: "#222222"
 					},
 					canvasPadding: {
 						top: 5,
@@ -467,7 +472,7 @@ define([], function() {
 					},
 					pieCenterOffset: {
 						x: 0,
-						y: 0
+						y: 15
 					}
 				}
 			}

@@ -8,7 +8,7 @@
 define([], function() {
 
 	var _camera, _scene, _renderer, _birds, _boids, _requestId;
-	var _numBirds = 250;
+	var _numBirds = 150;
 
 
 	var _init = function(screenWidth, screenHeight) {

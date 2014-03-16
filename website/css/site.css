@@ -223,7 +223,7 @@ body .colorGroup {
     border-right: 1px solid #dddddd;
 }
 #sortableDataListHeader li.col0 {
-    width: 22px;
+    width: 34px;
     height: 29px;
 }
 #sortableDataListHeader li.col1 {
@@ -243,7 +243,7 @@ body .colorGroup {
     width: 170px;
 }
 .dataValue {
-    width: 130px;
+    width: 126px;
 }
 .dataOffsetX, .dataOffsetY {
     width: 35px;
@@ -258,7 +258,7 @@ body .disabledText {
 }
 
 .misc .col-lg-3 {
-	padding-right: 10px;
+	padding-right: 0px;
 }
 
 #birdyBackground canvas{
@@ -354,4 +354,9 @@ label.disabled {
 .callbackCode {
 	white-space: pre-wrap;
 	padding: 2px 12px;
+}
+.dataRowIndex {
+	font-size: 7pt;
+	width: 10px;
+	display: inline-block;
 }

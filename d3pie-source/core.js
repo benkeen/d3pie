@@ -138,9 +138,7 @@ d3pie.prototype.init = function() {
 	// 1. Prep-work
 	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
 	_options.colors = d3pie.helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
-
-	_totalSize    = d3pie.math.getTotalPieSize(_options.data);
-
+	_totalSize      = d3pie.math.getTotalPieSize(_options.data);
 
 	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
 
@@ -186,13 +184,15 @@ d3pie.prototype.init = function() {
 		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
 		l.positionLabelGroups("outer");
 
+		// we use the label line positions for other calculations, so ALWAYS compute them (boooo)
+		l.computeLabelLinePositions();
+
+		// only add them if they're actually enabled
 		if (_options.labels.lines.enabled && _options.labels.outer.format !== "none") {
-			l.computeLabelLinePositions();
 			l.addLabelLines();
 		}
 
 		l.positionLabelGroups("inner");
-
 		l.fadeInLabelsAndLines();
 
 		d3pie.segments.addSegmentEventHandlers();

@@ -3,9 +3,10 @@ define([
 	"mediator",
 	"utils",
 	"handlebars",
+	"colorsets",
 	"hbs!dataTabTemplate",
 	"hbs!dataRowPartial"
-], function(C, mediator, utils, Handlebars, dataTabTemplate, dataRowPartial) {
+], function(C, mediator, utils, Handlebars, COLORSETS, dataTabTemplate, dataRowPartial) {
 	"use strict";
 
 	var _MODULE_ID = "dataTab";
@@ -20,7 +21,11 @@ define([
 
 	var _render = function(tabEl, config) {
 		var $dataTab = $(tabEl);
-		$dataTab.html(dataTabTemplate({ config: config }));
+
+		$dataTab.html(dataTabTemplate({
+			config: config,
+			colorsets: COLORSETS
+		}));
 
 		$("#sortableDataList").find(".segmentColor").colorpicker().on("changeColor", function(e) {
 			$(e.target).css("background-color", e.color.toHex());
@@ -37,6 +42,8 @@ define([
 		});
 
 		$("#sortableDataList").on("click", ".removeRow", _removeRow);
+		$("#colorSets").on("change", _selectColorset);
+		$("#shuffleColors").on("click", _randomizeColorset);
 		$("#addRow").on("click", _addRow);
 	};
 
@@ -52,7 +59,7 @@ define([
 
 	var _getTabData = function() {
 		var data = [];
-		var trs = $("#sortableDataList li");
+		var trs = $("#sortableDataList").find("li");
 		for (var i=0; i<trs.length; i++) {
 			var row = $(trs[i]);
 			data.push({
@@ -68,6 +75,48 @@ define([
 		};
 	};
 
+	/**
+	 * Randomizes whatever colors are currently being used.
+	 * @private
+	 */
+	var _randomizeColorset = function() {
+		var colors = []
+		var trs = $("#sortableDataList").find("li");
+		for (var i=0; i<trs.length; i++) {
+			colors.push(utils.rgb2hex($(trs[i]).find(".segmentColor").css("background-color")));
+		}
+		colors = utils.shuffleArray(colors);
+		_setColors(colors);
+
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+	};
+
+	var _selectColorset = function(e) {
+		var parts = e.target.value.split("-");
+		if (parts.length !== 2) {
+			return;
+		}
+
+		var group = parts[0];
+		var index = parts[1];
+		var colors = COLORSETS[group][index].colors;
+		_setColors(colors);
+
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+	};
+
+	var _setColors = function(colors) {
+		// reset them all to black - we want any superfluous entries to be clearly shown to be black - users
+		// can always change them
+		$("#sortableDataList").find(".segmentColor").css("backgroundColor", "#000000").attr("data-color", "#000000");
+
+		var trs = $("#sortableDataList").find("li");
+		for (var i=0; i<trs.length; i++) {
+			$(trs[i]).find(".segmentColor").css("backgroundColor", colors[i]).attr("data-color", colors[i]);
+		}
+	}
+
+
 	var _outputColors = function() {
 		var colors = [];
 		var trs = $("#sortableDataList li");
@@ -79,10 +128,6 @@ define([
 	};
 
 
-	var colors = function() {
-		var greys = ["#333333", "#444444", "#555555", "#666666", "#777777", "#888888", "#999999", "#afafaf", "#bcbcbc", "#d8d8d8"];
-		var blues = ["#00047c", "#2f3399", "#2f52aa", "#2e59c9", "#4d70cc", "#738eef", "#77a0dd", "#9db5f2", "#bccff2", "#d7e5f7"];
-	};
 
 	_init();
 

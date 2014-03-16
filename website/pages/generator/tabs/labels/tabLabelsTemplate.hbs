@@ -31,7 +31,9 @@
 				{{#if config.labels.outer.hideWhenLessThanPercentage}}checked="checked"{{/if}} />
 				<label for="hideOuterLabelCondition2">When under</label>
 				<input type="number" class="tinyField changeUpdateNoAnimation" id="outerHideWhenLessThanPercentage"
-					min="1" max="99" maxlength="2" value="{{config.labels.outer.hideWhenLessThanPercentage}}" /> %
+					min="1" max="99" maxlength="2"
+					value="{{#compare config.labels.outer.hideWhenLessThanPercentage null}}1{{/compare}}{{#compare config.labels.outer.hideWhenLessThanPercentage null operator="!="}}{{config.labels.outer.hideWhenLessThanPercentage}}{{/compare}}"
+					/> %
 		</div>
 	</div>
 	<div class="row paddedRow">

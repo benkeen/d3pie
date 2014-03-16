@@ -168,6 +168,7 @@ d3pie.helpers = {
 			}
 		}
 
+
 		return finalColors;
 	},
 

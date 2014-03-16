@@ -50,6 +50,7 @@ require.config({
 		dataTab: "pages/generator/tabs/data/tabData",
 		dataTabTemplate: "pages/generator/tabs/data/tabDataTemplate.hbs",
 		dataRowPartial: "pages/generator/tabs/data/dataRowPartial.hbs",
+		colorsets: "pages/generator/tabs/data/colorsets",
 
 		labelsTab: "pages/generator/tabs/labels/tabLabels",
 		labelsTabTemplate: "pages/generator/tabs/labels/tabLabelsTemplate.hbs",
