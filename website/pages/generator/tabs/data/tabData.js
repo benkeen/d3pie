@@ -1,10 +1,11 @@
 define([
 	"constants",
 	"mediator",
+	"utils",
 	"handlebars",
 	"hbs!dataTabTemplate",
 	"hbs!dataRowPartial"
-], function(C, mediator, Handlebars, dataTabTemplate, dataRowPartial) {
+], function(C, mediator, utils, Handlebars, dataTabTemplate, dataRowPartial) {
 	"use strict";
 
 	var _MODULE_ID = "dataTab";
@@ -49,14 +50,10 @@ define([
 			var row = $(trs[i]);
 			data.push({
 				label: row.find(".dataLabel").val(),
-				value: parseInt(row.find(".dataValue").val(), 10)
-			})
+				value: parseInt(row.find(".dataValue").val(), 10),
+				color: utils.rgb2hex(row.find(".segmentColor").css("background-color"))
+			});
 		}
-
-//		var colorElements = $("#segmentColors").find("span.color");
-//		for (var i=0; i<colorElements.length; i++) {
-//			colors.push(_rgb2hex($(colorElements[i]).css("background-color")));
-//		}
 
 		return {
 			sortOrder: $("#dataSortOrder").val(),

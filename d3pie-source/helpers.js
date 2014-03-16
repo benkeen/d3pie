@@ -156,8 +156,19 @@ d3pie.helpers = {
 	 * for this pie chart.
 	 * @param data
 	 */
-	initSegmentColors: function(data) {
-		return _options.misc.colors.segments;
+	initSegmentColors: function(data, colors) {
+		// TODO this needs a ton of error handling
+
+		var finalColors = [];
+		for (var i=0; i<data.length; i++) {
+			if (data[i].hasOwnProperty("color")) {
+				finalColors.push(data[i].color);
+			} else {
+				finalColors.push(colors[i]);
+			}
+		}
+
+		return finalColors;
 	},
 
 	// for debugging
