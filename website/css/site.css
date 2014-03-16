@@ -21,6 +21,10 @@ body .navbar {
 	float: left;
 	border-right: 1px solid #dddddd;
 }
+#generatorTabs .active {
+	width: 105px;
+}
+
 .container {
 	margin-top: 40px;
 }
@@ -187,7 +191,6 @@ body .colorGroup {
 #sortableDataList li:nth-child(odd) {
     background-color: #f9f9f9;
 }
-
 #sortableDataList .handle {
     width: 15px;
     height: 17px;
@@ -196,7 +199,13 @@ body .colorGroup {
     cursor: pointer;
     margin: 3px 0px -3px;
 }
-
+#sortableDataList .segmentColor {
+	width: 25px;
+	height: 25px;
+	display: inline-block;
+	margin-bottom: -8px;
+	cursor: pointer;
+}
 #sortableDataListHeader {
 	list-style: none;
 	padding: 0px;
@@ -218,19 +227,20 @@ body .colorGroup {
     height: 29px;
 }
 #sortableDataListHeader li.col1 {
-    width: 270px;
+	width: 30px;
+	height: 29px;
 }
 #sortableDataListHeader li.col2 {
+    width: 172px;
+}
+#sortableDataListHeader li.col3 {
     width: 133px;
 }
-#sortableDataListHeader li.col3,
-#sortableDataListHeader li.col4,
-#sortableDataListHeader li.col5,
-#sortableDataListHeader li.col6 {
+#sortableDataListHeader li.col4 {
     width: 40px;
 }
 .dataLabel {
-    width: 268px;
+    width: 170px;
 }
 .dataValue {
     width: 130px;

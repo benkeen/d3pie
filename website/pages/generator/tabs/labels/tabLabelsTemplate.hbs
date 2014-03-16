@@ -84,7 +84,7 @@
 </div>
 
 
-<h4 class="panelToggle{{#if openSections.panelLabelStyles}} expanded{{/if}}" data-section="panelLabelStyles">Label Styles<span></span></h4>
+<h4 class="panelToggle{{#if openSections.panelLabelStyles}} expanded{{/if}}" data-section="panelLabelStyles">Label Styles / Settings<span></span></h4>
 
 <div id="panelLabelStyles" {{#compare openSections.panelLabelStyles false}}class="hidden"{{/compare}}>
 	<div class="row">
@@ -120,6 +120,31 @@
 	</div>
 
 	<div class="row">
+		<div class="col-md-2"><label for="subtitleColor">Value</label></div>
+		<div class="col-md-3">
+			<div id="labelValueColorGroup" class="colorGroup input-group">
+				<input type="text" id="labelValueColor" value="{{config.labels.value.color}}" class="form-control" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<select id="labelValueFont" class="form-control form-group changeUpdateNoAnimation">
+				<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+				<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+				<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+				<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+				<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input id="labelValueFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
+			<label for="labelValueFontSize">px</label>
+		</div>
+	</div>
+
+	<div class="row">
 		<div class="col-md-2"><label for="labelPercentageColor">Percentage</label></div>
 		<div class="col-md-3">
 			<div id="labelPercentageColorGroup" class="colorGroup input-group">
@@ -144,28 +169,11 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-md-2"><label for="subtitleColor">Value</label></div>
-		<div class="col-md-3">
-			<div id="labelValueColorGroup" class="colorGroup input-group">
-				<input type="text" id="labelValueColor" value="{{config.labels.value.color}}" class="form-control" />
-				<span class="input-group-addon"><i></i></span>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<select id="labelValueFont" class="form-control form-group changeUpdateNoAnimation">
-				<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-				<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-				<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-				<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-				<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-				<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-				<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
-			</select>
-		</div>
-		<div class="col-md-3">
-			<input id="labelValueFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.labels.value.fontSize}}" />
-			<label for="labelValueFontSize">px</label>
+	<div class="row form-group">
+		<div class="col-lg-12">
+			<label for="percentageDecimalPlaces" class="control-label">Decimal places for percentage values</label>
+			<input type="number" id="percentageDecimalPlaces" class="tinyField keyupUpdateNoAnimation" min="0" max="20"
+				value="{{config.labels.percentage.decimalPlaces}}" />
 		</div>
 	</div>
 </div>

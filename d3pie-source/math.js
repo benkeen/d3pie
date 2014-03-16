@@ -72,10 +72,10 @@ d3pie.math = {
 				data = d3pie.helpers.shuffleArray(data);
 				break;
 			case "value-asc":
-				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1 });
 				break;
 			case "value-desc":
-				data.sort(function(a, b) { return (a.value > b.value) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
 				break;
 			case "label-asc":
 				data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
@@ -156,6 +156,20 @@ d3pie.math = {
 		return { x: xr, y: yr };
 	},
 
+	/**
+	 * Translates a point x, y by distance d, and by angle a.
+	 * @param x
+	 * @param y
+	 * @param dist
+	 * @param a angle in degrees
+	 */
+	translate: function(x, y, d, a) {
+		var rads = d3pie.math.toRadians(a);
+		return {
+			x: x + d * Math.sin(rads),
+			y: y - d * Math.cos(rads)
+		};
+	},
 
 	// from: http://stackoverflow.com/questions/19792552/d3-put-arc-labels-in-a-pie-chart-if-there-is-enough-space
 	pointIsInArc: function(pt, ptData, d3Arc) {

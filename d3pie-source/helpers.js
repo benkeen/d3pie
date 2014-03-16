@@ -11,7 +11,7 @@ d3pie.helpers = {
 			.attr("width", width)
 			.attr("height", height);
 
-		if (_options.styles.backgroundColor !== "transparent") {
+		if (_options.misc.colors.background !== "transparent") {
 			_svg.style("background-color", function() { return color; });
 		}
 	},
@@ -144,6 +144,20 @@ d3pie.helpers = {
 		}
 
 		return newHex;
+	},
+
+	/**
+	 * Users can choose to specify segment colors in three ways (in order of precedence):
+	 * 	1. include a "color" attribute for each row in data.content
+	 * 	2. include a misc.colors.segments property which contains an array of hex codes
+	 * 	3. specify nothing at all and rely on this lib provide some reasonable defaults
+	 *
+	 * This function sees what's included and populates _options.colors with whatever's required
+	 * for this pie chart.
+	 * @param data
+	 */
+	initSegmentColors: function(data) {
+		return _options.misc.colors.segments;
 	},
 
 	// for debugging

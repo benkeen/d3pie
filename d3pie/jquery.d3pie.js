@@ -55,7 +55,8 @@ var _defaultSettings = {
 		percentage: {
 			color: "#999999",
 			font: "Open sans",
-			fontSize: "8"
+			fontSize: "8",
+			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
@@ -68,10 +69,6 @@ var _defaultSettings = {
 			length: 16,
 			color: "segment" // "segment" or a hex color
 		}
-	},
-	styles: {
-		backgroundColor: null,
-		colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 	},
 	effects: {
 		load: {
@@ -89,8 +86,12 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random [urgh! Wrong location]
-		percentageDecimalPlace: 0,
+		colors: {
+			background: null,
+			segments: [
+				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
+			]
+		},
 		canvasPadding: {
 			top: 5,
 			right: 5,
@@ -125,7 +126,7 @@ d3pie.helpers = {
 			.attr("width", width)
 			.attr("height", height);
 
-		if (_options.styles.backgroundColor !== "transparent") {
+		if (_options.misc.colors.background !== "transparent") {
 			_svg.style("background-color", function() { return color; });
 		}
 	},
@@ -260,6 +261,20 @@ d3pie.helpers = {
 		return newHex;
 	},
 
+	/**
+	 * Users can choose to specify segment colors in three ways (in order of precedence):
+	 * 	1. include a "color" attribute for each row in data.content
+	 * 	2. include a misc.colors.segments property which contains an array of hex codes
+	 * 	3. specify nothing at all and rely on this lib provide some reasonable defaults
+	 *
+	 * This function sees what's included and populates _options.colors with whatever's required
+	 * for this pie chart.
+	 * @param data
+	 */
+	initSegmentColors: function(data) {
+		return _options.misc.colors.segments;
+	},
+
 	// for debugging
 	showPoint: function(x, y) {
 		_svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
@@ -340,10 +355,10 @@ d3pie.math = {
 				data = d3pie.helpers.shuffleArray(data);
 				break;
 			case "value-asc":
-				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1 });
 				break;
 			case "value-desc":
-				data.sort(function(a, b) { return (a.value > b.value) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
 				break;
 			case "label-asc":
 				data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
@@ -424,6 +439,20 @@ d3pie.math = {
 		return { x: xr, y: yr };
 	},
 
+	/**
+	 * Translates a point x, y by distance d, and by angle a.
+	 * @param x
+	 * @param y
+	 * @param dist
+	 * @param a angle in degrees
+	 */
+	translate: function(x, y, d, a) {
+		var rads = d3pie.math.toRadians(a);
+		return {
+			x: x + d * Math.sin(rads),
+			y: y - d * Math.cos(rads)
+		};
+	},
 
 	// from: http://stackoverflow.com/questions/19792552/d3-put-arc-labels-in-a-pie-chart-if-there-is-enough-space
 	pointIsInArc: function(pt, ptData, d3Arc) {
@@ -489,7 +518,7 @@ d3pie.labels = {
 				.attr("id", function(d, i) { return "segmentPercentage" + i + "-" + section; })
 				.text(function(d) {
 					var percent = (d.value / _totalSize) * 100;
-					return percent.toFixed(_options.misc.percentageDecimalPlace) + "%";
+					return percent.toFixed(_options.labels.percentage.decimalPlaces) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize)
 				.style("font-family", settings.percentage.font)
@@ -637,7 +666,7 @@ d3pie.labels = {
 		lineGroup.append("path")
 			.attr("d", lineFunction)
 			.attr("stroke", function(d, i) {
-				return (_options.labels.lines.color === "segment") ? _options.styles.colors[i] : _options.labels.lines.color;
+				return (_options.labels.lines.color === "segment") ? _options.colors[i] : _options.labels.lines.color;
 			})
 			.attr("stroke-width", 1)
 			.attr("fill", "none")
@@ -658,6 +687,15 @@ d3pie.labels = {
 					y = d3pie.labels.outerLabelGroupData[i].y;
 				} else {
 					var center = d3pie.math.getPieCenter();
+
+					// now recompute the "center" based on the current _innerRadius
+					if (_innerRadius > 0) {
+						var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
+						var newCoords = d3pie.math.translate(center.x, center.y, _innerRadius, angle);
+
+						center.x = newCoords.x;
+						center.y = newCoords.y;
+					}
 
 					var dims = d3pie.helpers.getDimensions("labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;
@@ -926,7 +964,7 @@ d3pie.segments = {
 
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
-			.style("fill", function(d, index) { return _options.styles.colors[index]; })
+			.style("fill", function(d, index) { return _options.colors[index]; })
 			.style("stroke", "#ffffff")
 			.style("stroke-width", 1)
 			.transition()
@@ -969,7 +1007,7 @@ d3pie.segments = {
 
 			if (_options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				var segColor = _options.styles.colors[index];
+				var segColor = _options.colors[index];
 				d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
 			}
 
@@ -982,7 +1020,7 @@ d3pie.segments = {
 
 			if (_options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				d3.select($segment[0]).style("fill", _options.styles.colors[index]);
+				d3.select($segment[0]).style("fill", _options.colors[index]);
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
@@ -1410,10 +1448,13 @@ d3pie.prototype.init = function() {
 	_options = this.options;
 
 	// 1. Prep-work
-	_options.data = d3pie.math.sortPieData(_options.data, _options.misc.dataSortOrder);
+	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
+	_options.colors = d3pie.helpers.initSegmentColors(_options.data.content, _options.misc.colors);
+
 	_totalSize    = d3pie.math.getTotalPieSize(_options.data);
 
-	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.styles.backgroundColor);
+
+	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
 
 	// these are used all over the place
 	_hasTitle    = _options.header.title.text !== "";

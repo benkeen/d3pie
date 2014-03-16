@@ -44,7 +44,7 @@ d3pie.labels = {
 				.attr("id", function(d, i) { return "segmentPercentage" + i + "-" + section; })
 				.text(function(d) {
 					var percent = (d.value / _totalSize) * 100;
-					return percent.toFixed(_options.misc.percentageDecimalPlace) + "%";
+					return percent.toFixed(_options.labels.percentage.decimalPlaces) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize)
 				.style("font-family", settings.percentage.font)
@@ -192,7 +192,7 @@ d3pie.labels = {
 		lineGroup.append("path")
 			.attr("d", lineFunction)
 			.attr("stroke", function(d, i) {
-				return (_options.labels.lines.color === "segment") ? _options.styles.colors[i] : _options.labels.lines.color;
+				return (_options.labels.lines.color === "segment") ? _options.colors[i] : _options.labels.lines.color;
 			})
 			.attr("stroke-width", 1)
 			.attr("fill", "none")
@@ -213,6 +213,15 @@ d3pie.labels = {
 					y = d3pie.labels.outerLabelGroupData[i].y;
 				} else {
 					var center = d3pie.math.getPieCenter();
+
+					// now recompute the "center" based on the current _innerRadius
+					if (_innerRadius > 0) {
+						var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
+						var newCoords = d3pie.math.translate(center.x, center.y, _innerRadius, angle);
+
+						center.x = newCoords.x;
+						center.y = newCoords.y;
+					}
 
 					var dims = d3pie.helpers.getDimensions("labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;

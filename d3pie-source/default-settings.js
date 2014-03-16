@@ -45,7 +45,8 @@ var _defaultSettings = {
 		percentage: {
 			color: "#999999",
 			font: "Open sans",
-			fontSize: "8"
+			fontSize: "8",
+			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
@@ -58,10 +59,6 @@ var _defaultSettings = {
 			length: 16,
 			color: "segment" // "segment" or a hex color
 		}
-	},
-	styles: {
-		backgroundColor: null,
-		colors: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"]
 	},
 	effects: {
 		load: {
@@ -79,8 +76,12 @@ var _defaultSettings = {
 		enable: false
 	},
 	misc: {
-		dataSortOrder: "none", // none, value-asc, value-desc, label-asc, label-desc, random [urgh! Wrong location]
-		percentageDecimalPlace: 0,
+		colors: {
+			background: null,
+			segments: [
+				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
+			]
+		},
 		canvasPadding: {
 			top: 5,
 			right: 5,

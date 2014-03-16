@@ -40,7 +40,7 @@ d3pie.segments = {
 
 		g.append("path")
 			.attr("id", function(d, i) { return "segment" + i; })
-			.style("fill", function(d, index) { return _options.styles.colors[index]; })
+			.style("fill", function(d, index) { return _options.colors[index]; })
 			.style("stroke", "#ffffff")
 			.style("stroke-width", 1)
 			.transition()
@@ -83,7 +83,7 @@ d3pie.segments = {
 
 			if (_options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				var segColor = _options.styles.colors[index];
+				var segColor = _options.colors[index];
 				d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
 			}
 
@@ -96,7 +96,7 @@ d3pie.segments = {
 
 			if (_options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				d3.select($segment[0]).style("fill", _options.styles.colors[index]);
+				d3.select($segment[0]).style("fill", _options.colors[index]);
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";

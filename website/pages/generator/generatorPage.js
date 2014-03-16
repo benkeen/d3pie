@@ -8,7 +8,6 @@ define([
 	"titleTab",
 	"sizeTab",
 	"dataTab",
-	"colorsTab",
 	"labelsTab",
 	"footerTab",
 	"effectsTab",
@@ -16,7 +15,7 @@ define([
 	"miscTab",
 	"examplePies",
 	"hbs!generatorPageTemplate"
-], function(C, mediator, startTab, titleTab, sizeTab, dataTab, colorsTab, labelsTab, footerTab, effectsTab, eventsTab,
+], function(C, mediator, startTab, titleTab, sizeTab, dataTab, labelsTab, footerTab, effectsTab, eventsTab,
 			miscTab, EXAMPLE_PIES, generatorPageTemplate) {
 	"use strict";
 
@@ -24,8 +23,8 @@ define([
 	var _isCreated = false;
 	var _demoD3Pie = null;
 	var _tabs = [
-		"generator-start", "generator-title", "generator-size", "generator-data", "generator-colors",
-		"generator-labels", "generator-footer", "generator-effects", "generator-events", "generator-misc"
+		"generator-start", "generator-title", "generator-size", "generator-data", "generator-labels",
+		"generator-footer", "generator-effects", "generator-events", "generator-misc"
 	];
 	var _currentTab;
 
@@ -137,7 +136,6 @@ define([
 			size:      sizeTab.getTabData(),
 			data:      dataTab.getTabData(),
 			labels:    labelsTab.getTabData(),
-			styles:    colorsTab.getTabData(),
 			effects:   effectsTab.getTabData(),
 			callbacks: eventsTab.getTabData(),
 			misc:      miscTab.getTabData()
@@ -158,7 +156,6 @@ define([
 		titleTab.render("#generator-title", config);
 		sizeTab.render("#generator-size", config);
 		dataTab.render("#generator-data", config);
-		colorsTab.render("#generator-colors", config);
 		labelsTab.render("#generator-labels", config);
 		footerTab.render("#generator-footer", config);
 		effectsTab.render("#generator-effects", config);

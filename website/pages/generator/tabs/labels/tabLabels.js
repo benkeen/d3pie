@@ -96,7 +96,8 @@ define([
 			percentage: {
 				color:    $("#labelPercentageColor").val(),
 				font:     $("#labelPercentageFont").val(),
-				fontSize: $("#labelPercentageFontSize").val()
+				fontSize: $("#labelPercentageFontSize").val(),
+				decimalPlaces: parseInt($("#percentageDecimalPlaces").val(), 10)
 			},
 			value: {
 				color:    $("#labelValueColor").val(),

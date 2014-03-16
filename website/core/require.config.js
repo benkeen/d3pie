@@ -57,10 +57,6 @@ require.config({
 		footerTab: "pages/generator/tabs/footer/tabFooter",
 		footerTabTemplate: "pages/generator/tabs/footer/tabFooterTemplate.hbs",
 
-		colorsTab: "pages/generator/tabs/colors/tabColors",
-		colorsTabTemplate: "pages/generator/tabs/colors/tabColorsTemplate.hbs",
-		colorItemPartial: "pages/generator/tabs/colors/colorItemPartial.hbs",
-
 		effectsTab: "pages/generator/tabs/effects/tabEffects",
 		effectsTabTemplate: "pages/generator/tabs/effects/tabEffectsTemplate.hbs",
 

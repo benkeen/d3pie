@@ -41,36 +41,39 @@ define([], function() {
 					pieInnerRadius: "0%",
 					pieOuterRadius: "66%"
 				},
-				data: [
-					{ label: "JavaScript", value: 264131 },
-					{ label: "Ruby", value: 218812 },
-					{ label: "Java", value: 157618  },
-					{ label: "PHP", value: 114384  },
-					{ label: "Python", value: 95002 },
-					{ label: "C+", value: 78327 },
-					{ label: "C", value: 67706 },
-					{ label: "Objective-C", value: 36344 },
-					{ label: "Shell", value: 28561 }
-					/*					{ label: "Cobol", value: 24131 },
-					{ label: "C#", value: 100 },
-					{ label: "Coldfusion", value: 68 },
-					{ label: "Fortran", value: 218812 },
-					{ label: "Coffeescript", value: 157618  },
-					{ label: "Node", value: 114384  },
-					{ label: "Basic", value: 95002 },
-					{ label: "Cola", value: 36344 },
-					{ label: "Perl", value: 32170 },
-					{ label: "Dart", value: 28561 },
-					{ label: "Go", value: 264131 },
-					{ label: "Groovy", value: 218812 },
-					{ label: "Processing", value: 157618  },
-					{ label: "Smalltalk", value: 114384  },
-					{ label: "Scala", value: 95002 },
-					{ label: "Visual Basic", value: 78327 },
-					{ label: "Scheme", value: 67706 },
-					{ label: "Rust", value: 36344 },
-					{ label: "FoxPro", value: 32170 }*/
-				],
+				data: {
+					sortOrder: "value-desc",
+					content: [
+						{ label: "JavaScript", value: 264131, color: "#2484c1" },
+						{ label: "Ruby", value: 218812, color: "#0c6197" },
+						{ label: "Java", value: 157618, color: "#4daa4b" },
+						{ label: "PHP", value: 114384, color: "#90c469" },
+						{ label: "Python", value: 95002, color: "#daca61" },
+						{ label: "C+", value: 78327, color: "#e4a14b" },
+						{ label: "C", value: 67706, color: "#e98125" },
+						{ label: "Objective-C", value: 36344, color: "#cb2121" },
+						{ label: "Shell", value: 28561, color: "#830909" },
+						{ label: "Cobol", value: 24131, color: "#923e99" },
+						{ label: "C#", value: 100, color: "#ae83d5" },
+						{ label: "Coldfusion", value: 68, color: "#BF273E" },
+						{ label: "Fortran", value: 218812, color: "#CE2AEB" },
+						{ label: "Coffeescript", value: 157618, color: "#BCA44A" },
+						{ label: "Node", value: 114384, color: "#618D1B" },
+						{ label: "Basic", value: 95002, color: "#1EE67B" },
+						{ label: "Cola", value: 36344, color: "#B0EC44" },
+						{ label: "Perl", value: 32170, color: "#A4A0C9" },
+						{ label: "Dart", value: 28561, color: "#322849" },
+						{ label: "Go", value: 264131, color: "#86F71A" },
+						{ label: "Groovy", value: 218812, color: "#D1C87F" },
+						{ label: "Processing", value: 157618, color: "#7D9058" },
+						{ label: "Smalltalk", value: 114384, color: "#44B9B0" },
+						{ label: "Scala", value: 95002, color: "#7C37C0" },
+						{ label: "Visual Basic", value: 78327, color: "#CC9FB1" },
+						{ label: "Scheme", value: 67706, color: "#E65414" },
+						{ label: "Rust", value: 36344, color: "#8B6834" },
+						{ label: "FoxPro", value: 32170, color: "#248838" }
+					]
+				},
 				labels: {
 					enableTooltips: true,
 					outer: {
@@ -79,7 +82,7 @@ define([], function() {
 					},
 					inner: {
 						format: "percentage",
-						hideWhenLessThanPercentage: null
+						hideWhenLessThanPercentage: 3
 					},
 					mainLabel: {
 						color: "#333333",
@@ -89,7 +92,8 @@ define([], function() {
 					percentage: {
 						color: "#ffffff",
 						font: "Open sans",
-						fontSize: "10px"
+						fontSize: "10px",
+						decimalPlaces: 0
 					},
 					value: {
 						color: "#adadad",
@@ -102,38 +106,6 @@ define([], function() {
 						length: 32,
 						color: "segment"
 					}
-				},
-				styles: {
-					backgroundColor: null,
-					colors: [
-						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
-						"#830909", "#923e99", "#ae83d5", "#5F10E6", "#BF273E", "#CE2AEB", "#BCA44A", "#A8C427", "#618D1B",
-						"#1EE67B", "#B0EC44", "#A4A0C9", "#322849", "#86F71A", "#D1C87F", "#7D9058", "#44B9B0",
-						"#7C37C0",
-						"#CC9FB1",
-						"#E65414",
-						"#8B6834",
-						"#248838",
-						"#D9439C",
-						"#F96E8B",
-						"#D01593",
-						"#E5AC0D",
-						"#0E7EBD",
-						"#573972",
-						"#83EE1B",
-						"#3FF8AD",
-						"#C03D6D",
-						"#B769AD",
-						"#3BA310",
-						"#33312C",
-						"#30B9AE",
-						"#852ECC",
-						"#0E125C",
-						"#24CB14",
-						"#F2D2FF",
-						"#E4C04C",
-						"#9BAB4A"
-					]
 				},
 				effects: {
 					load: {
@@ -155,8 +127,9 @@ define([], function() {
 					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
-					dataSortOrder: "label-desc",
-					percentageDecimalPlace: 1,
+					colors: {
+						background: null
+					},
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -206,31 +179,34 @@ define([], function() {
 					pieInnerRadius: "95%",
 					pieOuterRadius: "60%"
 				},
-				data: [
-					{ label: "Spiders", value: 2 },
-					{ label: "Mother-in-laws", value: 10 },
-					{ label: "Sharks", value: 8 },
-					{ label: "Alien invasion", value: 8 },
-					{ label: "Learning Objective-C", value: 5 },
-					{ label: "Public speaking", value: 3 },
-					{ label: "Donald Rumsfeld", value: 4 },
-					{ label: "The Zombie Apocalypse", value: 4 },
-					{ label: "The City of Winnipeg *", value: 3 },
-					{ label: "IE 6", value: 2 },
-					{ label: "Planes, with/without snakes", value: 5 },
-					{ label: "Off-by-one errors", value: 3 },
-					{ label: "Chickadees", value: 4 },
-					{ label: "A never-ending Harper Government", value: 1 }
-				],
+				data: {
+					sortOrder: "label-asc",
+					content: [
+						{ label: "Spiders", value: 2, color: "#333333" },
+						{ label: "Mother-in-laws", value: 10, color: "#444444" },
+						{ label: "Sharks", value: 8, color: "#555555" },
+						{ label: "Alien invasion", value: 8, color: "#666666" },
+						{ label: "Learning Objective-C", value: 5, color: "#777777" },
+						{ label: "Public speaking", value: 3, color: "#888888" },
+						{ label: "Donald Rumsfeld", value: 4, color: "#999999" },
+						{ label: "The Zombie Apocalypse", value: 4, color: "#cb2121" },
+						{ label: "The City of Winnipeg *", value: 3, color: "#830909" },
+						{ label: "IE 6", value: 2, color: "#923e99" },
+						{ label: "Planes, with/without snakes", value: 5, color: "#ae83d5" },
+						{ label: "Off-by-one errors", value: 3, color: "#111111"},
+						{ label: "Chickadees", value: 4, color: "#050505" },
+						{ label: "A never-ending Harper Government", value: 1, color: "#646464" }
+					]
+				},
 				labels: {
 					enableTooltips: true,
 					outer: {
 						format: "label-percentage1",
-						hideWhenLessThanPercentage: 5
+						hideWhenLessThanPercentage: null
 					},
 					inner: {
-						format: "percentage",
-						hideWhenLessThanPercentage: 5
+						format: "none",
+						hideWhenLessThanPercentage: null
 					},
 					mainLabel: {
 						color: "#333333",
@@ -240,7 +216,8 @@ define([], function() {
 					percentage: {
 						color: "#999999",
 						font: "Open sans",
-						fontSize: "11"
+						fontSize: "11",
+						decimalPlaces: 0
 					},
 					value: {
 						color: "#cccc44",
@@ -252,13 +229,6 @@ define([], function() {
 						length: 16,
 						color: "#777777"
 					}
-				},
-				styles: {
-					backgroundColor: null,
-					colors: [
-						"#333333", "#444444", "#555555", "#666666", "#777777", "#888888", "#999999", "#cb2121",
-						"#830909", "#923e99", "#ae83d5", "#111111", "#050505"
-					]
 				},
 				effects: {
 					load: {
@@ -274,8 +244,9 @@ define([], function() {
 					highlightLuminosity: -0.2
 				},
 				misc: {
-					dataSortOrder: "label-asc",
-					percentageDecimalPlace: 0,
+					colors: {
+						background: null
+					},
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -325,23 +296,27 @@ define([], function() {
 					pieInnerRadius: "0%",
 					pieOuterRadius: "67%"
 				},
-				data: [
-					{ label: "When's it going to be done?", value: 8 },
-					{ label: "Bennnnn!", value: 5 },
-					{ label: "Oh, god.", value: 2  },
-					{ label: "But it's Friday night!", value: 3 },
-					{ label: "Again?", value: 2 },
-					{ label: "[baleful stare]", value: 3 }
-				],
+				data: {
+					sortOrder: "none",
+					content: [
+						{ label: "When's it going to be done?", value: 8 },
+						{ label: "Bennnnn!", value: 5 },
+						{ label: "Oh, god.", value: 2  },
+						{ label: "But it's Friday night!", value: 3 },
+						{ label: "Again?", value: 2 },
+						{ label: "You realize I'm considering an affair?", value: 1 },
+						{ label: "[baleful stare]", value: 3 }
+					]
+				},
 				labels: {
 					enableTooltips: true,
 					outer: {
-						format: "label-percentage1",
-						hideWhenLessThanPercentage: 5
+						format: "label",
+						hideWhenLessThanPercentage: null
 					},
 					inner: {
 						format: "percentage",
-						hideWhenLessThanPercentage: 5
+						hideWhenLessThanPercentage: null
 					},
 					mainLabel: {
 						color: "#333333",
@@ -349,9 +324,10 @@ define([], function() {
 						fontSize: "10"
 					},
 					percentage: {
-						color: "#999999",
+						color: "#e1e1e1",
 						font: "verdana",
-						fontSize: "10"
+						fontSize: "10",
+						decimalPlaces: 0
 					},
 					value: {
 						color: "#cccc44",
@@ -360,13 +336,10 @@ define([], function() {
 					},
 					lines: {
 						enabled: true,
+						style: "curved",
 						length: 16,
 						color: "#cccccc"
 					}
-				},
-				styles: {
-					backgroundColor: null,
-					colors: ["#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#a61111", "#923e99", "#ae83d5"]
 				},
 				effects: {
 					load: {
@@ -382,8 +355,9 @@ define([], function() {
 					highlightLuminosity: -0.2
 				},
 				misc: {
-					dataSortOrder: "none",
-					percentageDecimalPlace: 0,
+					colors: {
+						background: null
+					},
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -431,14 +405,17 @@ define([], function() {
 					pieInnerRadius: "0%",
 					pieOuterRadius: "66%"
 				},
-				data: [
-					{ label: "Hydrogen", value: 74.9 },
-					{ label: "Helium", value: 23.8 },
-					{ label: "Oxygen", value: 1  },
-					{ label: "Carbon", value: 0.3  },
-					{ label: "Neon", value: 0.2 },
-					{ label: "Iron", value: 0.2 }
-				],
+				data: {
+					sortOrder: "label-desc",
+					content: [
+						{ label: "Hydrogen", value: 74.9 },
+						{ label: "Helium", value: 23.8 },
+						{ label: "Oxygen", value: 1  },
+						{ label: "Carbon", value: 0.3  },
+						{ label: "Neon", value: 0.2 },
+						{ label: "Iron", value: 0.2 }
+					]
+				},
 				labels: {
 					enableTooltips: true,
 					outer: {
@@ -457,25 +434,14 @@ define([], function() {
 					percentage: {
 						color: "#999999",
 						font: "Open sans",
-						fontSize: "11px"
-					},
-					value: {
-						color: "#adadad",
-						font: "Open sans",
-						fontSize: "11px"
+						fontSize: "11px",
+						decimalPlaces: 0
 					},
 					lines: {
 						enabled: true,
 						length: 32,
 						color: "segment"
 					}
-				},
-				styles: {
-					backgroundColor: null,
-					colors: [
-						"#2484c1", "#0c6197", "#4daa4b", "#90c469", "#daca61", "#e4a14b", "#e98125", "#cb2121",
-						"#830909", "#923e99", "#ae83d5"
-					]
 				},
 				effects: {
 					load: {
@@ -497,8 +463,9 @@ define([], function() {
 					onClickSegment: "function(segmentInfo) { console.log(\"onClickSegment\", segmentInfo); }"
 				},
 				misc: {
-					dataSortOrder: "label-desc",
-					percentageDecimalPlace: 0,
+					colors: {
+						background: null
+					},
 					canvasPadding: {
 						top: 5,
 						right: 5,

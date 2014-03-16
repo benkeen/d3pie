@@ -136,10 +136,13 @@ d3pie.prototype.init = function() {
 	_options = this.options;
 
 	// 1. Prep-work
-	_options.data = d3pie.math.sortPieData(_options.data, _options.misc.dataSortOrder);
+	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
+	_options.colors = d3pie.helpers.initSegmentColors(_options.data.content, _options.misc.colors);
+
 	_totalSize    = d3pie.math.getTotalPieSize(_options.data);
 
-	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.styles.backgroundColor);
+
+	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
 
 	// these are used all over the place
 	_hasTitle    = _options.header.title.text !== "";
