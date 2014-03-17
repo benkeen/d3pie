@@ -37,6 +37,7 @@ define([
 			handle: ".handle",
 			axis: "y",
 			update: function() {
+				_updateCounter();
 				mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 			}
 		});
@@ -114,7 +115,14 @@ define([
 		for (var i=0; i<trs.length; i++) {
 			$(trs[i]).find(".segmentColor").css("backgroundColor", colors[i]).attr("data-color", colors[i]);
 		}
-	}
+	};
+
+	var _updateCounter = function() {
+		var trs = $("#sortableDataList").find(".dataRowIndex");
+		for (var i=0; i<trs.length; i++) {
+			$(trs[i]).html(i+1);
+		}
+	};
 
 
 	var _outputColors = function() {
