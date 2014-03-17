@@ -24,7 +24,7 @@ define([
 	var _demoD3Pie = null;
 	var _tabs = [
 		"generator-start", "generator-title", "generator-size", "generator-data", "generator-labels",
-		"generator-footer", "generator-effects", "generator-events", "generator-misc"
+		"generator-footer", "generator-effects", "generator-events", "generator-misc", "generator-result"
 	];
 	var _currentTab;
 
@@ -63,9 +63,6 @@ define([
 	 * @private
 	 */
 	var _addTabEventHandlers = function() {
-
-		// add our sub tab event handler (here?)
-
 
 		// general event handlers used in any old tab
 		$(document).on("change", ".changeUpdateNoAnimation", _renderWithNoAnimation);

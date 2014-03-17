@@ -124,17 +124,14 @@ define([
 		}
 	};
 
-
 	var _outputColors = function() {
 		var colors = [];
 		var trs = $("#sortableDataList li");
 		for (var i=0; i<trs.length; i++) {
-			var row = $(trs[i]);
-			colors.push(utils.rgb2hex(row.find(".segmentColor").css("background-color")));
+			colors.push(utils.rgb2hex($(trs[i]).find(".segmentColor").css("background-color")));
 		}
 		console.log(colors);
 	};
-
 
 
 	_init();
