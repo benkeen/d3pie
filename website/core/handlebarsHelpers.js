@@ -56,4 +56,8 @@ define([
 			return false;
 		}
 	});
+
+	Handlebars.registerHelper("count", function(index) {
+		return index + 1;
+	});
 });

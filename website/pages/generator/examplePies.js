@@ -299,13 +299,14 @@ define([], function() {
 				data: {
 					sortOrder: "none",
 					content: [
-						{ label: "When's it going to be done?", value: 8, color: "#000000" },
-						{ label: "Bennnnn!", value: 5, color: "#BDC97A" },
-						{ label: "Oh, god.", value: 2, color: "#DDE32D"},
-						{ label: "But it's Friday night!", value: 3, color: "#39993B" },
-						{ label: "Again?", value: 2, color: "#29263D" },
-						{ label: "I'm considering an affair.", value: 1, color: "#8BAFBD" },
-						{ label: "[baleful stare]", value: 3, color: "#688A51" }
+						{ label: "When's it going to be done?", value: 8, color: "#4e3a3a" },
+						{ label: "Bennnnn!", value: 5, color: "#4a4e3a" },
+						{ label: "Oh, god.", value: 2, color: "#414e3a" },
+						{ label: "But it's Friday night!", value: 3, color: "#3a4e43" },
+						{ label: "Again?", value: 2, color: "#3a4c4e" },
+						{ label: "I'm considering an affair.", value: 1, color: "#3a3f4e" },
+						{ label: "[baleful stare]", value: 3, color: "#3c3a4e" }
+						// "#443a4e", "#4e3a4d", "#4e3a42"
 					]
 				},
 				labels: {
