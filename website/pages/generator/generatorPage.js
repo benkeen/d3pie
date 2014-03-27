@@ -204,20 +204,24 @@ define([
 			_renderWithNoAnimation();
 		}
 
+		var $generatorTabs = $("#generatorTabs");
+
 		// now show the appropriate tab
 		if (_currentTab == null) {
-			$("#generatorTabs").find("a[href=#" + tab + "]").closest("li").addClass("active");
+			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");
 			$("#" + tab).removeClass("fadeOut hidden").addClass("fadeIn");
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 		} else {
-
-			$("#generatorTabs").find("a[href=#" + _currentTab + "]").closest("li").removeClass("active");
-			$("#generatorTabs").find("a[href=#" + tab + "]").closest("li").addClass("active");
+			$generatorTabs.find("a[href=#" + _currentTab + "]").closest("li").removeClass("active");
+			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");
 			$("#" + _currentTab).removeClass("hidden fadeIn").addClass("fadeOut");
 
 			(function(ct) {
 				setTimeout(function() {
 					$("#" + ct).addClass("hidden").removeClass("fadeOut");
 					$("#" + tab).removeClass("hidden fadeOut").addClass("fadeIn");
+
+					mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 				}, C.OTHER.PAGE_LOAD_SPEED);
 			})(_currentTab);
 		}
