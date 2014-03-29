@@ -1,23 +1,19 @@
 /**
  * --------- core.js -----------
- *
- * This contains the main control flow for the script, and all the core jQuery functionality - public + private.
  */
 var _pluginName = "d3pie";
-var _componentDimensions = {
-	title:    { h: 0, w: 0 },
-	subtitle: { h: 0, w: 0 },
-	footer:   { h: 0, w: 0 }
-};
-var _hasTitle = false;
-var _hasSubtitle = false;
-var _hasFooter = false;
-var _totalSize = null;
-var _arc, _svg, _options, _innerRadius, _outerRadius;
 
-function d3pie(element, options) {
-	this.element = element;
-	this.options = $.extend(true, {}, _defaultSettings, options);
+var _element;
+var _totalSize = null;
+var _arc;
+var _svg;
+var _options;
+var _innerRadius;
+var _outerRadius;
+
+
+// this is our only publically exposed function on the window object
+var d3pie = function(element, options) {
 
 	// confirm d3 is available [check minimum version]
 	if (!window.d3 || !window.d3.hasOwnProperty("version")) {
@@ -25,37 +21,43 @@ function d3pie(element, options) {
 		return;
 	}
 
-	// validate here
+	// element can be an ID or DOM element
+	_element = document.getElementById(element);
 
-	this._defaults = _defaultSettings;
-	this._name = _pluginName;
+//	this.options = $.extend(true, {}, _defaultSettings, options);
+//
+//	// validate here
+//
+//	this._defaults = _defaultSettings;
+//	this._name = _pluginName;
+//
+//	// now initialize the thing
+//	this.init();
 
-	// now initialize the thing
+	//data-d3pie="1" // urgh.. or something
+
+
+	// return our public API
+	return {
+		recreate: _recreate,
+		updateProp: _updateProp,
+		destroy: _destroy,
+		getOpenPieSegment: _getOpenPieSegment,
+		openSegment: _openSegment
+	};
+};
+
+
+var _recreate = function() {
+	_element.innerHTML = "";
 	this.init();
-}
-
-// prevents multiple instantiations of the same plugin on the same element
-$.fn[_pluginName] = function(options) {
-	return this.each(function() {
-		if (!$.data(this, _pluginName)) {
-			$.data(this, _pluginName, new d3pie(this, options));
-		}
-	});
 };
 
-
-// ----- public functions -----
-
-d3pie.prototype.destroy = function() {
-	$(this.element).removeData(_pluginName); // remove the data attr
-	$(this.element).html(""); // clear out the SVG
-	//delete this.options;
+var _destroy = function() {
+//	$(_element).removeData(_pluginName); // remove the data attr
+	_element.innerHTML = ""; // clear out the SVG
 };
 
-d3pie.prototype.recreate = function() {
-	$(this.element).html("");
-	this.init();
-};
 
 /**
  * Returns all pertinent info about the current open info. Returns null if nothing's open, or if one is, an object of
@@ -66,8 +68,8 @@ d3pie.prototype.recreate = function() {
  * 	  data: {}
  * 	}
  */
-d3pie.prototype.getOpenPieSegment = function() {
-	var segment = d3pie.segments.currentlyOpenSegment;
+var _getOpenPieSegment = function() {
+	var segment = segments.currentlyOpenSegment;
 	if (segment !== null) {
 		var index = parseInt($(segment).data("index"), 10);
 		return {
@@ -81,25 +83,26 @@ d3pie.prototype.getOpenPieSegment = function() {
 };
 
 
-d3pie.prototype.openSegment = function(index) {
+var _openSegment = function(index) {
 	// TODO error checking
+
 	var index = parseInt(index, 10);
 	if (index < 0 || index > this.options.data.length-1) {
 		return;
 	}
 
-	d3pie.segments.openSegment($("#segment" + index)[0]);
+	segments.openSegment($("#segment" + index)[0]);
 };
 
 
 // this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
 // intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
 // just redraw the single element
-d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
+var _updateProp = function(propKey, value, optionalSettings) {
 	switch (propKey) {
 		case "header.title.text":
-			var oldValue = d3pie.helpers.processObj(this.options, propKey);
-			d3pie.helpers.processObj(this.options, propKey, value);
+			var oldValue = helpers.processObj(this.options, propKey);
+			helpers.processObj(this.options, propKey, value);
 			$("#title").html(value);
 			if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 				this.recreate();
@@ -107,8 +110,8 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 			break;
 
 		case "header.subtitle.text":
-			var oldValue = d3pie.helpers.processObj(this.options, propKey);
-			d3pie.helpers.processObj(this.options, propKey, value);
+			var oldValue = helpers.processObj(this.options, propKey);
+			helpers.processObj(this.options, propKey, value);
 			$("#subtitle").html(value);
 			if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 				this.recreate();
@@ -124,64 +127,54 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		case "effects.pullOutSegmentOnClick.size":
 		case "effects.highlightSegmentOnMouseover":
 		case "effects.highlightLuminosity":
-			d3pie.helpers.processObj(this.options, propKey, value);
+			helpers.processObj(this.options, propKey, value);
 			break;
 
 	}
 };
 
 
-
-d3pie.prototype.init = function() {
+var _init = function() {
 	_options = this.options;
 
 	// 1. Prep-work
-	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
-	_options.colors = d3pie.helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
-	_totalSize      = d3pie.math.getTotalPieSize(_options.data);
+	_options.data   = math.sortPieData(_options.data.content, _options.data.sortOrder);
+	_options.colors = helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
+	_totalSize      = math.getTotalPieSize(_options.data);
 
-	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
+	helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
 
-	// these are used all over the place
-	_hasTitle    = _options.header.title.text !== "";
-	_hasSubtitle = _options.header.subtitle.text !== "";
-	_hasFooter   = _options.footer.text !== "";
+	// 2. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
+	text.trackComponents();
+	text.addTextElementsOffscreen();
+	text.addFooter(); // the footer never moves - just put it in place now
 
-	// 2. add all text components offscreen. We need to know their widths/heights for later computation
-	d3pie.text.addTextElementsOffscreen();
-	d3pie.text.addFooter(); // the footer never moves - just put it in place now
-
-	// TODO this just computes the max available space. Later functionality looks at label size to finish
-	// the computation. RENAME. Also, we shouldn't need inner at this stage.
-	var radii = d3pie.math.computePieRadius();
+	var radii = math.computePieRadius();
 	_innerRadius = radii.inner;
 	_outerRadius = radii.outer;
 
-
 	// STEP 2: now create the pie chart and position everything accordingly
 	var requiredElements = [];
-	if (_hasTitle)    { requiredElements.push("title"); }
-	if (_hasSubtitle) { requiredElements.push("subtitle"); }
-	if (_hasFooter)   { requiredElements.push("footer"); }
+	if (text.components.title.exists)    { requiredElements.push("title"); }
+	if (text.components.subtitle.exists) { requiredElements.push("subtitle"); }
+	if (text.components.footer.exists)   { requiredElements.push("footer"); }
 
-	d3pie.helpers.whenElementsExist(requiredElements, function() {
-		_storeDimensions();
+	helpers.whenElementsExist(requiredElements, function() {
+		text.storeComponentDimensions();
+		text.positionTitle();
+		text.positionSubtitle();
 
-		d3pie.text.positionTitle();
-		d3pie.text.positionSubtitle();
-
-		d3pie.segments.create();
-		var l = d3pie.labels;
+		segments.create();
+		var l = labels;
 		l.add("inner", _options.labels.inner.format);
 		l.add("outer", _options.labels.outer.format);
 
 		// position the label elements relatively within their individual group (label, percentage, value)
 		l.positionLabelElements("inner", _options.labels.inner.format);
 		l.positionLabelElements("outer", _options.labels.outer.format);
-
 		l.computeOuterLabelCoords();
 
-		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
+		// this is (and should be) dumb. It just places the outer groups at their pre-calculated, collision-free positions
 		l.positionLabelGroups("outer");
 
 		// we use the label line positions for other calculations, so ALWAYS compute them (boooo)
@@ -195,25 +188,9 @@ d3pie.prototype.init = function() {
 		l.positionLabelGroups("inner");
 		l.fadeInLabelsAndLines();
 
-		d3pie.segments.addSegmentEventHandlers();
+		segments.addSegmentEventHandlers();
 	});
 };
 
 
-var _storeDimensions = function() {
-	if (_hasTitle) {
-		var d1 = d3pie.helpers.getDimensions("title");
-		_componentDimensions.title.h = d1.h;
-		_componentDimensions.title.w = d1.w;
-	}
-	if (_hasSubtitle) {
-		var d2 = d3pie.helpers.getDimensions("subtitle");
-		_componentDimensions.subtitle.h = d2.h;
-		_componentDimensions.subtitle.w = d2.w;
-	}
-};
-
-
-var _addFilter = function() {
-	//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
-};
+window.d3pie = d3pie;

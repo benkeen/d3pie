@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 			options: { data: {} },
 			bundle: {
 				files: {
-					'd3pie/jquery.d3pie.js': ['d3pie-source/source-template.js']
+					'd3pie/d3pie.js': ['d3pie-source/source-template.js']
 				}
 			}
 		},
@@ -40,8 +40,8 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			d3pie: {
-				src: 'd3pie/jquery.d3pie.js',
-				dest: 'd3pie/jquery.d3pie.min.js'
+				src: 'd3pie/d3pie.js',
+				dest: 'd3pie/d3pie.min.js'
 			}
 		}
 	};

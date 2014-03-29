@@ -1,11 +1,11 @@
 /*!
- * d3pie jQuery plugin
+ * d3pie
  * @author Ben Keen
  * @version 0.1.0
- * @date Feb 2014
+ * @date Mar 2014
  * http://github.com/benkeen/d3pie
  */
-;(function($, window, document) {
+;(function(document) {
 	"use strict";
 
 	/**
@@ -111,7 +111,7 @@ var _defaultSettings = {
 };
 
 	// --------- validate.js -----------
-d3pie.validate = {
+var validate = {
 
 };
 	/**
@@ -119,7 +119,7 @@ d3pie.validate = {
  *
  * Misc helper functions.
  */
-d3pie.helpers = {
+var helpers = {
 
 	// creates the SVG element
 	addSVGSpace: function(element, width, height, color) {
@@ -171,6 +171,18 @@ d3pie.helpers = {
 		}, 1);
 	},
 
+	// a plain-vanilla version of $.extend()
+	extend: function() {
+		for (var i=1; i<arguments.length; i++) {
+			for (var key in arguments[i]) {
+				if (arguments[i].hasOwnProperty(key)) {
+					arguments[0][key] = arguments[i][key];
+				}
+			}
+		}
+		return arguments[0];
+	},
+
 	shuffleArray: function(array) {
 		var currentIndex = array.length, tmpVal, randomIndex;
 
@@ -188,13 +200,13 @@ d3pie.helpers = {
 
 	processObj: function(obj, is, value) {
 		if (typeof is == 'string') {
-			return d3pie.helpers.processObj(obj, is.split('.'), value);
+			return helpers.processObj(obj, is.split('.'), value);
 		} else if (is.length == 1 && value !== undefined) {
 			return obj[is[0]] = value;
 		} else if (is.length == 0) {
 			return obj;
 		} else {
-			return d3pie.helpers.processObj(obj[is[0]], is.slice(1), value);
+			return helpers.processObj(obj[is[0]], is.slice(1), value);
 		}
 	},
 
@@ -299,7 +311,7 @@ d3pie.helpers = {
 /**
  * Contains all the math needed to figure out where to place things, etc.
  */
-d3pie.math = {
+var math = {
 
 	toRadians: function(degrees) {
 		return degrees * (Math.PI / 180);
@@ -365,7 +377,7 @@ d3pie.math = {
 				// do nothing.
 				break;
 			case "random":
-				data = d3pie.helpers.shuffleArray(data);
+				data = helpers.shuffleArray(data);
 				break;
 			case "value-asc":
 				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1 });
@@ -384,7 +396,7 @@ d3pie.math = {
 	},
 
 	getPieTranslateCenter: function() {
-		var pieCenter = d3pie.math.getPieCenter();
+		var pieCenter = math.getPieCenter();
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
 	},
 
@@ -396,21 +408,21 @@ d3pie.math = {
 	getPieCenter: function() {
 
 		// TODO MEMOIZE (needs invalidation, too)
-		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
-		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
+		var hasTopTitle    = (text.components.title.exists && _options.header.location !== "pie-center");
+		var hasTopSubtitle = (text.components.subtitle.exists && _options.header.location !== "pie-center");
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			headerOffset += text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += _componentDimensions.title.h;
+			headerOffset += text.components.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = _componentDimensions.subtitle.h;
+			headerOffset = text.components.subtitle.h;
 		}
 
 		var footerOffset = 0;
-		if (_hasFooter) {
-			footerOffset = _componentDimensions.footer.h + _options.misc.canvasPadding.bottom;
+		if (text.components.footer.exists) {
+			footerOffset = text.components.footer.h + _options.misc.canvasPadding.bottom;
 		}
 
 		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
@@ -460,7 +472,7 @@ d3pie.math = {
 	 * @param a angle in degrees
 	 */
 	translate: function(x, y, d, a) {
-		var rads = d3pie.math.toRadians(a);
+		var rads = math.toRadians(a);
 		return {
 			x: x + d * Math.sin(rads),
 			y: y - d * Math.cos(rads)
@@ -486,7 +498,7 @@ d3pie.math = {
 	}
 };
 	// --------- labels.js -----------
-d3pie.labels = {
+var labels = {
 
 	outerLabelGroupData: [],
 	lineCoordGroups: [],
@@ -498,7 +510,7 @@ d3pie.labels = {
 	 * @param sectionDisplayType "percentage", "value", "label", "label-value1", etc.
 	 */
 	add: function(section, sectionDisplayType) {
-		var include = d3pie.labels.getIncludes(sectionDisplayType);
+		var include = labels.getIncludes(sectionDisplayType);
 		var settings = _options.labels;
 
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
@@ -554,7 +566,7 @@ d3pie.labels = {
 	 * @param section "inner" / "outer"
 	 */
 	positionLabelElements: function(section, sectionDisplayType) {
-		d3pie.labels["dimensions-" + section] = [];
+		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
 		var labelGroups = $(".labelGroup-" + section);
@@ -564,7 +576,7 @@ d3pie.labels = {
 			var percentage = $(labelGroups[i]).find(".segmentPercentage-" + section);
 			var value = $(labelGroups[i]).find(".segmentValue-" + section);
 
-			d3pie.labels["dimensions-" + section].push({
+			labels["dimensions-" + section].push({
 				mainLabel: (mainLabel.length > 0) ? mainLabel[0].getBBox() : null,
 				percentage: (percentage.length > 0) ? percentage[0].getBBox() : null,
 				value: (value.length > 0) ? value[0].getBBox() : null
@@ -572,7 +584,7 @@ d3pie.labels = {
 		}
 
 		var singleLinePad = 5;
-		var dims = d3pie.labels["dimensions-" + section];
+		var dims = labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
 				d3.selectAll(".segmentValue-" + section)
@@ -595,18 +607,18 @@ d3pie.labels = {
 	},
 
 	computeLabelLinePositions: function() {
-		d3pie.labels.lineCoordGroups = [];
+		labels.lineCoordGroups = [];
 
 		d3.selectAll(".labelGroup-outer")
-			.each(function(d, i) { return d3pie.labels.computeLinePosition(i); });
+			.each(function(d, i) { return labels.computeLinePosition(i); });
 	},
 
 	computeLinePosition: function(i) {
-		var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true});
-		var center = d3pie.math.getPieCenter();
+		var angle = segments.getSegmentAngle(i, { midpoint: true});
+		var center = math.getPieCenter();
 
-		var originCoords = d3pie.math.rotate(center.x, center.y - _outerRadius, center.x, center.y, angle);
-		var heightOffset = d3pie.labels.outerLabelGroupData[i].h / 5; // TODO check
+		var originCoords = math.rotate(center.x, center.y - _outerRadius, center.x, center.y, angle);
+		var heightOffset = labels.outerLabelGroupData[i].h / 5; // TODO check
 		var labelXMargin = 6; // the x-distance of the label from the end of the line [TODO configurable]
 
 		var quarter = Math.floor(angle / 90);
@@ -614,30 +626,30 @@ d3pie.labels = {
 		var x2, y2, x3, y3;
 		switch (quarter) {
 			case 0:
-				x2 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin - ((d3pie.labels.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
-				y2 = d3pie.labels.outerLabelGroupData[i].y + ((originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / midPoint);
-				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
-				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
+				x2 = labels.outerLabelGroupData[i].x - labelXMargin - ((labels.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
+				y2 = labels.outerLabelGroupData[i].y + ((originCoords.y - labels.outerLabelGroupData[i].y) / midPoint);
+				x3 = labels.outerLabelGroupData[i].x - labelXMargin;
+				y3 = labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 1:
-				x2 = originCoords.x + (d3pie.labels.outerLabelGroupData[i].x - originCoords.x) / midPoint;
-				y2 = originCoords.y + (d3pie.labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-				x3 = d3pie.labels.outerLabelGroupData[i].x - labelXMargin;
-				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
+				x2 = originCoords.x + (labels.outerLabelGroupData[i].x - originCoords.x) / midPoint;
+				y2 = originCoords.y + (labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
+				x3 = labels.outerLabelGroupData[i].x - labelXMargin;
+				y3 = labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 2:
-				var startOfLabelX = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
+				var startOfLabelX = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
 				x2 = originCoords.x - (originCoords.x - startOfLabelX) / midPoint;
-				y2 = originCoords.y + (d3pie.labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
-				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
+				y2 = originCoords.y + (labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
+				x3 = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
+				y3 = labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 3:
-				var startOfLabel = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
+				var startOfLabel = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
 				x2 = startOfLabel + ((originCoords.x - startOfLabel) / midPoint);
-				y2 = d3pie.labels.outerLabelGroupData[i].y + (originCoords.y - d3pie.labels.outerLabelGroupData[i].y) / midPoint;
-				x3 = d3pie.labels.outerLabelGroupData[i].x + d3pie.labels.outerLabelGroupData[i].w + labelXMargin;
-				y3 = d3pie.labels.outerLabelGroupData[i].y - heightOffset;
+				y2 = labels.outerLabelGroupData[i].y + (originCoords.y - labels.outerLabelGroupData[i].y) / midPoint;
+				x3 = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
+				y3 = labels.outerLabelGroupData[i].y - heightOffset;
 				break;
 		}
 
@@ -647,12 +659,12 @@ d3pie.labels = {
 		 * x3 / y3: the end of the line; closest point to the label
 		 */
 		if (_options.labels.lines.style === "straight") {
-			d3pie.labels.lineCoordGroups[i] = [
+			labels.lineCoordGroups[i] = [
 				{ x: originCoords.x, y: originCoords.y },
 				{ x: x3, y: y3 }
 			];
 		} else {
-			d3pie.labels.lineCoordGroups[i] = [
+			labels.lineCoordGroups[i] = [
 				{ x: originCoords.x, y: originCoords.y },
 				{ x: x2, y: y2 },
 				{ x: x3, y: y3 }
@@ -666,7 +678,7 @@ d3pie.labels = {
 			.style("opacity", 0);
 
 		var lineGroup = lineGroups.selectAll(".lineGroup")
-			.data(d3pie.labels.lineCoordGroups)
+			.data(labels.lineCoordGroups)
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup");
@@ -685,7 +697,7 @@ d3pie.labels = {
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
 				var percentage = _options.labels.outer.hideWhenLessThanPercentage;
-				var segmentPercentage = d3pie.segments.getPercentage(i);
+				var segmentPercentage = segments.getPercentage(i);
 				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 			})
 	},
@@ -696,26 +708,26 @@ d3pie.labels = {
 			.attr("transform", function(d, i) {
 				var x, y;
 				if (section === "outer") {
-					x = d3pie.labels.outerLabelGroupData[i].x;
-					y = d3pie.labels.outerLabelGroupData[i].y;
+					x = labels.outerLabelGroupData[i].x;
+					y = labels.outerLabelGroupData[i].y;
 				} else {
-					var center = d3pie.math.getPieCenter();
+					var center = math.getPieCenter();
 
 					// now recompute the "center" based on the current _innerRadius
 					if (_innerRadius > 0) {
-						var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
-						var newCoords = d3pie.math.translate(center.x, center.y, _innerRadius, angle);
+						var angle = segments.getSegmentAngle(i, { midpoint: true });
+						var newCoords = math.translate(center.x, center.y, _innerRadius, angle);
 
 						center.x = newCoords.x;
 						center.y = newCoords.y;
 					}
 
-					var dims = d3pie.helpers.getDimensions("labelGroup" + i + "-inner");
+					var dims = helpers.getDimensions("labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
-					x = center.x + (d3pie.labels.lineCoordGroups[i][0].x - center.x) / 1.8;
-					y = center.y + (d3pie.labels.lineCoordGroups[i][0].y - center.y) / 1.8;
+					x = center.x + (labels.lineCoordGroups[i][0].x - center.x) / 1.8;
+					y = center.y + (labels.lineCoordGroups[i][0].y - center.y) / 1.8;
 
 					x = x - xOffset;
 					y = y + yOffset;
@@ -738,7 +750,7 @@ d3pie.labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = _options.labels.outer.hideWhenLessThanPercentage;
-					var segmentPercentage = d3pie.segments.getPercentage(i);
+					var segmentPercentage = segments.getPercentage(i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
@@ -747,7 +759,7 @@ d3pie.labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = _options.labels.inner.hideWhenLessThanPercentage;
-					var segmentPercentage = d3pie.segments.getPercentage(i);
+					var segmentPercentage = segments.getPercentage(i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
@@ -810,10 +822,10 @@ d3pie.labels = {
 	computeOuterLabelCoords: function() {
 		// 1. figure out the ideal positions for the outer labels
 		d3.selectAll(".labelGroup-outer")
-			.each(function(d, i) { return d3pie.labels.getIdealOuterLabelPositions(i); });
+			.each(function(d, i) { return labels.getIdealOuterLabelPositions(i); });
 
 		// 2. now adjust those positions to try to accommodate conflicts
-		d3pie.labels.resolveOuterLabelCollisions();
+		labels.resolveOuterLabelCollisions();
 	},
 
 	/**
@@ -821,12 +833,12 @@ d3pie.labels = {
 	 */
 	resolveOuterLabelCollisions: function() {
 		var size = _options.data.length;
-		d3pie.labels.checkConflict(0, "clockwise", size);
-		d3pie.labels.checkConflict(size-1, "anticlockwise", size);
+		labels.checkConflict(0, "clockwise", size);
+		labels.checkConflict(size-1, "anticlockwise", size);
 	},
 
 	checkConflict: function(currIndex, direction, size) {
-		var currIndexHemisphere = d3pie.labels.outerLabelGroupData[currIndex].hs;
+		var currIndexHemisphere = labels.outerLabelGroupData[currIndex].hs;
 		if (direction === "clockwise" && currIndexHemisphere != "right") {
 			return;
 		}
@@ -837,44 +849,44 @@ d3pie.labels = {
 
 		// this is the current label group being looked at. We KNOW it's positioned properly (the first item
 		// is always correct)
-		var currLabelGroup = d3pie.labels.outerLabelGroupData[currIndex];
+		var currLabelGroup = labels.outerLabelGroupData[currIndex];
 
 		// this one we don't know about. That's the one we're going to look at and move if necessary
-		var examinedLabelGroup = d3pie.labels.outerLabelGroupData[nextIndex];
+		var examinedLabelGroup = labels.outerLabelGroupData[nextIndex];
 
 		var info = {
-			labelHeights: d3pie.labels.outerLabelGroupData[0].h,
-			center: d3pie.math.getPieCenter(),
+			labelHeights: labels.outerLabelGroupData[0].h,
+			center: math.getPieCenter(),
 			lineLength: (_outerRadius + _options.labels.outer.pieDistance),
-			heightChange: d3pie.labels.outerLabelGroupData[0].h + 1 // 1 = padding
+			heightChange: labels.outerLabelGroupData[0].h + 1 // 1 = padding
 		};
 
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
 		if (direction === "clockwise") {
 			for (var i=0; i<=currIndex; i++) {
-				var curr = d3pie.labels.outerLabelGroupData[i];
+				var curr = labels.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
-				if (d3pie.helpers.rectIntersect(curr, examinedLabelGroup)) {
-					d3pie.labels.adjustLabelPos(nextIndex, currLabelGroup, info);
+				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
+					labels.adjustLabelPos(nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
 		} else {
 			for (var i=size-1; i>=currIndex; i--) {
-				var curr = d3pie.labels.outerLabelGroupData[i];
+				var curr = labels.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
-				if (d3pie.helpers.rectIntersect(curr, examinedLabelGroup)) {
-					d3pie.labels.adjustLabelPos(nextIndex, currLabelGroup, info);
+				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
+					labels.adjustLabelPos(nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
 		}
-		d3pie.labels.checkConflict(nextIndex, direction, size);
+		labels.checkConflict(nextIndex, direction, size);
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one
@@ -894,15 +906,15 @@ d3pie.labels = {
 		if (lastCorrectlyPositionedLabel.hs === "right") {
 			newXPos = info.center.x + xDiff;
 		} else {
-			newXPos = info.center.x - xDiff - d3pie.labels.outerLabelGroupData[nextIndex].w;
+			newXPos = info.center.x - xDiff - labels.outerLabelGroupData[nextIndex].w;
 		}
 
 		if (!newXPos) {
 			console.log(lastCorrectlyPositionedLabel.hs, xDiff)
 		}
 
-		d3pie.labels.outerLabelGroupData[nextIndex].x = newXPos;
-		d3pie.labels.outerLabelGroupData[nextIndex].y = newYPos;
+		labels.outerLabelGroupData[nextIndex].x = newXPos;
+		labels.outerLabelGroupData[nextIndex].y = newYPos;
 	},
 
 	/**
@@ -910,12 +922,12 @@ d3pie.labels = {
 	 */
 	getIdealOuterLabelPositions: function(i) {
 		var labelGroupDims = document.getElementById("labelGroup" + i + "-outer").getBBox();
-		var angle = d3pie.segments.getSegmentAngle(i, { midpoint: true });
+		var angle = segments.getSegmentAngle(i, { midpoint: true });
 
-		var center = d3pie.math.getPieCenter();
+		var center = math.getPieCenter();
 		var originalX = center.x;
 		var originalY = center.y - (_outerRadius + _options.labels.outer.pieDistance);
-		var newCoords = d3pie.math.rotate(originalX, originalY, center.x, center.y, angle);
+		var newCoords = math.rotate(originalX, originalY, center.x, center.y, angle);
 
 		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere
@@ -926,7 +938,7 @@ d3pie.labels = {
 			newCoords.x += 8;
 		}
 
-		d3pie.labels.outerLabelGroupData[i] = {
+		labels.outerLabelGroupData[i] = {
 			x: newCoords.x,
 			y: newCoords.y,
 			w: labelGroupDims.width,
@@ -936,7 +948,7 @@ d3pie.labels = {
 	}
 };
 	// --------- segments.js -----------
-d3pie.segments = {
+var segments = {
 
 	isOpening: false,
 	currentlyOpenSegment: null,
@@ -951,7 +963,7 @@ d3pie.segments = {
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
 		var pieChartElement = _svg.insert("g", "#title")
-			.attr("transform", d3pie.math.getPieTranslateCenter)
+			.attr("transform", math.getPieTranslateCenter)
 			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
@@ -984,15 +996,14 @@ d3pie.segments = {
 			.ease("cubic-in-out")
 			.duration(loadSpeed)
 			.attr("data-index", function(d, i) { return i; })
-			.attrTween("d", d3pie.math.arcTween);
+			.attrTween("d", math.arcTween);
 
 		_svg.selectAll("g.arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
 				if (i > 0) {
-					i = i-1;
-					angle = d3pie.segments.getSegmentAngle(i);
+					angle = segments.getSegmentAngle(i-1);
 				}
 				return "rotate(" + angle + ")";
 			}
@@ -1005,12 +1016,12 @@ d3pie.segments = {
 			var $segment = $(e.currentTarget).find("path");
 			var isExpanded = $segment.attr("class") === "expanded";
 
-			d3pie.segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
+			segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
 			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
-					d3pie.segments.closeSegment($segment[0]);
+					segments.closeSegment($segment[0]);
 				} else {
-					d3pie.segments.openSegment($segment[0]);
+					segments.openSegment($segment[0]);
 				}
 			}
 		});
@@ -1021,11 +1032,11 @@ d3pie.segments = {
 			if (_options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				var segColor = _options.colors[index];
-				d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
+				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
-			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
+			segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
@@ -1037,7 +1048,7 @@ d3pie.segments = {
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
-			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
+			segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
 	},
 
@@ -1058,14 +1069,14 @@ d3pie.segments = {
 	},
 
 	openSegment: function(segment) {
-		if (d3pie.segments.isOpening) {
+		if (segments.isOpening) {
 			return;
 		}
-		d3pie.segments.isOpening = true;
+		segments.isOpening = true;
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
-			d3pie.segments.closeSegment($(".expanded")[0]);
+			segments.closeSegment($(".expanded")[0]);
 		}
 
 		d3.select(segment).transition()
@@ -1081,8 +1092,8 @@ d3pie.segments = {
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.each("end", function(d, i) {
-				d3pie.segments.currentlyOpenSegment = segment;
-				d3pie.segments.isOpening = false;
+				segments.currentlyOpenSegment = segment;
+				segments.isOpening = false;
 				$(this).attr("class", "expanded");
 			});
 	},
@@ -1093,7 +1104,7 @@ d3pie.segments = {
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				$(this).attr("class", "");
-				d3pie.segments.currentlyOpenSegment = null;
+				segments.currentlyOpenSegment = null;
 			});
 	},
 
@@ -1155,19 +1166,56 @@ d3pie.segments = {
 	// --------- text.js -----------
 
 /**
- * Contains the code pertaining to the
+ * Contains the code for the main text elements: title, subtitle + footer.
  */
-d3pie.text = {
+var text = {
+
+	components: {
+		title: {
+			exists: false,
+			h: 0,
+			w: 0
+		},
+		subtitle: {
+			exists: false,
+			h: 0,
+			w: 0
+		},
+		footer: {
+			exists: false,
+			h: 0,
+			w: 0
+		}
+	},
 
 	offscreenCoord: -10000,
 
+	// these are used all over the place
+	trackComponents: function() {
+		text.components.title.exists    = _options.header.title.text !== "";
+		text.components.subtitle.exists = _options.header.subtitle.text !== "";
+		text.components.footer.exists   = _options.footer.text !== "";
+	},
+
+	storeComponentDimensions: function() {
+		if (text.components.title.exists) {
+			var d1 = helpers.getDimensions("title");
+			text.components.title.h = d1.h;
+			text.components.title.w = d1.w;
+		}
+		if (text.components.subtitle.exists) {
+			var d2 = helpers.getDimensions("subtitle");
+			text.components.subtitle.h = d2.h;
+			text.components.subtitle.w = d2.w;
+		}
+	},
 
 	addTextElementsOffscreen: function() {
-		if (_hasTitle) {
-			d3pie.text.addTitle();
+		if (text.components.title.exists) {
+			text.addTitle();
 		}
-		if (_hasSubtitle) {
-			d3pie.text.addSubtitle();
+		if (text.components.subtitle.exists) {
+			text.addSubtitle();
 		}
 	},
 
@@ -1181,8 +1229,8 @@ d3pie.text = {
 		title.enter()
 			.append("text")
 			.attr("id", "title")
-			.attr("x", d3pie.text.offscreenCoord)
-			.attr("y", d3pie.text.offscreenCoord)
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("class", "title")
 			.attr("text-anchor", function() {
 				var location;
@@ -1201,18 +1249,18 @@ d3pie.text = {
 
 	positionTitle: function() {
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-		var y = _options.misc.canvasPadding.top + _componentDimensions.title.h;
+		var y = _options.misc.canvasPadding.top + text.components.title.h;
 
 		if (_options.header.location === "pie-center") {
-			var pieCenter = d3pie.math.getPieCenter();
+			var pieCenter = math.getPieCenter();
 			y = pieCenter.y;
 
 			// still not fully correct.
-			if (_hasSubtitle) {
-				var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
-				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
+			if (text.components.subtitle.exists) {
+				var totalTitleHeight = text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
+				y = y - (totalTitleHeight / 2) + text.components.title.h;
 			} else {
-				y += (_componentDimensions.title.h / 4);
+				y += (text.components.title.h / 4);
 			}
 		}
 
@@ -1222,7 +1270,7 @@ d3pie.text = {
 	},
 
 	addSubtitle: function() {
-		if (!_hasSubtitle) {
+		if (!text.components.subtitle.exists) {
 			return;
 		}
 
@@ -1230,8 +1278,8 @@ d3pie.text = {
 			.data([_options.header.subtitle])
 			.enter()
 			.append("text")
-			.attr("x", d3pie.text.offscreenCoord)
-			.attr("y", d3pie.text.offscreenCoord)
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("id", "subtitle")
 			.attr("class", "subtitle")
 			.attr("text-anchor", function() {
@@ -1253,10 +1301,10 @@ d3pie.text = {
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
 
 		var y;
-		if (_hasTitle) {
-			var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
+		if (text.components.title.exists) {
+			var totalTitleHeight = text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
 			if (_options.header.location === "pie-center") {
-				var pieCenter = d3pie.math.getPieCenter();
+				var pieCenter = math.getPieCenter();
 				y = pieCenter.y;
 				y = y - (totalTitleHeight / 2) + totalTitleHeight;
 			} else {
@@ -1264,10 +1312,10 @@ d3pie.text = {
 			}
 		} else {
 			if (_options.header.location === "pie-center") {
-				var footerPlusPadding = _options.misc.canvasPadding.bottom + _componentDimensions.footer.h;
-				y = ((_options.size.canvasHeight - footerPlusPadding) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.subtitle.h / 2);
+				var footerPlusPadding = _options.misc.canvasPadding.bottom + text.components.footer.h;
+				y = ((_options.size.canvasHeight - footerPlusPadding) / 2) + _options.misc.canvasPadding.top + (text.components.subtitle.h / 2);
 			} else {
-				y = _options.misc.canvasPadding.top + _componentDimensions.subtitle.h;
+				y = _options.misc.canvasPadding.top + text.components.subtitle.h;
 			}
 		}
 
@@ -1281,8 +1329,8 @@ d3pie.text = {
 			.data([_options.footer])
 			.enter()
 			.append("text")
-			.attr("x", d3pie.text.offscreenCoord)
-			.attr("y", d3pie.text.offscreenCoord)
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("id", "footer")
 			.attr("class", "footer")
 			.attr("text-anchor", function() {
@@ -1301,7 +1349,7 @@ d3pie.text = {
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 
-		d3pie.helpers.whenIdExists("footer", d3pie.text.positionFooter);
+		helpers.whenIdExists("footer", text.positionFooter);
 	},
 
 	positionFooter: function() {
@@ -1309,14 +1357,14 @@ d3pie.text = {
 		if (_options.footer.location === "bottom-left") {
 			x = _options.misc.canvasPadding.left;
 		} else if (_options.footer.location === "bottom-right") {
-			x = _options.size.canvasWidth - _componentDimensions.footer.w - _options.misc.canvasPadding.right;
+			x = _options.size.canvasWidth - text.components.footer.w - _options.misc.canvasPadding.right;
 		} else {
 			x = _options.size.canvasWidth / 2;
 		}
 
-		var d3 = d3pie.helpers.getDimensions("footer");
-		_componentDimensions.footer.h = d3.h;
-		_componentDimensions.footer.w = d3.w;
+		var d3 = helpers.getDimensions("footer");
+		text.components.footer.h = d3.h;
+		text.components.footer.w = d3.w;
 
 		_svg.select("#footer")
 			.attr("x", x)
@@ -1325,24 +1373,20 @@ d3pie.text = {
 };
 	/**
  * --------- core.js -----------
- *
- * This contains the main control flow for the script, and all the core jQuery functionality - public + private.
  */
 var _pluginName = "d3pie";
-var _componentDimensions = {
-	title:    { h: 0, w: 0 },
-	subtitle: { h: 0, w: 0 },
-	footer:   { h: 0, w: 0 }
-};
-var _hasTitle = false;
-var _hasSubtitle = false;
-var _hasFooter = false;
-var _totalSize = null;
-var _arc, _svg, _options, _innerRadius, _outerRadius;
 
-function d3pie(element, options) {
-	this.element = element;
-	this.options = $.extend(true, {}, _defaultSettings, options);
+var _element;
+var _totalSize = null;
+var _arc;
+var _svg;
+var _options;
+var _innerRadius;
+var _outerRadius;
+
+
+// this is our only publically exposed function on the window object
+var d3pie = function(element, options) {
 
 	// confirm d3 is available [check minimum version]
 	if (!window.d3 || !window.d3.hasOwnProperty("version")) {
@@ -1350,37 +1394,43 @@ function d3pie(element, options) {
 		return;
 	}
 
-	// validate here
+	// element can be an ID or DOM element
+	_element = document.getElementById(element);
 
-	this._defaults = _defaultSettings;
-	this._name = _pluginName;
+//	this.options = $.extend(true, {}, _defaultSettings, options);
+//
+//	// validate here
+//
+//	this._defaults = _defaultSettings;
+//	this._name = _pluginName;
+//
+//	// now initialize the thing
+//	this.init();
 
-	// now initialize the thing
+	//data-d3pie="1" // urgh.. or something
+
+
+	// return our public API
+	return {
+		recreate: _recreate,
+		updateProp: _updateProp,
+		destroy: _destroy,
+		getOpenPieSegment: _getOpenPieSegment,
+		openSegment: _openSegment
+	};
+};
+
+
+var _recreate = function() {
+	_element.innerHTML = "";
 	this.init();
-}
-
-// prevents multiple instantiations of the same plugin on the same element
-$.fn[_pluginName] = function(options) {
-	return this.each(function() {
-		if (!$.data(this, _pluginName)) {
-			$.data(this, _pluginName, new d3pie(this, options));
-		}
-	});
 };
 
-
-// ----- public functions -----
-
-d3pie.prototype.destroy = function() {
-	$(this.element).removeData(_pluginName); // remove the data attr
-	$(this.element).html(""); // clear out the SVG
-	//delete this.options;
+var _destroy = function() {
+//	$(_element).removeData(_pluginName); // remove the data attr
+	_element.innerHTML = ""; // clear out the SVG
 };
 
-d3pie.prototype.recreate = function() {
-	$(this.element).html("");
-	this.init();
-};
 
 /**
  * Returns all pertinent info about the current open info. Returns null if nothing's open, or if one is, an object of
@@ -1391,8 +1441,8 @@ d3pie.prototype.recreate = function() {
  * 	  data: {}
  * 	}
  */
-d3pie.prototype.getOpenPieSegment = function() {
-	var segment = d3pie.segments.currentlyOpenSegment;
+var _getOpenPieSegment = function() {
+	var segment = segments.currentlyOpenSegment;
 	if (segment !== null) {
 		var index = parseInt($(segment).data("index"), 10);
 		return {
@@ -1406,25 +1456,26 @@ d3pie.prototype.getOpenPieSegment = function() {
 };
 
 
-d3pie.prototype.openSegment = function(index) {
+var _openSegment = function(index) {
 	// TODO error checking
+
 	var index = parseInt(index, 10);
 	if (index < 0 || index > this.options.data.length-1) {
 		return;
 	}
 
-	d3pie.segments.openSegment($("#segment" + index)[0]);
+	segments.openSegment($("#segment" + index)[0]);
 };
 
 
 // this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
 // intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
 // just redraw the single element
-d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
+var _updateProp = function(propKey, value, optionalSettings) {
 	switch (propKey) {
 		case "header.title.text":
-			var oldValue = d3pie.helpers.processObj(this.options, propKey);
-			d3pie.helpers.processObj(this.options, propKey, value);
+			var oldValue = helpers.processObj(this.options, propKey);
+			helpers.processObj(this.options, propKey, value);
 			$("#title").html(value);
 			if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 				this.recreate();
@@ -1432,8 +1483,8 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 			break;
 
 		case "header.subtitle.text":
-			var oldValue = d3pie.helpers.processObj(this.options, propKey);
-			d3pie.helpers.processObj(this.options, propKey, value);
+			var oldValue = helpers.processObj(this.options, propKey);
+			helpers.processObj(this.options, propKey, value);
 			$("#subtitle").html(value);
 			if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 				this.recreate();
@@ -1449,64 +1500,54 @@ d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		case "effects.pullOutSegmentOnClick.size":
 		case "effects.highlightSegmentOnMouseover":
 		case "effects.highlightLuminosity":
-			d3pie.helpers.processObj(this.options, propKey, value);
+			helpers.processObj(this.options, propKey, value);
 			break;
 
 	}
 };
 
 
-
-d3pie.prototype.init = function() {
+var _init = function() {
 	_options = this.options;
 
 	// 1. Prep-work
-	_options.data   = d3pie.math.sortPieData(_options.data.content, _options.data.sortOrder);
-	_options.colors = d3pie.helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
-	_totalSize      = d3pie.math.getTotalPieSize(_options.data);
+	_options.data   = math.sortPieData(_options.data.content, _options.data.sortOrder);
+	_options.colors = helpers.initSegmentColors(_options.data, _options.misc.colors.segments);
+	_totalSize      = math.getTotalPieSize(_options.data);
 
-	d3pie.helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
+	helpers.addSVGSpace(this.element, _options.size.canvasWidth, _options.size.canvasHeight, _options.misc.colors.background);
 
-	// these are used all over the place
-	_hasTitle    = _options.header.title.text !== "";
-	_hasSubtitle = _options.header.subtitle.text !== "";
-	_hasFooter   = _options.footer.text !== "";
+	// 2. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
+	text.trackComponents();
+	text.addTextElementsOffscreen();
+	text.addFooter(); // the footer never moves - just put it in place now
 
-	// 2. add all text components offscreen. We need to know their widths/heights for later computation
-	d3pie.text.addTextElementsOffscreen();
-	d3pie.text.addFooter(); // the footer never moves - just put it in place now
-
-	// TODO this just computes the max available space. Later functionality looks at label size to finish
-	// the computation. RENAME. Also, we shouldn't need inner at this stage.
-	var radii = d3pie.math.computePieRadius();
+	var radii = math.computePieRadius();
 	_innerRadius = radii.inner;
 	_outerRadius = radii.outer;
 
-
 	// STEP 2: now create the pie chart and position everything accordingly
 	var requiredElements = [];
-	if (_hasTitle)    { requiredElements.push("title"); }
-	if (_hasSubtitle) { requiredElements.push("subtitle"); }
-	if (_hasFooter)   { requiredElements.push("footer"); }
+	if (text.components.title.exists)    { requiredElements.push("title"); }
+	if (text.components.subtitle.exists) { requiredElements.push("subtitle"); }
+	if (text.components.footer.exists)   { requiredElements.push("footer"); }
 
-	d3pie.helpers.whenElementsExist(requiredElements, function() {
-		_storeDimensions();
+	helpers.whenElementsExist(requiredElements, function() {
+		text.storeComponentDimensions();
+		text.positionTitle();
+		text.positionSubtitle();
 
-		d3pie.text.positionTitle();
-		d3pie.text.positionSubtitle();
-
-		d3pie.segments.create();
-		var l = d3pie.labels;
+		segments.create();
+		var l = labels;
 		l.add("inner", _options.labels.inner.format);
 		l.add("outer", _options.labels.outer.format);
 
 		// position the label elements relatively within their individual group (label, percentage, value)
 		l.positionLabelElements("inner", _options.labels.inner.format);
 		l.positionLabelElements("outer", _options.labels.outer.format);
-
 		l.computeOuterLabelCoords();
 
-		// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions.
+		// this is (and should be) dumb. It just places the outer groups at their pre-calculated, collision-free positions
 		l.positionLabelGroups("outer");
 
 		// we use the label line positions for other calculations, so ALWAYS compute them (boooo)
@@ -1520,28 +1561,12 @@ d3pie.prototype.init = function() {
 		l.positionLabelGroups("inner");
 		l.fadeInLabelsAndLines();
 
-		d3pie.segments.addSegmentEventHandlers();
+		segments.addSegmentEventHandlers();
 	});
 };
 
 
-var _storeDimensions = function() {
-	if (_hasTitle) {
-		var d1 = d3pie.helpers.getDimensions("title");
-		_componentDimensions.title.h = d1.h;
-		_componentDimensions.title.w = d1.w;
-	}
-	if (_hasSubtitle) {
-		var d2 = d3pie.helpers.getDimensions("subtitle");
-		_componentDimensions.subtitle.h = d2.h;
-		_componentDimensions.subtitle.w = d2.w;
-	}
-};
+window.d3pie = d3pie;
 
 
-var _addFilter = function() {
-	//_svg.append('<filter id="testBlur"><feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white"><fePointLight x="150" y="60" z="20" /></feDiffuseLighting><feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>')
-};
-
-
-})(jQuery, window, document);
+})(document);

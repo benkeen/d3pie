@@ -1,4 +1,4 @@
 // --------- validate.js -----------
-d3pie.validate = {
+var validate = {
 
 };

@@ -3,7 +3,7 @@
 /**
  * Contains all the math needed to figure out where to place things, etc.
  */
-d3pie.math = {
+var math = {
 
 	toRadians: function(degrees) {
 		return degrees * (Math.PI / 180);
@@ -69,7 +69,7 @@ d3pie.math = {
 				// do nothing.
 				break;
 			case "random":
-				data = d3pie.helpers.shuffleArray(data);
+				data = helpers.shuffleArray(data);
 				break;
 			case "value-asc":
 				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1 });
@@ -88,7 +88,7 @@ d3pie.math = {
 	},
 
 	getPieTranslateCenter: function() {
-		var pieCenter = d3pie.math.getPieCenter();
+		var pieCenter = math.getPieCenter();
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
 	},
 
@@ -100,21 +100,21 @@ d3pie.math = {
 	getPieCenter: function() {
 
 		// TODO MEMOIZE (needs invalidation, too)
-		var hasTopTitle    = (_hasTitle && _options.header.location !== "pie-center");
-		var hasTopSubtitle = (_hasSubtitle && _options.header.location !== "pie-center");
+		var hasTopTitle    = (text.components.title.exists && _options.header.location !== "pie-center");
+		var hasTopSubtitle = (text.components.subtitle.exists && _options.header.location !== "pie-center");
 
 		var headerOffset = _options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
+			headerOffset += text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += _componentDimensions.title.h;
+			headerOffset += text.components.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = _componentDimensions.subtitle.h;
+			headerOffset = text.components.subtitle.h;
 		}
 
 		var footerOffset = 0;
-		if (_hasFooter) {
-			footerOffset = _componentDimensions.footer.h + _options.misc.canvasPadding.bottom;
+		if (text.components.footer.exists) {
+			footerOffset = text.components.footer.h + _options.misc.canvasPadding.bottom;
 		}
 
 		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
@@ -164,7 +164,7 @@ d3pie.math = {
 	 * @param a angle in degrees
 	 */
 	translate: function(x, y, d, a) {
-		var rads = d3pie.math.toRadians(a);
+		var rads = math.toRadians(a);
 		return {
 			x: x + d * Math.sin(rads),
 			y: y - d * Math.cos(rads)

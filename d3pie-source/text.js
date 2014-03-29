@@ -1,19 +1,56 @@
 // --------- text.js -----------
 
 /**
- * Contains the code pertaining to the
+ * Contains the code for the main text elements: title, subtitle + footer.
  */
-d3pie.text = {
+var text = {
+
+	components: {
+		title: {
+			exists: false,
+			h: 0,
+			w: 0
+		},
+		subtitle: {
+			exists: false,
+			h: 0,
+			w: 0
+		},
+		footer: {
+			exists: false,
+			h: 0,
+			w: 0
+		}
+	},
 
 	offscreenCoord: -10000,
 
+	// these are used all over the place
+	trackComponents: function() {
+		text.components.title.exists    = _options.header.title.text !== "";
+		text.components.subtitle.exists = _options.header.subtitle.text !== "";
+		text.components.footer.exists   = _options.footer.text !== "";
+	},
+
+	storeComponentDimensions: function() {
+		if (text.components.title.exists) {
+			var d1 = helpers.getDimensions("title");
+			text.components.title.h = d1.h;
+			text.components.title.w = d1.w;
+		}
+		if (text.components.subtitle.exists) {
+			var d2 = helpers.getDimensions("subtitle");
+			text.components.subtitle.h = d2.h;
+			text.components.subtitle.w = d2.w;
+		}
+	},
 
 	addTextElementsOffscreen: function() {
-		if (_hasTitle) {
-			d3pie.text.addTitle();
+		if (text.components.title.exists) {
+			text.addTitle();
 		}
-		if (_hasSubtitle) {
-			d3pie.text.addSubtitle();
+		if (text.components.subtitle.exists) {
+			text.addSubtitle();
 		}
 	},
 
@@ -27,8 +64,8 @@ d3pie.text = {
 		title.enter()
 			.append("text")
 			.attr("id", "title")
-			.attr("x", d3pie.text.offscreenCoord)
-			.attr("y", d3pie.text.offscreenCoord)
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("class", "title")
 			.attr("text-anchor", function() {
 				var location;
@@ -47,18 +84,18 @@ d3pie.text = {
 
 	positionTitle: function() {
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
-		var y = _options.misc.canvasPadding.top + _componentDimensions.title.h;
+		var y = _options.misc.canvasPadding.top + text.components.title.h;
 
 		if (_options.header.location === "pie-center") {
-			var pieCenter = d3pie.math.getPieCenter();
+			var pieCenter = math.getPieCenter();
 			y = pieCenter.y;
 
 			// still not fully correct.
-			if (_hasSubtitle) {
-				var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
-				y = y - (totalTitleHeight / 2) + _componentDimensions.title.h;
+			if (text.components.subtitle.exists) {
+				var totalTitleHeight = text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
+				y = y - (totalTitleHeight / 2) + text.components.title.h;
 			} else {
-				y += (_componentDimensions.title.h / 4);
+				y += (text.components.title.h / 4);
 			}
 		}
 
@@ -68,7 +105,7 @@ d3pie.text = {
 	},
 
 	addSubtitle: function() {
-		if (!_hasSubtitle) {
+		if (!text.components.subtitle.exists) {
 			return;
 		}
 
@@ -76,8 +113,8 @@ d3pie.text = {
 			.data([_options.header.subtitle])
 			.enter()
 			.append("text")
-			.attr("x", d3pie.text.offscreenCoord)
-			.attr("y", d3pie.text.offscreenCoord)
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("id", "subtitle")
 			.attr("class", "subtitle")
 			.attr("text-anchor", function() {
@@ -99,10 +136,10 @@ d3pie.text = {
 		var x = (_options.header.location === "top-left") ? _options.misc.canvasPadding.left : _options.size.canvasWidth / 2;
 
 		var y;
-		if (_hasTitle) {
-			var totalTitleHeight = _componentDimensions.title.h + _options.header.titleSubtitlePadding + _componentDimensions.subtitle.h;
+		if (text.components.title.exists) {
+			var totalTitleHeight = text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
 			if (_options.header.location === "pie-center") {
-				var pieCenter = d3pie.math.getPieCenter();
+				var pieCenter = math.getPieCenter();
 				y = pieCenter.y;
 				y = y - (totalTitleHeight / 2) + totalTitleHeight;
 			} else {
@@ -110,10 +147,10 @@ d3pie.text = {
 			}
 		} else {
 			if (_options.header.location === "pie-center") {
-				var footerPlusPadding = _options.misc.canvasPadding.bottom + _componentDimensions.footer.h;
-				y = ((_options.size.canvasHeight - footerPlusPadding) / 2) + _options.misc.canvasPadding.top + (_componentDimensions.subtitle.h / 2);
+				var footerPlusPadding = _options.misc.canvasPadding.bottom + text.components.footer.h;
+				y = ((_options.size.canvasHeight - footerPlusPadding) / 2) + _options.misc.canvasPadding.top + (text.components.subtitle.h / 2);
 			} else {
-				y = _options.misc.canvasPadding.top + _componentDimensions.subtitle.h;
+				y = _options.misc.canvasPadding.top + text.components.subtitle.h;
 			}
 		}
 
@@ -127,8 +164,8 @@ d3pie.text = {
 			.data([_options.footer])
 			.enter()
 			.append("text")
-			.attr("x", d3pie.text.offscreenCoord)
-			.attr("y", d3pie.text.offscreenCoord)
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("id", "footer")
 			.attr("class", "footer")
 			.attr("text-anchor", function() {
@@ -147,7 +184,7 @@ d3pie.text = {
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 
-		d3pie.helpers.whenIdExists("footer", d3pie.text.positionFooter);
+		helpers.whenIdExists("footer", text.positionFooter);
 	},
 
 	positionFooter: function() {
@@ -155,14 +192,14 @@ d3pie.text = {
 		if (_options.footer.location === "bottom-left") {
 			x = _options.misc.canvasPadding.left;
 		} else if (_options.footer.location === "bottom-right") {
-			x = _options.size.canvasWidth - _componentDimensions.footer.w - _options.misc.canvasPadding.right;
+			x = _options.size.canvasWidth - text.components.footer.w - _options.misc.canvasPadding.right;
 		} else {
 			x = _options.size.canvasWidth / 2;
 		}
 
-		var d3 = d3pie.helpers.getDimensions("footer");
-		_componentDimensions.footer.h = d3.h;
-		_componentDimensions.footer.w = d3.w;
+		var d3 = helpers.getDimensions("footer");
+		text.components.footer.h = d3.h;
+		text.components.footer.w = d3.w;
 
 		_svg.select("#footer")
 			.attr("x", x)

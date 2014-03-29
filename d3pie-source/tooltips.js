@@ -1,4 +1,4 @@
-d3pie.tooltips = {
+var tooltips = {
 
 	init: function() {
 		// first append our hidden tooltip. This will be used for all tooltips - it

@@ -1,11 +1,11 @@
 /*!
- * d3pie jQuery plugin
+ * d3pie
  * @author Ben Keen
  * @version 0.1.0
- * @date Feb 2014
+ * @date Mar 2014
  * http://github.com/benkeen/d3pie
  */
-;(function($, window, document) {
+;(function(document) {
 	"use strict";
 
 	<%=defaultSettings%>
@@ -17,4 +17,4 @@
 	<%=text%>
 	<%=core%>
 
-})(jQuery, window, document);
+})(document);

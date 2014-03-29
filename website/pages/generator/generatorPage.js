@@ -41,7 +41,7 @@ define([
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
-		_loadDemoPie(EXAMPLE_PIES[0]);
+		_loadDemoPie(EXAMPLE_PIES[2]);
 
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
@@ -115,6 +115,7 @@ define([
 
 		if (_isCreated) {
 			$("#generatorPieChart").data("d3pie").destroy();
+			return;
 		}
 
 		_demoD3Pie = $("#generatorPieChart").d3pie(config);

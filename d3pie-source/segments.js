@@ -1,5 +1,5 @@
 // --------- segments.js -----------
-d3pie.segments = {
+var segments = {
 
 	isOpening: false,
 	currentlyOpenSegment: null,
@@ -14,7 +14,7 @@ d3pie.segments = {
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
 		var pieChartElement = _svg.insert("g", "#title")
-			.attr("transform", d3pie.math.getPieTranslateCenter)
+			.attr("transform", math.getPieTranslateCenter)
 			.attr("class", "pieChart");
 
 		_arc = d3.svg.arc()
@@ -47,15 +47,14 @@ d3pie.segments = {
 			.ease("cubic-in-out")
 			.duration(loadSpeed)
 			.attr("data-index", function(d, i) { return i; })
-			.attrTween("d", d3pie.math.arcTween);
+			.attrTween("d", math.arcTween);
 
 		_svg.selectAll("g.arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
 				if (i > 0) {
-					i = i-1;
-					angle = d3pie.segments.getSegmentAngle(i);
+					angle = segments.getSegmentAngle(i-1);
 				}
 				return "rotate(" + angle + ")";
 			}
@@ -68,12 +67,12 @@ d3pie.segments = {
 			var $segment = $(e.currentTarget).find("path");
 			var isExpanded = $segment.attr("class") === "expanded";
 
-			d3pie.segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
+			segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
 			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
-					d3pie.segments.closeSegment($segment[0]);
+					segments.closeSegment($segment[0]);
 				} else {
-					d3pie.segments.openSegment($segment[0]);
+					segments.openSegment($segment[0]);
 				}
 			}
 		});
@@ -84,11 +83,11 @@ d3pie.segments = {
 			if (_options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				var segColor = _options.colors[index];
-				d3.select($segment[0]).style("fill", d3pie.helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
+				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, _options.effects.highlightLuminosity));
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
-			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
+			segments.onSegmentEvent(_options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
@@ -100,7 +99,7 @@ d3pie.segments = {
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
-			d3pie.segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
+			segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
 	},
 
@@ -121,14 +120,14 @@ d3pie.segments = {
 	},
 
 	openSegment: function(segment) {
-		if (d3pie.segments.isOpening) {
+		if (segments.isOpening) {
 			return;
 		}
-		d3pie.segments.isOpening = true;
+		segments.isOpening = true;
 
 		// close any open segments
 		if ($(".expanded").length > 0) {
-			d3pie.segments.closeSegment($(".expanded")[0]);
+			segments.closeSegment($(".expanded")[0]);
 		}
 
 		d3.select(segment).transition()
@@ -144,8 +143,8 @@ d3pie.segments = {
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.each("end", function(d, i) {
-				d3pie.segments.currentlyOpenSegment = segment;
-				d3pie.segments.isOpening = false;
+				segments.currentlyOpenSegment = segment;
+				segments.isOpening = false;
 				$(this).attr("class", "expanded");
 			});
 	},
@@ -156,7 +155,7 @@ d3pie.segments = {
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				$(this).attr("class", "");
-				d3pie.segments.currentlyOpenSegment = null;
+				segments.currentlyOpenSegment = null;
 			});
 	},
 

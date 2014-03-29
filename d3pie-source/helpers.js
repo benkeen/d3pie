@@ -3,7 +3,7 @@
  *
  * Misc helper functions.
  */
-d3pie.helpers = {
+var helpers = {
 
 	// creates the SVG element
 	addSVGSpace: function(element, width, height, color) {
@@ -55,6 +55,18 @@ d3pie.helpers = {
 		}, 1);
 	},
 
+	// a plain-vanilla version of $.extend()
+	extend: function() {
+		for (var i=1; i<arguments.length; i++) {
+			for (var key in arguments[i]) {
+				if (arguments[i].hasOwnProperty(key)) {
+					arguments[0][key] = arguments[i][key];
+				}
+			}
+		}
+		return arguments[0];
+	},
+
 	shuffleArray: function(array) {
 		var currentIndex = array.length, tmpVal, randomIndex;
 
@@ -72,13 +84,13 @@ d3pie.helpers = {
 
 	processObj: function(obj, is, value) {
 		if (typeof is == 'string') {
-			return d3pie.helpers.processObj(obj, is.split('.'), value);
+			return helpers.processObj(obj, is.split('.'), value);
 		} else if (is.length == 1 && value !== undefined) {
 			return obj[is[0]] = value;
 		} else if (is.length == 0) {
 			return obj;
 		} else {
-			return d3pie.helpers.processObj(obj[is[0]], is.slice(1), value);
+			return helpers.processObj(obj[is[0]], is.slice(1), value);
 		}
 	},
 

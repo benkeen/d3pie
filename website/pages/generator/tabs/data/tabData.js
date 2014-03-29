@@ -16,6 +16,7 @@ define([
 		Handlebars.registerPartial("data-row", dataRowPartial);
 		mediator.register(_MODULE_ID);
 
+		// temporary
 		window.outputColors = _outputColors;
 	};
 
@@ -89,7 +90,7 @@ define([
 		colors = utils.shuffleArray(colors);
 		_setColors(colors);
 
-		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+//		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
 	var _selectColorset = function(e) {
@@ -113,7 +114,8 @@ define([
 
 		var trs = $("#sortableDataList").find("li");
 		for (var i=0; i<trs.length; i++) {
-			$(trs[i]).find(".segmentColor").css("backgroundColor", colors[i]).attr("data-color", colors[i]);
+			//$(trs[i]).find(".segmentColor").css("backgroundColor", colors[i]).attr("data-color", colors[i]);
+			$(trs[i]).find(".segmentColor").colorpicker("setValue", colors[i]);
 		}
 	};
 
