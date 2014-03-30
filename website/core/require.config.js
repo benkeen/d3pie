@@ -17,6 +17,7 @@ require.config({
 		// About page
 		aboutPage: "pages/about/aboutPage",
 		aboutPageTemplate: "pages/about/aboutPage.hbs",
+		aboutPageDemoPies: "pages/about/aboutPageDemoPies",
 
 		// Documentation page
 		documentationPage: "pages/documentation/documentationPage",

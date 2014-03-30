@@ -95,7 +95,7 @@ define([
 
 	var _updateProperty = function(msg) {
 		//_demoD3Pie.updateProp(msg.data.prop, msg.data.value);
-		$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
+		//$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
 	};
 
 	var _renderPie = function(includeStartAnimation, config) {
@@ -114,12 +114,17 @@ define([
 		}
 
 		if (_isCreated) {
-			$("#generatorPieChart").data("d3pie").destroy();
-			return;
+			_demoD3Pie.destroy();
 		}
 
-		_demoD3Pie = $("#generatorPieChart").d3pie(config);
-		$("#generatorPieChartPad,#generatorPieChart").css({ width: config.size.canvasWidth, height: config.size.canvasHeight });
+		return;
+
+		_demoD3Pie = d3pie("generatorPieChart", config);
+		_isCreated = true;
+		$("#generatorPieChartPad,#generatorPieChart").css({
+			width: config.size.canvasWidth,
+			height: config.size.canvasHeight
+		});
 	};
 
 
@@ -198,12 +203,12 @@ define([
 		}
 
 		// if this is the first time we loaded the generator tab, render it all pretty like
-		if (!_isCreated) {
-			_renderWithAnimation();
-			_isCreated = true;
-		} else if (msg.data.prevPage !== "generator") {
-			_renderWithNoAnimation();
-		}
+//		if (!_isCreated) {
+//			_renderWithAnimation();
+//			_isCreated = true;
+//		} else if (msg.data.prevPage !== "generator") {
+//			_renderWithNoAnimation();
+//		}
 
 		var $generatorTabs = $("#generatorTabs");
 
@@ -211,7 +216,7 @@ define([
 		if (_currentTab == null) {
 			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");
 			$("#" + tab).removeClass("fadeOut hidden").addClass("fadeIn");
-			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
+			//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 		} else {
 			$generatorTabs.find("a[href=#" + _currentTab + "]").closest("li").removeClass("active");
 			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");
@@ -222,7 +227,7 @@ define([
 					$("#" + ct).addClass("hidden").removeClass("fadeOut");
 					$("#" + tab).removeClass("hidden fadeOut").addClass("fadeIn");
 
-					mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
+					//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 				}, C.OTHER.PAGE_LOAD_SPEED);
 			})(_currentTab);
 		}

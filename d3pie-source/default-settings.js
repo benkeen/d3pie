@@ -25,7 +25,7 @@ var _defaultSettings = {
 	size: {
 		canvasHeight: 500,
 		canvasWidth: 500,
-		pieInnerRadius: "100%",
+		pieInnerRadius: "0%",
 		pieOuterRadius: null
 	},
 	labels: {
@@ -42,18 +42,18 @@ var _defaultSettings = {
 		mainLabel: {
 			color: "#333333",
 			font: "Open sans",
-			fontSize: "8"
+			fontSize: "10px"
 		},
 		percentage: {
 			color: "#999999",
 			font: "Open sans",
-			fontSize: "8",
+			fontSize: "10px",
 			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
 			font: "Open sans",
-			fontSize: "8"
+			fontSize: "10px"
 		},
 		lines: {
 			enabled: true,

@@ -182,6 +182,8 @@ var segments = {
 			midpoint: false
 		}, opts);
 
+		console.log(_options.data, index);
+
 		var currValue = _options.data[index].value;
 
 		var fullValue;

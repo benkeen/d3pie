@@ -78,7 +78,6 @@ define([
 		}
 
 		return {
-			enableTooltips: false, //$("#enableTooltips")[0].checked,
 			outer: {
 				format: $("#outerLabel").val(),
 				hideWhenLessThanPercentage: outerHideWhenLessThanPercentage,

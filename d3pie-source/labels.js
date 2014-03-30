@@ -424,7 +424,7 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(i) {
-		var labelGroupDims = document.getElementById("labelGroup" + i + "-outer").getBBox();
+		var labelGroupDims = $("#labelGroup" + i + "-outer")[0].getBBox();
 		var angle = segments.getSegmentAngle(i, { midpoint: true });
 
 		var center = math.getPieCenter();

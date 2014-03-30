@@ -23,5 +23,16 @@ var validate = {
 				return;
 			}
 		}
+
+		// confirm some data has been supplied
+		if (!options.hasOwnProperty("data") || !options.data.hasOwnProperty("content")) {
+			console.error("d3pie error: invalid config structure: missing data.content property.");
+			return;
+		}
+		if (!$.isArray(options.data.content) || options.data.content.length === 0) {
+			console.error("d3pie error: no data supplied.");
+			return;
+		}
+
 	}
 };

@@ -2,6 +2,8 @@
  * --------- core.js -----------
  */
 
+var _scriptName = "d3pie";
+var _version = "0.1.0";
 var _element; // the DOM element
 var _totalSize = null;
 var _arc;
@@ -19,10 +21,11 @@ var d3pie = function(element, options) {
 	_element = document.getElementById(element);
 	_options = $.extend(true, {}, _defaultSettings, options);
 
+	// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and it's version
+	$(_element).data(_scriptName, _version);
+
 	// now initialize the thing
 	_init();
-
-	//data-d3pie="1" // urgh.. or something
 
 	// return our public API
 	return {
@@ -41,7 +44,7 @@ var _recreate = function() {
 };
 
 var _destroy = function() {
-//	$(_element).removeData(_pluginName); // remove the data attr
+	$(_element).removeData(_scriptName); // remove the data attr
 	_element.innerHTML = ""; // clear out the SVG
 };
 

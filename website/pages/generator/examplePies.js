@@ -80,7 +80,8 @@ define([], function() {
 					enableTooltips: true,
 					outer: {
 						format: "label",
-						hideWhenLessThanPercentage: null
+						hideWhenLessThanPercentage: null,
+						pieDistance: 32
 					},
 					inner: {
 						format: "percentage",
@@ -200,7 +201,8 @@ define([], function() {
 					enableTooltips: true,
 					outer: {
 						format: "label-percentage1",
-						hideWhenLessThanPercentage: null
+						hideWhenLessThanPercentage: null,
+						pieDistance: 32
 					},
 					inner: {
 						format: "none",
@@ -294,7 +296,7 @@ define([], function() {
 					canvasWidth: 600,
 					canvasHeight: 400,
 					pieInnerRadius: "0%",
-					pieOuterRadius: "67%"
+					pieOuterRadius: "59%"
 				},
 				data: {
 					sortOrder: "none",
@@ -313,7 +315,8 @@ define([], function() {
 					enableTooltips: true,
 					outer: {
 						format: "label",
-						hideWhenLessThanPercentage: null
+						hideWhenLessThanPercentage: null,
+						pieDistance: 32
 					},
 					inner: {
 						format: "value",
@@ -423,7 +426,8 @@ define([], function() {
 					enableTooltips: true,
 					outer: {
 						format: "label-percentage1",
-						hideWhenLessThanPercentage: null
+						hideWhenLessThanPercentage: null,
+						pieDistance: 32
 					},
 					inner: {
 						format: "none",
