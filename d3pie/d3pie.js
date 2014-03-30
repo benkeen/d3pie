@@ -155,6 +155,42 @@ var helpers = {
 		}
 	},
 
+	/**
+	 * Cross Browser version of addEventListener.
+	 *
+	 * @param {HTMLElement} obj The Element to attach event to.
+	 * @param {string} evt The event that will trigger the binded function.
+	 * @param {function(event)} fnc The function to bind to the element.
+	 * @return {boolean} true if it was successfuly binded.
+	 */
+	on: function(obj, evt, fnc) {
+		// W3C model
+		if (obj.addEventListener) {
+			obj.addEventListener(evt, fnc, false);
+			return true;
+		}
+		// microsoft
+		else if (obj.attachEvent) {
+			return obj.attachEvent('on' + evt, fnc);
+		}
+		// browser don't support W3C or MSFT model, go on with traditional
+		else {
+			evt = 'on' + evt;
+			if (typeof obj[evt] === 'function') {
+				// object already has a function on traditional. Let's wrap it with our own
+				// function inside another function
+				fnc = (function(f1, f2){
+					return function() {
+						f1.apply(this, arguments);
+						f2.apply(this, arguments);
+					}
+				})(obj[evt], fnc);
+			}
+			obj[evt] = fnc;
+			return true;
+		}
+	},
+
 	whenIdExists: function(id, callback) {
 		var inc = 1;
 		var giveupTime = 1000;
@@ -592,10 +628,10 @@ var labels = {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = $(".labelGroup-" + section);
+		var labelGroups = document.getElementsByClassName("labelGroup-" + section);
 
 		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel = $(labelGroups[i]).find(".segmentMainLabel-" + section);
+			var mainLabel  = $(labelGroups[i]).find(".segmentMainLabel-" + section);
 			var percentage = $(labelGroups[i]).find(".segmentPercentage-" + section);
 			var value = $(labelGroups[i]).find(".segmentValue-" + section);
 
@@ -1034,21 +1070,29 @@ var segments = {
 	},
 
 	addSegmentEventHandlers: function() {
-		var $arc = $(".arc");
-		$arc.on("click", function(e) {
-			var $segment = $(e.currentTarget).find("path");
-			var isExpanded = $segment.attr("class") === "expanded";
+		var arcs = document.getElementsByName("arc");
 
-			segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
-			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
-				if (isExpanded) {
-					segments.closeSegment($segment[0]);
-				} else {
-					segments.openSegment($segment[0]);
+		for (var i=0; i<arcs.length; i++) {
+			var currArc = arcs[0];
+
+			helpers.on(currArc, "click", function(e) {
+				console.log("clicked!");
+				return;
+				var $segment = $(e.currentTarget).find("path");
+				var isExpanded = $segment.attr("class") === "expanded";
+
+				segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
+				if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
+					if (isExpanded) {
+						segments.closeSegment($segment[0]);
+					} else {
+						segments.openSegment($segment[0]);
+					}
 				}
-			}
-		});
+			});
+		}
 
+/*
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 
@@ -1073,6 +1117,7 @@ var segments = {
 			var isExpanded = $segment.attr("class") === "expanded";
 			segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
+*/
 	},
 
 	// helper function used to call the click, mouseover, mouseout segment callback functions

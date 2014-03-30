@@ -49,6 +49,5 @@ module.exports = function(grunt) {
 	grunt.initConfig(config);
 
 	grunt.registerTask('createD3PieFiles', _createD3PieFiles);
-	grunt.registerTask('default', ['createD3PieFiles']);
-	grunt.registerTask('dev', ['createD3PieFiles', 'uglify:d3pie']);
+	grunt.registerTask('default', ['createD3PieFiles', 'uglify:d3pie']);
 };
