@@ -30,12 +30,13 @@ var _defaultSettings = {
 	},
 	labels: {
 		enableTooltips: true,
-		inner: {
-			format: "percentage",
-			hideWhenLessThanPercentage: null
-		},
 		outer: {
 			format: "label",
+			hideWhenLessThanPercentage: null,
+			pieDistance: 30
+		},
+		inner: {
+			format: "percentage",
 			hideWhenLessThanPercentage: null
 		},
 		mainLabel: {
@@ -67,14 +68,12 @@ var _defaultSettings = {
 			speed: 1000
 		},
 		pullOutSegmentOnClick: {
-			effect: "linear", // none / linear / bounce /
-			speed: 400
+			effect: "bounce", // none / linear / bounce
+			speed: 300,
+			size: 10
 		},
-		highlightSegmentOnMouseover: false,
+		highlightSegmentOnMouseover: true,
 		highlightLuminosity: -0.2
-	},
-	tooltips: {
-		enable: false
 	},
 	misc: {
 		colors: {
@@ -89,6 +88,10 @@ var _defaultSettings = {
 			right: 5,
 			bottom: 5,
 			left: 5
+		},
+		pieCenterOffset: {
+			x: 0,
+			y: 0
 		},
 		footerPiePadding: 0
 	},

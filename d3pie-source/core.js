@@ -16,13 +16,8 @@ var d3pie = function(element, options) {
 	validate.initialCheck(element, options);
 
 	// element can be an ID or DOM element
-	_element = document.getElementById(element); // TODO
-
-	_options = helpers.extend({}, _defaultSettings, options);
-
-
-//	this._defaults = _defaultSettings;
-//	this._name = _pluginName;
+	_element = document.getElementById(element);
+	_options = $.extend(true, {}, _defaultSettings, options);
 
 	// now initialize the thing
 	_init();

@@ -5,7 +5,7 @@
  * @date Mar 2014
  * http://github.com/benkeen/d3pie
  */
-;(function(document) {
+;(function($) {
 	"use strict";
 
 	/**
@@ -40,12 +40,13 @@ var _defaultSettings = {
 	},
 	labels: {
 		enableTooltips: true,
-		inner: {
-			format: "percentage",
-			hideWhenLessThanPercentage: null
-		},
 		outer: {
 			format: "label",
+			hideWhenLessThanPercentage: null,
+			pieDistance: 30
+		},
+		inner: {
+			format: "percentage",
 			hideWhenLessThanPercentage: null
 		},
 		mainLabel: {
@@ -77,14 +78,12 @@ var _defaultSettings = {
 			speed: 1000
 		},
 		pullOutSegmentOnClick: {
-			effect: "linear", // none / linear / bounce /
-			speed: 400
+			effect: "bounce", // none / linear / bounce
+			speed: 300,
+			size: 10
 		},
-		highlightSegmentOnMouseover: false,
+		highlightSegmentOnMouseover: true,
 		highlightLuminosity: -0.2
-	},
-	tooltips: {
-		enable: false
 	},
 	misc: {
 		colors: {
@@ -99,6 +98,10 @@ var _defaultSettings = {
 			right: 5,
 			bottom: 5,
 			left: 5
+		},
+		pieCenterOffset: {
+			x: 0,
+			y: 0
 		},
 		footerPiePadding: 0
 	},
@@ -155,42 +158,6 @@ var helpers = {
 		}
 	},
 
-	/**
-	 * Cross Browser version of addEventListener.
-	 *
-	 * @param {HTMLElement} obj The Element to attach event to.
-	 * @param {string} evt The event that will trigger the binded function.
-	 * @param {function(event)} fnc The function to bind to the element.
-	 * @return {boolean} true if it was successfuly binded.
-	 */
-	on: function(obj, evt, fnc) {
-		// W3C model
-		if (obj.addEventListener) {
-			obj.addEventListener(evt, fnc, false);
-			return true;
-		}
-		// microsoft
-		else if (obj.attachEvent) {
-			return obj.attachEvent('on' + evt, fnc);
-		}
-		// browser don't support W3C or MSFT model, go on with traditional
-		else {
-			evt = 'on' + evt;
-			if (typeof obj[evt] === 'function') {
-				// object already has a function on traditional. Let's wrap it with our own
-				// function inside another function
-				fnc = (function(f1, f2){
-					return function() {
-						f1.apply(this, arguments);
-						f2.apply(this, arguments);
-					}
-				})(obj[evt], fnc);
-			}
-			obj[evt] = fnc;
-			return true;
-		}
-	},
-
 	whenIdExists: function(id, callback) {
 		var inc = 1;
 		var giveupTime = 1000;
@@ -228,18 +195,6 @@ var helpers = {
 			}
 			inc++;
 		}, 1);
-	},
-
-	// a plain-vanilla version of $.extend()
-	extend: function() {
-		for (var i=1; i<arguments.length; i++) {
-			for (var key in arguments[i]) {
-				if (arguments[i].hasOwnProperty(key)) {
-					arguments[0][key] = arguments[i][key];
-				}
-			}
-		}
-		return arguments[0];
 	},
 
 	shuffleArray: function(array) {
@@ -628,10 +583,10 @@ var labels = {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = document.getElementsByClassName("labelGroup-" + section);
+		var labelGroups = $(".labelGroup-" + section);
 
 		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel  = $(labelGroups[i]).find(".segmentMainLabel-" + section);
+			var mainLabel = $(labelGroups[i]).find(".segmentMainLabel-" + section);
 			var percentage = $(labelGroups[i]).find(".segmentPercentage-" + section);
 			var value = $(labelGroups[i]).find(".segmentValue-" + section);
 
@@ -957,8 +912,10 @@ var labels = {
 		if (Math.abs(info.lineLength) > Math.abs(yDiff)) {
 			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
 		} else {
+			console.log(yDiff, info);
 			xDiff = Math.sqrt((yDiff * yDiff) - (info.lineLength * info.lineLength));
 		}
+
 
 		// ahhh! info.lineLength is no longer a constant.....
 
@@ -1070,29 +1027,21 @@ var segments = {
 	},
 
 	addSegmentEventHandlers: function() {
-		var arcs = document.getElementsByName("arc");
+		var $arc = $(".arc");
+		$arc.on("click", function(e) {
+			var $segment = $(e.currentTarget).find("path");
+			var isExpanded = $segment.attr("class") === "expanded";
 
-		for (var i=0; i<arcs.length; i++) {
-			var currArc = arcs[0];
-
-			helpers.on(currArc, "click", function(e) {
-				console.log("clicked!");
-				return;
-				var $segment = $(e.currentTarget).find("path");
-				var isExpanded = $segment.attr("class") === "expanded";
-
-				segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
-				if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
-					if (isExpanded) {
-						segments.closeSegment($segment[0]);
-					} else {
-						segments.openSegment($segment[0]);
-					}
+			segments.onSegmentEvent(_options.callbacks.onClickSegment, $segment, isExpanded);
+			if (_options.effects.pullOutSegmentOnClick.effect !== "none") {
+				if (isExpanded) {
+					segments.closeSegment($segment[0]);
+				} else {
+					segments.openSegment($segment[0]);
 				}
-			});
-		}
+			}
+		});
 
-/*
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 
@@ -1117,7 +1066,6 @@ var segments = {
 			var isExpanded = $segment.attr("class") === "expanded";
 			segments.onSegmentEvent(_options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
-*/
 	},
 
 	// helper function used to call the click, mouseover, mouseout segment callback functions
@@ -1190,7 +1138,7 @@ var segments = {
 	 * @param opts optional object for fine-tuning exactly what you want.
 	 */
 	getSegmentAngle: function(index, opts) {
-		var options = helpers.extend({
+		var options = $.extend({
 
 			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
 			compounded: true,
@@ -1457,13 +1405,8 @@ var d3pie = function(element, options) {
 	validate.initialCheck(element, options);
 
 	// element can be an ID or DOM element
-	_element = document.getElementById(element); // TODO
-
-	_options = helpers.extend({}, _defaultSettings, options);
-
-
-//	this._defaults = _defaultSettings;
-//	this._name = _pluginName;
+	_element = document.getElementById(element);
+	_options = $.extend(true, {}, _defaultSettings, options);
 
 	// now initialize the thing
 	_init();
@@ -1625,4 +1568,4 @@ var _init = function() {
 window.d3pie = d3pie;
 
 
-})(document);
+})(jQuery);

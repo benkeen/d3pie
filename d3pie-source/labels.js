@@ -399,8 +399,10 @@ var labels = {
 		if (Math.abs(info.lineLength) > Math.abs(yDiff)) {
 			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
 		} else {
+			console.log(yDiff, info);
 			xDiff = Math.sqrt((yDiff * yDiff) - (info.lineLength * info.lineLength));
 		}
+
 
 		// ahhh! info.lineLength is no longer a constant.....
 

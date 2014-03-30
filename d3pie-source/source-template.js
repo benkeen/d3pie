@@ -5,7 +5,7 @@
  * @date Mar 2014
  * http://github.com/benkeen/d3pie
  */
-;(function(document) {
+;(function($) {
 	"use strict";
 
 	<%=defaultSettings%>
@@ -17,4 +17,4 @@
 	<%=text%>
 	<%=core%>
 
-})(document);
+})(jQuery);
