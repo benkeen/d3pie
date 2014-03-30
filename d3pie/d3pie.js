@@ -27,7 +27,7 @@ var _defaultSettings = {
 			font:     "helvetica"
 		},
 		location: "top-left",
-		titleSubtitlePadding: 5
+		titleSubtitlePadding: 8
 	},
 	footer: {
 		text: ""
@@ -37,6 +37,9 @@ var _defaultSettings = {
 		canvasWidth: 500,
 		pieInnerRadius: "0%",
 		pieOuterRadius: null
+	},
+	data: {
+		sortOrder: "value-asc"
 	},
 	labels: {
 		enableTooltips: true,
@@ -140,7 +143,7 @@ var validate = {
 		}
 
 		// confirm some data has been supplied
-		if (!options.hasOwnProperty("data") || !options.data.hasOwnProperty("content")) {
+		if (!options.data.hasOwnProperty("content")) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
 			return;
 		}

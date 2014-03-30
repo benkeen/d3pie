@@ -25,7 +25,7 @@ var validate = {
 		}
 
 		// confirm some data has been supplied
-		if (!options.hasOwnProperty("data") || !options.data.hasOwnProperty("content")) {
+		if (!options.data.hasOwnProperty("content")) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
 			return;
 		}

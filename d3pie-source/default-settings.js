@@ -17,7 +17,7 @@ var _defaultSettings = {
 			font:     "helvetica"
 		},
 		location: "top-left",
-		titleSubtitlePadding: 5
+		titleSubtitlePadding: 8
 	},
 	footer: {
 		text: ""
@@ -27,6 +27,9 @@ var _defaultSettings = {
 		canvasWidth: 500,
 		pieInnerRadius: "0%",
 		pieOuterRadius: null
+	},
+	data: {
+		sortOrder: "value-asc"
 	},
 	labels: {
 		enableTooltips: true,
