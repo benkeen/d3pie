@@ -34,5 +34,11 @@ var validate = {
 			return;
 		}
 
+		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
+		// TODO test
+		if (options.misc.cssPrefix !== null && !(/[a-zA-Z][a-zA-Z0-9_-]$/.test(options.misc.cssPrefix))) {
+			console.error("d3pie error: invalid options.misc.cssPrefix");
+			return;
+		}
 	}
 };

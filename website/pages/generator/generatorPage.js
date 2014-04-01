@@ -119,7 +119,7 @@ define([
 
 		_demoD3Pie = new d3pie("generatorPieChart", config);
 		_isCreated = true;
-		$("#generatorPieChartPad,#generatorPieChart").css({
+		$("#generatorPieChartPad, #generatorPieChart").css({
 			width: config.size.canvasWidth,
 			height: config.size.canvasHeight
 		});

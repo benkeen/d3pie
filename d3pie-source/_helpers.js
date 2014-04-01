@@ -6,12 +6,12 @@
 var helpers = {
 
 	// creates the SVG element
-	addSVGSpace: function(element, width, height, color) {
+	addSVGSpace: function(element, width, height, backgroundColor) {
 		var svg = d3.select(element).append("svg:svg")
 			.attr("width", width)
 			.attr("height", height);
 
-		if (this.options.misc.colors.background !== "transparent") {
+		if (backgroundColor !== "transparent") {
 			svg.style("background-color", function() { return color; });
 		}
 
@@ -20,14 +20,14 @@ var helpers = {
 
 	whenIdExists: function(id, callback) {
 		var inc = 1;
-		var giveupTime = 1000;
+		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
 			if (document.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
-			if (inc > giveupTime) {
+			if (inc > giveupIterationCount) {
 				clearInterval(interval);
 			}
 			inc++;
@@ -36,7 +36,7 @@ var helpers = {
 
 	whenElementsExist: function(els, callback) {
 		var inc = 1;
-		var giveupTime = 1000;
+		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
 			var allExist = true;
@@ -50,7 +50,7 @@ var helpers = {
 				clearInterval(interval);
 				callback();
 			}
-			if (inc > giveupTime) {
+			if (inc > giveupIterationCount) {
 				clearInterval(interval);
 			}
 			inc++;
@@ -140,7 +140,7 @@ var helpers = {
 		// convert to decimal and change luminosity
 		var newHex = "#";
 		for (var i=0; i<3; i++) {
-			var c = parseInt(hex.substr(i*2, 2), 16);
+			var c = parseInt(hex.substr(i * 2, 2), 16);
 			c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
 			newHex += ("00" + c).substr(c.length);
 		}
@@ -169,7 +169,6 @@ var helpers = {
 				finalColors.push(colors[i]);
 			}
 		}
-
 
 		return finalColors;
 	},

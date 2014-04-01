@@ -11,6 +11,9 @@
 	var _scriptName = "d3pie";
 	var _version = "0.1.0";
 
+	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
+	var _uniqueIDCounter = 0;
+
 	// this section includes all helper libs. None of the helper libs ever need to worry about "this". They're always
 	// passed everything they need from the code below. They're populated via grunt-template. Note: to keep the syntax
 	// highlighting from getting all messed up, I commented out each line. That REQUIRES each of the files to have an
@@ -31,8 +34,16 @@
 		validate.initialCheck(element, options);
 
 		// element can be an ID or DOM element
-		this.element = document.getElementById(element); // TODO
+		this.element = $(element)[0]; // TODO
 		this.options = $.extend(true, {}, _defaultSettings, options);
+
+		// if the user specified a custom CSS element prefix (ID, class), use it. Otherwise use the
+		if (this.options.misc.cssPrefix !== null) {
+			this.cssPrefix = this.options.misc.cssPrefix;
+		} else {
+			this.cssPrefix = "p" + _uniqueIDCounter + "_";
+			_uniqueIDCounter++;
+		}
 
 		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and it's version
 		$(this.element).data(_scriptName, _version);
@@ -119,12 +130,14 @@
 		}
 	};
 
-// ------------------------------------------------------------------------------------------------
 
+	// ------------------------------------------------------------------------------------------------
+
+	// private functions
 
 	var _init = function() {
 
-		// 1. Prep-work
+		// 1. prep-work
 		this.options.data   = math.sortPieData(this.options.data.content, this.options.data.sortOrder);
 		this.options.colors = helpers.initSegmentColors(this.options.data, this.options.misc.colors.segments);
 		this.totalSize      = math.getTotalPieSize(this.options.data);
@@ -136,7 +149,7 @@
 			this.options.misc.colors.background
 		);
 
-		// 2. store info about the main text components as part of the d3pie object instance
+		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
 			title: {
 				exists: this.options.header.title.text !== "",
@@ -156,11 +169,11 @@
 		};
 
 		// 3. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
-		text.addTextElementsOffscreen(this.textComponents, this.options.header);
+		text.addTextElementsOffscreen(this.cssPrefix, this.textComponents, this.options.header);
 		text.addFooter(this.options.footer);
 
 		// the footer never moves - this puts it in place now
-		helpers.whenIdExists("footer", function() {
+		helpers.whenIdExists(this.cssPrefix + "footer", function() {
 			text.positionFooter(this.options.footer.location, text.components.footer.w, this.options.size.canvasWidth, this.options.size.canvasHeight, this.options.misc.canvasPadding);
 			var d3 = helpers.getDimensions("footer");
 			this.textComponents.footer.h = d3.h;
@@ -171,27 +184,47 @@
 		this.innerRadius = radii.inner;
 		this.outerRadius = radii.outer;
 
-		// this value is used all over the place for
-		this.pieCenter = math.getPieCenter({
-			headerLocation: this.options.header.location,
-			textComponents: this.textComponents,
-			canvasPadding: this.options.misc.canvasPadding,
-			titleSubtitlePadding: this.options.header.titleSubtitlePadding,
-			canvasWidth: this.options.size.canvasWidth,
-			canvasHeight: this.options.size.canvasHeight,
-			pieCenterOffset: this.options.misc.pieCenterOffset
-		});
+		// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
+		// and store it as part of the object
+		this.pieCenter = math.getPieCenter(
+			this.options.header.location,
+			this.textComponents,
+			this.options.misc.canvasPadding,
+			this.options.header.titleSubtitlePadding,
+			this.options.size.canvasWidth,
+			this.options.size.canvasHeight,
+			this.options.misc.pieCenterOffset
+		);
 
 		// STEP 2: now create the pie chart and position everything accordingly
-		var requiredElements = [];
-		if (this.textComponents.title.exists)    { requiredElements.push("title"); }
-		if (this.textComponents.subtitle.exists) { requiredElements.push("subtitle"); }
-		if (this.textComponents.footer.exists)   { requiredElements.push("footer"); }
+		var reqEls = [];
+		if (this.textComponents.title.exists)    { reqEls.push(this.cssPrefix + "title"); }
+		if (this.textComponents.subtitle.exists) { reqEls.push(this.cssPrefix + "subtitle"); }
+		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
-		helpers.whenElementsExist(requiredElements, function() {
-			text.storeComponentDimensions(this.textComponents);
-			text.positionTitle();
-			text.positionSubtitle();
+		helpers.whenElementsExist(reqEls, function() {
+			if (this.textComponents.title.exists) {
+				var d1 = helpers.getDimensions(this.cssPrefix + "title");
+				this.textComponents.title.h = d1.h;
+				this.textComponents.title.w = d1.w;
+			}
+			if (this.textComponents.subtitle.exists) {
+				var d2 = helpers.getDimensions(this.cssPrefix + "subtitle");
+				this.textComponents.subtitle.h = d2.h;
+				this.textComponents.subtitle.w = d2.w;
+			}
+
+			// position the title and subtitle
+			text.positionHeadings(
+				this.cssPrefix,
+				this.pieCenter,
+				this.textComponents,
+				this.options.header.location,
+				this.options.misc.canvasPadding,
+				this.options.size.canvasWidth,
+				this.options.size.canvasHeight,
+				this.options.header.titleSubtitlePadding
+			);
 
 			segments.create();
 			var l = labels;

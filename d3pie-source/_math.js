@@ -98,29 +98,29 @@ var math = {
 	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
-	getPieCenter: function(info) {
-		var hasTopTitle    = (info.textComponents.title.exists && info.headerLocation !== "pie-center");
-		var hasTopSubtitle = (info.textComponents.subtitle.exists && info.headerLocation !== "pie-center");
+	getPieCenter: function(headerLocation, textComponents, canvasPadding, titleSubtitlePadding, canvasWidth, canvasHeight, pieCenterOffset) {
+		var hasTopTitle    = (textComponents.title.exists && headerLocation !== "pie-center");
+		var hasTopSubtitle = (textComponents.subtitle.exists && headerLocation !== "pie-center");
 
-		var headerOffset = info.canvasPadding.top;
+		var headerOffset = canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += info.textComponents.title.h + info.titleSubtitlePadding + info.textComponents.subtitle.h;
+			headerOffset += textComponents.title.h + titleSubtitlePadding + textComponents.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += info.textComponents.title.h;
+			headerOffset += textComponents.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = info.textComponents.subtitle.h;
+			headerOffset = textComponents.subtitle.h;
 		}
 
 		var footerOffset = 0;
-		if (info.textComponents.footer.exists) {
-			footerOffset = info.textComponents.footer.h + info.canvasPadding.bottom;
+		if (textComponents.footer.exists) {
+			footerOffset = textComponents.footer.h + canvasPadding.bottom;
 		}
 
-		var x = ((info.canvasWidth - info.canvasPadding.left - info.canvasPadding.right) / 2) + info.canvasPadding.left;
-		var y = ((info.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
+		var x = ((canvasWidth - canvasPadding.left - canvasPadding.right) / 2) + canvasPadding.left;
+		var y = ((canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
 
-		x += info.pieCenterOffset.x;
-		y += info.pieCenterOffset.y;
+		x += pieCenterOffset.x;
+		y += pieCenterOffset.y;
 
 		return { x: x, y: y };
 	},
