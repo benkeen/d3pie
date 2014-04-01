@@ -10,14 +10,13 @@ module.exports = function(grunt) {
 	var _createD3PieFiles = function() {
 		var fs = require("fs");
 
-		config.template.options.data.core = fs.readFileSync("d3pie-source/core.js", 'utf8');
-		config.template.options.data.defaultSettings = fs.readFileSync("d3pie-source/default-settings.js", 'utf8');
-		config.template.options.data.helpers = fs.readFileSync("d3pie-source/helpers.js", 'utf8');
-		config.template.options.data.labels = fs.readFileSync("d3pie-source/labels.js", 'utf8');
-		config.template.options.data.math = fs.readFileSync("d3pie-source/math.js", 'utf8');
-		config.template.options.data.segments = fs.readFileSync("d3pie-source/segments.js", 'utf8');
-		config.template.options.data.text = fs.readFileSync("d3pie-source/text.js", 'utf8');
-		config.template.options.data.validate = fs.readFileSync("d3pie-source/validate.js", 'utf8');
+		config.template.options.data._defaultSettings = fs.readFileSync("d3pie-source/_default-settings.js", 'utf8');
+		config.template.options.data._helpers         = fs.readFileSync("d3pie-source/_helpers.js", 'utf8');
+		config.template.options.data._labels          = fs.readFileSync("d3pie-source/_labels.js", 'utf8');
+		config.template.options.data._math            = fs.readFileSync("d3pie-source/_math.js", 'utf8');
+		config.template.options.data._segments        = fs.readFileSync("d3pie-source/_segments.js", 'utf8');
+		config.template.options.data._text            = fs.readFileSync("d3pie-source/_text.js", 'utf8');
+		config.template.options.data._validate        = fs.readFileSync("d3pie-source/_validate.js", 'utf8');
 
 		grunt.task.run("template");
 	};
@@ -28,7 +27,7 @@ module.exports = function(grunt) {
 			options: { data: {} },
 			bundle: {
 				files: {
-					'd3pie/d3pie.js': ['d3pie-source/source-template.js']
+					'd3pie/d3pie.js': ['d3pie-source/d3pie-source.js']
 				}
 			}
 		},

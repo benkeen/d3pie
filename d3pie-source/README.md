@@ -24,13 +24,13 @@ is a completely separate layer about the actual d3pie script.
 
 ### The files
 
-* `gruntWrapper` - this is the top level file. It contains the jQuery wrapper, and just includes all the others.
-* `core.js` - contains all the main logic for the script: the jQuery prototype functions, the initialization function
-and all the code for actually generating the pie.
-* `helpers.js` - all manner of helper functionality. If I end up dropping the jQuery dependency, all the jQuery shims
+* `d3pie-source.js` - this is the top level file. It contains the jQuery wrapper, and the main logic for the script:
+the d3pie object, initialization function and all the code for actually generating the pie. This is the only part that
+contains references to "this". All other files are helpers, and are passed data from d3pie-source.
+* `_helpers.js` - all manner of helper functionality. If I end up dropping the jQuery dependency, all the jQuery shims
 will end up here.
-* `labels.js` - code relating to the pie chart labels, label lines.
-* `math.js` - hard stuff which I'm ashamed to say I'd largely forgotten from high school.
-* `default-settings.js` the default settings for the
-* `validate.js` - code for validating the user's pie chart configuration object.
-* `segments.js` - code relating to the pie chart segments.
+* `_labels.js` - code relating to the pie chart labels, label lines.
+* `_math.js` - hard stuff which I'm ashamed to say I'd largely forgotten from high school.
+* `_default-settings.js` the default settings for the pie chart.
+* `_validate.js` - code for validating the user's pie chart configuration object.
+* `_segments.js` - code relating to the pie chart segments.

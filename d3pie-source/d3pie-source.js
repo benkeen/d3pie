@@ -11,22 +11,27 @@
 	var _scriptName = "d3pie";
 	var _version = "0.1.0";
 
-	// this section includes all
-	//
-	//
-	//
-	//
-	//
-	//
-	//
+	// this section includes all helper libs. None of the helper libs ever need to worry about "this". They're always
+	// passed everything they need from the code below. They're populated via grunt-template. Note: to keep the syntax
+	// highlighting from getting all messed up, I commented out each line. That REQUIRES each of the files to have an
+	// empty first line. Crumby, yes, but acceptable.
+	//<%=_defaultSettings%>
+	//<%=_validate%>
+	//<%=_helpers%>
+	//<%=_math%>
+	//<%=_labels%>
+	//<%=_segments%>
+	//<%=_text%>
 
 
-// this is our only publicly exposed function on the window object
+	// --------------------------------------------------------------------------------------------
+
+	// our constructor
 	var d3pie = function(element, options) {
 		validate.initialCheck(element, options);
 
 		// element can be an ID or DOM element
-		this.element = document.getElementById(element);
+		this.element = document.getElementById(element); // TODO
 		this.options = $.extend(true, {}, _defaultSettings, options);
 
 		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and it's version
@@ -49,10 +54,10 @@
 	 * Returns all pertinent info about the current open info. Returns null if nothing's open, or if one is, an object of
 	 * the following form:
 	 * 	{
- * 	  element: DOM NODE,
- * 	  index: N,
- * 	  data: {}
- * 	}
+	 * 	  element: DOM NODE,
+	 * 	  index: N,
+	 * 	  data: {}
+	 * 	}
 	 */
 	d3pie.prototype.getOpenPieSegment = function() {
 		var segment = segments.currentlyOpenSegment;
@@ -76,16 +81,16 @@
 		segments.openSegment($("#segment" + index)[0]);
 	};
 
-// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
-// intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
-// just redraw the single element
+	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
+	// intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
+	// just redraw the single element
 	d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
 		switch (propKey) {
 			case "header.title.text":
-				var oldValue = helpers.processObj(this.options, propKey);
+				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
 				$("#title").html(value);
-				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
+				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.recreate();
 				}
 				break;
@@ -131,7 +136,7 @@
 			this.options.misc.colors.background
 		);
 
-		// 2. store info about the main text components as part of this object
+		// 2. store info about the main text components as part of the d3pie object instance
 		this.textComponents = {
 			title: {
 				exists: this.options.header.title.text !== "",
@@ -151,10 +156,18 @@
 		};
 
 		// 3. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
-		text.addTextElementsOffscreen();
-		text.addFooter(); // the footer never moves - this puts it in place now
+		text.addTextElementsOffscreen(this.textComponents, this.options.header);
+		text.addFooter(this.options.footer);
 
-		var radii = math.computePieRadius(this.options.size);
+		// the footer never moves - this puts it in place now
+		helpers.whenIdExists("footer", function() {
+			text.positionFooter(this.options.footer.location, text.components.footer.w, this.options.size.canvasWidth, this.options.size.canvasHeight, this.options.misc.canvasPadding);
+			var d3 = helpers.getDimensions("footer");
+			this.textComponents.footer.h = d3.h;
+			this.textComponents.footer.w = d3.w;
+		});
+
+		var radii = math.computePieRadius(this.options.size, this.options.misc.canvasPadding);
 		this.innerRadius = radii.inner;
 		this.outerRadius = radii.outer;
 
@@ -165,17 +178,18 @@
 			canvasPadding: this.options.misc.canvasPadding,
 			titleSubtitlePadding: this.options.header.titleSubtitlePadding,
 			canvasWidth: this.options.size.canvasWidth,
-			canvasHeight: this.options.size.canvasHeight
+			canvasHeight: this.options.size.canvasHeight,
+			pieCenterOffset: this.options.misc.pieCenterOffset
 		});
 
 		// STEP 2: now create the pie chart and position everything accordingly
 		var requiredElements = [];
-		if (text.components.title.exists)    { requiredElements.push("title"); }
-		if (text.components.subtitle.exists) { requiredElements.push("subtitle"); }
-		if (text.components.footer.exists)   { requiredElements.push("footer"); }
+		if (this.textComponents.title.exists)    { requiredElements.push("title"); }
+		if (this.textComponents.subtitle.exists) { requiredElements.push("subtitle"); }
+		if (this.textComponents.footer.exists)   { requiredElements.push("footer"); }
 
 		helpers.whenElementsExist(requiredElements, function() {
-			text.storeComponentDimensions();
+			text.storeComponentDimensions(this.textComponents);
 			text.positionTitle();
 			text.positionSubtitle();
 
@@ -192,7 +206,7 @@
 			// this is (and should be) dumb. It just places the outer groups at their pre-calculated, collision-free positions
 			l.positionLabelGroups("outer");
 
-			// we use the label line positions for other calculations, so ALWAYS compute them (boooo)
+			// we use the label line positions for many other calculations, so ALWAYS compute them
 			l.computeLabelLinePositions();
 
 			// only add them if they're actually enabled
@@ -207,8 +221,7 @@
 		});
 	};
 
-
+	// expose our d3pie function
 	window.d3pie = d3pie;
-
 
 })(jQuery);

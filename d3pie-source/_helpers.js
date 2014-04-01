@@ -7,13 +7,15 @@ var helpers = {
 
 	// creates the SVG element
 	addSVGSpace: function(element, width, height, color) {
-		_svg = d3.select(element).append("svg:svg")
+		var svg = d3.select(element).append("svg:svg")
 			.attr("width", width)
 			.attr("height", height);
 
-		if (_options.misc.colors.background !== "transparent") {
-			_svg.style("background-color", function() { return color; });
+		if (this.options.misc.colors.background !== "transparent") {
+			svg.style("background-color", function() { return color; });
 		}
+
+		return svg;
 	},
 
 	whenIdExists: function(id, callback) {
@@ -152,7 +154,7 @@ var helpers = {
 	 * 	2. include a misc.colors.segments property which contains an array of hex codes
 	 * 	3. specify nothing at all and rely on this lib provide some reasonable defaults
 	 *
-	 * This function sees what's included and populates _options.colors with whatever's required
+	 * This function sees what's included and populates this.options.colors with whatever's required
 	 * for this pie chart.
 	 * @param data
 	 */
@@ -173,7 +175,7 @@ var helpers = {
 	},
 
 	// for debugging
-	showPoint: function(x, y) {
-		_svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
+	showPoint: function(svg, x, y) {
+		svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
 	}
 };

@@ -12,14 +12,14 @@ var labels = {
 	 */
 	add: function(section, sectionDisplayType) {
 		var include = labels.getIncludes(sectionDisplayType);
-		var settings = _options.labels;
+		var settings = this.options.labels;
 
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
-		var outerLabel = _svg.insert("g", ".labels-" + section)
+		var outerLabel = this.svg.insert("g", ".labels-" + section)
 			.attr("class", "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll(".labelGroup-" + section)
-			.data(_options.data)
+			.data(this.options.data)
 			.enter()
 			.append("g")
 			.attr("class", "labelGroup-" + section)
@@ -43,8 +43,8 @@ var labels = {
 				.attr("class", "segmentPercentage-" + section)
 				.attr("id", function(d, i) { return "segmentPercentage" + i + "-" + section; })
 				.text(function(d) {
-					var percent = (d.value / _totalSize) * 100;
-					return percent.toFixed(_options.labels.percentage.decimalPlaces) + "%";
+					var percent = (d.value / this.totalSize) * 100;
+					return percent.toFixed(this.options.labels.percentage.decimalPlaces) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize)
 				.style("font-family", settings.percentage.font)
@@ -159,7 +159,7 @@ var labels = {
 		 * x2 / y2: if "curved" line style is being used, this is the midpoint of the line. Other
 		 * x3 / y3: the end of the line; closest point to the label
 		 */
-		if (_options.labels.lines.style === "straight") {
+		if (this.options.labels.lines.style === "straight") {
 			labels.lineCoordGroups[i] = [
 				{ x: originCoords.x, y: originCoords.y },
 				{ x: x3, y: y3 }
@@ -174,7 +174,7 @@ var labels = {
 	},
 
 	addLabelLines: function() {
-		var lineGroups = _svg.insert("g", ".pieChart") // meaning, BEFORE .pieChart
+		var lineGroups = this.svg.insert("g", ".pieChart") // meaning, BEFORE .pieChart
 			.attr("class", "lineGroups")
 			.style("opacity", 0);
 
@@ -192,12 +192,12 @@ var labels = {
 		lineGroup.append("path")
 			.attr("d", lineFunction)
 			.attr("stroke", function(d, i) {
-				return (_options.labels.lines.color === "segment") ? _options.colors[i] : _options.labels.lines.color;
+				return (this.options.labels.lines.color === "segment") ? this.options.colors[i] : this.options.labels.lines.color;
 			})
 			.attr("stroke-width", 1)
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
-				var percentage = _options.labels.outer.hideWhenLessThanPercentage;
+				var percentage = this.options.labels.outer.hideWhenLessThanPercentage;
 				var segmentPercentage = segments.getPercentage(i);
 				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 			})
@@ -242,15 +242,15 @@ var labels = {
 	fadeInLabelsAndLines: function() {
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
-		var loadSpeed = (_options.effects.load.effect === "default") ? _options.effects.load.speed : 1;
+		var loadSpeed = (this.options.effects.load.effect === "default") ? this.options.effects.load.speed : 1;
 		setTimeout(function() {
-			var labelFadeInTime = (_options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
+			var labelFadeInTime = (this.options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
 
 			d3.selectAll(".labelGroup-outer")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
-					var percentage = _options.labels.outer.hideWhenLessThanPercentage;
+					var percentage = this.options.labels.outer.hideWhenLessThanPercentage;
 					var segmentPercentage = segments.getPercentage(i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
@@ -259,7 +259,7 @@ var labels = {
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
-					var percentage = _options.labels.inner.hideWhenLessThanPercentage;
+					var percentage = this.options.labels.inner.hideWhenLessThanPercentage;
 					var segmentPercentage = segments.getPercentage(i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
@@ -270,10 +270,10 @@ var labels = {
 				.style("opacity", 1);
 
 			// once everything's done loading, trigger the onload callback if defined
-			if ($.isFunction(_options.callbacks.onload)) {
+			if ($.isFunction(this.options.callbacks.onload)) {
 				setTimeout(function() {
 					try {
-						_options.callbacks.onload();
+						this.options.callbacks.onload();
 					} catch (e) { }
 				}, labelFadeInTime);
 			}
@@ -333,7 +333,7 @@ var labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function() {
-		var size = _options.data.length;
+		var size = this.options.data.length;
 		labels.checkConflict(0, "clockwise", size);
 		labels.checkConflict(size-1, "anticlockwise", size);
 	},
@@ -358,7 +358,7 @@ var labels = {
 		var info = {
 			labelHeights: labels.outerLabelGroupData[0].h,
 			center: math.getPieCenter(),
-			lineLength: (_outerRadius + _options.labels.outer.pieDistance),
+			lineLength: (_outerRadius + this.options.labels.outer.pieDistance),
 			heightChange: labels.outerLabelGroupData[0].h + 1 // 1 = padding
 		};
 
@@ -429,7 +429,7 @@ var labels = {
 
 		var center = math.getPieCenter();
 		var originalX = center.x;
-		var originalY = center.y - (_outerRadius + _options.labels.outer.pieDistance);
+		var originalY = center.y - (_outerRadius + this.options.labels.outer.pieDistance);
 		var newCoords = math.rotate(originalX, originalY, center.x, center.y, angle);
 
 		// if the label is on the left half of the pie, adjust the values

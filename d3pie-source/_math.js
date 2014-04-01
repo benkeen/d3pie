@@ -13,40 +13,41 @@ var math = {
 		return radians * (180 / Math.PI);
 	},
 
-	computePieRadius: function() {
+	// TODO
+	computePieRadius: function(size, canvasPadding) {
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
 		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
 
 		// first, calculate the default _outerRadius
-		var w = _options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right;
-		var h = _options.size.canvasHeight; // - headerHeight - _options.misc.canvasPadding.bottom - footerHeight);
+		var w = size.canvasWidth - canvasPadding.left - canvasPadding.right;
+		var h = size.canvasHeight;
 
 		var outerRadius = ((w < h) ? w : h) / 2.8;
-		var innerRadius;
+		var innerRadius, percent;
 
 		// if the user specified something, use that instead
-		if (_options.size.pieOuterRadius !== null) {
-			if (/%/.test(_options.size.pieOuterRadius)) {
-				var percent = parseInt(_options.size.pieOuterRadius.replace(/[\D]/, ""), 10);
+		if (size.pieOuterRadius !== null) {
+			if (/%/.test(size.pieOuterRadius)) {
+				percent = parseInt(size.pieOuterRadius.replace(/[\D]/, ""), 10);
 				percent = (percent > 99) ? 99 : percent;
 				percent = (percent < 0) ? 0 : percent;
 				var smallestDimension = (w < h) ? w : h;
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
 				// blurgh! TODO bounds checking
-				outerRadius = parseInt(_options.size.pieOuterRadius, 10);
+				outerRadius = parseInt(size.pieOuterRadius, 10);
 			}
 		}
 
 		// inner radius
-		if (/%/.test(_options.size.pieInnerRadius)) {
-			var percent = parseInt(_options.size.pieInnerRadius.replace(/[\D]/, ""), 10);
+		if (/%/.test(size.pieInnerRadius)) {
+			percent = parseInt(size.pieInnerRadius.replace(/[\D]/, ""), 10);
 			percent = (percent > 99) ? 99 : percent;
 			percent = (percent < 0) ? 0 : percent;
 			innerRadius = Math.floor((outerRadius / 100) * percent);
 		} else {
-			innerRadius = parseInt(_options.size.pieInnerRadius, 10);
+			innerRadius = parseInt(size.pieInnerRadius, 10);
 		}
 
 		return {
@@ -97,34 +98,33 @@ var math = {
 	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
-	getPieCenter: function() {
+	getPieCenter: function(info) {
+		var hasTopTitle    = (info.textComponents.title.exists && info.headerLocation !== "pie-center");
+		var hasTopSubtitle = (info.textComponents.subtitle.exists && info.headerLocation !== "pie-center");
 
-		// TODO MEMOIZE (needs invalidation, too)
-		var hasTopTitle    = (text.components.title.exists && _options.header.location !== "pie-center");
-		var hasTopSubtitle = (text.components.subtitle.exists && _options.header.location !== "pie-center");
-
-		var headerOffset = _options.misc.canvasPadding.top;
+		var headerOffset = info.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += text.components.title.h + _options.header.titleSubtitlePadding + text.components.subtitle.h;
+			headerOffset += info.textComponents.title.h + info.titleSubtitlePadding + info.textComponents.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += text.components.title.h;
+			headerOffset += info.textComponents.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = text.components.subtitle.h;
+			headerOffset = info.textComponents.subtitle.h;
 		}
 
 		var footerOffset = 0;
-		if (text.components.footer.exists) {
-			footerOffset = text.components.footer.h + _options.misc.canvasPadding.bottom;
+		if (info.textComponents.footer.exists) {
+			footerOffset = info.textComponents.footer.h + info.canvasPadding.bottom;
 		}
 
-		var x = ((_options.size.canvasWidth - _options.misc.canvasPadding.left - _options.misc.canvasPadding.right) / 2) + _options.misc.canvasPadding.left;
-		var y = ((_options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
+		var x = ((info.canvasWidth - info.canvasPadding.left - info.canvasPadding.right) / 2) + info.canvasPadding.left;
+		var y = ((info.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
 
-		x += _options.misc.pieCenterOffset.x;
-		y += _options.misc.pieCenterOffset.y;
+		x += info.pieCenterOffset.x;
+		y += info.pieCenterOffset.y;
 
 		return { x: x, y: y };
 	},
+
 
 	arcTween: function(b) {
 		var i = d3.interpolate({ value: 0 }, b);
@@ -181,7 +181,7 @@ var math = {
 			theta2 = d3Arc.endAngle()(ptData);
 
 		var dist = pt.x * pt.x + pt.y * pt.y,
-			angle = Math.atan2(pt.x, -pt.y); // Note: different coordinate system.
+			angle = Math.atan2(pt.x, -pt.y); // Note: different coordinate system
 
 		angle = (angle < 0) ? (angle + Math.PI * 2) : angle;
 
