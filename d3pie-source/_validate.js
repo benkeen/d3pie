@@ -2,43 +2,45 @@
 var validate = {
 
 	// called whenever a new pie chart is created
-	initialCheck: function(element, options) {
+	initialCheck: function() {
 
 		// confirm d3 is available [check minimum version]
 		if (!window.d3 || !window.d3.hasOwnProperty("version")) {
 			console.error("d3pie error: d3 is not available");
-			return;
+			return false;
 		}
 
 		// confirm element is either a DOM element or a valid string for a DOM element
-		if (typeof element === "string") {
-			var domElement = document.getElementById(element);
+		if (typeof this.element === "string") {
+			var domElement = document.getElementById(this.element);
 			if (domElement === null) {
-				console.error("d3pie error: a DOM element with ID not found: ", element);
-				return;
+				console.error("d3pie error: a DOM element with ID not found: ", this.element);
+				return false;
 			}
 		} else {
-			if (!(element instanceof HTMLElement)) {
+			if (!(this.element instanceof HTMLElement)) {
 				console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
-				return;
+				return false;
 			}
 		}
 
 		// confirm some data has been supplied
-		if (!options.data.hasOwnProperty("content")) {
+		if (!this.options.data.hasOwnProperty("content")) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
-			return;
+			return false;
 		}
-		if (!$.isArray(options.data.content) || options.data.content.length === 0) {
+		if (!$.isArray(this.options.data.content) || this.options.data.content.length === 0) {
 			console.error("d3pie error: no data supplied.");
-			return;
+			return false;
 		}
 
 		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
 		// TODO test
-		if (options.misc.cssPrefix !== null && !(/[a-zA-Z][a-zA-Z0-9_-]$/.test(options.misc.cssPrefix))) {
+		if (this.options.misc.cssPrefix !== null && !(/[a-zA-Z][a-zA-Z0-9_-]$/.test(this.options.misc.cssPrefix))) {
 			console.error("d3pie error: invalid options.misc.cssPrefix");
-			return;
+			return false;
 		}
+
+		return true;
 	}
 };

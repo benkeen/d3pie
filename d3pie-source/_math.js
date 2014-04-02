@@ -1,9 +1,5 @@
 // --------- math.js -----------
-
-/**
- * Contains all the math needed to figure out where to place things, etc.
- */
-var math = {
+this.math = {
 
 	toRadians: function(degrees) {
 		return degrees * (Math.PI / 180);
@@ -35,7 +31,7 @@ var math = {
 				var smallestDimension = (w < h) ? w : h;
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
-				// blurgh! TODO bounds checking
+				// TODO bounds checking
 				outerRadius = parseInt(size.pieOuterRadius, 10);
 			}
 		}
@@ -64,7 +60,10 @@ var math = {
 		return totalSize;
 	},
 
-	sortPieData: function(data, sortOrder) {
+	sortPieData: function(pie) {
+		var data      = pie.options.data.content;
+		var sortOrder = pie.options.data.sortOrder;
+
 		switch (sortOrder) {
 			case "none":
 				// do nothing.
@@ -88,8 +87,8 @@ var math = {
 		return data;
 	},
 
-	getPieTranslateCenter: function() {
-		var pieCenter = math.getPieCenter();
+	// var pieCenter = math.getPieCenter();
+	getPieTranslateCenter: function(pieCenter) {
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
 	},
 
@@ -98,22 +97,29 @@ var math = {
 	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
-	getPieCenter: function(headerLocation, textComponents, canvasPadding, titleSubtitlePadding, canvasWidth, canvasHeight, pieCenterOffset) {
-		var hasTopTitle    = (textComponents.title.exists && headerLocation !== "pie-center");
-		var hasTopSubtitle = (textComponents.subtitle.exists && headerLocation !== "pie-center");
+	getPieCenter: function(pie) {
+		var headerLocation = pie.options.header.location;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var canvasHeight = pie.options.size.canvasHeight;
+		var pieCenterOffset = pie.options.misc.pieCenterOffset;
+
+		var hasTopTitle    = (pie.textComponents.title.exists && headerLocation !== "pie-center");
+		var hasTopSubtitle = (pie.textComponents.subtitle.exists && headerLocation !== "pie-center");
 
 		var headerOffset = canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += textComponents.title.h + titleSubtitlePadding + textComponents.subtitle.h;
+			headerOffset += pie.textComponents.title.h + titleSubtitlePadding + pie.textComponents.subtitle.h;
 		} else if (hasTopTitle) {
-			headerOffset += textComponents.title.h;
+			headerOffset += pie.textComponents.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = textComponents.subtitle.h;
+			headerOffset = pie.textComponents.subtitle.h;
 		}
 
 		var footerOffset = 0;
-		if (textComponents.footer.exists) {
-			footerOffset = textComponents.footer.h + canvasPadding.bottom;
+		if (pie.textComponents.footer.exists) {
+			footerOffset = pie.textComponents.footer.h + canvasPadding.bottom;
 		}
 
 		var x = ((canvasWidth - canvasPadding.left - canvasPadding.right) / 2) + canvasPadding.left;
@@ -126,6 +132,7 @@ var math = {
 	},
 
 
+	// TODO this will cause a bug
 	arcTween: function(b) {
 		var i = d3.interpolate({ value: 0 }, b);
 		return function(t) {

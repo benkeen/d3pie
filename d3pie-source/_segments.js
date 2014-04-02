@@ -1,47 +1,45 @@
 // --------- segments.js -----------
-var segments = {
+this.segments = {
 
 	isOpening: false,
 	currentlyOpenSegment: null,
 
 	/**
-	 * Creates the pie chart segments and displays them according to the selected load effect.
-	 * @param element
-	 * @param options
+	 * Creates the pie chart segments and displays them according to the desired load effect.
 	 * @private
 	 */
-	create: function() {
+	create: function(cssPrefix, pieCenter, data, colors, innerRadius, outerRadius, loadEffects, totalSize, segmentStroke) {
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = this.svg.insert("g", "#title")
-			.attr("transform", math.getPieTranslateCenter)
-			.attr("class", "pieChart");
+		var pieChartElement = this.svg.insert("g", "#" + cssPrefix + "title")
+			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
+			.attr("class", cssPrefix + "pieChart");
 
-		_arc = d3.svg.arc()
-			.innerRadius(_innerRadius)
-			.outerRadius(_outerRadius)
+		var arc = d3.svg.arc()
+			.innerRadius(innerRadius)
+			.outerRadius(outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
-				var angle = (d.value / this.totalSize) * 2 * Math.PI;
+				var angle = (d.value / totalSize) * 2 * Math.PI;
 				return angle;
 			});
 
-		var g = pieChartElement.selectAll(".arc")
-			.data(this.options.data)
+		var g = pieChartElement.selectAll("." + cssPrefix + "arc")
+			.data(data)
 			.enter()
 			.append("g")
-			.attr("class", "arc");
+			.attr("class", cssPrefix + "arc");
 
 		// if we're not fading in the pie, just set the load speed to 0
-		var loadSpeed = this.options.effects.load.speed;
-		if (this.options.effects.load.effect === "none") {
+		var loadSpeed = loadEffects.speed;
+		if (loadEffects.effect === "none") {
 			loadSpeed = 0;
 		}
 
 		g.append("path")
-			.attr("id", function(d, i) { return "segment" + i; })
-			.style("fill", function(d, index) { return this.options.colors[index]; })
-			.style("stroke", this.options.misc.colors.segmentStroke)
+			.attr("id", function(d, i) { return cssPrefix + "segment" + i; })
+			.style("fill", function(d, index) { return colors[index]; })
+			.style("stroke", segmentStroke)
 			.style("stroke-width", 1)
 			.transition()
 			.ease("cubic-in-out")
@@ -49,20 +47,22 @@ var segments = {
 			.attr("data-index", function(d, i) { return i; })
 			.attrTween("d", math.arcTween);
 
-		this.svg.selectAll("g.arc")
+		this.svg.selectAll("g." + cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
 				if (i > 0) {
-					angle = segments.getSegmentAngle(i-1);
+					angle = segments.getSegmentAngle(i-1, data, totalSize);
 				}
 				return "rotate(" + angle + ")";
 			}
 		);
+
+		return arc;
 	},
 
-	addSegmentEventHandlers: function() {
-		var $arc = $(".arc");
+	addSegmentEventHandlers: function(cssPrefix) {
+		var $arc = $("." + cssPrefix + "arc");
 		$arc.on("click", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 			var isExpanded = $segment.attr("class") === "expanded";
@@ -172,7 +172,7 @@ var segments = {
 	 * @param index
 	 * @param opts optional object for fine-tuning exactly what you want.
 	 */
-	getSegmentAngle: function(index, opts) {
+	getSegmentAngle: function(index, data, totalSize, opts) {
 		var options = $.extend({
 
 			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
@@ -182,9 +182,7 @@ var segments = {
 			midpoint: false
 		}, opts);
 
-		console.log(this.options.data, index);
-
-		var currValue = this.options.data[index].value;
+		var currValue = data[index].value;
 
 		var fullValue;
 		if (options.compounded) {
@@ -192,7 +190,7 @@ var segments = {
 
 			// get all values up to and including the specified index
 			for (var i=0; i<=index; i++) {
-				fullValue += this.options.data[i].value;
+				fullValue += data[i].value;
 			}
 		}
 

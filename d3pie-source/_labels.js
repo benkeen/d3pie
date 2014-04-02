@@ -1,5 +1,5 @@
 // --------- labels.js -----------
-var labels = {
+this.labels = {
 
 	outerLabelGroupData: [],
 	lineCoordGroups: [],
@@ -10,27 +10,27 @@ var labels = {
 	 * @param section "inner" or "outer"
 	 * @param sectionDisplayType "percentage", "value", "label", "label-value1", etc.
 	 */
-	add: function(section, sectionDisplayType) {
-		var include = labels.getIncludes(sectionDisplayType);
-		var settings = this.options.labels;
+	add: function(section, pie) {
+		var include = labels.getIncludes(pie.options.labels.inner.format);
+		var settings = pie.options.labels;
 
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
-		var outerLabel = this.svg.insert("g", ".labels-" + section)
-			.attr("class", "labels-" + section);
+		var outerLabel = this.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
+			.attr("class", pie.cssPrefix + "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll(".labelGroup-" + section)
 			.data(this.options.data)
 			.enter()
 			.append("g")
-			.attr("class", "labelGroup-" + section)
-			.attr("id", function(d, i) { return "labelGroup" + i + "-" + section; })
+			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
+			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 
 		// 1. Add the main label
 		if (include.mainLabel) {
 			labelGroup.append("text")
-				.attr("class", "segmentMainLabel-" + section)
-				.attr("id", function(d, i) { return "segmentMainLabel" + i + "-" + section; })
+				.attr("id", function(d, i) { return pie.cssPrefix + "segmentMainLabel" + i + "-" + section; })
+				.attr("class", pie.cssPrefix + "segmentMainLabel-" + section)
 				.text(function(d) { return d.label; })
 				.style("font-size", settings.mainLabel.fontSize)
 				.style("font-family", settings.mainLabel.font)
@@ -40,11 +40,11 @@ var labels = {
 		// 2. Add the percentage label
 		if (include.percentage) {
 			labelGroup.append("text")
-				.attr("class", "segmentPercentage-" + section)
-				.attr("id", function(d, i) { return "segmentPercentage" + i + "-" + section; })
+				.attr("id", function(d, i) { return pie.cssPrefix + "segmentPercentage" + i + "-" + section; })
+				.attr("class", pie.cssPrefix + "segmentPercentage-" + section)
 				.text(function(d) {
-					var percent = (d.value / this.totalSize) * 100;
-					return percent.toFixed(this.options.labels.percentage.decimalPlaces) + "%";
+					var percent = (d.value / pie.totalSize) * 100;
+					return percent.toFixed(pie.options.labels.percentage.decimalPlaces) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize)
 				.style("font-family", settings.percentage.font)
@@ -54,8 +54,8 @@ var labels = {
 		// 3. Add the value label
 		if (include.value) {
 			labelGroup.append("text")
-				.attr("class", "segmentValue-" + section)
-				.attr("id", function(d, i) { return "segmentValue" + i + "-" + section; })
+				.attr("id", function(d, i) { return pie.cssPrefix +  "segmentValue" + i + "-" + section; })
+				.attr("class", pie.cssPrefix + "segmentValue-" + section)
 				.text(function(d) { return d.value; })
 				.style("font-size", settings.value.fontSize)
 				.style("font-family", settings.value.font)

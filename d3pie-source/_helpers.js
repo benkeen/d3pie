@@ -1,18 +1,19 @@
-/**
- *  --------- helpers.js -----------
- *
- * Misc helper functions.
- */
-var helpers = {
+// --------- helpers.js -----------
+this.helpers = {
 
 	// creates the SVG element
-	addSVGSpace: function(element, width, height, backgroundColor) {
-		var svg = d3.select(element).append("svg:svg")
-			.attr("width", width)
-			.attr("height", height);
+	addSVGSpace: function(pie) {
+		var element = pie.element;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var canvasHeight = pie.options.size.canvasHeight;
+		var backgroundColor = pie.options.misc.colors.background;
 
-		if (backgroundColor !== "transparent") {
-			svg.style("background-color", function() { return color; });
+		var svg = d3.select(element).append("svg:svg")
+			.attr("width", canvasWidth)
+			.attr("height", canvasHeight);
+
+		if (this.backgroundColor !== "transparent") {
+			svg.style("background-color", function() { return backgroundColor; });
 		}
 
 		return svg;
@@ -158,7 +159,10 @@ var helpers = {
 	 * for this pie chart.
 	 * @param data
 	 */
-	initSegmentColors: function(data, colors) {
+	initSegmentColors: function(pie) {
+		var data   = pie.options.data;
+		var colors = pie.options.misc.colors.segments;
+
 		// TODO this needs a ton of error handling
 
 		var finalColors = [];

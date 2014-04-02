@@ -1,30 +1,24 @@
 // --------- text.js -----------
-
-/**
- * Contains the code for the main text elements: title, subtitle + footer.
- */
-var text = {
-
+this.text = {
 	offscreenCoord: -10000,
 
 	addTextElementsOffscreen: function(cssPrefix, textComponents, headerInfo) {
-		if (textComponents.title.exists) {
-			text.addTitle(cssPrefix, headerInfo.location, headerInfo.title);
-		}
-		if (textComponents.subtitle.exists) {
-			text.addSubtitle(cssPrefix, headerInfo.location, headerInfo.subtitle);
-		}
 	},
 
-	addTitle: function(cssPrefix, headerLocation, titleInfo) {
-		var title = this.svg.selectAll(".title")
+	addTitle: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var headerLocation = pie.options.header.location;
+		var titleInfo = pie.options.header.title;
+
+		var title = this.svg.selectAll("." + cssPrefix + "title")
 			.data([titleInfo.title])
 			.enter()
 			.append("text")
+			.text(function(d) { return d.text; })
 			.attr("id", cssPrefix + "title")
+			.attr("class", cssPrefix + "title")
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("class", cssPrefix + "title")
 			.attr("text-anchor", function() {
 				var location;
 				if (headerLocation === "top-center" || headerLocation === "pie-center") {
@@ -35,7 +29,6 @@ var text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 	},
@@ -66,11 +59,16 @@ var text = {
 			.attr("y", y);
 	},
 
-	addSubtitle: function(cssPrefix, headerLocation, subtitleInfo) {
+	addSubtitle: function(pie) {
+		var cssPrefix      = pie.cssPrefix;
+		var headerLocation = pie.options.header.location;
+		var subtitleInfo   = pie.options.header.subtitle;
+
 		this.svg.selectAll("." + cssPrefix + "subtitle")
 			.data([subtitleInfo])
 			.enter()
 			.append("text")
+			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
 			.attr("id", cssPrefix + "subtitle")
@@ -85,7 +83,6 @@ var text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 	},

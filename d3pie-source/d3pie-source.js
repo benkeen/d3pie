@@ -2,7 +2,7 @@
  * d3pie
  * @author Ben Keen
  * @version 0.1.0
- * @date Mar 2014
+ * @date Apr 2014
  * http://github.com/benkeen/d3pie
  */
 ;(function($) {
@@ -14,10 +14,10 @@
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
 
-	// this section includes all helper libs. None of the helper libs ever need to worry about "this". They're always
-	// passed everything they need from the code below. They're populated via grunt-template. Note: to keep the syntax
-	// highlighting from getting all messed up, I commented out each line. That REQUIRES each of the files to have an
-	// empty first line. Crumby, yes, but acceptable.
+
+	// this section includes all helper libs on the d3pie object. They're populated via grunt-template. Note: to keep
+	// the syntax highlighting from getting all messed up, I commented out each line. That REQUIRES each of the files
+	// to have an empty first line. Crumby, yes, but acceptable.
 	//<%=_defaultSettings%>
 	//<%=_validate%>
 	//<%=_helpers%>
@@ -26,16 +26,19 @@
 	//<%=_segments%>
 	//<%=_text%>
 
-
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
 	var d3pie = function(element, options) {
-		validate.initialCheck(element, options);
 
 		// element can be an ID or DOM element
 		this.element = $(element)[0]; // TODO
-		this.options = $.extend(true, {}, _defaultSettings, options);
+		this.options = $.extend(true, {}, this.defaultSettings, options);
+
+		// run some validation on the info
+		if (!this.validate.initialCheck()) {
+			return;
+		}
 
 		// if the user specified a custom CSS element prefix (ID, class), use it. Otherwise use the
 		if (this.options.misc.cssPrefix !== null) {
@@ -133,21 +136,14 @@
 
 	// ------------------------------------------------------------------------------------------------
 
-	// private functions
 
 	var _init = function() {
 
 		// 1. prep-work
-		this.options.data   = math.sortPieData(this.options.data.content, this.options.data.sortOrder);
-		this.options.colors = helpers.initSegmentColors(this.options.data, this.options.misc.colors.segments);
+		this.options.data   = math.sortPieData(this);
+		this.options.colors = helpers.initSegmentColors(this);
 		this.totalSize      = math.getTotalPieSize(this.options.data);
-
-		this.svg = helpers.addSVGSpace(
-			this.element,
-			this.options.size.canvasWidth,
-			this.options.size.canvasHeight,
-			this.options.misc.colors.background
-		);
+		this.svg = helpers.addSVGSpace(this);
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
@@ -169,8 +165,14 @@
 		};
 
 		// 3. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
-		text.addTextElementsOffscreen(this.cssPrefix, this.textComponents, this.options.header);
+		if (this.textComponents.title.exists) {
+			text.addTitle(this);
+		}
+		if (this.textComponents.subtitle.exists) {
+			text.addSubtitle(this);
+		}
 		text.addFooter(this.options.footer);
+
 
 		// the footer never moves - this puts it in place now
 		helpers.whenIdExists(this.cssPrefix + "footer", function() {
@@ -186,15 +188,7 @@
 
 		// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
 		// and store it as part of the object
-		this.pieCenter = math.getPieCenter(
-			this.options.header.location,
-			this.textComponents,
-			this.options.misc.canvasPadding,
-			this.options.header.titleSubtitlePadding,
-			this.options.size.canvasWidth,
-			this.options.size.canvasHeight,
-			this.options.misc.pieCenterOffset
-		);
+		this.pieCenter = math.getPieCenter(this);
 
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
@@ -226,29 +220,39 @@
 				this.options.header.titleSubtitlePadding
 			);
 
-			segments.create();
-			var l = labels;
-			l.add("inner", this.options.labels.inner.format);
-			l.add("outer", this.options.labels.outer.format);
+			// now create the pie chart segments
+			this.arc = segments.create( // formerly: _arc global
+				this.cssPrefix,
+				this.pieCenter,
+				this.options.data,
+				this.options.colors,
+				this.innerRadius,
+				this.outerRadius,
+				this.options.effects.load,
+				this.totalSize,
+				this.options.misc.colors.segmentStroke
+			);
+			labels.add("inner", this);
+			labels.add("outer", this.options.labels.outer.format);
 
 			// position the label elements relatively within their individual group (label, percentage, value)
-			l.positionLabelElements("inner", this.options.labels.inner.format);
-			l.positionLabelElements("outer", this.options.labels.outer.format);
-			l.computeOuterLabelCoords();
+			labels.positionLabelElements("inner", this.options.labels.inner.format);
+			labels.positionLabelElements("outer", this.options.labels.outer.format);
+			labels.computeOuterLabelCoords();
 
 			// this is (and should be) dumb. It just places the outer groups at their pre-calculated, collision-free positions
-			l.positionLabelGroups("outer");
+			labels.positionLabelGroups("outer");
 
 			// we use the label line positions for many other calculations, so ALWAYS compute them
-			l.computeLabelLinePositions();
+			labels.computeLabelLinePositions();
 
 			// only add them if they're actually enabled
 			if (this.options.labels.lines.enabled && this.options.labels.outer.format !== "none") {
-				l.addLabelLines();
+				labels.addLabelLines();
 			}
 
-			l.positionLabelGroups("inner");
-			l.fadeInLabelsAndLines();
+			labels.positionLabelGroups("inner");
+			labels.fadeInLabelsAndLines();
 
 			segments.addSegmentEventHandlers();
 		});
