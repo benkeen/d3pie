@@ -23,7 +23,7 @@
  * Contains the out-the-box settings for the script. Any of these settings that aren't explicitly overridden for the
  * d3pie instance will inherit from these.
  */
-this.defaultSettings = {
+var defaultSettings = {
 	header: {
 		title: {
 			color:    "#333333",
@@ -130,7 +130,10 @@ this.defaultSettings = {
 var validate = {
 
 	// called whenever a new pie chart is created
-	initialCheck: function() {
+	initialCheck: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var element = pie.element;
+		var options = pie.options;
 
 		// confirm d3 is available [check minimum version]
 		if (!window.d3 || !window.d3.hasOwnProperty("version")) {
@@ -139,32 +142,23 @@ var validate = {
 		}
 
 		// confirm element is either a DOM element or a valid string for a DOM element
-		if (typeof this.element === "string") {
-			var domElement = document.getElementById(this.element);
-			if (domElement === null) {
-				console.error("d3pie error: a DOM element with ID not found: ", this.element);
-				return false;
-			}
-		} else {
-			if (!(this.element instanceof HTMLElement)) {
-				console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
-				return false;
-			}
+		if (!(element instanceof HTMLElement)) {
+			console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
+			return false;
 		}
 
 		// confirm some data has been supplied
-		if (!this.options.data.hasOwnProperty("content")) {
+		if (!options.data.hasOwnProperty("content")) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
 			return false;
 		}
-		if (!$.isArray(this.options.data.content) || this.options.data.content.length === 0) {
+		if (!$.isArray(options.data.content) || pie.options.data.content.length === 0) {
 			console.error("d3pie error: no data supplied.");
 			return false;
 		}
 
 		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
-		// TODO test
-		if (this.options.misc.cssPrefix !== null && !(/[a-zA-Z][a-zA-Z0-9_-]$/.test(this.options.misc.cssPrefix))) {
+		if (!(/[a-zA-Z][a-zA-Z0-9_-]*$/.test(cssPrefix))) {
 			console.error("d3pie error: invalid options.misc.cssPrefix");
 			return false;
 		}
@@ -173,7 +167,7 @@ var validate = {
 	}
 };
 	//// --------- helpers.js -----------
-this.helpers = {
+var helpers = {
 
 	// creates the SVG element
 	addSVGSpace: function(pie) {
@@ -357,7 +351,7 @@ this.helpers = {
 	}
 };
 	//// --------- math.js -----------
-this.math = {
+var math = {
 
 	toRadians: function(degrees) {
 		return degrees * (Math.PI / 180);
@@ -367,11 +361,14 @@ this.math = {
 		return radians * (180 / Math.PI);
 	},
 
-	// TODO
-	computePieRadius: function(size, canvasPadding) {
+	computePieRadius: function(pie) {
+		var size = pie.options.size;
+		var canvasPadding = pie.options.misc.canvasPadding;
+
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
 		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
+
 
 		// first, calculate the default _outerRadius
 		var w = size.canvasWidth - canvasPadding.left - canvasPadding.right;
@@ -404,10 +401,8 @@ this.math = {
 			innerRadius = parseInt(size.pieInnerRadius, 10);
 		}
 
-		return {
-			inner: innerRadius,
-			outer: outerRadius
-		};
+		pie.innerRadius = innerRadius;
+		pie.outerRadius = outerRadius;
 	},
 
 	getTotalPieSize: function(data) {
@@ -455,7 +450,7 @@ this.math = {
 	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
-	getPieCenter: function(pie) {
+	calculatePieCenter: function(pie) {
 		var headerLocation = pie.options.header.location;
 		var canvasPadding = pie.options.misc.canvasPadding;
 		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
@@ -486,7 +481,7 @@ this.math = {
 		x += pieCenterOffset.x;
 		y += pieCenterOffset.y;
 
-		return { x: x, y: y };
+		pie.pieCenter = { x: x, y: y };
 	},
 
 
@@ -555,7 +550,7 @@ this.math = {
 	}
 };
 	//// --------- labels.js -----------
-this.labels = {
+var labels = {
 
 	outerLabelGroupData: [],
 	lineCoordGroups: [],
@@ -570,12 +565,13 @@ this.labels = {
 		var include = labels.getIncludes(pie.options.labels.inner.format);
 		var settings = pie.options.labels;
 
+
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
-		var outerLabel = this.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
+		var outerLabel = pie.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
 			.attr("class", pie.cssPrefix + "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll(".labelGroup-" + section)
-			.data(this.options.data)
+			.data(pie.options.data)
 			.enter()
 			.append("g")
 			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
@@ -1007,7 +1003,7 @@ this.labels = {
 	}
 };
 	//// --------- segments.js -----------
-this.segments = {
+var segments = {
 
 	isOpening: false,
 	currentlyOpenSegment: null,
@@ -1016,10 +1012,20 @@ this.segments = {
 	 * Creates the pie chart segments and displays them according to the desired load effect.
 	 * @private
 	 */
-	create: function(cssPrefix, pieCenter, data, colors, innerRadius, outerRadius, loadEffects, totalSize, segmentStroke) {
+	create: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var pieCenter = pie.pieCenter;
+		var data = pie.options.data;
+		var colors = pie.options.colors;
+		var innerRadius = pie.innerRadius;
+		var outerRadius = pie.outerRadius;
+		var loadEffects = pie.options.effects.load;
+		var totalSize = pie.totalSize;
+		var segmentStroke = pie.options.misc.colors.segmentStroke;
+		var svg = pie.svg;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = this.svg.insert("g", "#" + cssPrefix + "title")
+		var pieChartElement = svg.insert("g", "#" + cssPrefix + "title")
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
 			.attr("class", cssPrefix + "pieChart");
 
@@ -1055,7 +1061,7 @@ this.segments = {
 			.attr("data-index", function(d, i) { return i; })
 			.attrTween("d", math.arcTween);
 
-		this.svg.selectAll("g." + cssPrefix + "arc")
+		svg.selectAll("g." + cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
@@ -1066,7 +1072,7 @@ this.segments = {
 			}
 		);
 
-		return arc;
+		pie.arc = arc;
 	},
 
 	addSegmentEventHandlers: function(cssPrefix) {
@@ -1223,19 +1229,17 @@ this.segments = {
 	}
 };
 	//// --------- text.js -----------
-this.text = {
+var text = {
 	offscreenCoord: -10000,
-
-	addTextElementsOffscreen: function(cssPrefix, textComponents, headerInfo) {
-	},
 
 	addTitle: function(pie) {
 		var cssPrefix = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
 		var titleInfo = pie.options.header.title;
+		var svg = pie.svg;
 
-		var title = this.svg.selectAll("." + cssPrefix + "title")
-			.data([titleInfo.title])
+		var title = svg.selectAll("." + cssPrefix + "title")
+			.data([titleInfo])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
@@ -1257,12 +1261,16 @@ this.text = {
 			.style("font-family", function(d) { return d.font; });
 	},
 
-	positionHeadings: function(a, b, c, d, e, f, g, h) {
-		text.positionTitle(a, b, c, d, e, f, g, h);
-		text.positionSubtitle(a, b, c, d, e, f, g, h);
-	},
+	positionTitle: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var pieCenter = pie.pieCenter;
+		var textComponents = pie.textComponents;
+		var headerLocation = pie.options.header.location;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
+		var svg = pie.svg;
 
-	positionTitle: function(cssPrefix, pieCenter, textComponents, headerLocation, canvasPadding, canvasWidth, canvasHeight, titleSubtitlePadding) {
 		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
 		var y = canvasPadding.top + textComponents.title.h;
 
@@ -1278,17 +1286,18 @@ this.text = {
 			}
 		}
 
-		this.svg.select("#" + cssPrefix + "title")
+		svg.select("#" + cssPrefix + "title")
 			.attr("x", x)
 			.attr("y", y);
 	},
 
 	addSubtitle: function(pie) {
+		var svg = pie.svg;
 		var cssPrefix      = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
 		var subtitleInfo   = pie.options.header.subtitle;
 
-		this.svg.selectAll("." + cssPrefix + "subtitle")
+		svg.selectAll("." + cssPrefix + "subtitle")
 			.data([subtitleInfo])
 			.enter()
 			.append("text")
@@ -1311,7 +1320,17 @@ this.text = {
 			.style("font-family", function(d) { return d.font; });
 	},
 
-	positionSubtitle: function(cssPrefix, pieCenter, textComponents, headerLocation, canvasPadding, canvasWidth, canvasHeight, titleSubtitlePadding) {
+	positionSubtitle: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var pieCenter = pie.pieCenter;
+		var textComponents = pie.textComponents;
+		var headerLocation = pie.options.header.location;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var canvasHeight = pie.options.size.canvasHeight;
+		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
+		var svg = pie.svg;
+
 		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
 		var y;
 		if (textComponents.title.exists) {
@@ -1329,20 +1348,25 @@ this.text = {
 				y = canvasPadding.top + textComponents.subtitle.h;
 			}
 		}
-		this.svg.select("#" + cssPrefix + "subtitle")
+		svg.select("#" + cssPrefix + "subtitle")
 			.attr("x", x)
 			.attr("y", y);
 	},
 
-	addFooter: function(footerSettings) {
-		this.svg.selectAll(".footer")
+	addFooter: function(pie) {
+		var svg = pie.svg;
+		var cssPrefix = pie.cssPrefix;
+		var footerSettings = pie.options.footer;
+
+		svg.selectAll("." + cssPrefix + "footer")
 			.data([footerSettings])
 			.enter()
 			.append("text")
+			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("id", "footer")
-			.attr("class", "footer")
+			.attr("id", cssPrefix + "footer")
+			.attr("class", cssPrefix + "footer")
 			.attr("text-anchor", function() {
 				var location = "left";
 				if (footerSettings.location === "bottom-center") {
@@ -1353,12 +1377,19 @@ this.text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 	},
 
-	positionFooter: function(cssPrefix, footerLocation, footerWidth, canvasWidth, canvasHeight, canvasPadding) {
+	positionFooter: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var footerLocation = pie.options.footer.location;
+		var footerWidth = pie.textComponents.footer.w;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var canvasHeight = pie.options.size.canvasHeight;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var svg = pie.svg;
+
 		var x;
 		if (footerLocation === "bottom-left") {
 			x = canvasPadding.left;
@@ -1368,7 +1399,7 @@ this.text = {
 			x = canvasWidth / 2; // TODO - shouldn't this also take into account padding?
 		}
 
-		this.svg.select("#" + cssPrefix + "footer")
+		svg.select("#" + cssPrefix + "footer")
 			.attr("x", x)
 			.attr("y", canvasHeight - canvasPadding.bottom);
 	}
@@ -1380,13 +1411,8 @@ this.text = {
 	var d3pie = function(element, options) {
 
 		// element can be an ID or DOM element
-		this.element = $(element)[0]; // TODO
-		this.options = $.extend(true, {}, this.defaultSettings, options);
-
-		// run some validation on the info
-		if (!this.validate.initialCheck()) {
-			return;
-		}
+		this.element = (typeof element === "string") ? $("#" + element)[0] : element;
+		this.options = $.extend(true, {}, defaultSettings, options);
 
 		// if the user specified a custom CSS element prefix (ID, class), use it. Otherwise use the
 		if (this.options.misc.cssPrefix !== null) {
@@ -1396,7 +1422,12 @@ this.text = {
 			_uniqueIDCounter++;
 		}
 
-		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and it's version
+		// now run some validation on the supplied info
+		if (!validate.initialCheck(this)) {
+			return;
+		}
+
+		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and the d3pie version
 		$(this.element).data(_scriptName, _version);
 
 		_init.call(this);
@@ -1519,24 +1550,23 @@ this.text = {
 		if (this.textComponents.subtitle.exists) {
 			text.addSubtitle(this);
 		}
-		text.addFooter(this.options.footer);
-
+		text.addFooter(this);
 
 		// the footer never moves - this puts it in place now
+		var self = this;
 		helpers.whenIdExists(this.cssPrefix + "footer", function() {
-			text.positionFooter(this.options.footer.location, text.components.footer.w, this.options.size.canvasWidth, this.options.size.canvasHeight, this.options.misc.canvasPadding);
-			var d3 = helpers.getDimensions("footer");
-			this.textComponents.footer.h = d3.h;
-			this.textComponents.footer.w = d3.w;
+			text.positionFooter(self);
+			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
+			self.textComponents.footer.h = d3.h;
+			self.textComponents.footer.w = d3.w;
 		});
 
-		var radii = math.computePieRadius(this.options.size, this.options.misc.canvasPadding);
-		this.innerRadius = radii.inner;
-		this.outerRadius = radii.outer;
+		math.computePieRadius(this);
 
 		// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
 		// and store it as part of the object
-		this.pieCenter = math.getPieCenter(this);
+		math.calculatePieCenter(this);
+
 
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
@@ -1545,43 +1575,25 @@ this.text = {
 		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
 		helpers.whenElementsExist(reqEls, function() {
-			if (this.textComponents.title.exists) {
-				var d1 = helpers.getDimensions(this.cssPrefix + "title");
-				this.textComponents.title.h = d1.h;
-				this.textComponents.title.w = d1.w;
+			if (self.textComponents.title.exists) {
+				var d1 = helpers.getDimensions(self.cssPrefix + "title");
+				self.textComponents.title.h = d1.h;
+				self.textComponents.title.w = d1.w;
 			}
-			if (this.textComponents.subtitle.exists) {
-				var d2 = helpers.getDimensions(this.cssPrefix + "subtitle");
-				this.textComponents.subtitle.h = d2.h;
-				this.textComponents.subtitle.w = d2.w;
+			if (self.textComponents.subtitle.exists) {
+				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
+				self.textComponents.subtitle.h = d2.h;
+				self.textComponents.subtitle.w = d2.w;
 			}
 
 			// position the title and subtitle
-			text.positionHeadings(
-				this.cssPrefix,
-				this.pieCenter,
-				this.textComponents,
-				this.options.header.location,
-				this.options.misc.canvasPadding,
-				this.options.size.canvasWidth,
-				this.options.size.canvasHeight,
-				this.options.header.titleSubtitlePadding
-			);
+			text.positionTitle(self);
+			text.positionSubtitle(self);
 
 			// now create the pie chart segments
-			this.arc = segments.create( // formerly: _arc global
-				this.cssPrefix,
-				this.pieCenter,
-				this.options.data,
-				this.options.colors,
-				this.innerRadius,
-				this.outerRadius,
-				this.options.effects.load,
-				this.totalSize,
-				this.options.misc.colors.segmentStroke
-			);
-			labels.add("inner", this);
-			labels.add("outer", this.options.labels.outer.format);
+			segments.create(self); // also creates this.arc
+			labels.add("inner", self);
+			labels.add("outer", self.options.labels.outer.format);
 
 			// position the label elements relatively within their individual group (label, percentage, value)
 			labels.positionLabelElements("inner", this.options.labels.inner.format);

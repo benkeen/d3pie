@@ -1,17 +1,15 @@
 // --------- text.js -----------
-this.text = {
+var text = {
 	offscreenCoord: -10000,
-
-	addTextElementsOffscreen: function(cssPrefix, textComponents, headerInfo) {
-	},
 
 	addTitle: function(pie) {
 		var cssPrefix = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
 		var titleInfo = pie.options.header.title;
+		var svg = pie.svg;
 
-		var title = this.svg.selectAll("." + cssPrefix + "title")
-			.data([titleInfo.title])
+		var title = svg.selectAll("." + cssPrefix + "title")
+			.data([titleInfo])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
@@ -33,12 +31,16 @@ this.text = {
 			.style("font-family", function(d) { return d.font; });
 	},
 
-	positionHeadings: function(a, b, c, d, e, f, g, h) {
-		text.positionTitle(a, b, c, d, e, f, g, h);
-		text.positionSubtitle(a, b, c, d, e, f, g, h);
-	},
+	positionTitle: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var pieCenter = pie.pieCenter;
+		var textComponents = pie.textComponents;
+		var headerLocation = pie.options.header.location;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
+		var svg = pie.svg;
 
-	positionTitle: function(cssPrefix, pieCenter, textComponents, headerLocation, canvasPadding, canvasWidth, canvasHeight, titleSubtitlePadding) {
 		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
 		var y = canvasPadding.top + textComponents.title.h;
 
@@ -54,17 +56,18 @@ this.text = {
 			}
 		}
 
-		this.svg.select("#" + cssPrefix + "title")
+		svg.select("#" + cssPrefix + "title")
 			.attr("x", x)
 			.attr("y", y);
 	},
 
 	addSubtitle: function(pie) {
+		var svg = pie.svg;
 		var cssPrefix      = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
 		var subtitleInfo   = pie.options.header.subtitle;
 
-		this.svg.selectAll("." + cssPrefix + "subtitle")
+		svg.selectAll("." + cssPrefix + "subtitle")
 			.data([subtitleInfo])
 			.enter()
 			.append("text")
@@ -87,7 +90,17 @@ this.text = {
 			.style("font-family", function(d) { return d.font; });
 	},
 
-	positionSubtitle: function(cssPrefix, pieCenter, textComponents, headerLocation, canvasPadding, canvasWidth, canvasHeight, titleSubtitlePadding) {
+	positionSubtitle: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var pieCenter = pie.pieCenter;
+		var textComponents = pie.textComponents;
+		var headerLocation = pie.options.header.location;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var canvasHeight = pie.options.size.canvasHeight;
+		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
+		var svg = pie.svg;
+
 		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
 		var y;
 		if (textComponents.title.exists) {
@@ -105,20 +118,25 @@ this.text = {
 				y = canvasPadding.top + textComponents.subtitle.h;
 			}
 		}
-		this.svg.select("#" + cssPrefix + "subtitle")
+		svg.select("#" + cssPrefix + "subtitle")
 			.attr("x", x)
 			.attr("y", y);
 	},
 
-	addFooter: function(footerSettings) {
-		this.svg.selectAll(".footer")
+	addFooter: function(pie) {
+		var svg = pie.svg;
+		var cssPrefix = pie.cssPrefix;
+		var footerSettings = pie.options.footer;
+
+		svg.selectAll("." + cssPrefix + "footer")
 			.data([footerSettings])
 			.enter()
 			.append("text")
+			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("id", "footer")
-			.attr("class", "footer")
+			.attr("id", cssPrefix + "footer")
+			.attr("class", cssPrefix + "footer")
 			.attr("text-anchor", function() {
 				var location = "left";
 				if (footerSettings.location === "bottom-center") {
@@ -129,12 +147,19 @@ this.text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.text(function(d) { return d.text; })
 			.style("font-size", function(d) { return d.fontSize; })
 			.style("font-family", function(d) { return d.font; });
 	},
 
-	positionFooter: function(cssPrefix, footerLocation, footerWidth, canvasWidth, canvasHeight, canvasPadding) {
+	positionFooter: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var footerLocation = pie.options.footer.location;
+		var footerWidth = pie.textComponents.footer.w;
+		var canvasWidth = pie.options.size.canvasWidth;
+		var canvasHeight = pie.options.size.canvasHeight;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var svg = pie.svg;
+
 		var x;
 		if (footerLocation === "bottom-left") {
 			x = canvasPadding.left;
@@ -144,7 +169,7 @@ this.text = {
 			x = canvasWidth / 2; // TODO - shouldn't this also take into account padding?
 		}
 
-		this.svg.select("#" + cssPrefix + "footer")
+		svg.select("#" + cssPrefix + "footer")
 			.attr("x", x)
 			.attr("y", canvasHeight - canvasPadding.bottom);
 	}

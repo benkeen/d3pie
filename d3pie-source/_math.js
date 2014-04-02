@@ -1,5 +1,5 @@
 // --------- math.js -----------
-this.math = {
+var math = {
 
 	toRadians: function(degrees) {
 		return degrees * (Math.PI / 180);
@@ -9,11 +9,14 @@ this.math = {
 		return radians * (180 / Math.PI);
 	},
 
-	// TODO
-	computePieRadius: function(size, canvasPadding) {
+	computePieRadius: function(pie) {
+		var size = pie.options.size;
+		var canvasPadding = pie.options.misc.canvasPadding;
+
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
 		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
+
 
 		// first, calculate the default _outerRadius
 		var w = size.canvasWidth - canvasPadding.left - canvasPadding.right;
@@ -46,10 +49,8 @@ this.math = {
 			innerRadius = parseInt(size.pieInnerRadius, 10);
 		}
 
-		return {
-			inner: innerRadius,
-			outer: outerRadius
-		};
+		pie.innerRadius = innerRadius;
+		pie.outerRadius = outerRadius;
 	},
 
 	getTotalPieSize: function(data) {
@@ -97,7 +98,7 @@ this.math = {
 	 * height and position of the title, subtitle and footer, and the various paddings.
 	 * @private
 	 */
-	getPieCenter: function(pie) {
+	calculatePieCenter: function(pie) {
 		var headerLocation = pie.options.header.location;
 		var canvasPadding = pie.options.misc.canvasPadding;
 		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
@@ -128,7 +129,7 @@ this.math = {
 		x += pieCenterOffset.x;
 		y += pieCenterOffset.y;
 
-		return { x: x, y: y };
+		pie.pieCenter = { x: x, y: y };
 	},
 
 

@@ -3,7 +3,7 @@
  * Contains the out-the-box settings for the script. Any of these settings that aren't explicitly overridden for the
  * d3pie instance will inherit from these.
  */
-this.defaultSettings = {
+var defaultSettings = {
 	header: {
 		title: {
 			color:    "#333333",

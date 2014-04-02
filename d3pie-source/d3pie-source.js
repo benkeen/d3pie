@@ -32,13 +32,8 @@
 	var d3pie = function(element, options) {
 
 		// element can be an ID or DOM element
-		this.element = $(element)[0]; // TODO
-		this.options = $.extend(true, {}, this.defaultSettings, options);
-
-		// run some validation on the info
-		if (!this.validate.initialCheck()) {
-			return;
-		}
+		this.element = (typeof element === "string") ? $("#" + element)[0] : element;
+		this.options = $.extend(true, {}, defaultSettings, options);
 
 		// if the user specified a custom CSS element prefix (ID, class), use it. Otherwise use the
 		if (this.options.misc.cssPrefix !== null) {
@@ -48,7 +43,12 @@
 			_uniqueIDCounter++;
 		}
 
-		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and it's version
+		// now run some validation on the supplied info
+		if (!validate.initialCheck(this)) {
+			return;
+		}
+
+		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and the d3pie version
 		$(this.element).data(_scriptName, _version);
 
 		_init.call(this);
@@ -171,24 +171,23 @@
 		if (this.textComponents.subtitle.exists) {
 			text.addSubtitle(this);
 		}
-		text.addFooter(this.options.footer);
-
+		text.addFooter(this);
 
 		// the footer never moves - this puts it in place now
+		var self = this;
 		helpers.whenIdExists(this.cssPrefix + "footer", function() {
-			text.positionFooter(this.options.footer.location, text.components.footer.w, this.options.size.canvasWidth, this.options.size.canvasHeight, this.options.misc.canvasPadding);
-			var d3 = helpers.getDimensions("footer");
-			this.textComponents.footer.h = d3.h;
-			this.textComponents.footer.w = d3.w;
+			text.positionFooter(self);
+			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
+			self.textComponents.footer.h = d3.h;
+			self.textComponents.footer.w = d3.w;
 		});
 
-		var radii = math.computePieRadius(this.options.size, this.options.misc.canvasPadding);
-		this.innerRadius = radii.inner;
-		this.outerRadius = radii.outer;
+		math.computePieRadius(this);
 
 		// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
 		// and store it as part of the object
-		this.pieCenter = math.getPieCenter(this);
+		math.calculatePieCenter(this);
+
 
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
@@ -197,43 +196,25 @@
 		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
 		helpers.whenElementsExist(reqEls, function() {
-			if (this.textComponents.title.exists) {
-				var d1 = helpers.getDimensions(this.cssPrefix + "title");
-				this.textComponents.title.h = d1.h;
-				this.textComponents.title.w = d1.w;
+			if (self.textComponents.title.exists) {
+				var d1 = helpers.getDimensions(self.cssPrefix + "title");
+				self.textComponents.title.h = d1.h;
+				self.textComponents.title.w = d1.w;
 			}
-			if (this.textComponents.subtitle.exists) {
-				var d2 = helpers.getDimensions(this.cssPrefix + "subtitle");
-				this.textComponents.subtitle.h = d2.h;
-				this.textComponents.subtitle.w = d2.w;
+			if (self.textComponents.subtitle.exists) {
+				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
+				self.textComponents.subtitle.h = d2.h;
+				self.textComponents.subtitle.w = d2.w;
 			}
 
 			// position the title and subtitle
-			text.positionHeadings(
-				this.cssPrefix,
-				this.pieCenter,
-				this.textComponents,
-				this.options.header.location,
-				this.options.misc.canvasPadding,
-				this.options.size.canvasWidth,
-				this.options.size.canvasHeight,
-				this.options.header.titleSubtitlePadding
-			);
+			text.positionTitle(self);
+			text.positionSubtitle(self);
 
 			// now create the pie chart segments
-			this.arc = segments.create( // formerly: _arc global
-				this.cssPrefix,
-				this.pieCenter,
-				this.options.data,
-				this.options.colors,
-				this.innerRadius,
-				this.outerRadius,
-				this.options.effects.load,
-				this.totalSize,
-				this.options.misc.colors.segmentStroke
-			);
-			labels.add("inner", this);
-			labels.add("outer", this.options.labels.outer.format);
+			segments.create(self); // also creates this.arc
+			labels.add("inner", self);
+			labels.add("outer", self.options.labels.outer.format);
 
 			// position the label elements relatively within their individual group (label, percentage, value)
 			labels.positionLabelElements("inner", this.options.labels.inner.format);

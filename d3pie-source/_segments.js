@@ -1,5 +1,5 @@
 // --------- segments.js -----------
-this.segments = {
+var segments = {
 
 	isOpening: false,
 	currentlyOpenSegment: null,
@@ -8,10 +8,20 @@ this.segments = {
 	 * Creates the pie chart segments and displays them according to the desired load effect.
 	 * @private
 	 */
-	create: function(cssPrefix, pieCenter, data, colors, innerRadius, outerRadius, loadEffects, totalSize, segmentStroke) {
+	create: function(pie) {
+		var cssPrefix = pie.cssPrefix;
+		var pieCenter = pie.pieCenter;
+		var data = pie.options.data;
+		var colors = pie.options.colors;
+		var innerRadius = pie.innerRadius;
+		var outerRadius = pie.outerRadius;
+		var loadEffects = pie.options.effects.load;
+		var totalSize = pie.totalSize;
+		var segmentStroke = pie.options.misc.colors.segmentStroke;
+		var svg = pie.svg;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = this.svg.insert("g", "#" + cssPrefix + "title")
+		var pieChartElement = svg.insert("g", "#" + cssPrefix + "title")
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
 			.attr("class", cssPrefix + "pieChart");
 
@@ -47,7 +57,7 @@ this.segments = {
 			.attr("data-index", function(d, i) { return i; })
 			.attrTween("d", math.arcTween);
 
-		this.svg.selectAll("g." + cssPrefix + "arc")
+		svg.selectAll("g." + cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
@@ -58,7 +68,7 @@ this.segments = {
 			}
 		);
 
-		return arc;
+		pie.arc = arc;
 	},
 
 	addSegmentEventHandlers: function(cssPrefix) {

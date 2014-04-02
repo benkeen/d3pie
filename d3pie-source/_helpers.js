@@ -1,5 +1,5 @@
 // --------- helpers.js -----------
-this.helpers = {
+var helpers = {
 
 	// creates the SVG element
 	addSVGSpace: function(pie) {

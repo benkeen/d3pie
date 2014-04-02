@@ -1,5 +1,5 @@
 // --------- labels.js -----------
-this.labels = {
+var labels = {
 
 	outerLabelGroupData: [],
 	lineCoordGroups: [],
@@ -14,12 +14,13 @@ this.labels = {
 		var include = labels.getIncludes(pie.options.labels.inner.format);
 		var settings = pie.options.labels;
 
+
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
-		var outerLabel = this.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
+		var outerLabel = pie.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
 			.attr("class", pie.cssPrefix + "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll(".labelGroup-" + section)
-			.data(this.options.data)
+			.data(pie.options.data)
 			.enter()
 			.append("g")
 			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
