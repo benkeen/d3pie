@@ -76,14 +76,14 @@ var segments = {
 		pie.arc = arc;
 	},
 
-	addSegmentEventHandlers: function(cssPrefix) {
-		var $arc = $("." + cssPrefix + "arc");
+	addSegmentEventHandlers: function(pie) {
+		var $arc = $("." + pie.cssPrefix + "arc");
 		$arc.on("click", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 			var isExpanded = $segment.attr("class") === "expanded";
 
-			segments.onSegmentEvent(this.options.callbacks.onClickSegment, $segment, isExpanded);
-			if (this.options.effects.pullOutSegmentOnClick.effect !== "none") {
+			segments.onSegmentEvent(pie.options.callbacks.onClickSegment, $segment, isExpanded);
+			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
 					segments.closeSegment($segment[0]);
 				} else {
@@ -95,26 +95,26 @@ var segments = {
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 
-			if (this.options.effects.highlightSegmentOnMouseover) {
+			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				var segColor = this.options.colors[index];
-				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, this.options.effects.highlightLuminosity));
+				var segColor = pie.options.colors[index];
+				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
-			segments.onSegmentEvent(this.options.callbacks.onMouseoverSegment, $segment, isExpanded);
+			segments.onSegmentEvent(pie.options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 
-			if (this.options.effects.highlightSegmentOnMouseover) {
+			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				d3.select($segment[0]).style("fill", this.options.colors[index]);
+				d3.select($segment[0]).style("fill", pie.options.colors[index]);
 			}
 
 			var isExpanded = $segment.attr("class") === "expanded";
-			segments.onSegmentEvent(this.options.callbacks.onMouseoutSegment, $segment, isExpanded);
+			segments.onSegmentEvent(pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
 	},
 
@@ -129,12 +129,12 @@ var segments = {
 				segment: $segment[0],
 				index: index,
 				expanded: isExpanded,
-				data: this.options.data[index]
+				data: pie.options.data[index]
 			});
 		} catch(e) { }
 	},
 
-	openSegment: function(segment) {
+	openSegment: function(pie, segment) {
 		if (segments.isOpening) {
 			return;
 		}
@@ -146,14 +146,14 @@ var segments = {
 		}
 
 		d3.select(segment).transition()
-			.ease(this.options.effects.pullOutSegmentOnClick.effect)
-			.duration(this.options.effects.pullOutSegmentOnClick.speed)
+			.ease(pie.options.effects.pullOutSegmentOnClick.effect)
+			.duration(pie.options.effects.pullOutSegmentOnClick.speed)
 			.attr("transform", function(d, i) {
 				var c = _arc.centroid(d),
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y),
-					pullOutSize = parseInt(this.options.effects.pullOutSegmentOnClick.size, 10);
+					pullOutSize = parseInt(pie.options.effects.pullOutSegmentOnClick.size, 10);
 
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
@@ -213,18 +213,18 @@ var segments = {
 		}
 
 		// now convert the full value to an angle
-		var angle = (fullValue / this.totalSize) * 360;
+		var angle = (fullValue / totalSize) * 360;
 
 		// lastly, if we want the midpoint, factor that sucker in
 		if (options.midpoint) {
-			var currAngle = (currValue / this.totalSize) * 360;
+			var currAngle = (currValue / totalSize) * 360;
 			angle -= (currAngle / 2);
 		}
 
 		return angle;
 	},
 
-	getPercentage: function(index) {
-		return Math.floor((this.options.data[index].value / this.totalSize) * 100);
+	getPercentage: function(pie, index) {
+		return Math.floor((pie.options.data[index].value / pie.totalSize) * 100);
 	}
 };

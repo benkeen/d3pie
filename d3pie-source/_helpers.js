@@ -12,7 +12,7 @@ var helpers = {
 			.attr("width", canvasWidth)
 			.attr("height", canvasHeight);
 
-		if (this.backgroundColor !== "transparent") {
+		if (backgroundColor !== "transparent") {
 			svg.style("background-color", function() { return backgroundColor; });
 		}
 

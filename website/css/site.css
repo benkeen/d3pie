@@ -133,9 +133,11 @@ input.ib, .ib {
 body .navbar-header {
     width: 120px;
 }
-.arcHover:hover .labelGroup {
+
+/*.arcHover:hover .labelGroup {
     cursor: pointer;
-}
+}*/
+
 .pixelSizeField {
     width: 50px;
 }

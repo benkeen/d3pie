@@ -225,17 +225,17 @@
 			labels.positionLabelGroups(self, "outer");
 
 			// we use the label line positions for many other calculations, so ALWAYS compute them
-			labels.computeLabelLinePositions();
+			labels.computeLabelLinePositions(pie);
 
 			// only add them if they're actually enabled
 			if (self.options.labels.lines.enabled && self.options.labels.outer.format !== "none") {
 				labels.addLabelLines(self);
 			}
 
-			labels.positionLabelGroups("inner");
-			labels.fadeInLabelsAndLines();
+			labels.positionLabelGroups(pie, "inner");
+			labels.fadeInLabelsAndLines(pie);
 
-			segments.addSegmentEventHandlers();
+			segments.addSegmentEventHandlers(pie);
 		});
 	};
 

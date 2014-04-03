@@ -1,10 +1,6 @@
 // --------- labels.js -----------
 var labels = {
 
-	// moved to pie object
-//	outerLabelGroupData: [],
-//	lineCoordGroups: [],
-
 	/**
 	 * Adds the labels to the pie chart, but doesn't position them. There are two locations for the
 	 * labels: inside (center) of the segments, or outside the segments on the edge.
@@ -20,7 +16,7 @@ var labels = {
 		var outerLabel = pie.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
 			.attr("class", pie.cssPrefix + "labels-" + section);
 
-		var labelGroup = outerLabel.selectAll(".labelGroup-" + section)
+		var labelGroup = outerLabel.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.data(pie.options.data)
 			.enter()
 			.append("g")
@@ -68,15 +64,15 @@ var labels = {
 	/**
 	 * @param section "inner" / "outer"
 	 */
-	positionLabelElements: function(section, sectionDisplayType) {
+	positionLabelElements: function(pie, section, sectionDisplayType) {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = $(".labelGroup-" + section);
+		var labelGroups = $("." + pie.cssPrefix + "labelGroup-" + section);
 
 		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel = $(labelGroups[i]).find(".segmentMainLabel-" + section);
-			var percentage = $(labelGroups[i]).find(".segmentPercentage-" + section);
+			var mainLabel = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentMainLabel-" + section);
+			var percentage = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentPercentage-" + section);
 			var value = $(labelGroups[i]).find(".segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
@@ -90,19 +86,19 @@ var labels = {
 		var dims = labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
-				d3.selectAll(".segmentValue-" + section)
+				d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-value2":
-				d3.selectAll(".segmentValue-" + section)
+				d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
 			case "label-percentage1":
-				d3.selectAll(".segmentPercentage-" + section)
+				d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-percentage2":
-				d3.selectAll(".segmentPercentage-" + section)
+				d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
@@ -111,7 +107,6 @@ var labels = {
 
 	computeLabelLinePositions: function(pie) {
 		pie.lineCoordGroups = [];
-
 		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
 			.each(function(d, i) { return labels.computeLinePosition(pie, i); });
 	},
@@ -175,14 +170,14 @@ var labels = {
 
 	addLabelLines: function(pie) {
 		var lineGroups = pie.svg.insert("g", "." + pie.cssPrefix + "pieChart") // meaning, BEFORE .pieChart
-			.attr("class", "lineGroups")
+			.attr("class", pie.cssPrefix + "lineGroups")
 			.style("opacity", 0);
 
-		var lineGroup = lineGroups.selectAll(".lineGroup")
+		var lineGroup = lineGroups.selectAll("." + pie.cssPrefix + "lineGroup")
 			.data(pie.lineCoordGroups)
 			.enter()
 			.append("g")
-			.attr("class", "lineGroup");
+			.attr("class", pie.cssPrefix + "lineGroup");
 
 		var lineFunction = d3.svg.line()
 			.interpolate("basis")
@@ -198,7 +193,7 @@ var labels = {
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-				var segmentPercentage = segments.getPercentage(i);
+				var segmentPercentage = segments.getPercentage(pie, i);
 				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 			})
 	},
@@ -249,7 +244,7 @@ var labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-					var segmentPercentage = segments.getPercentage(i);
+					var segmentPercentage = segments.getPercentage(pie, i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
@@ -258,7 +253,7 @@ var labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = pie.options.labels.inner.hideWhenLessThanPercentage;
-					var segmentPercentage = segments.getPercentage(i);
+					var segmentPercentage = segments.getPercentage(pie, i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
@@ -324,7 +319,7 @@ var labels = {
 			.each(function(d, i) { return labels.getIdealOuterLabelPositions(pie, i); });
 
 		// 2. now adjust those positions to try to accommodate conflicts
-		labels.resolveOuterLabelCollisions();
+		labels.resolveOuterLabelCollisions(pie);
 	},
 
 	/**
