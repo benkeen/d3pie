@@ -758,7 +758,7 @@ var labels = {
 						pie.pieCenter.y = newCoords.y;
 					}
 
-					var dims = helpers.getDimensions("labelGroup" + i + "-inner");
+					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
@@ -1408,7 +1408,7 @@ var text = {
 			_uniqueIDCounter++;
 		}
 
-		// now run some validation on the supplied info
+		// now run some validation on the user-defined info
 		if (!validate.initialCheck(this)) {
 			return;
 		}
@@ -1468,7 +1468,7 @@ var text = {
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				$("#title").html(value);
+				$("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.recreate();
 				}
@@ -1477,7 +1477,7 @@ var text = {
 			case "header.subtitle.text":
 				var oldValue = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				$("#subtitle").html(value);
+				$("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 					this.recreate();
 				}
@@ -1590,17 +1590,17 @@ var text = {
 			labels.positionLabelGroups(self, "outer");
 
 			// we use the label line positions for many other calculations, so ALWAYS compute them
-			labels.computeLabelLinePositions(pie);
+			labels.computeLabelLinePositions(self);
 
 			// only add them if they're actually enabled
 			if (self.options.labels.lines.enabled && self.options.labels.outer.format !== "none") {
 				labels.addLabelLines(self);
 			}
 
-			labels.positionLabelGroups(pie, "inner");
-			labels.fadeInLabelsAndLines(pie);
+			labels.positionLabelGroups(self, "inner");
+			labels.fadeInLabelsAndLines(self);
 
-			segments.addSegmentEventHandlers(pie);
+			segments.addSegmentEventHandlers(self);
 		});
 	};
 
