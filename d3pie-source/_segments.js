@@ -55,14 +55,19 @@ var segments = {
 			.ease("cubic-in-out")
 			.duration(loadSpeed)
 			.attr("data-index", function(d, i) { return i; })
-			.attrTween("d", math.arcTween);
+			.attrTween("d", function(b) {
+				var i = d3.interpolate({ value: 0 }, b);
+				return function(t) {
+					return pie.arc(i(t));
+				};
+			});
 
 		svg.selectAll("g." + cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
 				if (i > 0) {
-					angle = segments.getSegmentAngle(i-1, data, totalSize);
+					angle = segments.getSegmentAngle(i-1, pie.options.data, pie.totalSize);
 				}
 				return "rotate(" + angle + ")";
 			}
@@ -193,7 +198,6 @@ var segments = {
 		}, opts);
 
 		var currValue = data[index].value;
-
 		var fullValue;
 		if (options.compounded) {
 			fullValue = 0;

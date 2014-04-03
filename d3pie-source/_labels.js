@@ -1,19 +1,20 @@
 // --------- labels.js -----------
 var labels = {
 
-	outerLabelGroupData: [],
-	lineCoordGroups: [],
+	// moved to pie object
+//	outerLabelGroupData: [],
+//	lineCoordGroups: [],
 
 	/**
 	 * Adds the labels to the pie chart, but doesn't position them. There are two locations for the
 	 * labels: inside (center) of the segments, or outside the segments on the edge.
 	 * @param section "inner" or "outer"
 	 * @param sectionDisplayType "percentage", "value", "label", "label-value1", etc.
+	 * @param pie
 	 */
-	add: function(section, pie) {
-		var include = labels.getIncludes(pie.options.labels.inner.format);
+	add: function(pie, section, sectionDisplayType) {
+		var include = labels.getIncludes(sectionDisplayType);
 		var settings = pie.options.labels;
-
 
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
 		var outerLabel = pie.svg.insert("g", "." + pie.cssPrefix + "labels-" + section)
@@ -108,19 +109,17 @@ var labels = {
 	 	}
 	},
 
-	computeLabelLinePositions: function() {
-		labels.lineCoordGroups = [];
+	computeLabelLinePositions: function(pie) {
+		pie.lineCoordGroups = [];
 
-		d3.selectAll(".labelGroup-outer")
-			.each(function(d, i) { return labels.computeLinePosition(i); });
+		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+			.each(function(d, i) { return labels.computeLinePosition(pie, i); });
 	},
 
-	computeLinePosition: function(i) {
-		var angle = segments.getSegmentAngle(i, { midpoint: true});
-		var center = math.getPieCenter();
-
-		var originCoords = math.rotate(center.x, center.y - _outerRadius, center.x, center.y, angle);
-		var heightOffset = labels.outerLabelGroupData[i].h / 5; // TODO check
+	computeLinePosition: function(pie, i) {
+		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+		var originCoords = math.rotate(pie.pieCenter.x, pie.pieCenter.y - pie.outerRadius, pie.pieCenter.x, pie.pieCenter.y, angle);
+		var heightOffset = pie.outerLabelGroupData[i].h / 5; // TODO check
 		var labelXMargin = 6; // the x-distance of the label from the end of the line [TODO configurable]
 
 		var quarter = Math.floor(angle / 90);
@@ -128,30 +127,30 @@ var labels = {
 		var x2, y2, x3, y3;
 		switch (quarter) {
 			case 0:
-				x2 = labels.outerLabelGroupData[i].x - labelXMargin - ((labels.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
-				y2 = labels.outerLabelGroupData[i].y + ((originCoords.y - labels.outerLabelGroupData[i].y) / midPoint);
-				x3 = labels.outerLabelGroupData[i].x - labelXMargin;
-				y3 = labels.outerLabelGroupData[i].y - heightOffset;
+				x2 = pie.outerLabelGroupData[i].x - labelXMargin - ((pie.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
+				y2 = pie.outerLabelGroupData[i].y + ((originCoords.y - pie.outerLabelGroupData[i].y) / midPoint);
+				x3 = pie.outerLabelGroupData[i].x - labelXMargin;
+				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 1:
-				x2 = originCoords.x + (labels.outerLabelGroupData[i].x - originCoords.x) / midPoint;
-				y2 = originCoords.y + (labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-				x3 = labels.outerLabelGroupData[i].x - labelXMargin;
-				y3 = labels.outerLabelGroupData[i].y - heightOffset;
+				x2 = originCoords.x + (pie.outerLabelGroupData[i].x - originCoords.x) / midPoint;
+				y2 = originCoords.y + (pie.outerLabelGroupData[i].y - originCoords.y) / midPoint;
+				x3 = pie.outerLabelGroupData[i].x - labelXMargin;
+				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 2:
-				var startOfLabelX = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
+				var startOfLabelX = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
 				x2 = originCoords.x - (originCoords.x - startOfLabelX) / midPoint;
-				y2 = originCoords.y + (labels.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-				x3 = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
-				y3 = labels.outerLabelGroupData[i].y - heightOffset;
+				y2 = originCoords.y + (pie.outerLabelGroupData[i].y - originCoords.y) / midPoint;
+				x3 = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
+				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 3:
-				var startOfLabel = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
+				var startOfLabel = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
 				x2 = startOfLabel + ((originCoords.x - startOfLabel) / midPoint);
-				y2 = labels.outerLabelGroupData[i].y + (originCoords.y - labels.outerLabelGroupData[i].y) / midPoint;
-				x3 = labels.outerLabelGroupData[i].x + labels.outerLabelGroupData[i].w + labelXMargin;
-				y3 = labels.outerLabelGroupData[i].y - heightOffset;
+				y2 = pie.outerLabelGroupData[i].y + (originCoords.y - pie.outerLabelGroupData[i].y) / midPoint;
+				x3 = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
+				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 		}
 
@@ -160,13 +159,13 @@ var labels = {
 		 * x2 / y2: if "curved" line style is being used, this is the midpoint of the line. Other
 		 * x3 / y3: the end of the line; closest point to the label
 		 */
-		if (this.options.labels.lines.style === "straight") {
-			labels.lineCoordGroups[i] = [
+		if (pie.options.labels.lines.style === "straight") {
+			pie.lineCoordGroups[i] = [
 				{ x: originCoords.x, y: originCoords.y },
 				{ x: x3, y: y3 }
 			];
 		} else {
-			labels.lineCoordGroups[i] = [
+			pie.lineCoordGroups[i] = [
 				{ x: originCoords.x, y: originCoords.y },
 				{ x: x2, y: y2 },
 				{ x: x3, y: y3 }
@@ -174,13 +173,13 @@ var labels = {
 		}
 	},
 
-	addLabelLines: function() {
-		var lineGroups = this.svg.insert("g", ".pieChart") // meaning, BEFORE .pieChart
+	addLabelLines: function(pie) {
+		var lineGroups = pie.svg.insert("g", "." + pie.cssPrefix + "pieChart") // meaning, BEFORE .pieChart
 			.attr("class", "lineGroups")
 			.style("opacity", 0);
 
 		var lineGroup = lineGroups.selectAll(".lineGroup")
-			.data(labels.lineCoordGroups)
+			.data(pie.lineCoordGroups)
 			.enter()
 			.append("g")
 			.attr("class", "lineGroup");
@@ -193,43 +192,41 @@ var labels = {
 		lineGroup.append("path")
 			.attr("d", lineFunction)
 			.attr("stroke", function(d, i) {
-				return (this.options.labels.lines.color === "segment") ? this.options.colors[i] : this.options.labels.lines.color;
+				return (pie.options.labels.lines.color === "segment") ? pie.options.colors[i] : pie.options.labels.lines.color;
 			})
 			.attr("stroke-width", 1)
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
-				var percentage = this.options.labels.outer.hideWhenLessThanPercentage;
+				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
 				var segmentPercentage = segments.getPercentage(i);
 				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 			})
 	},
 
-	positionLabelGroups: function(section) {
-		d3.selectAll(".labelGroup-" + section)
+	positionLabelGroups: function(pie, section) {
+		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
 				var x, y;
 				if (section === "outer") {
-					x = labels.outerLabelGroupData[i].x;
-					y = labels.outerLabelGroupData[i].y;
+					x = pie.outerLabelGroupData[i].x;
+					y = pie.outerLabelGroupData[i].y;
 				} else {
-					var center = math.getPieCenter();
 
 					// now recompute the "center" based on the current _innerRadius
-					if (_innerRadius > 0) {
-						var angle = segments.getSegmentAngle(i, { midpoint: true });
-						var newCoords = math.translate(center.x, center.y, _innerRadius, angle);
-
-						center.x = newCoords.x;
-						center.y = newCoords.y;
+					if (pie.innerRadius > 0) {
+						var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+						var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
+						pie.pieCenter.x = newCoords.x;
+						pie.pieCenter.y = newCoords.y;
 					}
 
 					var dims = helpers.getDimensions("labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
-					x = center.x + (labels.lineCoordGroups[i][0].x - center.x) / 1.8;
-					y = center.y + (labels.lineCoordGroups[i][0].y - center.y) / 1.8;
+					x = pie.pieCenter.x + (pie.lineCoordGroups[i][0].x - pie.pieCenter.x) / 1.8;
+					y = pie.pieCenter.y + (pie.lineCoordGroups[i][0].y - pie.pieCenter.y) / 1.8;
 
 					x = x - xOffset;
 					y = y + yOffset;
@@ -240,41 +237,41 @@ var labels = {
 	},
 
 
-	fadeInLabelsAndLines: function() {
+	fadeInLabelsAndLines: function(pie) {
 
 		// fade in the labels when the load effect is complete - or immediately if there's no load effect
-		var loadSpeed = (this.options.effects.load.effect === "default") ? this.options.effects.load.speed : 1;
+		var loadSpeed = (pie.options.effects.load.effect === "default") ? pie.options.effects.load.speed : 1;
 		setTimeout(function() {
-			var labelFadeInTime = (this.options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
+			var labelFadeInTime = (pie.options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
 
-			d3.selectAll(".labelGroup-outer")
+			d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
-					var percentage = this.options.labels.outer.hideWhenLessThanPercentage;
+					var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
 					var segmentPercentage = segments.getPercentage(i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
-			d3.selectAll(".labelGroup-inner")
+			d3.selectAll("." + pie.cssPrefix + "labelGroup-inner")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
-					var percentage = this.options.labels.inner.hideWhenLessThanPercentage;
+					var percentage = pie.options.labels.inner.hideWhenLessThanPercentage;
 					var segmentPercentage = segments.getPercentage(i);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
-			d3.selectAll("g.lineGroups")
+			d3.selectAll("g." + pie.cssPrefix + "lineGroups")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
 
 			// once everything's done loading, trigger the onload callback if defined
-			if ($.isFunction(this.options.callbacks.onload)) {
+			if ($.isFunction(pie.options.callbacks.onload)) {
 				setTimeout(function() {
 					try {
-						this.options.callbacks.onload();
+						pie.options.callbacks.onload();
 					} catch (e) { }
 				}, labelFadeInTime);
 			}
@@ -321,10 +318,10 @@ var labels = {
 	 * 1. Make a first pass and position them in the ideal positions, based on the pie sizes
 	 * 2. Do some basic collision avoidance.
 	 */
-	computeOuterLabelCoords: function() {
+	computeOuterLabelCoords: function(pie) {
 		// 1. figure out the ideal positions for the outer labels
-		d3.selectAll(".labelGroup-outer")
-			.each(function(d, i) { return labels.getIdealOuterLabelPositions(i); });
+		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+			.each(function(d, i) { return labels.getIdealOuterLabelPositions(pie, i); });
 
 		// 2. now adjust those positions to try to accommodate conflicts
 		labels.resolveOuterLabelCollisions();
@@ -333,14 +330,14 @@ var labels = {
 	/**
 	 * This attempts to resolve label positioning collisions.
 	 */
-	resolveOuterLabelCollisions: function() {
-		var size = this.options.data.length;
+	resolveOuterLabelCollisions: function(pie) {
+		var size = pie.options.data.length;
 		labels.checkConflict(0, "clockwise", size);
 		labels.checkConflict(size-1, "anticlockwise", size);
 	},
 
-	checkConflict: function(currIndex, direction, size) {
-		var currIndexHemisphere = labels.outerLabelGroupData[currIndex].hs;
+	checkConflict: function(pie, currIndex, direction, size) {
+		var currIndexHemisphere = pie.outerLabelGroupData[currIndex].hs;
 		if (direction === "clockwise" && currIndexHemisphere != "right") {
 			return;
 		}
@@ -351,23 +348,23 @@ var labels = {
 
 		// this is the current label group being looked at. We KNOW it's positioned properly (the first item
 		// is always correct)
-		var currLabelGroup = labels.outerLabelGroupData[currIndex];
+		var currLabelGroup = pie.outerLabelGroupData[currIndex];
 
 		// this one we don't know about. That's the one we're going to look at and move if necessary
-		var examinedLabelGroup = labels.outerLabelGroupData[nextIndex];
+		var examinedLabelGroup = pie.outerLabelGroupData[nextIndex];
 
 		var info = {
-			labelHeights: labels.outerLabelGroupData[0].h,
-			center: math.getPieCenter(),
-			lineLength: (_outerRadius + this.options.labels.outer.pieDistance),
-			heightChange: labels.outerLabelGroupData[0].h + 1 // 1 = padding
+			labelHeights: pie.outerLabelGroupData[0].h,
+			center: pie.pieCenter,
+			lineLength: (pie.outerRadius + pie.options.labels.outer.pieDistance),
+			heightChange: pie.outerLabelGroupData[0].h + 1 // 1 = padding
 		};
 
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
 		if (direction === "clockwise") {
 			for (var i=0; i<=currIndex; i++) {
-				var curr = labels.outerLabelGroupData[i];
+				var curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
@@ -378,7 +375,7 @@ var labels = {
 			}
 		} else {
 			for (var i=size-1; i>=currIndex; i--) {
-				var curr = labels.outerLabelGroupData[i];
+				var curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
@@ -388,11 +385,11 @@ var labels = {
 				}
 			}
 		}
-		labels.checkConflict(nextIndex, direction, size);
+		labels.checkConflict(pie, nextIndex, direction, size);
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one
-	adjustLabelPos: function(nextIndex, lastCorrectlyPositionedLabel, info) {
+	adjustLabelPos: function(pie, nextIndex, lastCorrectlyPositionedLabel, info) {
 		var xDiff, yDiff, newXPos, newYPos;
 		newYPos = lastCorrectlyPositionedLabel.y + info.heightChange;
 		yDiff = info.center.y - newYPos;
@@ -410,28 +407,27 @@ var labels = {
 		if (lastCorrectlyPositionedLabel.hs === "right") {
 			newXPos = info.center.x + xDiff;
 		} else {
-			newXPos = info.center.x - xDiff - labels.outerLabelGroupData[nextIndex].w;
+			newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
 		}
 
 		if (!newXPos) {
 			console.log(lastCorrectlyPositionedLabel.hs, xDiff)
 		}
 
-		labels.outerLabelGroupData[nextIndex].x = newXPos;
-		labels.outerLabelGroupData[nextIndex].y = newYPos;
+		pie.outerLabelGroupData[nextIndex].x = newXPos;
+		pie.outerLabelGroupData[nextIndex].y = newYPos;
 	},
 
 	/**
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
-	getIdealOuterLabelPositions: function(i) {
-		var labelGroupDims = $("#labelGroup" + i + "-outer")[0].getBBox();
-		var angle = segments.getSegmentAngle(i, { midpoint: true });
+	getIdealOuterLabelPositions: function(pie, i) {
+		var labelGroupDims = $("#" + pie.cssPrefix + "labelGroup" + i + "-outer")[0].getBBox();
+		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
 
-		var center = math.getPieCenter();
-		var originalX = center.x;
-		var originalY = center.y - (_outerRadius + this.options.labels.outer.pieDistance);
-		var newCoords = math.rotate(originalX, originalY, center.x, center.y, angle);
+		var originalX = pie.pieCenter.x;
+		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);
+		var newCoords = math.rotate(originalX, originalY, pie.pieCenter.x, pie.pieCenter.y, angle);
 
 		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere
@@ -442,7 +438,7 @@ var labels = {
 			newCoords.x += 8;
 		}
 
-		labels.outerLabelGroupData[i] = {
+		pie.outerLabelGroupData[i] = {
 			x: newCoords.x,
 			y: newCoords.y,
 			w: labelGroupDims.width,

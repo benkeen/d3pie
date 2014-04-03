@@ -133,15 +133,6 @@ var math = {
 	},
 
 
-	// TODO this will cause a bug
-	arcTween: function(b) {
-		var i = d3.interpolate({ value: 0 }, b);
-		return function(t) {
-			return _arc(i(t));
-		};
-	},
-
-
 	/**
 	 * Rotates a point (x, y) around an axis (xm, ym) by degrees (a).
 	 * @param x

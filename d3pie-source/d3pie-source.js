@@ -213,23 +213,23 @@
 
 			// now create the pie chart segments
 			segments.create(self); // also creates this.arc
-			labels.add("inner", self);
-			labels.add("outer", self.options.labels.outer.format);
+			labels.add(self, "inner", self.options.labels.inner.format);
+			labels.add(self, "outer", self.options.labels.outer.format);
 
 			// position the label elements relatively within their individual group (label, percentage, value)
-			labels.positionLabelElements("inner", this.options.labels.inner.format);
-			labels.positionLabelElements("outer", this.options.labels.outer.format);
-			labels.computeOuterLabelCoords();
+			labels.positionLabelElements(self, "inner", self.options.labels.inner.format);
+			labels.positionLabelElements(self, "outer", self.options.labels.outer.format);
+			labels.computeOuterLabelCoords(self);
 
 			// this is (and should be) dumb. It just places the outer groups at their pre-calculated, collision-free positions
-			labels.positionLabelGroups("outer");
+			labels.positionLabelGroups(self, "outer");
 
 			// we use the label line positions for many other calculations, so ALWAYS compute them
 			labels.computeLabelLinePositions();
 
 			// only add them if they're actually enabled
-			if (this.options.labels.lines.enabled && this.options.labels.outer.format !== "none") {
-				labels.addLabelLines();
+			if (self.options.labels.lines.enabled && self.options.labels.outer.format !== "none") {
+				labels.addLabelLines(self);
 			}
 
 			labels.positionLabelGroups("inner");
