@@ -7,13 +7,13 @@ define([], function() {
 				title: {
 					text:     "Lots of Programming Languages",
 					color:    "#333333",
-					fontSize: "24px",
+					fontSize: "20px",
 					font:     "open sans"
 				},
 				subtitle: {
 					text:     "A full pie chart to show off label collision detection and resolution.",
 					color:    "#999999",
-					fontSize: "12px",
+					fontSize: "10px",
 					font:     "open sans"
 				},
 				location: "top-center",
@@ -30,7 +30,7 @@ define([], function() {
 				canvasWidth: 350,
 				canvasHeight: 350,
 				pieInnerRadius: "0%",
-				pieOuterRadius: "66%"
+				pieOuterRadius: "55%"
 			},
 			data: {
 				sortOrder: "value-desc",
@@ -51,18 +51,7 @@ define([], function() {
 					{ label: "Coffeescript", value: 157618, color: "#BCA44A" },
 					{ label: "Node", value: 114384, color: "#618D1B" },
 					{ label: "Basic", value: 95002, color: "#1EE67B" },
-					{ label: "Cola", value: 36344, color: "#B0EC44" },
-					{ label: "Perl", value: 32170, color: "#A4A0C9" },
-					{ label: "Dart", value: 28561, color: "#322849" },
-					{ label: "Go", value: 264131, color: "#86F71A" },
-					{ label: "Groovy", value: 218812, color: "#D1C87F" },
-					{ label: "Processing", value: 157618, color: "#7D9058" },
-					{ label: "Smalltalk", value: 114384, color: "#44B9B0" },
-					{ label: "Scala", value: 95002, color: "#7C37C0" },
-					{ label: "Visual Basic", value: 78327, color: "#CC9FB1" },
-					{ label: "Scheme", value: 67706, color: "#E65414" },
-					{ label: "Rust", value: 36344, color: "#8B6834" },
-					{ label: "FoxPro", value: 32170, color: "#248838" }
+					{ label: "Cola", value: 36344, color: "#B0EC44" }
 				]
 			},
 			labels: {
@@ -70,7 +59,7 @@ define([], function() {
 				outer: {
 					format: "label",
 					hideWhenLessThanPercentage: null,
-					pieDistance: 32
+					pieDistance: 20
 				},
 				inner: {
 					format: "percentage",
@@ -125,7 +114,7 @@ define([], function() {
 				},
 				pieCenterOffset: {
 					x: 0,
-					y: 0
+					y: 20
 				}
 			}
 		},
