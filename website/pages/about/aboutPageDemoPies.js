@@ -2,6 +2,7 @@ define([], function() {
 
 	var _DEMO_PIES = [
 
+		// 1
 		{
 			header: {
 				title: {
@@ -28,9 +29,9 @@ define([], function() {
 			},
 			size: {
 				canvasWidth: 350,
-				canvasHeight: 350,
+				canvasHeight: 300,
 				pieInnerRadius: "0%",
-				pieOuterRadius: "55%"
+				pieOuterRadius: "58%"
 			},
 			data: {
 				sortOrder: "value-desc",
@@ -114,22 +115,137 @@ define([], function() {
 				},
 				pieCenterOffset: {
 					x: 0,
-					y: 20
+					y: 25
 				}
 			}
 		},
 
+		// 2
+		{
+			header: {
+				title: {
+					text:     "Top 15 Fears",
+					color:    "#333333",
+					fontSize: "16px",
+					font:     "courier"
+				},
+				subtitle: {
+					text:     "",
+					color:    "#999999",
+					fontSize: "10px",
+					font:     "courier"
+				},
+				location: "pie-center",
+				titleSubtitlePadding: 6
+			},
+			footer: {
+				text:     "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
+				color:    "#999999",
+				fontSize: "10px",
+				font:     "open sans",
+				location: "bottom-left"
+			},
+			size: {
+				canvasWidth: 350,
+				canvasHeight: 300,
+				pieInnerRadius: "95%",
+				pieOuterRadius: "60%"
+			},
+			data: {
+				sortOrder: "label-asc",
+				content: [
+					{ label: "Spiders", value: 2, color: "#333333" },
+					{ label: "Mother-in-laws", value: 10, color: "#444444" },
+					{ label: "Sharks", value: 8, color: "#555555" },
+					{ label: "Alien invasion", value: 8, color: "#666666" },
+					{ label: "Learning Objective-C", value: 5, color: "#777777" },
+					{ label: "Public speaking", value: 3, color: "#888888" },
+					{ label: "Donald Rumsfeld", value: 4, color: "#999999" },
+					{ label: "The Zombie Apocalypse", value: 4, color: "#cb2121" },
+					{ label: "The City of Winnipeg *", value: 3, color: "#830909" },
+					{ label: "IE 6", value: 2, color: "#923e99" },
+					{ label: "Planes, with/without snakes", value: 5, color: "#ae83d5" },
+					{ label: "Off-by-one errors", value: 3, color: "#111111"},
+					{ label: "Chickadees", value: 4, color: "#050505" },
+					{ label: "A never-ending Harper Government", value: 1, color: "#646464" }
+				]
+			},
+			labels: {
+				enableTooltips: true,
+				outer: {
+					format: "label-percentage1",
+					hideWhenLessThanPercentage: null,
+					pieDistance: 15
+				},
+				inner: {
+					format: "none",
+					hideWhenLessThanPercentage: null
+				},
+				mainLabel: {
+					color: "#333333",
+					font: "Open sans",
+					fontSize: "11"
+				},
+				percentage: {
+					color: "#999999",
+					font: "Open sans",
+					fontSize: "11",
+					decimalPlaces: 0
+				},
+				value: {
+					color: "#cccc44",
+					font: "Open sans",
+					fontSize: "11"
+				},
+				lines: {
+					enabled: true,
+					length: 16,
+					color: "#777777"
+				}
+			},
+			effects: {
+				load: {
+					effect: "default", // none / default
+					speed: 1000
+				},
+				pullOutSegmentOnClick: {
+					effect: "linear", // none / linear / bounce /
+					speed: 400,
+					size: 8
+				},
+				highlightSegmentOnMouseover: true,
+				highlightLuminosity: -0.2
+			},
+			misc: {
+				colors: {
+					background: null,
+					segmentStroke: "#ffffff"
+				},
+				canvasPadding: {
+					top: 5,
+					right: 5,
+					bottom: 5,
+					left: 5
+				},
+				pieCenterOffset: {
+					x: 0,
+					y: 0
+				}
+			}
+		},
+
+		// 3
 		{
 			header: {
 				title: {
 					text:     "Distribution of love among my pets",
 					color:    "#333333",
-					fontSize: "20px"
-			},
+					fontSize: "14px"
+				},
 				subtitle: {
-					text:     "proof for my wife that I really don't like her dog",
+					text:     "Proof for my wife that I really don't like her dog",
 					color:    "#999999",
-					fontSize: "12px"
+					fontSize: "9px"
 				},
 				location: "top-center"
 			},
@@ -164,49 +280,7 @@ define([], function() {
 					{ label: "Burrito (dog) - 1%", value: 2, color: "#ff0000" }
 				]
 			}
-		},
-
-		{
-			header: {
-				title: {
-					text:     "Opinions on this demo pie chart",
-					color:    "#333333",
-					fontSize: "20px",
-					font:     "helvetica"
-				},
-				subtitle: {
-					text:     "(proof for my wife that I really don't like her dog)",
-					color:    "#999999",
-					fontSize: "12px",
-					font:     "helvetica"
-				},
-				location: "top-center"
-			},
-			size: {
-				canvasHeight: 300,
-				canvasWidth: 350,
-				pieOuterRadius: "45%"
-			},
-			labels: {
-				outer: {
-					pieDistance: 20
-				}
-			},
-			data: {
-				content: [
-					{ label: "Couldn't it be square?", value: 35 },
-					{ label: "Rehan (cat)", value: 35 },
-					{ label: "Mr Pleco (fish)", value: 28 },
-					{ label: "Pearl (cat)", value: 15 },
-					{ label: "Chairman (cat)", value: 15 },
-					{ label: "Shroeder (cat)", value: 12 },
-					{ label: "Pig (cat)", value: 10 },
-					{ label: "Marvin (frog)", value: 8 },
-					{ label: "Burrito (dog)", value: 1 }
-				]
-			}
 		}
-
 	];
 
 	return _DEMO_PIES;
