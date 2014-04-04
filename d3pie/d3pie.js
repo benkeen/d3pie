@@ -615,7 +615,7 @@ var labels = {
 		for (var i=0; i<labelGroups.length; i++) {
 			var mainLabel = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentMainLabel-" + section);
 			var percentage = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentPercentage-" + section);
-			var value = $(labelGroups[i]).find(".segmentValue-" + section);
+			var value = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
 				mainLabel: (mainLabel.length > 0) ? mainLabel[0].getBBox() : null,
@@ -856,9 +856,12 @@ var labels = {
 	 * 2. Do some basic collision avoidance.
 	 */
 	computeOuterLabelCoords: function(pie) {
+
 		// 1. figure out the ideal positions for the outer labels
-		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
-			.each(function(d, i) { return labels.getIdealOuterLabelPositions(pie, i); });
+		pie.svg.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+			.each(function(d, i) {
+				return labels.getIdealOuterLabelPositions(pie, i);
+			});
 
 		// 2. now adjust those positions to try to accommodate conflicts
 		labels.resolveOuterLabelCollisions(pie);
@@ -869,8 +872,8 @@ var labels = {
 	 */
 	resolveOuterLabelCollisions: function(pie) {
 		var size = pie.options.data.length;
-		labels.checkConflict(0, "clockwise", size);
-		labels.checkConflict(size-1, "anticlockwise", size);
+		labels.checkConflict(pie, 0, "clockwise", size);
+		labels.checkConflict(pie, size-1, "anticlockwise", size);
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
@@ -917,7 +920,7 @@ var labels = {
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
 				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
-					labels.adjustLabelPos(nextIndex, currLabelGroup, info);
+					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
@@ -934,10 +937,8 @@ var labels = {
 		if (Math.abs(info.lineLength) > Math.abs(yDiff)) {
 			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
 		} else {
-			console.log(yDiff, info);
 			xDiff = Math.sqrt((yDiff * yDiff) - (info.lineLength * info.lineLength));
 		}
-
 
 		// ahhh! info.lineLength is no longer a constant.....
 
@@ -965,6 +966,7 @@ var labels = {
 		var originalX = pie.pieCenter.x;
 		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);
 		var newCoords = math.rotate(originalX, originalY, pie.pieCenter.x, pie.pieCenter.y, angle);
+
 
 		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere
@@ -995,7 +997,6 @@ var segments = {
 	 * @private
 	 */
 	create: function(pie) {
-		var cssPrefix = pie.cssPrefix;
 		var pieCenter = pie.pieCenter;
 		var data = pie.options.data;
 		var colors = pie.options.colors;
@@ -1007,9 +1008,9 @@ var segments = {
 		var svg = pie.svg;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = svg.insert("g", "#" + cssPrefix + "title")
+		var pieChartElement = svg.insert("g", "#" + pie.cssPrefix + "title")
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
-			.attr("class", cssPrefix + "pieChart");
+			.attr("class", pie.cssPrefix + "pieChart");
 
 		var arc = d3.svg.arc()
 			.innerRadius(innerRadius)
@@ -1020,11 +1021,11 @@ var segments = {
 				return angle;
 			});
 
-		var g = pieChartElement.selectAll("." + cssPrefix + "arc")
+		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
 			.data(data)
 			.enter()
 			.append("g")
-			.attr("class", cssPrefix + "arc");
+			.attr("class", pie.cssPrefix + "arc");
 
 		// if we're not fading in the pie, just set the load speed to 0
 		var loadSpeed = loadEffects.speed;
@@ -1033,7 +1034,7 @@ var segments = {
 		}
 
 		g.append("path")
-			.attr("id", function(d, i) { return cssPrefix + "segment" + i; })
+			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
 			.style("fill", function(d, index) { return colors[index]; })
 			.style("stroke", segmentStroke)
 			.style("stroke-width", 1)
@@ -1048,7 +1049,7 @@ var segments = {
 				};
 			});
 
-		svg.selectAll("g." + cssPrefix + "arc")
+		svg.selectAll("g." + pie.cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
@@ -1219,18 +1220,15 @@ var text = {
 	offscreenCoord: -10000,
 
 	addTitle: function(pie) {
-		var cssPrefix = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
-		var titleInfo = pie.options.header.title;
-		var svg = pie.svg;
 
-		var title = svg.selectAll("." + cssPrefix + "title")
-			.data([titleInfo])
+		var title = pie.svg.selectAll("." + pie.cssPrefix + "title")
+			.data([pie.options.header.title])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
-			.attr("id", cssPrefix + "title")
-			.attr("class", cssPrefix + "title")
+			.attr("id", pie.cssPrefix + "title")
+			.attr("class", pie.cssPrefix + "title")
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
 			.attr("text-anchor", function() {
@@ -1248,20 +1246,17 @@ var text = {
 	},
 
 	positionTitle: function(pie) {
-		var cssPrefix = pie.cssPrefix;
-		var pieCenter = pie.pieCenter;
 		var textComponents = pie.textComponents;
 		var headerLocation = pie.options.header.location;
 		var canvasPadding = pie.options.misc.canvasPadding;
 		var canvasWidth = pie.options.size.canvasWidth;
 		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
-		var svg = pie.svg;
 
 		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
 		var y = canvasPadding.top + textComponents.title.h;
 
 		if (headerLocation === "pie-center") {
-			y = pieCenter.y;
+			y = pie.pieCenter.y;
 
 			// still not fully correct
 			if (textComponents.subtitle.exists) {
@@ -1272,26 +1267,23 @@ var text = {
 			}
 		}
 
-		svg.select("#" + cssPrefix + "title")
+		pie.svg.select("#" + pie.cssPrefix + "title")
 			.attr("x", x)
 			.attr("y", y);
 	},
 
 	addSubtitle: function(pie) {
-		var svg = pie.svg;
-		var cssPrefix      = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
-		var subtitleInfo   = pie.options.header.subtitle;
 
-		svg.selectAll("." + cssPrefix + "subtitle")
-			.data([subtitleInfo])
+		pie.svg.selectAll("." + pie.cssPrefix + "subtitle")
+			.data([pie.options.header.subtitle])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("id", cssPrefix + "subtitle")
-			.attr("class", cssPrefix + "subtitle")
+			.attr("id", pie.cssPrefix + "subtitle")
+			.attr("class", pie.cssPrefix + "subtitle")
 			.attr("text-anchor", function() {
 				var location;
 				if (headerLocation === "top-center" || headerLocation === "pie-center") {
@@ -1340,24 +1332,20 @@ var text = {
 	},
 
 	addFooter: function(pie) {
-		var svg = pie.svg;
-		var cssPrefix = pie.cssPrefix;
-		var footerSettings = pie.options.footer;
-
-		svg.selectAll("." + cssPrefix + "footer")
-			.data([footerSettings])
+		pie.svg.selectAll("." + pie.cssPrefix + "footer")
+			.data([pie.options.footer])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("id", cssPrefix + "footer")
-			.attr("class", cssPrefix + "footer")
+			.attr("id", pie.cssPrefix + "footer")
+			.attr("class", pie.cssPrefix + "footer")
 			.attr("text-anchor", function() {
 				var location = "left";
-				if (footerSettings.location === "bottom-center") {
+				if (pie.options.footer.location === "bottom-center") {
 					location = "middle";
-				} else if (footerSettings.location === "bottom-right") {
+				} else if (pie.options.footer.location === "bottom-right") {
 					location = "left"; // on purpose. We have to change the x-coord to make it properly right-aligned
 				}
 				return location;
@@ -1528,6 +1516,8 @@ var text = {
 				w: 0
 			}
 		};
+
+		this.outerLabelGroupData = [];
 
 		// 3. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
 		if (this.textComponents.title.exists) {

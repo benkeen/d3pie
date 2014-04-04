@@ -3,18 +3,15 @@ var text = {
 	offscreenCoord: -10000,
 
 	addTitle: function(pie) {
-		var cssPrefix = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
-		var titleInfo = pie.options.header.title;
-		var svg = pie.svg;
 
-		var title = svg.selectAll("." + cssPrefix + "title")
-			.data([titleInfo])
+		var title = pie.svg.selectAll("." + pie.cssPrefix + "title")
+			.data([pie.options.header.title])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
-			.attr("id", cssPrefix + "title")
-			.attr("class", cssPrefix + "title")
+			.attr("id", pie.cssPrefix + "title")
+			.attr("class", pie.cssPrefix + "title")
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
 			.attr("text-anchor", function() {
@@ -32,20 +29,17 @@ var text = {
 	},
 
 	positionTitle: function(pie) {
-		var cssPrefix = pie.cssPrefix;
-		var pieCenter = pie.pieCenter;
 		var textComponents = pie.textComponents;
 		var headerLocation = pie.options.header.location;
 		var canvasPadding = pie.options.misc.canvasPadding;
 		var canvasWidth = pie.options.size.canvasWidth;
 		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
-		var svg = pie.svg;
 
 		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
 		var y = canvasPadding.top + textComponents.title.h;
 
 		if (headerLocation === "pie-center") {
-			y = pieCenter.y;
+			y = pie.pieCenter.y;
 
 			// still not fully correct
 			if (textComponents.subtitle.exists) {
@@ -56,26 +50,23 @@ var text = {
 			}
 		}
 
-		svg.select("#" + cssPrefix + "title")
+		pie.svg.select("#" + pie.cssPrefix + "title")
 			.attr("x", x)
 			.attr("y", y);
 	},
 
 	addSubtitle: function(pie) {
-		var svg = pie.svg;
-		var cssPrefix      = pie.cssPrefix;
 		var headerLocation = pie.options.header.location;
-		var subtitleInfo   = pie.options.header.subtitle;
 
-		svg.selectAll("." + cssPrefix + "subtitle")
-			.data([subtitleInfo])
+		pie.svg.selectAll("." + pie.cssPrefix + "subtitle")
+			.data([pie.options.header.subtitle])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("id", cssPrefix + "subtitle")
-			.attr("class", cssPrefix + "subtitle")
+			.attr("id", pie.cssPrefix + "subtitle")
+			.attr("class", pie.cssPrefix + "subtitle")
 			.attr("text-anchor", function() {
 				var location;
 				if (headerLocation === "top-center" || headerLocation === "pie-center") {
@@ -124,24 +115,20 @@ var text = {
 	},
 
 	addFooter: function(pie) {
-		var svg = pie.svg;
-		var cssPrefix = pie.cssPrefix;
-		var footerSettings = pie.options.footer;
-
-		svg.selectAll("." + cssPrefix + "footer")
-			.data([footerSettings])
+		pie.svg.selectAll("." + pie.cssPrefix + "footer")
+			.data([pie.options.footer])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
 			.attr("x", text.offscreenCoord)
 			.attr("y", text.offscreenCoord)
-			.attr("id", cssPrefix + "footer")
-			.attr("class", cssPrefix + "footer")
+			.attr("id", pie.cssPrefix + "footer")
+			.attr("class", pie.cssPrefix + "footer")
 			.attr("text-anchor", function() {
 				var location = "left";
-				if (footerSettings.location === "bottom-center") {
+				if (pie.options.footer.location === "bottom-center") {
 					location = "middle";
-				} else if (footerSettings.location === "bottom-right") {
+				} else if (pie.options.footer.location === "bottom-right") {
 					location = "left"; // on purpose. We have to change the x-coord to make it properly right-aligned
 				}
 				return location;

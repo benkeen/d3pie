@@ -9,7 +9,6 @@ var segments = {
 	 * @private
 	 */
 	create: function(pie) {
-		var cssPrefix = pie.cssPrefix;
 		var pieCenter = pie.pieCenter;
 		var data = pie.options.data;
 		var colors = pie.options.colors;
@@ -21,9 +20,9 @@ var segments = {
 		var svg = pie.svg;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = svg.insert("g", "#" + cssPrefix + "title")
+		var pieChartElement = svg.insert("g", "#" + pie.cssPrefix + "title")
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
-			.attr("class", cssPrefix + "pieChart");
+			.attr("class", pie.cssPrefix + "pieChart");
 
 		var arc = d3.svg.arc()
 			.innerRadius(innerRadius)
@@ -34,11 +33,11 @@ var segments = {
 				return angle;
 			});
 
-		var g = pieChartElement.selectAll("." + cssPrefix + "arc")
+		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
 			.data(data)
 			.enter()
 			.append("g")
-			.attr("class", cssPrefix + "arc");
+			.attr("class", pie.cssPrefix + "arc");
 
 		// if we're not fading in the pie, just set the load speed to 0
 		var loadSpeed = loadEffects.speed;
@@ -47,7 +46,7 @@ var segments = {
 		}
 
 		g.append("path")
-			.attr("id", function(d, i) { return cssPrefix + "segment" + i; })
+			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
 			.style("fill", function(d, index) { return colors[index]; })
 			.style("stroke", segmentStroke)
 			.style("stroke-width", 1)
@@ -62,7 +61,7 @@ var segments = {
 				};
 			});
 
-		svg.selectAll("g." + cssPrefix + "arc")
+		svg.selectAll("g." + pie.cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;

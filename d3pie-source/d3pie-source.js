@@ -164,6 +164,8 @@
 			}
 		};
 
+		this.outerLabelGroupData = [];
+
 		// 3. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
 		if (this.textComponents.title.exists) {
 			text.addTitle(this);

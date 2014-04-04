@@ -73,7 +73,7 @@ var labels = {
 		for (var i=0; i<labelGroups.length; i++) {
 			var mainLabel = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentMainLabel-" + section);
 			var percentage = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentPercentage-" + section);
-			var value = $(labelGroups[i]).find(".segmentValue-" + section);
+			var value = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
 				mainLabel: (mainLabel.length > 0) ? mainLabel[0].getBBox() : null,
@@ -314,9 +314,12 @@ var labels = {
 	 * 2. Do some basic collision avoidance.
 	 */
 	computeOuterLabelCoords: function(pie) {
+
 		// 1. figure out the ideal positions for the outer labels
-		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
-			.each(function(d, i) { return labels.getIdealOuterLabelPositions(pie, i); });
+		pie.svg.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+			.each(function(d, i) {
+				return labels.getIdealOuterLabelPositions(pie, i);
+			});
 
 		// 2. now adjust those positions to try to accommodate conflicts
 		labels.resolveOuterLabelCollisions(pie);
@@ -327,8 +330,8 @@ var labels = {
 	 */
 	resolveOuterLabelCollisions: function(pie) {
 		var size = pie.options.data.length;
-		labels.checkConflict(0, "clockwise", size);
-		labels.checkConflict(size-1, "anticlockwise", size);
+		labels.checkConflict(pie, 0, "clockwise", size);
+		labels.checkConflict(pie, size-1, "anticlockwise", size);
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
@@ -375,7 +378,7 @@ var labels = {
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
 				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
-					labels.adjustLabelPos(nextIndex, currLabelGroup, info);
+					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
@@ -392,10 +395,8 @@ var labels = {
 		if (Math.abs(info.lineLength) > Math.abs(yDiff)) {
 			xDiff = Math.sqrt((info.lineLength * info.lineLength) - (yDiff * yDiff));
 		} else {
-			console.log(yDiff, info);
 			xDiff = Math.sqrt((yDiff * yDiff) - (info.lineLength * info.lineLength));
 		}
-
 
 		// ahhh! info.lineLength is no longer a constant.....
 
@@ -423,6 +424,7 @@ var labels = {
 		var originalX = pie.pieCenter.x;
 		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);
 		var newCoords = math.rotate(originalX, originalY, pie.pieCenter.x, pie.pieCenter.y, angle);
+
 
 		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere
