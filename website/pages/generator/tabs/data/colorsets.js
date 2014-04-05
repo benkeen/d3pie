@@ -9,9 +9,9 @@ define([], function() {
 			{ label: "Blues", colors: ["#00047c", "#2f3399", "#2f52aa", "#2e59c9", "#4d70cc", "#738eef", "#77a0dd", "#9db5f2", "#bccff2", "#d7e5f7"] },
 			{ label: "Greens", colors: ["#043a00", "#104904", "#155d07", "#217f0e", "#2ea217", "#41cb29", "#58ea3e", "#9ff990", "#bbfdb0", "#d3fdcb"] },
 			{ label: "Palette 1 - bold", colors: ["#0066cc", "#003366", "#336600", "#669966", "#990000", "#cc6600", "#66cc33", "#cc6699", "#ffff33", "#9933ff" ] },
-			{ label: "Palette 2 - light pastel", colors: ["#ccb2b2", "#ccc8b2", "#c4ccb2", "#b6ccb2", "#b2ccbc", "#b2ccc9", "#b2c3cc", "#b2b8cc", "#b7b2cc", "#c3b2cc" ] },
-			{ label: "Palette 3 - medium pastel", colors: ["#7e3939", "#7e6539", "#7c7e39", "#597e39", "#397e46", "#397e6a", "#396a7e", "#39517e", "#4e397e", "#7a397e" ] },
-			{ label: "Palette 4 - dark pastel", colors: ["#4e3a3a", "#4a4e3a", "#414e3a", "#3a4e43", "#3a4c4e", "#3a3f4e", "#3c3a4e", "#443a4e", "#4e3a4d", "#4e3a42" ] }
+			{ label: "Palette 2 - pastels", colors: ["#ccb2b2", "#ccc8b2", "#c4ccb2", "#b6ccb2", "#b2ccbc", "#b2ccc9", "#b2c3cc", "#b2b8cc", "#b7b2cc", "#c3b2cc" ] },
+			{ label: "Palette 3 - medium colors ", colors: ["#7e3939", "#7e6539", "#7c7e39", "#597e39", "#397e46", "#397e6a", "#396a7e", "#39517e", "#4e397e", "#7a397e" ] },
+			{ label: "Palette 4 - darker colors", colors: ["#4e3a3a", "#4a4e3a", "#414e3a", "#3a4e43", "#3a4c4e", "#3a3f4e", "#3c3a4e", "#443a4e", "#4e3a4d", "#4e3a42" ] }
 		],
 
 		// 20 items

@@ -6,7 +6,7 @@ define([], function() {
 		{
 			header: {
 				title: {
-					text:     "Top 15 Fears",
+					text:     "Top 10 Fears",
 					color:    "#333333",
 					fontSize: "16px",
 					font:     "courier"
@@ -21,7 +21,7 @@ define([], function() {
 				titleSubtitlePadding: 6
 			},
 			footer: {
-				text:     "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
+				text:     "* We're not sure why people regard Winnipeg as a Top 10 Fear.",
 				color:    "#999999",
 				fontSize: "10px",
 				font:     "open sans",
@@ -31,25 +31,21 @@ define([], function() {
 				canvasWidth: 350,
 				canvasHeight: 300,
 				pieInnerRadius: "95%",
-				pieOuterRadius: "60%"
+				pieOuterRadius: "50%"
 			},
 			data: {
-				sortOrder: "label-asc",
+				sortOrder: "none",
 				content: [
 					{ label: "Spiders", value: 2, color: "#333333" },
 					{ label: "Mother-in-laws", value: 10, color: "#444444" },
 					{ label: "Sharks", value: 8, color: "#555555" },
 					{ label: "Alien invasion", value: 8, color: "#666666" },
 					{ label: "Learning Objective-C", value: 5, color: "#777777" },
-					{ label: "Public speaking", value: 3, color: "#888888" },
 					{ label: "Donald Rumsfeld", value: 4, color: "#999999" },
 					{ label: "The Zombie Apocalypse", value: 4, color: "#cb2121" },
 					{ label: "The City of Winnipeg *", value: 3, color: "#830909" },
 					{ label: "IE 6", value: 2, color: "#923e99" },
-					{ label: "Planes, with/without snakes", value: 5, color: "#ae83d5" },
-					{ label: "Off-by-one errors", value: 3, color: "#111111"},
-					{ label: "Chickadees", value: 4, color: "#050505" },
-					{ label: "A never-ending Harper Government", value: 1, color: "#646464" }
+					{ label: "Off-by-one errors", value: 3, color: "#111111"}
 				]
 			},
 			labels: {
@@ -57,7 +53,7 @@ define([], function() {
 				outer: {
 					format: "label-percentage1",
 					hideWhenLessThanPercentage: null,
-					pieDistance: 15
+					pieDistance: 12
 				},
 				inner: {
 					format: "none",
@@ -178,7 +174,7 @@ define([], function() {
 				},
 				inner: {
 					format: "percentage",
-					hideWhenLessThanPercentage: 3
+					hideWhenLessThanPercentage: 5
 				},
 				mainLabel: {
 					color: "#333333",
@@ -240,19 +236,21 @@ define([], function() {
 				title: {
 					text:     "Distribution of love among my pets",
 					color:    "#333333",
-					fontSize: "14px"
+					fontSize: "18px",
+					font: "Arial"
 				},
 				subtitle: {
 					text:     "Proof for my wife that I really don't like her dog",
 					color:    "#999999",
-					fontSize: "9px"
+					fontSize: "12px",
+					font: "Arial"
 				},
-				location: "top-center"
+				location: "top-left"
 			},
 			size: {
-				canvasHeight: 350,
-				canvasWidth: 350,
-				pieOuterRadius: "47%"
+				canvasHeight: 280,
+				canvasWidth: 340,
+				pieOuterRadius: "58%"
 			},
 			labels: {
 				outer: {
@@ -274,15 +272,18 @@ define([], function() {
 					{ label: "Mr Pleco (fish)", value: 28 },
 					{ label: "Pearl (cat)", value: 15 },
 					{ label: "Chairman (cat)", value: 15 },
-					{ label: "Shroeder (cat)", value: 12 },
-					{ label: "Pig (cat)", value: 10 },
+					{ label: "Schroeder (cat)", value: 12 },
 					{ label: "Marvin (frog)", value: 8 },
 					{ label: "Burrito (dog) - 1%", value: 2 }
 				]
 			},
 			misc: {
 				colors: {
-					segments: ["#333333", "#444444", "#555555", "#666666", "#777777", "#888888", "#999999", "#afafaf", "#bcbcbc", "#d8d8d8"]
+					segments: ["#00047c", "#2f3399", "#2f52aa", "#2e59c9", "#4d70cc", "#738eef", "#77a0dd", "#9db5f2", "#bccff2", "#d7e5f7"]
+				},
+				pieCenterOffset: {
+					x: -10,
+					y: 20
 				}
 			}
 		}

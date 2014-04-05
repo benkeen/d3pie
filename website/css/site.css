@@ -131,12 +131,13 @@ input.ib, .ib {
 
 /* overridden bootstrap CSS */
 body .navbar-header {
-    width: 120px;
+    width: 150px;
 }
-
-/*.arcHover:hover .labelGroup {
-    cursor: pointer;
-}*/
+.scriptVersion {
+	color: #dddddd;
+	margin-left: 8px;
+	font-size: 15px;
+}
 
 .pixelSizeField {
     width: 50px;
@@ -361,4 +362,14 @@ label.disabled {
 	font-size: 7pt;
 	width: 10px;
 	display: inline-block;
+}
+.createSimilarPieLink {
+	text-decoration: none;
+	float: right;
+	margin-top: 10px;
+}
+a.openInNewWindow {
+	background: url(../images/open_new_window_icon.png) no-repeat right center;
+	background-size: 12px 12px;
+	padding-right: 20px;
 }
