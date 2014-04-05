@@ -12,25 +12,21 @@ var segments = {
 		var pieCenter = pie.pieCenter;
 		var data = pie.options.data;
 		var colors = pie.options.colors;
-		var innerRadius = pie.innerRadius;
-		var outerRadius = pie.outerRadius;
 		var loadEffects = pie.options.effects.load;
 		var totalSize = pie.totalSize;
 		var segmentStroke = pie.options.misc.colors.segmentStroke;
-		var svg = pie.svg;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = svg.insert("g", "#" + pie.cssPrefix + "title")
+		var pieChartElement = pie.svg.insert("g", "#" + pie.cssPrefix + "title")
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
 			.attr("class", pie.cssPrefix + "pieChart");
 
 		var arc = d3.svg.arc()
-			.innerRadius(innerRadius)
-			.outerRadius(outerRadius)
+			.innerRadius(pie.innerRadius)
+			.outerRadius(pie.outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
-				var angle = (d.value / totalSize) * 2 * Math.PI;
-				return angle;
+				return (d.value / totalSize) * 2 * Math.PI;
 			});
 
 		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
@@ -61,7 +57,7 @@ var segments = {
 				};
 			});
 
-		svg.selectAll("g." + pie.cssPrefix + "arc")
+		pie.svg.selectAll("g." + pie.cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;

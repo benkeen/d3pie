@@ -10,8 +10,13 @@ define([
 		$("#about").html(aboutPageTemplate());
 
 		_demoPie1 = new d3pie("aboutTabDemoPie1", aboutPageDemoPies[0]);
-		_demoPie2 = new d3pie("aboutTabDemoPie2", aboutPageDemoPies[1]);
-		_demoPie3 = new d3pie("aboutTabDemoPie3", aboutPageDemoPies[2]);
+
+		setTimeout(function() {
+			_demoPie2 = new d3pie("aboutTabDemoPie2", aboutPageDemoPies[1]);
+		}, 1000);
+		setTimeout(function() {
+			_demoPie3 = new d3pie("aboutTabDemoPie3", aboutPageDemoPies[2]);
+		}, 2000);
 	};
 
 	return {

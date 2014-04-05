@@ -367,7 +367,7 @@ var labels = {
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
 				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
-					labels.adjustLabelPos(nextIndex, currLabelGroup, info);
+					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
@@ -424,7 +424,6 @@ var labels = {
 		var originalX = pie.pieCenter.x;
 		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);
 		var newCoords = math.rotate(originalX, originalY, pie.pieCenter.x, pie.pieCenter.y, angle);
-
 
 		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere

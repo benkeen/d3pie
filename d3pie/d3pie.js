@@ -266,7 +266,6 @@ var helpers = {
 		return { w: w, h: h };
 	},
 
-
 	/**
 	 * This is based on the SVG coordinate system, where top-left is 0,0 and bottom right is n-n.
 	 * @param r1
@@ -909,7 +908,7 @@ var labels = {
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
 				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
-					labels.adjustLabelPos(nextIndex, currLabelGroup, info);
+					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
@@ -967,7 +966,6 @@ var labels = {
 		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);
 		var newCoords = math.rotate(originalX, originalY, pie.pieCenter.x, pie.pieCenter.y, angle);
 
-
 		// if the label is on the left half of the pie, adjust the values
 		var hemisphere = "right"; // hemisphere
 		if (angle > 180) {
@@ -1000,25 +998,21 @@ var segments = {
 		var pieCenter = pie.pieCenter;
 		var data = pie.options.data;
 		var colors = pie.options.colors;
-		var innerRadius = pie.innerRadius;
-		var outerRadius = pie.outerRadius;
 		var loadEffects = pie.options.effects.load;
 		var totalSize = pie.totalSize;
 		var segmentStroke = pie.options.misc.colors.segmentStroke;
-		var svg = pie.svg;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
-		var pieChartElement = svg.insert("g", "#" + pie.cssPrefix + "title")
+		var pieChartElement = pie.svg.insert("g", "#" + pie.cssPrefix + "title")
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
 			.attr("class", pie.cssPrefix + "pieChart");
 
 		var arc = d3.svg.arc()
-			.innerRadius(innerRadius)
-			.outerRadius(outerRadius)
+			.innerRadius(pie.innerRadius)
+			.outerRadius(pie.outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
-				var angle = (d.value / totalSize) * 2 * Math.PI;
-				return angle;
+				return (d.value / totalSize) * 2 * Math.PI;
 			});
 
 		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
@@ -1049,7 +1043,7 @@ var segments = {
 				};
 			});
 
-		svg.selectAll("g." + pie.cssPrefix + "arc")
+		pie.svg.selectAll("g." + pie.cssPrefix + "arc")
 			.attr("transform",
 			function(d, i) {
 				var angle = 0;
@@ -1404,17 +1398,22 @@ var text = {
 		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and the d3pie version
 		$(this.element).data(_scriptName, _version);
 
+		// things that are done once
+		this.options.data   = math.sortPieData(this);
+		this.options.colors = helpers.initSegmentColors(this);
+		this.totalSize      = math.getTotalPieSize(this.options.data);
+
 		_init.call(this);
 	};
 
 	d3pie.prototype.recreate = function() {
 		this.element.innerHTML = "";
-		_init();
+		_init.call(this);
 	};
 
 	d3pie.prototype.destroy = function() {
-		$(this.element).removeData(_scriptName); // remove the data attr
 		this.element.innerHTML = ""; // clear out the SVG
+		$(this.element).removeData(_scriptName); // remove the data attr
 	};
 
 	/**
@@ -1493,9 +1492,6 @@ var text = {
 	var _init = function() {
 
 		// 1. prep-work
-		this.options.data   = math.sortPieData(this);
-		this.options.colors = helpers.initSegmentColors(this);
-		this.totalSize      = math.getTotalPieSize(this.options.data);
 		this.svg = helpers.addSVGSpace(this);
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated

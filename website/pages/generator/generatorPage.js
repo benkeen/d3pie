@@ -63,7 +63,6 @@ define([
 	 * @private
 	 */
 	var _addTabEventHandlers = function() {
-
 		// general event handlers used in any old tab
 		$(document).on("change", ".changeUpdateNoAnimation", _renderWithNoAnimation);
 		$(document).on("keyup change", ".keyupUpdateNoAnimation", _onKeyupUpdateNoAnimation);
@@ -94,8 +93,7 @@ define([
 	};
 
 	var _updateProperty = function(msg) {
-		//_demoD3Pie.updateProp(msg.data.prop, msg.data.value);
-		//$("#generatorPieChart").data("d3pie").updateProp(msg.data.prop, msg.data.value);
+		_demoD3Pie.updateProp(msg.data.prop, msg.data.value);
 	};
 
 	var _renderPie = function(includeStartAnimation, config) {

@@ -51,17 +51,22 @@
 		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and the d3pie version
 		$(this.element).data(_scriptName, _version);
 
+		// things that are done once
+		this.options.data   = math.sortPieData(this);
+		this.options.colors = helpers.initSegmentColors(this);
+		this.totalSize      = math.getTotalPieSize(this.options.data);
+
 		_init.call(this);
 	};
 
 	d3pie.prototype.recreate = function() {
 		this.element.innerHTML = "";
-		_init();
+		_init.call(this);
 	};
 
 	d3pie.prototype.destroy = function() {
-		$(this.element).removeData(_scriptName); // remove the data attr
 		this.element.innerHTML = ""; // clear out the SVG
+		$(this.element).removeData(_scriptName); // remove the data attr
 	};
 
 	/**
@@ -140,9 +145,6 @@
 	var _init = function() {
 
 		// 1. prep-work
-		this.options.data   = math.sortPieData(this);
-		this.options.colors = helpers.initSegmentColors(this);
-		this.totalSize      = math.getTotalPieSize(this.options.data);
 		this.svg = helpers.addSVGSpace(this);
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
