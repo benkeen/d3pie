@@ -21,8 +21,8 @@ define([
 
 		// fade in the "create similar" buttons
 		setTimeout(function() {
-			$(".createSimilarBtn").fadeIn(300);
-		}, 3000);
+			$("#demoPie1-createSimilarBtn,#demoPie2-createSimilarBtn,#demoPie3-createSimilarBtn").fadeIn(400);
+		}, 2000);
 
 		var subscriptions = {};
 		subscriptions[C.EVENT.PAGE.LOAD] = _onPageSelected;

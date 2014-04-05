@@ -252,6 +252,11 @@ define([], function() {
 				canvasWidth: 340,
 				pieOuterRadius: "58%"
 			},
+			effects: {
+				load: {
+					effect: "none"
+				}
+			},
 			labels: {
 				outer: {
 					pieDistance: 18

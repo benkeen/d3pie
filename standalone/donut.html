@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie standalone examples</title>
+</head>
+<body>
+<h1>
+	<a href="./">Standalone d3Pie Examples</a> &raquo; Donut chart with frills
+</h1>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="../d3pie/d3pie.js"></script>
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text:     "Lots of Programming Languages",
+				color:    "#333333",
+				fontSize: "24px",
+				font:     "open sans"
+			},
+			location: "top-center",
+			titleSubtitlePadding: 9
+		},
+		footer: {
+			text: "",
+			color:    "#999999",
+			fontSize: "10px",
+			font:     "open sans",
+			location: "bottom-left"
+		},
+		size: {
+			canvasWidth: 600,
+			canvasHeight: 500,
+			pieInnerRadius: "0%",
+			pieOuterRadius: "66%"
+		},
+		data: {
+			sortOrder: "value-desc",
+			content: [
+				{ label: "JavaScript", value: 264131, color: "#2484c1" },
+				{ label: "Ruby", value: 218812, color: "#0c6197" },
+				{ label: "Java", value: 157618, color: "#4daa4b" },
+				{ label: "PHP", value: 114384, color: "#90c469" },
+				{ label: "Python", value: 95002, color: "#daca61" },
+				{ label: "C+", value: 78327, color: "#e4a14b" },
+				{ label: "C", value: 67706, color: "#e98125" },
+				{ label: "Objective-C", value: 36344, color: "#cb2121" },
+				{ label: "Shell", value: 28561, color: "#830909" },
+				{ label: "Cobol", value: 24131, color: "#923e99" },
+				{ label: "C#", value: 100, color: "#ae83d5" },
+				{ label: "Coldfusion", value: 68, color: "#BF273E" },
+				{ label: "Fortran", value: 218812, color: "#CE2AEB" },
+				{ label: "Coffeescript", value: 157618, color: "#BCA44A" },
+				{ label: "Node", value: 114384, color: "#618D1B" },
+				{ label: "Basic", value: 95002, color: "#1EE67B" },
+				{ label: "Cola", value: 36344, color: "#B0EC44" },
+				{ label: "Perl", value: 32170, color: "#A4A0C9" },
+				{ label: "Dart", value: 28561, color: "#322849" },
+				{ label: "Go", value: 264131, color: "#86F71A" },
+				{ label: "Groovy", value: 218812, color: "#D1C87F" },
+				{ label: "Processing", value: 157618, color: "#7D9058" },
+				{ label: "Smalltalk", value: 114384, color: "#44B9B0" },
+				{ label: "Scala", value: 95002, color: "#7C37C0" },
+				{ label: "Visual Basic", value: 78327, color: "#CC9FB1" },
+				{ label: "Scheme", value: 67706, color: "#E65414" },
+				{ label: "Rust", value: 36344, color: "#8B6834" },
+				{ label: "FoxPro", value: 32170, color: "#248838" }
+			]
+		},
+		labels: {
+			outer: {
+				format: "label",
+				hideWhenLessThanPercentage: null
+			},
+			inner: {
+				format: "percentage",
+				hideWhenLessThanPercentage: 3
+			},
+			mainLabel: {
+				color: "#333333",
+				font: "Open sans",
+				fontSize: "11px"
+			},
+			percentage: {
+				color: "#ffffff",
+				font: "Open sans",
+				fontSize: "10px",
+				decimalPlaces: 0
+			},
+			value: {
+				color: "#adadad",
+				font: "Open sans",
+				fontSize: "11px"
+			},
+			lines: {
+				enabled: true,
+				style: "curved",
+				length: 32,
+				color: "segment"
+			}
+		}
+	});
+</script>
+
+</body>
+</html>

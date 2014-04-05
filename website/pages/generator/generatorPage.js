@@ -27,6 +27,9 @@ define([
 		"generator-footer", "generator-effects", "generator-events", "generator-misc", "generator-result"
 	];
 	var _currentTab;
+	var _firstPageLoaded = false;
+	var _firstPage;
+
 
 	/**
 	 * Our initialization function. Called on page load.
@@ -183,6 +186,11 @@ define([
 	};
 
 	var _onPageSelected = function(msg) {
+		if (!_firstPageLoaded) {
+			_firstPage = msg.data.page;
+			_firstPageLoaded = true;
+			return;
+		}
 		if (msg.data.page !== "generator") {
 			return;
 		}
@@ -200,11 +208,14 @@ define([
 
 		// if this is the first time we loaded the generator tab, render it all pretty like
 //		if (!_isCreated) {
-//			_renderWithAnimation();
+//
 //			_isCreated = true;
 //		} else if (msg.data.prevPage !== "generator") {
 //			_renderWithNoAnimation();
 //		}
+
+		// ...
+		_renderWithAnimation();
 
 		var $generatorTabs = $("#generatorTabs");
 
