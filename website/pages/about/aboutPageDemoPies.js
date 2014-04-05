@@ -222,10 +222,6 @@ define([], function() {
 					right: 5,
 					bottom: 5,
 					left: 5
-				},
-				pieCenterOffset: {
-					x: 0,
-					y: 25
 				}
 			}
 		},
@@ -250,7 +246,8 @@ define([], function() {
 			size: {
 				canvasHeight: 280,
 				canvasWidth: 340,
-				pieOuterRadius: "58%"
+				pieOuterRadius: "58%",
+				pieInnerRadius: "30%"
 			},
 			effects: {
 				load: {
@@ -272,8 +269,8 @@ define([], function() {
 			data: {
 				sortOrder: "value-asc",
 				content: [
-					{ label: "Fish (cat)", value: 35 },
-					{ label: "Rehan (cat)", value: 35 },
+					{ label: "Fish (cat)", value: 44 },
+					{ label: "Rehan (cat)", value: 44 },
 					{ label: "Mr Pleco (fish)", value: 28 },
 					{ label: "Pearl (cat)", value: 15 },
 					{ label: "Chairman (cat)", value: 15 },

@@ -377,8 +377,8 @@ var math = {
 
 		// outer radius is either specified (e.g. through the generator), or omitted altogether
 		// and calculated based on the canvas dimensions. Right now the estimated version isn't great - it should
-		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck
-
+		// be possible to calculate it to precisely generate the maximum sized pie, but it's fussy as heck. Something
+		// for the next release.
 
 		// first, calculate the default _outerRadius
 		var w = size.canvasWidth - canvasPadding.left - canvasPadding.right;
@@ -1000,9 +1000,6 @@ var labels = {
 	//// --------- segments.js -----------
 var segments = {
 
-	isOpening: false,
-	currentlyOpenSegment: null,
-
 	/**
 	 * Creates the pie chart segments and displays them according to the desired load effect.
 	 * @private
@@ -1077,9 +1074,9 @@ var segments = {
 			segments.onSegmentEvent(pie.options.callbacks.onClickSegment, $segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
-					segments.closeSegment($segment[0]);
+					segments.closeSegment(pie, $segment[0]);
 				} else {
-					segments.openSegment($segment[0]);
+					segments.openSegment(pie, $segment[0]);
 				}
 			}
 		});
@@ -1091,8 +1088,8 @@ var segments = {
 				var segColor = pie.options.colors[index];
 				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
-			var isExpanded = $segment.attr("class") === "expanded";
-			segments.onSegmentEvent(pie.options.callbacks.onMouseoverSegment, $segment, isExpanded);
+			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
+			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
@@ -1101,13 +1098,13 @@ var segments = {
 				var index = $segment.data("index");
 				d3.select($segment[0]).style("fill", pie.options.colors[index]);
 			}
-			var isExpanded = $segment.attr("class") === "expanded";
-			segments.onSegmentEvent(pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
+			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
+			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
 	},
 
 	// helper function used to call the click, mouseover, mouseout segment callback functions
-	onSegmentEvent: function(func, $segment, isExpanded) {
+	onSegmentEvent: function(pie, func, $segment, isExpanded) {
 		if (!$.isFunction(func)) {
 			return;
 		}
@@ -1123,21 +1120,21 @@ var segments = {
 	},
 
 	openSegment: function(pie, segment) {
-		if (segments.isOpening) {
+		if (pie.isOpeningSegment) {
 			return;
 		}
-		segments.isOpening = true;
+		pie.isOpeningSegment = true;
 
 		// close any open segments
-		if ($(".expanded").length > 0) {
-			segments.closeSegment($(".expanded")[0]);
+		if ($("." + pie.cssPrefix + "expanded").length > 0) {
+			segments.closeSegment(pie, $("." + pie.cssPrefix + "expanded")[0]);
 		}
 
 		d3.select(segment).transition()
 			.ease(pie.options.effects.pullOutSegmentOnClick.effect)
 			.duration(pie.options.effects.pullOutSegmentOnClick.speed)
 			.attr("transform", function(d, i) {
-				var c = _arc.centroid(d),
+				var c = pie.arc.centroid(d),
 					x = c[0],
 					y = c[1],
 					h = Math.sqrt(x*x + y*y),
@@ -1146,19 +1143,19 @@ var segments = {
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.each("end", function(d, i) {
-				segments.currentlyOpenSegment = segment;
-				segments.isOpening = false;
-				$(this).attr("class", "expanded");
+				pie.currentlyOpenSegment = segment;
+				pie.isOpeningSegment = false;
+				$(this).attr("class", pie.cssPrefix + "expanded");
 			});
 	},
 
-	closeSegment: function(segment) {
+	closeSegment: function(pie, segment) {
 		d3.select(segment).transition()
 			.duration(400)
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				$(this).attr("class", "");
-				segments.currentlyOpenSegment = null;
+				pie.currentlyOpenSegment = null;
 			});
 	},
 
@@ -1433,7 +1430,7 @@ var text = {
 	 * 	}
 	 */
 	d3pie.prototype.getOpenPieSegment = function() {
-		var segment = segments.currentlyOpenSegment;
+		var segment = this.currentlyOpenSegment;
 		if (segment !== null) {
 			var index = parseInt($(segment).data("index"), 10);
 			return {
@@ -1451,7 +1448,7 @@ var text = {
 		if (index < 0 || index > this.options.data.length-1) {
 			return;
 		}
-		segments.openSegment($("#segment" + index)[0]);
+		segments.openSegment(this, $("#" + this.cssPrefix + "segment" + index)[0]);
 	};
 
 	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
@@ -1542,10 +1539,6 @@ var text = {
 
 		math.computePieRadius(this);
 
-		// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
-		// and store it as part of the object
-		math.calculatePieCenter(this);
-
 
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
@@ -1564,6 +1557,10 @@ var text = {
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}
+
+			// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
+			// and store it as part of the object
+			math.calculatePieCenter(self);
 
 			// position the title and subtitle
 			text.positionTitle(self);

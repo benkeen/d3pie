@@ -26,7 +26,7 @@ define([
 		"generator-start", "generator-title", "generator-size", "generator-data", "generator-labels",
 		"generator-footer", "generator-effects", "generator-events", "generator-misc", "generator-result"
 	];
-	var _currentTab;
+	var _currentTab = null;
 	var _firstPageLoaded = false;
 	var _firstPage;
 
@@ -44,7 +44,7 @@ define([
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
-		_loadDemoPie(EXAMPLE_PIES[2]);
+		_loadDemoPie(EXAMPLE_PIES[0]);
 
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
@@ -169,9 +169,9 @@ define([
 	};
 
 	var _selectPieSegment = function() {
-		var openSegmentInfo = $("#generatorPieChart").data("d3pie").getOpenPieSegment();
+		var openSegmentInfo = _demoD3Pie.getOpenPieSegment();
 		if (openSegmentInfo === null) {
-			$("#generatorPieChart").data("d3pie").openSegment(0);
+			_demoD3Pie.openSegment(0);
 		} else {
 			var nextIndex = openSegmentInfo.index + 1;
 
@@ -181,7 +181,7 @@ define([
 			if (nextIndex > data.length-1) {
 				nextIndex -= data.length;
 			}
-			$("#generatorPieChart").data("d3pie").openSegment(nextIndex);
+			_demoD3Pie.openSegment(nextIndex);
 		}
 	};
 
@@ -189,7 +189,6 @@ define([
 		if (!_firstPageLoaded) {
 			_firstPage = msg.data.page;
 			_firstPageLoaded = true;
-			return;
 		}
 		if (msg.data.page !== "generator") {
 			return;
@@ -206,24 +205,14 @@ define([
 			return;
 		}
 
-		// if this is the first time we loaded the generator tab, render it all pretty like
-//		if (!_isCreated) {
-//
-//			_isCreated = true;
-//		} else if (msg.data.prevPage !== "generator") {
-//			_renderWithNoAnimation();
-//		}
-
-		// ...
-		_renderWithAnimation();
 
 		var $generatorTabs = $("#generatorTabs");
 
 		// now show the appropriate tab
-		if (_currentTab == null) {
+		if (_currentTab === null) {
 			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");
 			$("#" + tab).removeClass("fadeOut hidden").addClass("fadeIn");
-			//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
+			_renderWithAnimation();
 		} else {
 			$generatorTabs.find("a[href=#" + _currentTab + "]").closest("li").removeClass("active");
 			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");

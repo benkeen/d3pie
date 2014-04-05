@@ -79,7 +79,7 @@
 	 * 	}
 	 */
 	d3pie.prototype.getOpenPieSegment = function() {
-		var segment = segments.currentlyOpenSegment;
+		var segment = this.currentlyOpenSegment;
 		if (segment !== null) {
 			var index = parseInt($(segment).data("index"), 10);
 			return {
@@ -97,7 +97,7 @@
 		if (index < 0 || index > this.options.data.length-1) {
 			return;
 		}
-		segments.openSegment($("#segment" + index)[0]);
+		segments.openSegment(this, $("#" + this.cssPrefix + "segment" + index)[0]);
 	};
 
 	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
@@ -188,10 +188,6 @@
 
 		math.computePieRadius(this);
 
-		// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
-		// and store it as part of the object
-		math.calculatePieCenter(this);
-
 
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
@@ -210,6 +206,10 @@
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}
+
+			// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
+			// and store it as part of the object
+			math.calculatePieCenter(self);
 
 			// position the title and subtitle
 			text.positionTitle(self);
