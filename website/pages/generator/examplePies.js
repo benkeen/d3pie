@@ -173,7 +173,7 @@ define([], function() {
 					location: "bottom-left"
 				},
 				size: {
-					canvasWidth: 650,
+					canvasWidth: 600,
 					canvasHeight: 500,
 					pieInnerRadius: "95%",
 					pieOuterRadius: "60%"

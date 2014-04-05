@@ -20,7 +20,12 @@ var math = {
 
 		// first, calculate the default _outerRadius
 		var w = size.canvasWidth - canvasPadding.left - canvasPadding.right;
-		var h = size.canvasHeight;
+		var h = size.canvasHeight - canvasPadding.top - canvasPadding.bottom;
+
+		// now factor in the footer, title & subtitle
+		if (pie.textComponents.footer.exists) {
+			h -= pie.textComponents.footer.h;
+		}
 
 		var outerRadius = ((w < h) ? w : h) / 2.8;
 		var innerRadius, percent;
@@ -31,7 +36,10 @@ var math = {
 				percent = parseInt(size.pieOuterRadius.replace(/[\D]/, ""), 10);
 				percent = (percent > 99) ? 99 : percent;
 				percent = (percent < 0) ? 0 : percent;
+
 				var smallestDimension = (w < h) ? w : h;
+
+
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
 				// TODO bounds checking
@@ -99,32 +107,26 @@ var math = {
 	 * @private
 	 */
 	calculatePieCenter: function(pie) {
-		var headerLocation = pie.options.header.location;
-		var canvasPadding = pie.options.misc.canvasPadding;
-		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
-		var canvasWidth = pie.options.size.canvasWidth;
-		var canvasHeight = pie.options.size.canvasHeight;
 		var pieCenterOffset = pie.options.misc.pieCenterOffset;
+		var hasTopTitle    = (pie.textComponents.title.exists && pie.options.header.location !== "pie-center");
+		var hasTopSubtitle = (pie.textComponents.subtitle.exists && pie.options.header.location !== "pie-center");
 
-		var hasTopTitle    = (pie.textComponents.title.exists && headerLocation !== "pie-center");
-		var hasTopSubtitle = (pie.textComponents.subtitle.exists && headerLocation !== "pie-center");
-
-		var headerOffset = canvasPadding.top;
+		var headerOffset = pie.options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += pie.textComponents.title.h + titleSubtitlePadding + pie.textComponents.subtitle.h;
+			headerOffset += pie.textComponents.title.h + pie.options.header.titleSubtitlePadding + pie.textComponents.subtitle.h;
 		} else if (hasTopTitle) {
 			headerOffset += pie.textComponents.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = pie.textComponents.subtitle.h;
+			headerOffset += pie.textComponents.subtitle.h;
 		}
 
 		var footerOffset = 0;
 		if (pie.textComponents.footer.exists) {
-			footerOffset = pie.textComponents.footer.h + canvasPadding.bottom;
+			footerOffset = pie.textComponents.footer.h + pie.options.misc.canvasPadding.bottom;
 		}
 
-		var x = ((canvasWidth - canvasPadding.left - canvasPadding.right) / 2) + canvasPadding.left;
-		var y = ((canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
+		var x = ((pie.options.size.canvasWidth - pie.options.misc.canvasPadding.left - pie.options.misc.canvasPadding.right) / 2) + pie.options.misc.canvasPadding.left;
+		var y = ((pie.options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
 
 		x += pieCenterOffset.x;
 		y += pieCenterOffset.y;

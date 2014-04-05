@@ -186,9 +186,6 @@
 			self.textComponents.footer.w = d3.w;
 		});
 
-		math.computePieRadius(this);
-
-
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
 		if (this.textComponents.title.exists)    { reqEls.push(this.cssPrefix + "title"); }
@@ -206,6 +203,9 @@
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}
+
+			// at this point, all main text component dimensions have been calculated
+			math.computePieRadius(self);
 
 			// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
 			// and store it as part of the object

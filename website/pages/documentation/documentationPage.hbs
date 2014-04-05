@@ -2,6 +2,26 @@
 	<h1>Docs</h1>
 </div>
 
-<p>
-	My god this page looks blank. And I have to fill it. Yeah.
-</p>
+<div>
+	<h3>Disclaimer</h3>
+
+	<p>
+		Somewhere along the line of developing this script, it dawned on me that creating a re-usable pie chart component
+		like this one was <b>(a)</b> tantamount to building an entire rendering engine (albeit a small one) and that <b>(b)</b>
+		no matter what solution I put in place, people would always find a way to generate really ugly, unreadable pie charts.
+		I mean, what if you pass in 1000 data items with long labels, and a 100x100 canvas size? No matter what
+		clever logic I put in place, it would either have to grossly misrepresent the data by showing a limited subset, or
+		cram everything in and make it unreadable.
+	</p>
+
+	<p>
+		So I've tried to walk that line between making things look great by default, but still allow you to customize
+		everything you need. You may well find while you're tinkering around in the generator that the label positioning
+		gets all wacky, or that inner-labels overlap one another. I know! Over time, I hope to improve things to make the rendering engine smarter
+		but ultimately the responsibility lies with you to be sensible.
+	</p>
+
+	<p>
+		Okay, disclaimer over. Now to the docs! :-)
+	</p>
+</div>

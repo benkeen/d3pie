@@ -3,8 +3,6 @@ var text = {
 	offscreenCoord: -10000,
 
 	addTitle: function(pie) {
-		var headerLocation = pie.options.header.location;
-
 		var title = pie.svg.selectAll("." + pie.cssPrefix + "title")
 			.data([pie.options.header.title])
 			.enter()
@@ -16,7 +14,7 @@ var text = {
 			.attr("y", text.offscreenCoord)
 			.attr("text-anchor", function() {
 				var location;
-				if (headerLocation === "top-center" || headerLocation === "pie-center") {
+				if (pie.options.header.location === "top-center" || pie.options.header.location === "pie-center") {
 					location = "middle";
 				} else {
 					location = "left";
@@ -82,34 +80,9 @@ var text = {
 	},
 
 	positionSubtitle: function(pie) {
-		var cssPrefix = pie.cssPrefix;
-		var pieCenter = pie.pieCenter;
-		var textComponents = pie.textComponents;
-		var headerLocation = pie.options.header.location;
-		var canvasPadding = pie.options.misc.canvasPadding;
-		var canvasWidth = pie.options.size.canvasWidth;
-		var canvasHeight = pie.options.size.canvasHeight;
-		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
-		var svg = pie.svg;
-
-		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
-		var y;
-		if (textComponents.title.exists) {
-			var totalTitleHeight = textComponents.title.h + titleSubtitlePadding + textComponents.subtitle.h;
-			if (headerLocation === "pie-center") {
-				y = pieCenter.y - (totalTitleHeight / 2) + totalTitleHeight;
-			} else {
-				y = totalTitleHeight;
-			}
-		} else {
-			if (headerLocation === "pie-center") {
-				var footerPlusPadding = canvasPadding.bottom + textComponents.footer.h;
-				y = ((canvasHeight - footerPlusPadding) / 2) + canvasPadding.top + (textComponents.subtitle.h / 2);
-			} else {
-				y = canvasPadding.top + textComponents.subtitle.h;
-			}
-		}
-		svg.select("#" + cssPrefix + "subtitle")
+		var x = (pie.options.header.location === "top-left") ? pie.options.misc.canvasPadding.left : pie.options.size.canvasWidth / 2;
+		var y = text.getHeaderHeight(pie);
+		pie.svg.select("#" + pie.cssPrefix + "subtitle")
 			.attr("x", x)
 			.attr("y", y);
 	},
@@ -159,5 +132,27 @@ var text = {
 		svg.select("#" + cssPrefix + "footer")
 			.attr("x", x)
 			.attr("y", canvasHeight - canvasPadding.bottom);
+	},
+
+	getHeaderHeight: function(pie) {
+		var h;
+		if (pie.textComponents.title.exists) {
+
+			// if the subtitle isn't defined, it'll be set to 0
+			var totalTitleHeight = pie.textComponents.title.h + pie.options.header.titleSubtitlePadding + pie.textComponents.subtitle.h;
+			if (pie.options.header.location === "pie-center") {
+				h = pie.pieCenter.y - (totalTitleHeight / 2) + totalTitleHeight;
+			} else {
+				h = totalTitleHeight + pie.options.misc.canvasPadding.top;
+			}
+		} else {
+			if (pie.options.header.location === "pie-center") {
+				var footerPlusPadding = pie.options.misc.canvasPadding.bottom + pie.textComponents.footer.h;
+				h = ((pie.options.size.canvasHeight - footerPlusPadding) / 2) + pie.options.misc.canvasPadding.top + (pie.textComponents.subtitle.h / 2);
+			} else {
+				h = pie.options.misc.canvasPadding.top + pie.textComponents.subtitle.h;
+			}
+		}
+		return h;
 	}
 };

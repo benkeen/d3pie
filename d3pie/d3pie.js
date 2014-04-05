@@ -382,7 +382,12 @@ var math = {
 
 		// first, calculate the default _outerRadius
 		var w = size.canvasWidth - canvasPadding.left - canvasPadding.right;
-		var h = size.canvasHeight;
+		var h = size.canvasHeight - canvasPadding.top - canvasPadding.bottom;
+
+		// now factor in the footer, title & subtitle
+		if (pie.textComponents.footer.exists) {
+			h -= pie.textComponents.footer.h;
+		}
 
 		var outerRadius = ((w < h) ? w : h) / 2.8;
 		var innerRadius, percent;
@@ -393,7 +398,10 @@ var math = {
 				percent = parseInt(size.pieOuterRadius.replace(/[\D]/, ""), 10);
 				percent = (percent > 99) ? 99 : percent;
 				percent = (percent < 0) ? 0 : percent;
+
 				var smallestDimension = (w < h) ? w : h;
+
+
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
 				// TODO bounds checking
@@ -461,32 +469,26 @@ var math = {
 	 * @private
 	 */
 	calculatePieCenter: function(pie) {
-		var headerLocation = pie.options.header.location;
-		var canvasPadding = pie.options.misc.canvasPadding;
-		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
-		var canvasWidth = pie.options.size.canvasWidth;
-		var canvasHeight = pie.options.size.canvasHeight;
 		var pieCenterOffset = pie.options.misc.pieCenterOffset;
+		var hasTopTitle    = (pie.textComponents.title.exists && pie.options.header.location !== "pie-center");
+		var hasTopSubtitle = (pie.textComponents.subtitle.exists && pie.options.header.location !== "pie-center");
 
-		var hasTopTitle    = (pie.textComponents.title.exists && headerLocation !== "pie-center");
-		var hasTopSubtitle = (pie.textComponents.subtitle.exists && headerLocation !== "pie-center");
-
-		var headerOffset = canvasPadding.top;
+		var headerOffset = pie.options.misc.canvasPadding.top;
 		if (hasTopTitle && hasTopSubtitle) {
-			headerOffset += pie.textComponents.title.h + titleSubtitlePadding + pie.textComponents.subtitle.h;
+			headerOffset += pie.textComponents.title.h + pie.options.header.titleSubtitlePadding + pie.textComponents.subtitle.h;
 		} else if (hasTopTitle) {
 			headerOffset += pie.textComponents.title.h;
 		} else if (hasTopSubtitle) {
-			headerOffset = pie.textComponents.subtitle.h;
+			headerOffset += pie.textComponents.subtitle.h;
 		}
 
 		var footerOffset = 0;
 		if (pie.textComponents.footer.exists) {
-			footerOffset = pie.textComponents.footer.h + canvasPadding.bottom;
+			footerOffset = pie.textComponents.footer.h + pie.options.misc.canvasPadding.bottom;
 		}
 
-		var x = ((canvasWidth - canvasPadding.left - canvasPadding.right) / 2) + canvasPadding.left;
-		var y = ((canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
+		var x = ((pie.options.size.canvasWidth - pie.options.misc.canvasPadding.left - pie.options.misc.canvasPadding.right) / 2) + pie.options.misc.canvasPadding.left;
+		var y = ((pie.options.size.canvasHeight - footerOffset - headerOffset) / 2) + headerOffset;
 
 		x += pieCenterOffset.x;
 		y += pieCenterOffset.y;
@@ -1218,8 +1220,6 @@ var text = {
 	offscreenCoord: -10000,
 
 	addTitle: function(pie) {
-		var headerLocation = pie.options.header.location;
-
 		var title = pie.svg.selectAll("." + pie.cssPrefix + "title")
 			.data([pie.options.header.title])
 			.enter()
@@ -1231,7 +1231,7 @@ var text = {
 			.attr("y", text.offscreenCoord)
 			.attr("text-anchor", function() {
 				var location;
-				if (headerLocation === "top-center" || headerLocation === "pie-center") {
+				if (pie.options.header.location === "top-center" || pie.options.header.location === "pie-center") {
 					location = "middle";
 				} else {
 					location = "left";
@@ -1297,34 +1297,9 @@ var text = {
 	},
 
 	positionSubtitle: function(pie) {
-		var cssPrefix = pie.cssPrefix;
-		var pieCenter = pie.pieCenter;
-		var textComponents = pie.textComponents;
-		var headerLocation = pie.options.header.location;
-		var canvasPadding = pie.options.misc.canvasPadding;
-		var canvasWidth = pie.options.size.canvasWidth;
-		var canvasHeight = pie.options.size.canvasHeight;
-		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
-		var svg = pie.svg;
-
-		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
-		var y;
-		if (textComponents.title.exists) {
-			var totalTitleHeight = textComponents.title.h + titleSubtitlePadding + textComponents.subtitle.h;
-			if (headerLocation === "pie-center") {
-				y = pieCenter.y - (totalTitleHeight / 2) + totalTitleHeight;
-			} else {
-				y = totalTitleHeight;
-			}
-		} else {
-			if (headerLocation === "pie-center") {
-				var footerPlusPadding = canvasPadding.bottom + textComponents.footer.h;
-				y = ((canvasHeight - footerPlusPadding) / 2) + canvasPadding.top + (textComponents.subtitle.h / 2);
-			} else {
-				y = canvasPadding.top + textComponents.subtitle.h;
-			}
-		}
-		svg.select("#" + cssPrefix + "subtitle")
+		var x = (pie.options.header.location === "top-left") ? pie.options.misc.canvasPadding.left : pie.options.size.canvasWidth / 2;
+		var y = text.getHeaderHeight(pie);
+		pie.svg.select("#" + pie.cssPrefix + "subtitle")
 			.attr("x", x)
 			.attr("y", y);
 	},
@@ -1374,6 +1349,28 @@ var text = {
 		svg.select("#" + cssPrefix + "footer")
 			.attr("x", x)
 			.attr("y", canvasHeight - canvasPadding.bottom);
+	},
+
+	getHeaderHeight: function(pie) {
+		var h;
+		if (pie.textComponents.title.exists) {
+
+			// if the subtitle isn't defined, it'll be set to 0
+			var totalTitleHeight = pie.textComponents.title.h + pie.options.header.titleSubtitlePadding + pie.textComponents.subtitle.h;
+			if (pie.options.header.location === "pie-center") {
+				h = pie.pieCenter.y - (totalTitleHeight / 2) + totalTitleHeight;
+			} else {
+				h = totalTitleHeight + pie.options.misc.canvasPadding.top;
+			}
+		} else {
+			if (pie.options.header.location === "pie-center") {
+				var footerPlusPadding = pie.options.misc.canvasPadding.bottom + pie.textComponents.footer.h;
+				h = ((pie.options.size.canvasHeight - footerPlusPadding) / 2) + pie.options.misc.canvasPadding.top + (pie.textComponents.subtitle.h / 2);
+			} else {
+				h = pie.options.misc.canvasPadding.top + pie.textComponents.subtitle.h;
+			}
+		}
+		return h;
 	}
 };
 
@@ -1537,9 +1534,6 @@ var text = {
 			self.textComponents.footer.w = d3.w;
 		});
 
-		math.computePieRadius(this);
-
-
 		// STEP 2: now create the pie chart and position everything accordingly
 		var reqEls = [];
 		if (this.textComponents.title.exists)    { reqEls.push(this.cssPrefix + "title"); }
@@ -1557,6 +1551,9 @@ var text = {
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}
+
+			// at this point, all main text component dimensions have been calculated
+			math.computePieRadius(self);
 
 			// this value is used all over the place for placing things and calculating locations. We figure it out ONCE
 			// and store it as part of the object
