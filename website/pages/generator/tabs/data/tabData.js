@@ -51,7 +51,13 @@ define([
 
 	var _addRow = function(e) {
 		e.preventDefault();
-		$("#sortableDataList").append(dataRowPartial());
+		$("#sortableDataList").append(dataRowPartial({ color: "#efefef" }));
+		_updateCounter();
+
+		$("#sortableDataList").children().last().find(".segmentColor").colorpicker().on("changeColor", function(e) {
+			$(e.target).css("background-color", e.color.toHex());
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
 	};
 
 	var _removeRow = function(e) {
@@ -114,7 +120,6 @@ define([
 
 		var trs = $("#sortableDataList").find("li");
 		for (var i=0; i<trs.length; i++) {
-			//$(trs[i]).find(".segmentColor").css("backgroundColor", colors[i]).attr("data-color", colors[i]);
 			$(trs[i]).find(".segmentColor").colorpicker("setValue", colors[i]);
 		}
 	};

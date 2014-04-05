@@ -19,6 +19,12 @@ var validate = {
 			return false;
 		}
 
+		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
+		if (!(/[a-zA-Z][a-zA-Z0-9_-]*$/.test(cssPrefix))) {
+			console.error("d3pie error: invalid options.misc.cssPrefix");
+			return false;
+		}
+
 		// confirm some data has been supplied
 		if (!options.data.hasOwnProperty("content")) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
@@ -29,11 +35,16 @@ var validate = {
 			return false;
 		}
 
-		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
-		if (!(/[a-zA-Z][a-zA-Z0-9_-]*$/.test(cssPrefix))) {
-			console.error("d3pie error: invalid options.misc.cssPrefix");
-			return false;
+		// clear out any invalid data. Each data row needs a valid number and a label
+		var data = [];
+		for (var i=0; i<options.data.content.length; i++) {
+			if (typeof options.data.content[i].value !== "number" || $.trim(options.data.content[i].label) === "") {
+				console.log("not valid: ", options.data.content[i]);
+				continue;
+			}
+			data.push(options.data.content[i]);
 		}
+		pie.options.data.content = data;
 
 		return true;
 	}

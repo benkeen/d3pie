@@ -147,6 +147,12 @@ var validate = {
 			return false;
 		}
 
+		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
+		if (!(/[a-zA-Z][a-zA-Z0-9_-]*$/.test(cssPrefix))) {
+			console.error("d3pie error: invalid options.misc.cssPrefix");
+			return false;
+		}
+
 		// confirm some data has been supplied
 		if (!options.data.hasOwnProperty("content")) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
@@ -157,11 +163,16 @@ var validate = {
 			return false;
 		}
 
-		// confirm the CSS prefix is valid. It has to start with a-Z and contain nothing but a-Z0-9_-
-		if (!(/[a-zA-Z][a-zA-Z0-9_-]*$/.test(cssPrefix))) {
-			console.error("d3pie error: invalid options.misc.cssPrefix");
-			return false;
+		// clear out any invalid data. Each data row needs a valid number and a label
+		var data = [];
+		for (var i=0; i<options.data.content.length; i++) {
+			if (typeof options.data.content[i].value !== "number" || $.trim(options.data.content[i].label) === "") {
+				console.log("not valid: ", options.data.content[i]);
+				continue;
+			}
+			data.push(options.data.content[i]);
 		}
+		pie.options.data.content = data;
 
 		return true;
 	}
@@ -749,20 +760,22 @@ var labels = {
 					y = pie.outerLabelGroupData[i].y;
 				} else {
 
+					var pieCenterCopy = $.extend(true, {}, pie.pieCenter);
+
 					// now recompute the "center" based on the current _innerRadius
 					if (pie.innerRadius > 0) {
 						var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
 						var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
-						pie.pieCenter.x = newCoords.x;
-						pie.pieCenter.y = newCoords.y;
+						pieCenterCopy.x = newCoords.x;
+						pieCenterCopy.y = newCoords.y;
 					}
 
 					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
-					x = pie.pieCenter.x + (pie.lineCoordGroups[i][0].x - pie.pieCenter.x) / 1.8;
-					y = pie.pieCenter.y + (pie.lineCoordGroups[i][0].y - pie.pieCenter.y) / 1.8;
+					x = pieCenterCopy.x + (pie.lineCoordGroups[i][0].x - pieCenterCopy.x) / 1.8;
+					y = pieCenterCopy.y + (pie.lineCoordGroups[i][0].y - pieCenterCopy.y) / 1.8;
 
 					x = x - xOffset;
 					y = y + yOffset;
@@ -996,10 +1009,8 @@ var segments = {
 	 */
 	create: function(pie) {
 		var pieCenter = pie.pieCenter;
-		var data = pie.options.data;
 		var colors = pie.options.colors;
 		var loadEffects = pie.options.effects.load;
-		var totalSize = pie.totalSize;
 		var segmentStroke = pie.options.misc.colors.segmentStroke;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
@@ -1012,11 +1023,11 @@ var segments = {
 			.outerRadius(pie.outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
-				return (d.value / totalSize) * 2 * Math.PI;
+				return (d.value / pie.totalSize) * 2 * Math.PI;
 			});
 
 		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
-			.data(data)
+			.data(pie.options.data)
 			.enter()
 			.append("g")
 			.attr("class", pie.cssPrefix + "arc");
@@ -1075,25 +1086,21 @@ var segments = {
 
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				var segColor = pie.options.colors[index];
 				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
-
 			var isExpanded = $segment.attr("class") === "expanded";
 			segments.onSegmentEvent(pie.options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				d3.select($segment[0]).style("fill", pie.options.colors[index]);
 			}
-
 			var isExpanded = $segment.attr("class") === "expanded";
 			segments.onSegmentEvent(pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});

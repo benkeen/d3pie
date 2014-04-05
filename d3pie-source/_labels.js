@@ -208,20 +208,22 @@ var labels = {
 					y = pie.outerLabelGroupData[i].y;
 				} else {
 
+					var pieCenterCopy = $.extend(true, {}, pie.pieCenter);
+
 					// now recompute the "center" based on the current _innerRadius
 					if (pie.innerRadius > 0) {
 						var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
 						var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
-						pie.pieCenter.x = newCoords.x;
-						pie.pieCenter.y = newCoords.y;
+						pieCenterCopy.x = newCoords.x;
+						pieCenterCopy.y = newCoords.y;
 					}
 
 					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
-					x = pie.pieCenter.x + (pie.lineCoordGroups[i][0].x - pie.pieCenter.x) / 1.8;
-					y = pie.pieCenter.y + (pie.lineCoordGroups[i][0].y - pie.pieCenter.y) / 1.8;
+					x = pieCenterCopy.x + (pie.lineCoordGroups[i][0].x - pieCenterCopy.x) / 1.8;
+					y = pieCenterCopy.y + (pie.lineCoordGroups[i][0].y - pieCenterCopy.y) / 1.8;
 
 					x = x - xOffset;
 					y = y + yOffset;

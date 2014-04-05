@@ -10,10 +10,8 @@ var segments = {
 	 */
 	create: function(pie) {
 		var pieCenter = pie.pieCenter;
-		var data = pie.options.data;
 		var colors = pie.options.colors;
 		var loadEffects = pie.options.effects.load;
-		var totalSize = pie.totalSize;
 		var segmentStroke = pie.options.misc.colors.segmentStroke;
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
@@ -26,11 +24,11 @@ var segments = {
 			.outerRadius(pie.outerRadius)
 			.startAngle(0)
 			.endAngle(function(d) {
-				return (d.value / totalSize) * 2 * Math.PI;
+				return (d.value / pie.totalSize) * 2 * Math.PI;
 			});
 
 		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
-			.data(data)
+			.data(pie.options.data)
 			.enter()
 			.append("g")
 			.attr("class", pie.cssPrefix + "arc");
@@ -89,25 +87,21 @@ var segments = {
 
 		$arc.on("mouseover", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				var segColor = pie.options.colors[index];
 				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
-
 			var isExpanded = $segment.attr("class") === "expanded";
 			segments.onSegmentEvent(pie.options.callbacks.onMouseoverSegment, $segment, isExpanded);
 		});
 
 		$arc.on("mouseout", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				d3.select($segment[0]).style("fill", pie.options.colors[index]);
 			}
-
 			var isExpanded = $segment.attr("class") === "expanded";
 			segments.onSegmentEvent(pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
 		});
