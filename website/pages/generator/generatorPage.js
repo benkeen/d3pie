@@ -169,7 +169,7 @@ define([
 	};
 
 	var _selectPieSegment = function() {
-		var openSegmentInfo = _demoD3Pie.getOpenPieSegment();
+		var openSegmentInfo = _demoD3Pie.getOpenSegment();
 		if (openSegmentInfo === null) {
 			_demoD3Pie.openSegment(0);
 		} else {

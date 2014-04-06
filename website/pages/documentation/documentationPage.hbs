@@ -3,18 +3,18 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-2 bs-docs-sidebar" id="pagenav">
+	<div class="col-lg-3 bs-docs-sidebar" id="pagenav">
 		<ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" style="top: 170px">
 			<li class="active"><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
 			<li><a href="#docs-intro"><i class="icon-chevron-right"></i> Intro</a></li>
 			<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
-			<li><a href="#docs-config"><i class="icon-chevron-right"></i> Configuration</a></li>
 			<li><a href="#docs-api"><i class="icon-chevron-right"></i> The API</a></li>
+			<li><a href="#docs-configuration"><i class="icon-chevron-right"></i> The Configuration Object</a></li>
 			<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
 		</ul>
 	</div>
 
-	<div class="col-lg-10" style="margin-top: 124px; z-index: 1">
+	<div class="col-lg-9" style="margin-top: 124px; z-index: 1">
 
 		<section id="docs-disclaimer" class="greyBox">
 			<h3>Disclaimer</h3>
@@ -28,15 +28,14 @@
 
 			<p>
 				So the following morning, after sobering up, I decided on an approach: I wouldn't limit the functionality,
-				but do my best to mitigate disaster. First, I'd include some automatic logic for the placement of elements
-				(conflict resolution for labels, rough-guess for default pie size if nothing is specified, basic
-				position rendering logic). Secondly, I'd provide a number of user-defined options that anticipate the sort
+				but do my best to fix the likely problems. Some things are automatically resolved: placement of elements
+				(conflict resolution for outer labels, rough-guess for default pie size if nothing is specified, basic
+				position rendering logic). I'd provide a number of user-defined options that anticipate the sort
 				of problems that are likely to occur, such as truncating long labels, hiding labels for small data
 				values. These sort of options should go a long way to help you construct clear, readable charts. But
-				it's far from infallible! When you're tinkering around in the <a href="">generator</a> you may well
-				find that the label positioning occasionally gets all wacky, or that inner labels overlap. I know! Over
-				time, I hope to make the rendering code smarter but ultimately the responsibility will always lie with
-				you to <i>know thy data</i> and choose appropriate configuration settings.
+				it's far from infallible! Over time, I hope to make the rendering code smarter but ultimately the
+				responsibility will always lie with you to <i>know thy data</i> and choose appropriate configuration
+				settings.
 			</p>
 
 			<p>
@@ -51,28 +50,26 @@
 				This page documents everything you need to know about d3pie: the available configuration settings,
 				what API functions are available, and so on. If you think there's something missing,
 				<a href="https://github.com/benkeen/d3pie/issues" target="_blank">open a ticket on github</a> and
-				I'll see to it.
+				I'll see to it. Better yet, <a href="https://github.com/benkeen/d3pie/">fork the project</a> and
+				update the documentation yourself!
 			</p>
 
 			<p>
 				If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
 				<a href="#howToUse">How to Use</a> page.
 			</p>
-
 		</section>
 
 		<section id="docs-dependencies">
 			<h3>Script Dependencies</h3>
-			<p>
-				Right now the script depends on both <a href="">d3.js</a> and <a href="">jQuery</a>. It will always use
-				d3, but over time I hope to remove the need for jQuery.
-			</p>
-		</section>
+			<ul>
+				<li><a href="https://github.com/mbostock/d3/releases" target="_blank" class="openInNewWindow">d3.js</a> - version 3.4 or later.</li>
+				<li><a href="http://jquery.com/" target="_blank" class="openInNewWindow">jQuery</a> - version 1.10 or later.</li>
+			</ul>
 
-		<section id="docs-configuration">
-			<h3>Configuration</h3>
 			<p>
-
+				To be frank, d3pie will probably work just fine with earlier version of both of those scripts, but I
+				won't guarantee it. d3pie will always rely on d3, but over time I plan to remove the need for jQuery.
 			</p>
 		</section>
 
@@ -82,10 +79,10 @@
 				There are a few API functions available on your d3pie object. These are accessible like so:
 			</p>
 
-			<blockquote>var myPie = new d3pie("element", { ... });<br />
-var openSegment = myPie.getOpenSegment();<br />
+			<pre class="prettyprint language-js">var myPie = new d3pie("element", { ... });
+var openSegment = myPie.getOpenSegment();
 myPie.redraw();
-// ...</blockquote>
+// ...</pre>
 
 			<table class="table table-striped table-hover ">
 				<thead>
@@ -96,6 +93,19 @@ myPie.redraw();
 				</tr>
 				</thead>
 				<tbody>
+				<tr>
+					<td>d3pie( ... )</td>
+					<td>
+						element <span class="label label-success">mixed</span>,
+						config <span class="label label-danger">object</span>
+					</td>
+					<td>
+						The d3pie constructor. This takes two params. The first parameter is the element that is being
+						targeted for the pie chart: it can either be a string of the ID or the actual DOM element.<br />
+						The second parameter is the d3pie configuration object. See the <a href="#docs-configuration">section
+						below</a> for more information on that.
+					</td>
+				</tr>
 				<tr>
 					<td>d3pie.redraw()</td>
 					<td>&#8212;</td>
@@ -111,21 +121,27 @@ myPie.redraw();
 					<td>d3pie.openSegment()</td>
 					<td>index <span class="label label-primary">number</span></td>
 					<td>
+						Calling this function does the same action as clicking a pie segment. You just pass in the index
+						of the segment you wish to open. If an existing segment is opened, d3pie will automatically close
+						it as it opens the new one.
 
+						TODO - closeSegment / toggleSegment
 					</td>
 				</tr>
 				<tr>
 					<td>d3pie.getOpenSegment()</td>
 					<td>&#8212;</td>
 					<td>
-
+						Returns an object containing all pertinent info about the open segment. If nothing is open,
+						it returns <code>null</code>.
 					</td>
 				</tr>
 				<tr>
 					<td>d3pie.updateProp()</td>
 					<td>
 						propKey <span class="label label-warning">string</span>,
-						value <span class="label label-success">mixed</span></td>
+						value <span class="label label-success">mixed</span>
+					</td>
 					<td>
 
 					</td>
@@ -140,7 +156,19 @@ myPie.redraw();
 				</tbody>
 			</table>
 
+			<p>
+				In addition to the above functions, see the <b>callbacks</b> section of the configuration object
+				to tie in your own code with events such as
+			</p>
 		</section>
+
+		<section id="docs-configuration">
+			<h3>The Configuration Object</h3>
+			<p>
+
+			</p>
+		</section>
+
 
 		<section id="docs-upgrading">
 			<h3>Upgrading</h3>

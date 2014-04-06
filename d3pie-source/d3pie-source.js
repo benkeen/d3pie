@@ -78,7 +78,7 @@
 	 * 	  data: {}
 	 * 	}
 	 */
-	d3pie.prototype.getOpenPieSegment = function() {
+	d3pie.prototype.getOpenSegment = function() {
 		var segment = this.currentlyOpenSegment;
 		if (segment !== null) {
 			var index = parseInt($(segment).data("index"), 10);

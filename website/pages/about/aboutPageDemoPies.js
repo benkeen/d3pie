@@ -259,7 +259,7 @@ define([], function() {
 					pieDistance: 18
 				},
 				inner: {
-					hideWhenLessThanPercentage: 7
+					hideWhenLessThanPercentage: 2
 				},
 				percentage: {
 					color: "#ffffff",
@@ -276,7 +276,7 @@ define([], function() {
 					{ label: "Chairman (cat)", value: 15 },
 					{ label: "Schroeder (cat)", value: 12 },
 					{ label: "Marvin (frog)", value: 8 },
-					{ label: "Burrito (dog) - 1%", value: 2 }
+					{ label: "Burrito (dog) - 1%", value: 2, color: "#ff0000" }
 				]
 			},
 			misc: {

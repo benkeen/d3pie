@@ -6,7 +6,7 @@ define([
 
 	var _MODULE_ID = "pageHelper";
 
-	var _pages = ["about", "generator", "download", "usageTips", "docs"];
+	var _pages = ["about", "generator", "download", "howToUse", "docs"];
 	var _$topNav;
 	var _currentPage = null;
 	var _currentPageHash = null;
@@ -33,7 +33,7 @@ define([
 
 	/**
 	 * Our main, hideous, navigation function. This accepts a page identifier (string) listed in the _pages array
-	 * above. This function validates the page string and hides/shows the appropriate page.
+	 * above. This function validates the page string and fade in/out the appropriate page.
 	 * @param page
 	 * @private
 	 */
@@ -64,7 +64,7 @@ define([
 					setTimeout(function() {
 						$("#" + cp).addClass("hidden").removeClass("fadeOut");
 
-						// show the new one. Good fucking lord. Nested setTimeouts? What the gibbering fuck...
+						// show the new one. Good lord. Nested setTimeouts? What the gibbering fuck...
 						setTimeout(function() {
 							_$topNav.find("a[href=#" + page + "]").closest("li").addClass("active"); // select the tab
 							$("#" + page).removeClass("hidden fadeOut").addClass("fadeIn"); // select the page
