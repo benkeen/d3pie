@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie</title>
+	<meta charset="utf-8">
+	<meta name="description" content="A small, re-usable pie chart component built on d3.js and jQuery for creating clear, attractive charts." />
+
+	<% if (C.MINIMIZED) { %>
+	<link href="build/<%=SITE_CSS%>" type="text/css" rel="stylesheet" />
+	<% } else { %>
+	<link href="website/css/site.css" type="text/css" rel="stylesheet" />
+	<link href="website/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<link href="website/css/bootstrap-colorpicker.css" type="text/css" rel="stylesheet" />
+	<link href="website/css/prettify.css" type="text/css" rel="stylesheet" />
+	<% } %>
+</head>
+<body>
+
+<div class="navbar navbar-inverse">
+	<div class="navbar-header">
+		<div class="navbar-brand">
+			d3pie
+			<span class="scriptVersion"><%=SCRIPT_VERSION%></span>
+		</div>
+	</div>
+	<div class="navbar-collapse collapse navbar-responsive-collapse">
+		<ul id="topNav" class="nav navbar-nav">
+			<li id="mainNav1"><a href="#about" class="selectPage">About d3pie</a></li>
+			<li id="mainNav2"><a href="#generator" class="selectPage">Generator</a></li>
+			<li><a href="#download" class="selectPage">Download</a></li>
+			<li><a href="#howToUse" class="selectPage">How to Use</a></li>
+			<li><a href="#docs" class="selectPage">Docs</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="https://github.com/benkeen/d3pie">Fork on Github</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="container tab-content">
+	<div class="hidden topPage" id="about"></div>
+	<div class="hidden topPage" id="generator"></div>
+	<div class="hidden topPage" id="download"></div>
+	<div class="hidden topPage" id="howToUse"></div>
+	<div class="hidden topPage" id="docs"></div>
+
+	<div id="footerRow" class="hidden">
+		<hr />
+	</div>
+</div>
+
+<% if (MINIMIZED) { %>
+<script src="build/<%=CORE_LIBS_JS%>"></script>
+<script src="website/core/require.config.js"></script>
+<script>require(["appStartBuild"], function() { });</script>
+<% } else { %>
+<script src="website/libs/jquery.js"></script>
+<script src="website/libs/jquery-ui.js"></script>
+<script src="website/libs/d3.min.js"></script>
+<script src="website/libs/modernizr.js"></script>
+<script src="d3pie/d3pie.js"></script>
+<script src="website/libs/bootstrap.min.js"></script>
+<script src="website/libs/bootstrap-colorpicker.js"></script>
+<script src="website/libs/three.js"></script>
+<script src="website/libs/bootstrap-affix.js"></script>
+<script src="website/libs/prettify.js"></script>
+<script src="website/libs/require.js"></script>
+<script src="website/core/require.config.js"></script>
+<script>require(["website/core/appStart.js"], function() { });</script>
+<% } %>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-49757115-1', 'd3pie.org');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>

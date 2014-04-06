@@ -15,11 +15,14 @@ var defaultSettings = {
 			fontSize: "14px",
 			font:     "helvetica"
 		},
-		location: "top-left",
+		location: "top-center",
 		titleSubtitlePadding: 8
 	},
 	footer: {
-		text: ""
+		text: 	  "",
+		color:    "#666666",
+		fontSize: "14px",
+		font:     "helvetica"
 	},
 	size: {
 		canvasHeight: 500,
@@ -31,7 +34,6 @@ var defaultSettings = {
 		sortOrder: "value-asc"
 	},
 	labels: {
-		enableTooltips: true,
 		outer: {
 			format: "label",
 			hideWhenLessThanPercentage: null,
@@ -43,34 +45,34 @@ var defaultSettings = {
 		},
 		mainLabel: {
 			color: "#333333",
-			font: "Open sans",
+			font: "helvetica",
 			fontSize: "10px"
 		},
 		percentage: {
 			color: "#999999",
-			font: "Open sans",
+			font: "helvetica",
 			fontSize: "10px",
 			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
-			font: "Open sans",
+			font: "helvetica",
 			fontSize: "10px"
 		},
 		lines: {
 			enabled: true,
 			style: "curved",
 			length: 16,
-			color: "segment" // "segment" or a hex color
+			color: "segment"
 		}
 	},
 	effects: {
 		load: {
-			effect: "default", // none / default
+			effect: "default",
 			speed: 1000
 		},
 		pullOutSegmentOnClick: {
-			effect: "bounce", // none / linear / bounce
+			effect: "bounce",
 			speed: 300,
 			size: 10
 		},

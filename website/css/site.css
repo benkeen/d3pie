@@ -367,10 +367,10 @@ label.disabled {
 	float: right;
 	margin-top: 10px;
 }
-a.openInNewWindow {
+a[target=_blank], a[target=standalone] {
 	background: url(../images/open_new_window_icon.png) no-repeat right center;
 	background-size: 12px 12px;
-	padding-right: 20px;
+	padding-right: 16px;
 }
 
 body .nav-pills>li>a.generateNavItem,
@@ -396,4 +396,8 @@ body .nav-pills>li.active>a.generateNavItem {
 
 #docs section {
 	margin-bottom: 30px;
+}
+body pre {
+	font-size: 12px;
+	line-height: 18px;
 }

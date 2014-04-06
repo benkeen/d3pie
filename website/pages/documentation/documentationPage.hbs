@@ -10,33 +10,57 @@
 			<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
 			<li><a href="#docs-api"><i class="icon-chevron-right"></i> The API</a></li>
 			<li><a href="#docs-configuration"><i class="icon-chevron-right"></i> The Configuration Object</a></li>
+			<li><a href="#docs-default-settings"><i class="icon-chevron-right"></i> &#8212; Default settings</a></li>
+			<li><a href="#docs-settings"><i class="icon-chevron-right"></i> &#8212; Setting information</a></li>
+			<li><a href="#docs-colors"><i class="icon-chevron-right"></i> &#8212; Colors</a></li>
 			<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
 			<li><a href="#docs-feature-requests"><i class="icon-chevron-right"></i> Feature Requests!</a></li>
+			<li><a href="#docs-siteinfo"><i class="icon-chevron-right"></i> About this Site</a></li>
 		</ul>
 	</div>
 
 	<div class="col-lg-9" style="margin-top: 124px; z-index: 1">
 
-		<section id="docs-disclaimer" class="greyBox">
+		<section id="docs-intro">
+			<h3>Intro</h3>
+
+			<p>
+				This page documents everything you need to know about d3pie: all about the available configuration
+				settings, the API functions, and more. If you think there's something missing,
+				<a href="https://github.com/benkeen/d3pie/issues" target="_blank">open a ticket on github</a> and
+				I'll see to it. Better yet, <a href="https://github.com/benkeen/d3pie/">fork the project</a> and
+				update the documentation yourself! Woo! Go open source.
+			</p>
+
+			<p>
+				If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
+				<a href="#howToUse" class="selectPage">How to Use</a> page.
+			</p>
+
+			<p>
+				But before digging into the code, a quick disclaimer...
+			</p>
+		</section>
+
+		<section id="docs-disclaimer">
 			<h3>Disclaimer</h3>
 
 			<p>
 				At some point when I was designing this thing, it dawned on me that creating a re-usable pie chart was
 				tantamount to building an entire rendering engine. If I made it as customizable as I wanted it to be,
 				it would open the door to letting people generate really ugly, unreadable pie charts. On the other
-				hand, if I limited the available functionality it wouldn't be as useful for many people. <i>Rats</i>.
+				hand, if I limited the available functionality it wouldn't be as useful for many people.
 			</p>
 
 			<p>
-				So the following morning, after sobering up, I decided on an approach: I wouldn't limit the functionality,
-				but do my best to fix the likely problems. Some things are automatically resolved: placement of elements
-				(conflict resolution for outer labels, rough-guess for default pie size if nothing is specified, basic
-				position rendering logic). I'd provide a number of user-defined options that anticipate the sort
-				of problems that are likely to occur, such as truncating long labels, hiding labels for small data
-				values. These sort of options should go a long way to help you construct clear, readable charts. But
-				it's far from infallible! Over time, I hope to make the rendering code smarter but ultimately the
-				responsibility will always lie with you to <i>know thy data</i> and choose appropriate configuration
-				settings.
+				So I decided on the following approach: I wouldn't limit the functionality, but make it as hard as possible
+				for you to shoot yourself in the foot. d3pie does a bunch of "automatic" stuff: reasonable placement of
+				outer labels, titles, and other text fields, best-guess default pie sizes if nothing is specified and more.
+				Secondly, there are various user-defined options that anticipate and mitigate the sort of problems that
+				are likely to occur, such as truncating long labels, hiding labels for small data values. Between them all,
+				it should go a long way to help you construct clear, readable charts. But it's far from infallible! Over
+				time, I hope to make the rendering code smarter but ultimately the responsibility will always lie with
+				you to <i>know thy data</i> and choose appropriate configuration settings.
 			</p>
 
 			<p>
@@ -44,28 +68,11 @@
 			</p>
 		</section>
 
-		<section id="docs-intro">
-			<h3>Intro</h3>
-
-			<p>
-				This page documents everything you need to know about d3pie: the available configuration settings,
-				what API functions are available, and so on. If you think there's something missing,
-				<a href="https://github.com/benkeen/d3pie/issues" target="_blank">open a ticket on github</a> and
-				I'll see to it. Better yet, <a href="https://github.com/benkeen/d3pie/">fork the project</a> and
-				update the documentation yourself!
-			</p>
-
-			<p>
-				If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
-				<a href="#howToUse" class="selectPage">How to Use</a> page.
-			</p>
-		</section>
-
 		<section id="docs-dependencies">
 			<h3>Script Dependencies</h3>
 			<ul>
-				<li><a href="https://github.com/mbostock/d3/releases" target="_blank" class="openInNewWindow">d3.js</a> - version 3.4 or later.</li>
-				<li><a href="http://jquery.com/" target="_blank" class="openInNewWindow">jQuery</a> - version 1.10 or later.</li>
+				<li><a href="https://github.com/mbostock/d3/releases" target="_blank">d3.js</a> - version 3.4 or later.</li>
+				<li><a href="http://jquery.com/" target="_blank">jQuery</a> - version 1.10 or later.</li>
 			</ul>
 
 			<p>
@@ -165,9 +172,135 @@ myPie.redraw();
 
 		<section id="docs-configuration">
 			<h3>The Configuration Object</h3>
-			<p>
 
+			<p>
+				The configuration object is where all aspects of your pie chart is defined: data, colors, fonts, labels
+				and more. The way it works is that you only need to define whatever settings you wish to override, in addition
+				to a few required fields - such as the data itself.
 			</p>
+
+			<h4>Default settings</h4>
+
+			<p>
+				Here are the default settings that will be applied to your pie chart. What each option means and what
+				are valid values for each one are itemized below.
+			</p>
+
+<pre class="prettyprint language-js">{
+	header: {
+		title: {
+			title:    "",
+			color:    "#333333",
+			fontSize: "14px",
+			font:     "helvetica"
+		},
+		subtitle: {
+			color:    "#333333",
+			fontSize: "14px",
+			font:     "helvetica"
+		},
+		location: "top-center",
+		titleSubtitlePadding: 8
+	},
+	footer: {
+		text: 	  "",
+		color:    "#666666",
+		fontSize: "14px",
+		font:     "helvetica"
+	},
+	size: {
+		canvasHeight: 500,
+		canvasWidth: 500,
+		pieInnerRadius: "0%",
+		pieOuterRadius: null
+	},
+	data: {
+		sortOrder: "value-asc",
+
+		// REQUIRED! This is where you enter your pie data; it needs to be an array of this form:
+		// { label: "label", value: 1.5, color: "#000000" } - color is optional
+		content: []
+	},
+	labels: {
+		outer: {
+			format: "label",
+			hideWhenLessThanPercentage: null,
+			pieDistance: 30
+		},
+		inner: {
+			format: "percentage",
+			hideWhenLessThanPercentage: null
+		},
+		mainLabel: {
+			color: "#333333",
+			font: "Open sans",
+			fontSize: "10px"
+		},
+		percentage: {
+			color: "#999999",
+			font: "Open sans",
+			fontSize: "10px",
+			decimalPlaces: 0
+		},
+		value: {
+			color: "#cccc44",
+			font: "Open sans",
+			fontSize: "10px"
+		},
+		lines: {
+			enabled: true,
+			style: "curved",
+			length: 16,
+			color: "segment" // "segment" or a hex color
+		}
+	},
+	effects: {
+		load: {
+			effect: "default", // none / default
+			speed: 1000
+		},
+		pullOutSegmentOnClick: {
+			effect: "bounce", // none / linear / bounce
+			speed: 300,
+			size: 10
+		},
+		highlightSegmentOnMouseover: true,
+		highlightLuminosity: -0.2
+	},
+	misc: {
+		cssPrefix: null,
+		colors: {
+			background: null,
+			segments: [
+				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
+			],
+			segmentStroke: "#ffffff"
+		},
+		canvasPadding: {
+			top: 5,
+			right: 5,
+			bottom: 5,
+			left: 5
+		},
+		pieCenterOffset: {
+			x: 0,
+			y: 0
+		},
+		footerPiePadding: 0
+	},
+	callbacks: {
+		onload: null,
+		onMouseoverSegment: null,
+		onMouseoutSegment: null,
+		onClickSegment: null
+	}
+}
+</pre>
+
+			<h4>Setting Information</h4>
+
+			<h4>Colors</h4>
+
 		</section>
 
 
@@ -184,6 +317,17 @@ myPie.redraw();
 			<h3>Feature Requests</h3>
 			<p>
 
+			</p>
+		</section>
+
+		<section id="docs-feature-requests">
+			<h3>About this Site</h3>
+			<p>
+				The codebase for this entire site is available for viewing and download on github, along with
+				the d3pie source code. To learn more about the site, view the
+				<a href="https://github.com/benkeen/d3pie" target="_blank">github</a>
+				page. The documentation about the script is all housed here; the documentation about how the site all works
+				is found on github. Hope it comes in handy!
 			</p>
 		</section>
 
