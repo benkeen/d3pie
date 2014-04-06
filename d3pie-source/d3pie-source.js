@@ -59,7 +59,7 @@
 		_init.call(this);
 	};
 
-	d3pie.prototype.recreate = function() {
+	d3pie.prototype.redraw = function() {
 		this.element.innerHTML = "";
 		_init.call(this);
 	};
@@ -103,14 +103,14 @@
 	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
 	// intelligently re-renders only the part of the pie that the user specifies. Some things cause a repaint, others
 	// just redraw the single element
-	d3pie.prototype.updateProp = function(propKey, value, optionalSettings) {
+	d3pie.prototype.updateProp = function(propKey, value) {
 		switch (propKey) {
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
 				$("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
-					this.recreate();
+					this.redraw();
 				}
 				break;
 
@@ -119,7 +119,7 @@
 				helpers.processObj(this.options, propKey, value);
 				$("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
-					this.recreate();
+					this.redraw();
 				}
 				break;
 

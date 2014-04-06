@@ -39,9 +39,9 @@ define([
 		}
 
 		if (msg.data.page === "about" || _firstPage !== "about") {
-			_demoPie1.recreate();
-			_demoPie2.recreate();
-			_demoPie3.recreate();
+			_demoPie1.redraw();
+			_demoPie2.redraw();
+			_demoPie3.redraw();
 		}
 	};
 

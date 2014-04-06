@@ -382,3 +382,18 @@ body .nav-pills>li.active>a.generateNavItem {
 	background-color: #5bc0de;
 	color: white;
 }
+.greyBox {
+	background-color: #efefef;
+	padding: 15px;
+	border-radius: 10px;
+	font-size: 13px;
+}
+.greyBox h3 {
+	color: #006687;
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
+#docs section {
+	margin-bottom: 30px;
+}

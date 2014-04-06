@@ -1,4 +1,4 @@
-<div class="page-header affix" style="top: 18px; width: 100%; background-color: white; z-index:2">
+<div class="page-header affix" style="padding-top: 18px; margin: 0px; width: 100%; background-color: white; z-index:2">
 	<h1>Docs</h1>
 </div>
 
@@ -6,51 +6,57 @@
 	<div class="col-lg-2 bs-docs-sidebar" id="pagenav">
 		<ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" style="top: 170px">
 			<li class="active"><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
-			<li><a href="#docs-overview"><i class="icon-chevron-right"></i> Overview</a></li>
+			<li><a href="#docs-intro"><i class="icon-chevron-right"></i> Intro</a></li>
 			<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
 			<li><a href="#docs-config"><i class="icon-chevron-right"></i> Configuration</a></li>
-			<li><a href="#docs-config"><i class="icon-chevron-right"></i> The API</a></li>
+			<li><a href="#docs-api"><i class="icon-chevron-right"></i> The API</a></li>
 			<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
 		</ul>
 	</div>
 
-	<div class="col-lg-10" style="margin-top: 110px; z-index: 1">
+	<div class="col-lg-10" style="margin-top: 124px; z-index: 1">
 
-		<section id="docs-disclaimer">
-			<h3>Disclaimer: this is an early release!</h3>
+		<section id="docs-disclaimer" class="greyBox">
+			<h3>Disclaimer</h3>
 
 			<p>
-				Somewhere along the line of developing this script, it dawned on me that creating a re-usable pie chart component
-				was tantamount to building an entire rendering engine. No matter what solution I put in
-				place, people would always find a way to generate really ugly, unreadable pie charts. I mean, what if you pass in
-				1000 data items with long labels, and a 100x100 canvas size? No matter what logic is in place, it would
-				either have to misrepresent the data by showing a limited subset, or cram everything in and make it unreadable.
-				Rats. This may be trickier than I thought...
+				At some point when I was designing this thing, it dawned on me that creating a re-usable pie chart was
+				tantamount to building an entire rendering engine. If I made it as customizable as I wanted it to be,
+				it would open the door to letting people generate really ugly, unreadable pie charts. On the other
+				hand, if I limited the available functionality it wouldn't be as useful for many people. <i>Rats</i>.
 			</p>
 
 			<p>
-				So I tried to walk that line between making things look great by default, but still allow you to customize every
-				last bit. I put in settings to allow you to truncate long labels, hide labels for small data elements and more. These
-				settings should go a long way to help you construct clear, readable charts. But you may well find while
-				you're tinkering around in the generator that the label positioning gets all wacky, or that inner labels overlap.
-				I know! Over time, I hope to improve things to make the rendering code smarter but ultimately the responsibility
-				will always lie with you to <i>know thy data</i> and choose appropriate configuration settings.
+				So the following morning, after sobering up, I decided on an approach: I wouldn't limit the functionality,
+				but do my best to mitigate disaster. First, I'd include some automatic logic for the placement of elements
+				(conflict resolution for labels, rough-guess for default pie size if nothing is specified, basic
+				position rendering logic). Secondly, I'd provide a number of user-defined options that anticipate the sort
+				of problems that are likely to occur, such as truncating long labels, hiding labels for small data
+				values. These sort of options should go a long way to help you construct clear, readable charts. But
+				it's far from infallible! When you're tinkering around in the <a href="">generator</a> you may well
+				find that the label positioning occasionally gets all wacky, or that inner labels overlap. I know! Over
+				time, I hope to make the rendering code smarter but ultimately the responsibility will always lie with
+				you to <i>know thy data</i> and choose appropriate configuration settings.
 			</p>
 
 			<p>
-				Okay, disclaimer over.
+				Okay, disclaimer over. :)
 			</p>
 		</section>
 
-		<section id="docs-upgrading">
-			<h3>Overview</h3>
+		<section id="docs-intro">
+			<h3>Intro</h3>
 
 			<p>
-				This section will try to document everything about d3pie: the available configuration settings,
+				This page documents everything you need to know about d3pie: the available configuration settings,
+				what API functions are available, and so on. If you think there's something missing,
+				<a href="https://github.com/benkeen/d3pie/issues" target="_blank">open a ticket on github</a> and
+				I'll see to it.
 			</p>
 
 			<p>
-				If you're looking for a quick how-do-I-get-this-working-on-my-site, check out the How to Use section.
+				If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
+				<a href="#howToUse">How to Use</a> page.
 			</p>
 
 		</section>
@@ -63,9 +69,81 @@
 			</p>
 		</section>
 
-		<section id="docs-upgrading">
-			<h4>Upgrading</h4>
+		<section id="docs-configuration">
+			<h3>Configuration</h3>
+			<p>
 
+			</p>
+		</section>
+
+		<section id="docs-api">
+			<h3>The API</h3>
+			<p>
+				There are a few API functions available on your d3pie object. These are accessible like so:
+			</p>
+
+			<blockquote>var myPie = new d3pie("element", { ... });<br />
+var openSegment = myPie.getOpenSegment();<br />
+myPie.redraw();
+// ...</blockquote>
+
+			<table class="table table-striped table-hover ">
+				<thead>
+				<tr>
+					<th>Function</th>
+					<th>Params</th>
+					<th>Description</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>d3pie.redraw()</td>
+					<td>&#8212;</td>
+					<td>
+						This redraws the entire pie chart. If the pie chart is initially created in a hidden element
+						in your webpage, you will need to run this function when the pie chart is first made visible.
+						The reason is that d3pie needs to actually "see" the dimensions of the label elements placed on
+						the canvas in order to compute the correct placement of each element - and it can't do this unless
+						the canvas is visible.
+					</td>
+				</tr>
+				<tr>
+					<td>d3pie.openSegment()</td>
+					<td>index <span class="label label-primary">number</span></td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>d3pie.getOpenSegment()</td>
+					<td>&#8212;</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>d3pie.updateProp()</td>
+					<td>
+						propKey <span class="label label-warning">string</span>,
+						value <span class="label label-success">mixed</span></td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>d3pie.destroy()</td>
+					<td>&#8212;</td>
+					<td>
+
+					</td>
+				</tr>
+				</tbody>
+			</table>
+
+		</section>
+
+		<section id="docs-upgrading">
+			<h3>Upgrading</h3>
 			<p>
 				<b>I make no promises that future versions won't change the appearance of your pie charts.</b> I'll keep the
 				d3pie JSON config object consistent for as long as I can, but I <i>do</i> anticipate changes to the exact
