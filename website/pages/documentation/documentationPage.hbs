@@ -1,27 +1,77 @@
-<div class="page-header">
+<div class="page-header affix" style="top: 18px; width: 100%; background-color: white; z-index:2">
 	<h1>Docs</h1>
 </div>
 
-<div>
-	<h3>Disclaimer</h3>
+<div class="row">
+	<div class="col-lg-2 bs-docs-sidebar" id="pagenav">
+		<ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" style="top: 170px">
+			<li class="active"><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
+			<li><a href="#docs-overview"><i class="icon-chevron-right"></i> Overview</a></li>
+			<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
+			<li><a href="#docs-config"><i class="icon-chevron-right"></i> Configuration</a></li>
+			<li><a href="#docs-config"><i class="icon-chevron-right"></i> The API</a></li>
+			<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
+		</ul>
+	</div>
 
-	<p>
-		Somewhere along the line of developing this script, it dawned on me that creating a re-usable pie chart component
-		like this one was <b>(a)</b> tantamount to building an entire rendering engine (albeit a small one) and that <b>(b)</b>
-		no matter what solution I put in place, people would always find a way to generate really ugly, unreadable pie charts.
-		I mean, what if you pass in 1000 data items with long labels, and a 100x100 canvas size? No matter what
-		clever logic I put in place, it would either have to grossly misrepresent the data by showing a limited subset, or
-		cram everything in and make it unreadable.
-	</p>
+	<div class="col-lg-10" style="margin-top: 110px; z-index: 1">
 
-	<p>
-		So I've tried to walk that line between making things look great by default, but still allow you to customize
-		everything you need. You may well find while you're tinkering around in the generator that the label positioning
-		gets all wacky, or that inner-labels overlap one another. I know! Over time, I hope to improve things to make the rendering engine smarter
-		but ultimately the responsibility lies with you to be sensible.
-	</p>
+		<section id="docs-disclaimer">
+			<h3>Disclaimer: this is an early release!</h3>
 
-	<p>
-		Okay, disclaimer over. Now to the docs! :-)
-	</p>
+			<p>
+				Somewhere along the line of developing this script, it dawned on me that creating a re-usable pie chart component
+				was tantamount to building an entire rendering engine. No matter what solution I put in
+				place, people would always find a way to generate really ugly, unreadable pie charts. I mean, what if you pass in
+				1000 data items with long labels, and a 100x100 canvas size? No matter what logic is in place, it would
+				either have to misrepresent the data by showing a limited subset, or cram everything in and make it unreadable.
+				Rats. This may be trickier than I thought...
+			</p>
+
+			<p>
+				So I tried to walk that line between making things look great by default, but still allow you to customize every
+				last bit. I put in settings to allow you to truncate long labels, hide labels for small data elements and more. These
+				settings should go a long way to help you construct clear, readable charts. But you may well find while
+				you're tinkering around in the generator that the label positioning gets all wacky, or that inner labels overlap.
+				I know! Over time, I hope to improve things to make the rendering code smarter but ultimately the responsibility
+				will always lie with you to <i>know thy data</i> and choose appropriate configuration settings.
+			</p>
+
+			<p>
+				Okay, disclaimer over.
+			</p>
+		</section>
+
+		<section id="docs-upgrading">
+			<h3>Overview</h3>
+
+			<p>
+				This section will try to document everything about d3pie: the available configuration settings,
+			</p>
+
+			<p>
+				If you're looking for a quick how-do-I-get-this-working-on-my-site, check out the How to Use section.
+			</p>
+
+		</section>
+
+		<section id="docs-dependencies">
+			<h3>Script Dependencies</h3>
+			<p>
+				Right now the script depends on both <a href="">d3.js</a> and <a href="">jQuery</a>. It will always use
+				d3, but over time I hope to remove the need for jQuery.
+			</p>
+		</section>
+
+		<section id="docs-upgrading">
+			<h4>Upgrading</h4>
+
+			<p>
+				<b>I make no promises that future versions won't change the appearance of your pie charts.</b> I'll keep the
+				d3pie JSON config object consistent for as long as I can, but I <i>do</i> anticipate changes to the exact
+				appearance of the generate pie chart. So upgrade carefully.
+			</p>
+		</section>
+
+	</div>
 </div>
