@@ -95,9 +95,20 @@ define([
 		_currentPageHash = pageCandidate;
 	};
 
+	var _getDemoPieChartIndex = function(examplePies) {
+		var index = 0;
+		if (/#generator-start-pie\d/.test(document.location.hash)) {
+			var pieChartNum = parseInt(document.location.hash.replace(/#generator-start-pie/, ""), 10);
+			if ($.isNumeric(pieChartNum) && pieChartNum >= 1 && pieChartNum <= examplePies.length) {
+				index = pieChartNum-1;
+			}
+		}
+		return index;
+	};
 
 	return {
 		initPage: _initPage,
-		selectPage: _selectPage
+		selectPage: _selectPage,
+		getDemoPieChartIndex: _getDemoPieChartIndex
 	};
 });

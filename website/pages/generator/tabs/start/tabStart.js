@@ -1,11 +1,12 @@
 define([
 	"constants",
 	"mediator",
+	"pageHelper",
 	"utils",
 	"examplePies",
 	"hbs!startTabTemplate",
 	"hbs!examplePiesTemplate"
-], function(C, mediator, utils, EXAMPLE_PIES, startTabTemplate, examplePiesTemplate) {
+], function(C, mediator, pageHelper, utils, EXAMPLE_PIES, startTabTemplate, examplePiesTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "startTab";
@@ -17,9 +18,12 @@ define([
 			return;
 		}
 
+		// always initialize the sidebar with whatever's in the selected example (always first item right now)
+		var index = pageHelper.getDemoPieChartIndex(EXAMPLE_PIES);
+
 		$(tabEl).html(startTabTemplate({
 			examples: examplePiesTemplate({ examples: EXAMPLE_PIES }),
-			currentExamplePieName: EXAMPLE_PIES[0].label
+			currentExamplePieName: EXAMPLE_PIES[index].label
 		}));
 
 		$("#exampleDropdown").on("click", "ul li a", function(e) {

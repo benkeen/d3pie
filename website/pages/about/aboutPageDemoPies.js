@@ -241,7 +241,8 @@ define([], function() {
 					fontSize: "12px",
 					font: "Arial"
 				},
-				location: "top-left"
+				location: "top-left",
+				titleSubtitlePadding: 5
 			},
 			size: {
 				canvasHeight: 280,

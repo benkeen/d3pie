@@ -38,7 +38,7 @@ define([], function() {
 					location: "bottom-left"
 				},
 				size: {
-					canvasWidth: 600,
+					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "0%",
 					pieOuterRadius: "66%"
@@ -173,7 +173,7 @@ define([], function() {
 					location: "bottom-left"
 				},
 				size: {
-					canvasWidth: 600,
+					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "95%",
 					pieOuterRadius: "60%"
@@ -293,7 +293,7 @@ define([], function() {
 					location: "bottom-center"
 				},
 				size: {
-					canvasWidth: 600,
+					canvasWidth: 590,
 					canvasHeight: 400,
 					pieInnerRadius: "0%",
 					pieOuterRadius: "59%"
@@ -406,7 +406,7 @@ define([], function() {
 					location: "bottom-left"
 				},
 				size: {
-					canvasWidth: 650,
+					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "0%",
 					pieOuterRadius: "66%"

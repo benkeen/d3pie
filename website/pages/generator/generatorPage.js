@@ -4,6 +4,7 @@
 define([
 	"constants",
 	"mediator",
+	"pageHelper",
 	"startTab",
 	"titleTab",
 	"sizeTab",
@@ -15,7 +16,7 @@ define([
 	"miscTab",
 	"examplePies",
 	"hbs!generatorPageTemplate"
-], function(C, mediator, startTab, titleTab, sizeTab, dataTab, labelsTab, footerTab, effectsTab, eventsTab,
+], function(C, mediator, pageHelper, startTab, titleTab, sizeTab, dataTab, labelsTab, footerTab, effectsTab, eventsTab,
 			miscTab, EXAMPLE_PIES, generatorPageTemplate) {
 	"use strict";
 
@@ -44,7 +45,8 @@ define([
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
 
 		// always initialize the sidebar with whatever's in the selected example (always first item right now)
-		_loadDemoPie(EXAMPLE_PIES[0]);
+		var index = pageHelper.getDemoPieChartIndex(EXAMPLE_PIES);
+		_loadDemoPie(EXAMPLE_PIES[index]);
 
 		// focus on the title field, just to be nice
 		$("#pieTitle").focus();
