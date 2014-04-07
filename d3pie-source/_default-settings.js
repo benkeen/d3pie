@@ -7,12 +7,12 @@ var defaultSettings = {
 	header: {
 		title: {
 			color:    "#333333",
-			fontSize: "14px",
+			fontSize: 14,
 			font:     "helvetica"
 		},
 		subtitle: {
 			color:    "#333333",
-			fontSize: "14px",
+			fontSize: 14,
 			font:     "helvetica"
 		},
 		location: "top-center",
@@ -21,7 +21,7 @@ var defaultSettings = {
 	footer: {
 		text: 	  "",
 		color:    "#666666",
-		fontSize: "14px",
+		fontSize: 14,
 		font:     "helvetica"
 	},
 	size: {
@@ -46,18 +46,18 @@ var defaultSettings = {
 		mainLabel: {
 			color: "#333333",
 			font: "helvetica",
-			fontSize: "10px"
+			fontSize: 10
 		},
 		percentage: {
 			color: "#999999",
 			font: "helvetica",
-			fontSize: "10px",
+			fontSize: 10,
 			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
 			font: "helvetica",
-			fontSize: "10px"
+			fontSize: 10
 		},
 		lines: {
 			enabled: true,
