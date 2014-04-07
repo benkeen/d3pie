@@ -12,7 +12,7 @@
 			<li><a href="#docs-configuration"><i class="icon-chevron-right"></i> The Configuration Object</a></li>
 			<li><a href="#docs-default-settings"><i class="icon-chevron-right"></i> &#8212; Default settings</a></li>
 			<li><a href="#docs-settings"><i class="icon-chevron-right"></i> &#8212; Setting information</a></li>
-			<li><a href="#docs-colors"><i class="icon-chevron-right"></i> &#8212; Colors</a></li>
+			<li><a href="#docs-colors"><i class="icon-chevron-right"></i> Segment Colors</a></li>
 			<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
 			<li><a href="#docs-feature-requests"><i class="icon-chevron-right"></i> Feature Requests!</a></li>
 			<li><a href="#docs-siteinfo"><i class="icon-chevron-right"></i> About this Site</a></li>
@@ -151,14 +151,32 @@ myPie.redraw();
 						value <span class="label label-success">mixed</span>
 					</td>
 					<td>
+						Destroying and recreating a pie chart can take a little time, so the user sees a visual flash
+						in the page. This function lets you update a single property on the fly, without causing a complete
+						repaint. Right now it only has a few options that can be updated, but I hope to update it to
+						allow for a lot more. The valid <code>propKeys</code> are a string versions of the flattened configuration
+						object. These values are:
 
+						<code>"header.title.text"</code><br />
+						<code>"header.subtitle.text"</code><br />
+						Updating either of these properties works the same way. If the value is entirely removed / added, it causes
+						a complete repaint of the pie so it can make use the available space. Otherwise it just updates
+						the title or subtitle element itself.
+						<code>"callbacks.onMouseoverSegment"</code><br/>
+						<code>"callbacks.onMouseoutSegment"</code><br/>
+						<code>"callbacks.onClickSegment"</code><br/>
+						<code>"effects.pullOutSegmentOnClick.effect"</code><br/>
+						<code>"effects.pullOutSegmentOnClick.speed"</code><br/>
+						<code>"effects.pullOutSegmentOnClick.size"</code><br/>
+						<code>"effects.highlightSegmentOnMouseover"</code><br/>
+						<code>"effects.highlightLuminosity"</code><br/>
 					</td>
 				</tr>
 				<tr>
 					<td>d3pie.destroy()</td>
 					<td>&#8212;</td>
 					<td>
-
+						Removes a d3pie instance altogether - including deleting the actual pie chart in the page.
 					</td>
 				</tr>
 				</tbody>
@@ -299,7 +317,42 @@ myPie.redraw();
 
 			<h4>Setting Information</h4>
 
-			<h4>Colors</h4>
+
+			<a name="docs-colors"></a>
+			<h3>Segment Colors</h3>
+
+			<p>
+				Segment colours can be assigned in three ways.
+			</p>
+
+			<ol>
+				<li>
+					<p>
+						Do nothing! d3pie includes 50 default colours that get assigned to your data.
+					</p>
+				</li>
+				<li>
+					<p>
+						Explicitly set them as part of your <code>data.content</code> attribute. For example:
+					</p>
+					<pre class="prettyprint language-js">
+data: {
+	sortOrder: "none",
+	content: [
+		{ label: "label 1", value: 8, color: "#cccccc" },
+		{ label: "label 2", value: 5, color: "#bbbbbb" },
+		{ label: "label 3", value: 2, color: "#aaaaaa" },
+		{ label: "label 4", value: 3, color: "#999999" },
+		{ label: "label 5", value: 2, color: "#888888" }
+	]
+}</pre>
+				</li>
+				<li>
+					<p>
+						Define them in an array of <code>misc.</code>
+					</p>
+				</li>
+			</ol>
 
 		</section>
 

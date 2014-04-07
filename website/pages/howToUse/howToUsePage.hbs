@@ -9,31 +9,41 @@
 
 <ol>
 	<li>
-		In your page, include the d3.js, jquery and d3pie libs. These can be placed anywhere.
+		<p>
+			In your page, include the d3.js, jquery and d3pie libs. These can be placed anywhere.
+		</p>
+
 		<pre class="prettyprint language-html">&lt;script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"&gt;&lt;/script&gt;
 &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"&gt;&lt;/script&gt;
 &lt;script src="d3pie.min.js"&gt;&lt;/script&gt;
 </pre>
-		This code references the CDN hosted versions of d3 and jQuery - but you can always just download them and
-		install them on your own server. You will need to <a href="#download" class="selectPage">download d3pie.min.js</a>
-		and host that yourself.
+		<p>
+			This code references the CDN hosted versions of d3 and jQuery - but you can always just download them and
+			install them on your own server. You will need to <a href="#download" class="selectPage">download d3pie.min.js</a>
+			and host that yourself.
+		</p>
 	</li>
 
 	<li>
-		Create an element in the page where you want the pie chart to appear. You don't need to give the element
-		any particular class or ID, but generally an ID is the simplest way to do it.
+		<p>
+			Create an element in the page where you want the pie chart to appear. You don't need to give the element
+			any particular class or ID, but generally an ID is the simplest way to do it.
+		</p>
 		<pre class="prettyprint language-html">&lt;div id="myPie"&gt;&lt;/div&gt;</pre>
 	</li>
 
 	<li>
-		Add the following javascript to instantiate your pie chart. This has to be ran after the libs above have been
-		loaded - so put it lower in your page, or in the document onready.
+		<p>
+			Add the following javascript to instantiate your pie chart. This has to be ran after the libs above have
+			been loaded - so put it lower in your page, or in the document onready.
+		</p>
 		<pre class="prettyprint language-html">&lt;script&gt;
 var pie = new d3pie("mypie", { });
 &lt;/script&gt;</pre>
-
-		The second parameter is the config object - you'll need to populate that with all the settings you want.
-		The next section explains that.
+		<p>
+			The second parameter is the config object - you'll need to populate that with all the settings you want.
+			The next section explains that.
+		</p>
 	</li>
 </ol>
 

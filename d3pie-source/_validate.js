@@ -38,7 +38,7 @@ var validate = {
 		// clear out any invalid data. Each data row needs a valid number and a label
 		var data = [];
 		for (var i=0; i<options.data.content.length; i++) {
-			if (typeof options.data.content[i].value !== "number" || $.trim(options.data.content[i].label) === "") {
+			if (typeof options.data.content[i].value !== "number") {
 				console.log("not valid: ", options.data.content[i]);
 				continue;
 			}

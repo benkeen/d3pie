@@ -176,7 +176,7 @@ define([], function() {
 					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "95%",
-					pieOuterRadius: "60%"
+					pieOuterRadius: "56%"
 				},
 				data: {
 					sortOrder: "label-asc",
@@ -246,7 +246,7 @@ define([], function() {
 				misc: {
 					colors: {
 						background: null,
-						segmentStroke: "#ffffff"
+						segmentStroke: "#adadad"
 					},
 					canvasPadding: {
 						top: 5,
@@ -308,7 +308,6 @@ define([], function() {
 						{ label: "Again?", value: 2, color: "#3a4c4e" },
 						{ label: "I'm considering an affair.", value: 1, color: "#3a3f4e" },
 						{ label: "[baleful stare]", value: 3, color: "#3c3a4e" }
-						// "#443a4e", "#4e3a4d", "#4e3a42"
 					]
 				},
 				labels: {
@@ -376,7 +375,6 @@ define([], function() {
 				}
 			}
 		},
-
 
 		{
 			label: "The Sun",
@@ -486,7 +484,6 @@ define([], function() {
 				}
 			}
 		}
-
 	];
 
 	return EXAMPLE_PIES;
