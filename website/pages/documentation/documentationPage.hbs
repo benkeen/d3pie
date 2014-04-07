@@ -5,8 +5,8 @@
 <div class="row">
 	<div class="col-lg-3 bs-docs-sidebar" id="pagenav">
 		<ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" style="top: 170px">
-			<li class="active"><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
-			<li><a href="#docs-intro"><i class="icon-chevron-right"></i> Intro</a></li>
+			<li class="active"><a href="#docs-intro"><i class="icon-chevron-right"></i> Intro</a></li>
+			<li><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
 			<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
 			<li><a href="#docs-api"><i class="icon-chevron-right"></i> The API</a></li>
 			<li><a href="#docs-configuration"><i class="icon-chevron-right"></i> The Configuration Object</a></li>
@@ -19,7 +19,7 @@
 		</ul>
 	</div>
 
-	<div class="col-lg-9" style="margin-top: 124px; z-index: 1">
+	<div class="col-lg-9" style="top: 112px; z-index: 1">
 
 		<section id="docs-intro">
 			<h3>Intro</h3>
@@ -102,7 +102,7 @@ myPie.redraw();
 				</thead>
 				<tbody>
 				<tr>
-					<td>d3pie( ... )</td>
+					<td>d3pie()</td>
 					<td>
 						element <span class="label label-success">mixed</span>,
 						config <span class="label label-danger">object</span>
@@ -224,7 +224,8 @@ myPie.redraw();
 		text: 	  "",
 		color:    "#666666",
 		fontSize: "14px",
-		font:     "helvetica"
+		font:     "helvetica",
+		location: "left"
 	},
 	size: {
 		canvasHeight: 500,
@@ -317,80 +318,130 @@ myPie.redraw();
 
 			<h4>Setting Details</h4>
 
-			<table class="table table-striped table-hover ">
+			<table class="table table-striped table-hover">
 				<thead>
 				<tr>
 					<th>Setting</th>
 					<th>Type</th>
+					<th>Default Value</th>
 					<th>Description</th>
 				</tr>
 				</thead>
 				<tbody>
 				<tr>
+					<th colspan="4">Header</th>
+				</tr>
+				<tr>
 					<td>header.title.text</td>
-					<td><span class="label label-warning">string</span></td>>
-					<td>
-						The title. If this isn't defined, or set to an empty string, the entire title is omitted.
-					</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>&#8212;</td>
+					<td>The title. If this isn't defined, or set to an empty string, the entire title is omitted.</td>
 				</tr>
 				<tr>
 					<td>header.title.color</td>
-					<td><span class="label label-warning">string</span></td>>
+					<td><span class="label label-warning">string</span></td>
+					<td>#333333</td>
 					<td>The title color, in hex code, e.g. <code>#333333</code></td>
 				</tr>
 				<tr>
 					<td>header.title.fontSize</td>
-					<td><span class="label label-primary">number</span></td>>
+					<td><span class="label label-primary">number</span></td>
+					<td>18</td>
 					<td>The font size, in pixels.</td>
 				</tr>
 				<tr>
 					<td>header.title.font</td>
-					<td><span class="label label-warning">string</span></td>>
-					<td>
-					</td>
-				</tr>
-				<tr>
-					<td>header.title.font</td>
-					<td><span class="label label-warning">string</span></td>>
-					<td>
-					</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>helvetica</td>
+					<td>A font name.</td>
 				</tr>
 				<tr>
 					<td>header.subtitle.text</td>
-					<td><span class="label label-warning">string</span></td>>
-					<td>
-					</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>&#8212;</td>
+					<td>The subtitle. If this isn't defined, or set to an empty string, the subtitle is omitted.</td>
 				</tr>
 				<tr>
 					<td>header.subtitle.color</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>
-					</td>
+					<td>#666666</td>
+					<td>The subtitle color, in hex code, e.g. <code>#333333</code></td>
 				</tr>
 				<tr>
 					<td>header.subtitle.fontSize</td>
 					<td><span class="label label-primary">number</span></td>
-					<td>
-					</td>
+					<td>14</td>
+					<td>The font size, in pixels.</td>
 				</tr>
 				<tr>
 					<td>header.subtitle.font</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>
-					</td>
+					<td>helvetica</td>
+					<td>A font name.</td>
 				</tr>
 				<tr>
 					<td>header.location</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>
+					<td>top-center</td>
+					<td>This governs the position of both the title and subtitle. The available options are:
+						<code>top-center</code>, <code>top-left</code>, or <code>pie-center</code>. The last
+					option, pie-center, is intended for "donut" pie charts, which have a space in the middle.
 					</td>
 				</tr>
 				<tr>
 					<td>header.titleSubtitlePadding</td>
 					<td><span class="label label-primary">number</span></td>
-					<td>
-					</td>
+					<td>9</td>
+					<td>This setting governs the pixel space between the title and subtitle.</td>
 				</tr>
+				<tr>
+					<th colspan="4">Footer</th>
+				</tr>
+				<tr>
+					<td>footer.text</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>&#8212;</td>
+					<td>The footer text. If this isn't defined, or set to an empty string, the footer is omitted.</td>
+				</tr>
+				<tr>
+					<td>footer.color</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>#666666</td>
+					<td>The title color, in hex code, e.g. <code>#333333</code></td>
+				</tr>
+				<tr>
+					<td>footer.fontSize</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>14</td>
+					<td>The font size, in pixels.</td>
+				</tr>
+				<tr>
+					<td>footer.font</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>helvetica</td>
+					<td>A font name.</td>
+				</tr>
+				<tr>
+					<th colspan="4">Size</th>
+				</tr>
+				<tr>
+					<td>size.canvasHeight</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>500</td>
+					<td>The height of the pie chart, in pixels.</td>
+				</tr>
+				<tr>
+					<td>size.canvasWidth</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>500</td>
+					<td>The width of the pie chart, in pixels.</td>
+				</tr>
+
+				<!--
+				pieInnerRadius: "0%",
+				pieOuterRadius: null
+				-->
+
 				</tbody>
 			</table>
 

@@ -27,11 +27,11 @@ var defaultSettings = {
 	header: {
 		title: {
 			color:    "#333333",
-			fontSize: 14,
+			fontSize: 18,
 			font:     "helvetica"
 		},
 		subtitle: {
-			color:    "#333333",
+			color:    "#666666",
 			fontSize: 14,
 			font:     "helvetica"
 		},
@@ -42,7 +42,8 @@ var defaultSettings = {
 		text: 	  "",
 		color:    "#666666",
 		fontSize: 14,
-		font:     "helvetica"
+		font:     "helvetica",
+		location: "left"
 	},
 	size: {
 		canvasHeight: 500,
@@ -1331,13 +1332,11 @@ var text = {
 	},
 
 	positionFooter: function(pie) {
-		var cssPrefix = pie.cssPrefix;
 		var footerLocation = pie.options.footer.location;
 		var footerWidth = pie.textComponents.footer.w;
 		var canvasWidth = pie.options.size.canvasWidth;
 		var canvasHeight = pie.options.size.canvasHeight;
 		var canvasPadding = pie.options.misc.canvasPadding;
-		var svg = pie.svg;
 
 		var x;
 		if (footerLocation === "bottom-left") {
@@ -1348,7 +1347,7 @@ var text = {
 			x = canvasWidth / 2; // TODO - shouldn't this also take into account padding?
 		}
 
-		svg.select("#" + cssPrefix + "footer")
+		pie.svg.select("#" + pie.cssPrefix + "footer")
 			.attr("x", x)
 			.attr("y", canvasHeight - canvasPadding.bottom);
 	},

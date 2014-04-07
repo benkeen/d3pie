@@ -7,11 +7,11 @@ var defaultSettings = {
 	header: {
 		title: {
 			color:    "#333333",
-			fontSize: 14,
+			fontSize: 18,
 			font:     "helvetica"
 		},
 		subtitle: {
-			color:    "#333333",
+			color:    "#666666",
 			fontSize: 14,
 			font:     "helvetica"
 		},
@@ -22,7 +22,8 @@ var defaultSettings = {
 		text: 	  "",
 		color:    "#666666",
 		fontSize: 14,
-		font:     "helvetica"
+		font:     "helvetica",
+		location: "left"
 	},
 	size: {
 		canvasHeight: 500,
