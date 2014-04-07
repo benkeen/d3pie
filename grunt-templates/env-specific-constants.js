@@ -1,8 +1,8 @@
 var _CONSTANTS = {
 	DEV: {
-		MINIFIED: false
+		MINIMIZED: false
 	},
 	PROD: {
-		MINIFIED: true
+		MINIMIZED: true
 	}
 };

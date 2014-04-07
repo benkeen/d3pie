@@ -203,8 +203,13 @@ define([
 		}
 
 		// if the tab hasn't changed, do nothing
-		if (tab === _currentTab) {
-			return;
+//		if (tab === _currentTab) {
+//			return;
+//		}
+
+		if (msg.data.pageHash.match(/pie\d$/)) {
+			var index = pageHelper.getDemoPieChartIndex(EXAMPLE_PIES);
+			_loadDemoPie(EXAMPLE_PIES[index]);
 		}
 
 		var $generatorTabs = $("#generatorTabs");
@@ -228,7 +233,6 @@ define([
 				}, C.OTHER.PAGE_LOAD_SPEED);
 			})(_currentTab);
 		}
-
 		_currentTab = tab;
 	};
 

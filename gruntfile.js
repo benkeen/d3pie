@@ -1,23 +1,18 @@
 module.exports = function(grunt) {
 	"use strict";
 
-	var ENVIRONMENTS = {
-		DEV: "DEV",
-		PROD: "PROD"
-	};
-
 	var fs = require('fs');
 	var vm = require('vm');
 	var _includeInThisScope = function (path) {
 		var code = fs.readFileSync(path);
 		vm.runInThisContext(code, path);
 	}.bind(this);
+	var packageFile = grunt.file.readJSON("package.json");
 
-
-	// load what we need
 	grunt.loadNpmTasks('grunt-template');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
 
 	_includeInThisScope("grunt-templates/filePaths.js");
 	_includeInThisScope("grunt-templates/env-specific-constants.js");
@@ -25,7 +20,7 @@ module.exports = function(grunt) {
 
 	var _createD3PieFiles = function() {
 		var fs = require("fs");
-		config.template.d3pieBundle.data = {
+		config.template.d3pieBundle.options.data = {
 			_defaultSettings: fs.readFileSync("d3pie-source/_default-settings.js", 'utf8'),
 			_helpers:         fs.readFileSync("d3pie-source/_helpers.js", 'utf8'),
 			_labels:          fs.readFileSync("d3pie-source/_labels.js", 'utf8'),
@@ -41,14 +36,15 @@ module.exports = function(grunt) {
 	 * The first step of the build process. This sets various settings in the main grunt config for the current build environment.
 	 * These govern how the subsequent tasks behave.
 	 */
-	var _setBuildEnvironment = function(env) {
-		var packageFile = grunt.file.readJSON("package.json");
+	var buildDev = function() {
+		config.template.indexFile.options.data.C = _CONSTANTS.DEV;
+		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
+		grunt.task.run("template:indexFile");
+	};
 
-		config.template.indexFile.options.data.C = _CONSTANTS[env];
-		config.template.indexFile.options.data.VERSION = packageFile.version;
-
-		//config.template.recreateRequireConfig.options.data.C = ENV_CONSTANTS;
-		//config.template.main.options.data.componentList = _getRequireConfigJSComponentList({ bundled: false });
+	var buildProd = function() {
+		config.template.indexFile.options.data.C = _CONSTANTS.DEV;
+		grunt.task.run("requirejs");
 	};
 
 	var config = {
@@ -59,44 +55,50 @@ module.exports = function(grunt) {
 					'd3pie/d3pie.js': ['d3pie-source/d3pie-source.js']
 				}
 			},
-
 			indexFile: {
 				options: {
 					data: {
 						C: null,
 						VERSION: "",
-						MAIN_CSS_FILEPATH: "",
-						CORE_LIBS_FILEPATH: "",
 						componentList: null
 					}
 				},
 				files: {
-					'index.html':                      ['source-templates/template-index.html'],
-					'core/require.config.js':          ['source-templates/template-require.config.js']
+					'index.html': ['grunt-templates/template-index.html']
+					//'core/require.config.js':          ['source-templates/template-require.config.js']
 				}
 			}
 		},
+
 		watch: {
 			scripts: {
 				files: "d3pie-source/*.js",
 				tasks: ["createD3PieFiles"]
 			}
 		},
+
 		uglify: {
 			d3pie: {
 				src: 'd3pie/d3pie.js',
 				dest: 'd3pie/d3pie.min.js'
 			}
+		},
+
+		requirejs: {
+			compile: {
+				options: {
+					name: "core/appStart",
+					baseUrl: "website/",
+					mainConfigFile: "website/core/require.config.js",
+					out: "build/appStart.js"
+				}
+			}
 		}
 	};
 
 	grunt.initConfig(config);
-
-
-	grunt.registerTask('createD3PieFiles', _createD3PieFiles);
-	grunt.registerTask('setBuildEnv_DEV', function() { _setBuildEnvironment(ENVIRONMENTS.DEV); });
-	grunt.registerTask('setBuildEnv_PROD', function() { _setBuildEnvironment(ENVIRONMENTS.PROD); });
-	grunt.registerTask('default', ['createD3PieFiles', 'uglify:d3pie']);
-	grunt.registerTask('dev', ["setBuildEnv_DEV"]);
-	grunt.registerTask('prod');
+	grunt.registerTask("createD3PieFiles", _createD3PieFiles);
+	grunt.registerTask("default", ["createD3PieFiles", "uglify:d3pie"]);
+	grunt.registerTask("dev", function() { buildDev(); });
+	grunt.registerTask("prod", function() { buildProd(); });
 };
