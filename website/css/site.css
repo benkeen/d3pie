@@ -12,6 +12,10 @@ body .navbar {
 #mainNav2 {
     width: 90px;
 }
+#sidebar {
+	width: 400px;
+	float: left;
+}
 
 /* for the UI */
 #generatorTabs {
@@ -400,4 +404,12 @@ body .nav-pills>li.active>a.generateNavItem {
 body pre {
 	font-size: 12px;
 	line-height: 18px;
+}
+.red {
+	color: #ff0000;
+}
+#result {
+	width: 100%;
+	height: 350px;
+	border: 1px solid #999999;
 }

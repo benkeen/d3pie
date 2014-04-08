@@ -18,7 +18,7 @@
 </div>
 
 <div class="row hidden" id="mainContent">
-	<div id="sidebar" style="width: 400px; float: left">
+	<div id="sidebar" {{#if hideMainContent}}class="hidden"{{/if}}>
 		<div class="tab-content">
 			<div class="hidden subPage" id="generator-start"></div>
 			<div class="hidden subPage" id="generator-title"></div>
@@ -29,12 +29,12 @@
 			<div class="hidden subPage" id="generator-effects"></div>
 			<div class="hidden subPage" id="generator-events"></div>
 			<div class="hidden subPage" id="generator-misc"></div>
-			<div class="hidden subPage" id="generator-result"></div>
 		</div>
 	</div>
-	<div class="col-md-7">
+	<div  id="pieChartDiv" class="col-md-7 {{#if hideMainContent}}hidden{{/if}}">
 		<div id="generatorPieChart" class="showOutline"></div>
 		<div id="generatorPieChartPad"></div>
 		<div id="birdyBackground"></div>
 	</div>
+	<div class="col-md-12 {{#unless hideMainContent}}hidden{{/unless}}" id="generator-result"></div>
 </div>

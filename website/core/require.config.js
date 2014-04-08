@@ -38,7 +38,6 @@ require.config({
 		documentationPage: "pages/documentation/documentationPage",
 		documentationPageTemplate: "pages/documentation/documentationPage.hbs",
 
-
 		// --- tabs ---
 		startTab: "pages/generator/tabs/start/tabStart",
 		startTabTemplate: "pages/generator/tabs/start/tabStartTemplate.hbs",
@@ -68,6 +67,9 @@ require.config({
 
 		eventsTab: "pages/generator/tabs/events/tabEvents",
 		eventsTabTemplate: "pages/generator/tabs/events/tabEventsTemplate.hbs",
+
+		generateTab: "pages/generator/tabs/generate/tabGenerate",
+		generateTabTemplate: "pages/generator/tabs/generate/tabGenerateTemplate.hbs",
 
 		// misc
 		birds: "pages/generator/birds"

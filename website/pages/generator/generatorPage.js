@@ -14,10 +14,11 @@ define([
 	"effectsTab",
 	"eventsTab",
 	"miscTab",
+	"generateTab",
 	"examplePies",
 	"hbs!generatorPageTemplate"
 ], function(C, mediator, pageHelper, startTab, titleTab, sizeTab, dataTab, labelsTab, footerTab, effectsTab, eventsTab,
-			miscTab, EXAMPLE_PIES, generatorPageTemplate) {
+			miscTab, generateTab, EXAMPLE_PIES, generatorPageTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "generatorPage";
@@ -39,7 +40,15 @@ define([
 	var _init = function() {
 		_addTabEventHandlers();
 
-		$("#generator").html(generatorPageTemplate());
+		var config = {
+			hideMainContent: false
+		};
+		if (document.location.hash === "#generator-result") {
+			config = {
+				hideMainContent: true
+			}
+		}
+		$("#generator").html(generatorPageTemplate(config));
 
 		// now fade in the three sections: nav, main content & footer row
 		$("#generatorTabs,#mainContent,#footerRow").hide().removeClass("hidden").fadeIn(400);
@@ -165,6 +174,7 @@ define([
 		effectsTab.render("#generator-effects", config);
 		eventsTab.render("#generator-events", config);
 		miscTab.render("#generator-misc", config);
+		generateTab.render("#generator-result", config);
 
 		// render the pie!
 		_renderWithAnimation();
@@ -187,9 +197,16 @@ define([
 		}
 	};
 
+	/**
+	 * Bloody awful function! This is called whenever the page/tab is changed.
+	 * @param msg
+	 * @private
+	 */
 	var _onPageSelected = function(msg) {
 		if (!_firstPageLoaded) {
-			_firstPage = msg.data.page;
+			if (msg.data.pageHash !== "generator-result") {
+				_firstPage = msg.data.page;
+			}
 			_firstPageLoaded = true;
 		}
 		if (msg.data.page !== "generator") {
@@ -202,10 +219,24 @@ define([
 			tab = pageHash;
 		}
 
-		// if the tab hasn't changed, do nothing
-//		if (tab === _currentTab) {
-//			return;
-//		}
+		if (pageHash === "generator-result") {
+			$("#sidebar,#pieChartDiv").addClass("fadeOut");
+			setTimeout(function() {
+				$("#sidebar,#pieChartDiv").addClass("hidden").removeClass("fadeOut");
+				$("#generator-result").removeClass("hidden fadeOut").addClass("fadeIn");
+			}, C.OTHER.PAGE_LOAD_SPEED);
+		} else {
+			// if the previous tab was generator-result
+			if (_currentTab === "generator-result") {
+				$("#generator-result").addClass("fadeOut");
+				setTimeout(function() {
+					$("#generator-result").addClass("hidden").removeClass("fadeOut");
+					$("#sidebar,#pieChartDiv").removeClass("hidden fadeOut").addClass("fadeIn");
+
+
+				}, C.OTHER.PAGE_LOAD_SPEED);
+			}
+		}
 
 		if (msg.data.pageHash.match(/pie\d$/)) {
 			var index = pageHelper.getDemoPieChartIndex(EXAMPLE_PIES);
@@ -228,8 +259,6 @@ define([
 				setTimeout(function() {
 					$("#" + ct).addClass("hidden").removeClass("fadeOut");
 					$("#" + tab).removeClass("hidden fadeOut").addClass("fadeIn");
-
-					//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.WITH_ANIMATION);
 				}, C.OTHER.PAGE_LOAD_SPEED);
 			})(_currentTab);
 		}
