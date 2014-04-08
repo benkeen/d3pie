@@ -131,9 +131,11 @@ define([
 
 		_demoD3Pie = new d3pie("generatorPieChart", config);
 		_isCreated = true;
+		var height = parseInt(config.size.canvasHeight, 10) + 2;
+		var width  = parseInt(config.size.canvasWidth, 10) + 2;
 		$("#generatorPieChartPad, #generatorPieChart").css({
-			width: config.size.canvasWidth,
-			height: config.size.canvasHeight
+			width: width, // + 2 for padding
+			height: height
 		});
 	};
 

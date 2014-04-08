@@ -70,6 +70,7 @@ require.config({
 
 		generateTab: "pages/generator/tabs/generate/tabGenerate",
 		generateTabTemplate: "pages/generator/tabs/generate/tabGenerateTemplate.hbs",
+		generatedContentTemplate: "pages/generator/tabs/generate/generatedContent.hbs",
 
 		// misc
 		birds: "pages/generator/birds"
