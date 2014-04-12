@@ -67,6 +67,10 @@ var defaultSettings = {
 			enabled: true,
 			style: "curved",
 			color: "segment"
+		},
+		truncation: {
+			enabled: false,
+			length: 30
 		}
 	},
 	effects: {

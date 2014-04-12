@@ -178,6 +178,24 @@
 				value="{{config.labels.percentage.decimalPlaces}}" />
 		</div>
 	</div>
+
+	<div class="row form-group">
+		<div class="col-md-4">
+			<label>Truncate long labels</label>
+		</div>
+		<div class="col-md-8">
+			<input type="radio" name="labelTruncation" id="labelTruncation1" class="changeUpdateNoAnimation"
+				   {{#compare config.labels.truncation.enabled false}}checked="checked"{{/compare}} />
+				<label for="labelTruncation1" class="padRight">Never</label>
+
+			<input type="radio" name="labelTruncation" id="labelTruncation2" class="changeUpdateNoAnimation"
+				   {{#if config.labels.truncation.enabled}}checked="checked"{{/if}} />
+				<label for="labelTruncation2">at</label>
+				<input type="number" id="labelTruncationLength" value="{{config.labels.truncation.length}}"
+					   class="smallField keyupUpdateNoAnimation" min="0" max="200" maxlength="3" />
+				<label>chars</label>
+		</div>
+	</div>
 </div>
 
 

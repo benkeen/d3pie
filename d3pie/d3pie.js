@@ -87,6 +87,10 @@ var defaultSettings = {
 			enabled: true,
 			style: "curved",
 			color: "segment"
+		},
+		truncation: {
+			enabled: false,
+			length: 30
 		}
 	},
 	effects: {
@@ -582,12 +586,19 @@ var labels = {
 			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 
+
 		// 1. Add the main label
 		if (include.mainLabel) {
 			labelGroup.append("text")
 				.attr("id", function(d, i) { return pie.cssPrefix + "segmentMainLabel" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentMainLabel-" + section)
-				.text(function(d) { return d.label; })
+				.text(function(d) {
+					var str = d.label;
+					if (settings.truncation.enabled && d.label.length > settings.truncation.length) {
+						str = d.label.substring(0, settings.truncation.length) + "...";
+					}
+					return str;
+				})
 				.style("font-size", settings.mainLabel.fontSize)
 				.style("font-family", settings.mainLabel.font)
 				.style("fill", settings.mainLabel.color);

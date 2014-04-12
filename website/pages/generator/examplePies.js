@@ -108,6 +108,10 @@ define([], function() {
 						style: "curved",
 						length: 32,
 						color: "segment"
+					},
+					truncation: {
+						enabled: true,
+						length: 30
 					}
 				},
 				effects: {
@@ -228,6 +232,10 @@ define([], function() {
 						enabled: true,
 						length: 16,
 						color: "#777777"
+					},
+					truncation: {
+						enabled: true,
+						length: 30
 					}
 				},
 				effects: {
@@ -342,6 +350,10 @@ define([], function() {
 						style: "curved",
 						length: 16,
 						color: "#cccccc"
+					},
+					truncation: {
+						enabled: true,
+						length: 30
 					}
 				},
 				effects: {
@@ -451,6 +463,10 @@ define([], function() {
 						enabled: true,
 						length: 32,
 						color: "segment"
+					},
+					truncation: {
+						enabled: true,
+						length: 30
 					}
 				},
 				effects: {

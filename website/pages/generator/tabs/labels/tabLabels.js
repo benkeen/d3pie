@@ -107,6 +107,10 @@ define([
 				enabled: $("#showLabelLines")[0].checked,
 				style:   $("input[name=lineStyle]:checked").val(),
 				color:   lineColor
+			},
+			truncation: {
+				enabled: $("#labelTruncation2")[0].checked,
+				length: parseInt($("#labelTruncationLength").val(), 10)
 			}
 		};
 	};
