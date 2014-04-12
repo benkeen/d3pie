@@ -2,8 +2,9 @@ define([
 	"constants",
 	"mediator",
 	"pageHelper",
-	"hbs!generateTabTemplate"
-], function(C, mediator, pageHelper, generateTabTemplate) {
+	"hbs!generateTabTemplate",
+	"hbs!generatedContentTemplate"
+], function(C, mediator, pageHelper, generateTabTemplate, generatedContentTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "generateTab";
@@ -17,17 +18,29 @@ define([
 		mediator.register(_MODULE_ID);
 
 		var subscriptions = {};
-		subscriptions[C.EVENT.DEMO_PIE.SEND_DATA] = _generatePie;
+		subscriptions[C.EVENT.DEMO_PIE.SEND_DATA] = _generatePieCode;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
 	var _render = function(tabEl, config) {
 		$(tabEl).html(generateTabTemplate());
+
+		// add the event handlers
 	};
 
-	var _generatePie = function(msg) {
+	var _generatePieCode = function(msg) {
 		var finalConfigObject = _generateFinalConfigObject(msg.data);
-		console.log(finalConfigObject);
+
+		var minimizeJS = $("#minimizeJS")[0].checked;
+		var configObject = (minimizeJS) ? JSON.stringify(finalConfigObject) : JSON.stringify(finalConfigObject, null, "\t");
+		var generationFormat = $("input[name=outputFormat]:checked").val();
+
+		$("#finalResult").addClass("prettyprint").html(generatedContentTemplate({
+			generationFormat: generationFormat,
+			configObject: configObject
+		}));
+
+		prettyPrint();
 	};
 
 
@@ -129,10 +142,10 @@ define([
 		if (canvasHeightDiff || canvasWidthDiff || pieInnerRadiusDiff || pieOuterRadiusDiff) {
 			finalObj.size = {};
 			if (canvasHeightDiff) {
-				finalObj.size.canvasHeight = allSettings.size.canvasHeight;
+				finalObj.size.canvasHeight = parseFloat(allSettings.size.canvasHeight, 10);
 			}
 			if (canvasWidthDiff) {
-				finalObj.size.canvasWidth = allSettings.size.canvasWidth;
+				finalObj.size.canvasWidth = parseFloat(allSettings.size.canvasWidth, 10);
 			}
 			if (pieInnerRadiusDiff) {
 				finalObj.size.pieInnerRadius = allSettings.size.pieInnerRadius;
@@ -161,7 +174,7 @@ define([
 				finalObj.labels.outer.format = allSettings.labels.outer.format;
 			}
 			if (outerLabelHideDiff) {
-				finalObj.labels.outer.hideWhenLessThanPercentage = allSettings.labels.outer.hideWhenLessThanPercentage;
+				finalObj.labels.outer.hideWhenLessThanPercentage = parseFloat(allSettings.labels.outer.hideWhenLessThanPercentage);
 			}
 			if (outerLabelPieDistDiff) {
 				finalObj.labels.outer.pieDistance = allSettings.labels.outer.pieDistance;
@@ -177,7 +190,7 @@ define([
 				finalObj.labels.inner.format = allSettings.labels.inner.format;
 			}
 			if (innerLabelHideDiff) {
-				finalObj.labels.inner.hideWhenLessThanPercentage = allSettings.labels.inner.hideWhenLessThanPercentage;
+				finalObj.labels.inner.hideWhenLessThanPercentage = parseFloat(allSettings.labels.inner.hideWhenLessThanPercentage);
 			}
 		}
 
@@ -293,21 +306,14 @@ define([
 
 		// misc
 		var miscColorBgDiff = allSettings.misc.colors.background != defaultSettings.misc.colors.background;
-
-		var arr1 = allSettings.misc.colors.segments;
-		var arr2 = defaultSettings.misc.colors.segments;
-		var miscSegmentsDiff = $(arr1).not(arr2).length != 0 || $(arr2).not(arr1).length != 0;
-
+		// N.B. It's not possible in the generator to generate the misc.colors.segments property. This is missing on purpose.
 		var miscSegmentStrokeDiff = allSettings.misc.colors.segmentStroke != defaultSettings.misc.colors.segmentStroke;
 
-		if (miscColorBgDiff || miscSegmentsDiff || miscSegmentStrokeDiff) {
+		if (miscColorBgDiff || miscSegmentStrokeDiff) {
 			if (!finalObj.hasOwnProperty("misc")) { finalObj.misc = {}; }
 			finalObj.misc.colors = {};
 			if (miscColorBgDiff) {
 				finalObj.misc.colors.background = allSettings.misc.colors.background;
-			}
-			if (miscSegmentsDiff) {
-				finalObj.misc.colors.segments = allSettings.misc.colors.segments;
 			}
 			if (miscSegmentStrokeDiff) {
 				finalObj.misc.colors.segmentStroke = allSettings.misc.colors.segmentStroke;

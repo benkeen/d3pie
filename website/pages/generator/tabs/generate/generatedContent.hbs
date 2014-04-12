@@ -1,17 +1,16 @@
-{{#if includeHTML}}
-<html>
-<head></head>
-<body>
+{{#compare generationFormat "full"}}&lt;html>
+&lt;head>&lt;/head>
+&lt;body>
 
-<div id="pieChart"></div>
+&lt;div id="pieChart">&lt;/div>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="d3pie.mins.js"></script>
-<script>
+&lt;script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js">&lt;/script>
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">&lt;/script>
+&lt;script src="d3pie.min.js">&lt;/script>
+&lt;script>
 	var pie = new d3pie("pieChart", {{configObject}});
-</script>
+&lt;/script>
 
-</body>
-</html>
-{{/if}}
+&lt;/body>
+&lt;/html>
+{{/compare}}
