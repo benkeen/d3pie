@@ -11,7 +11,7 @@ define([], function() {
 	var EXAMPLE_PIES = [
 
 		{
-			label: "Programming Languages",
+			label: "Full pie chart",
 			showCanvasOutline: true,
 			config: {
 				header: {

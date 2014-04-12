@@ -103,7 +103,6 @@ var defaultSettings = {
 		highlightLuminosity: -0.2
 	},
 	misc: {
-		cssPrefix: null,
 		colors: {
 			background: null,
 			segments: [
@@ -121,7 +120,7 @@ var defaultSettings = {
 			x: 0,
 			y: 0
 		},
-		footerPiePadding: 0
+		cssPrefix: null
 	},
 	callbacks: {
 		onload: null,
