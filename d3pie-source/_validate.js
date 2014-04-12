@@ -26,11 +26,11 @@ var validate = {
 		}
 
 		// confirm some data has been supplied
-		if (!options.data.hasOwnProperty("content")) {
+		if (!$.isArray(options.data.content)) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
 			return false;
 		}
-		if (!$.isArray(options.data.content) || pie.options.data.content.length === 0) {
+		if (options.data.content.length === 0) {
 			console.error("d3pie error: no data supplied.");
 			return false;
 		}

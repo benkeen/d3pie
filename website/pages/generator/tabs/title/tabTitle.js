@@ -42,13 +42,13 @@ define([
 			title: {
 				text:     $("#pieTitle").val(),
 				color:    $("#titleColor").val(),
-				fontSize: $("#titleFontSize").val() + "px",
+				fontSize: $("#titleFontSize").val(),
 				font:     $("#titleFont").val()
 			},
 			subtitle: {
 				text:     $("#pieSubtitle").val(),
 				color:    $("#subtitleColor").val(),
-				fontSize: $("#subtitleFontSize").val() + "px",
+				fontSize: $("#subtitleFontSize").val(),
 				font:     $("#subtitleFont").val()
 			},
 			location: $("#titleLocation").val(),

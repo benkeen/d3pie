@@ -180,6 +180,9 @@ define([
 
 		// render the pie!
 		_renderWithAnimation();
+
+		// TODO tmp
+		_generateFinalConfigObject();
 	};
 
 	var _selectPieSegment = function() {
@@ -265,6 +268,224 @@ define([
 			})(_currentTab);
 		}
 		_currentTab = tab;
+	};
+
+
+	// yikes. The reason for all this hideousness is that we want to construct the smallest config object that we
+	// can. So each field needs to be examined separately. I looked into object diffing scripts, but honestly there
+	// was too much custom stuff needed to be done with many properties
+	var _generateFinalConfigObject = function() {
+
+		var allSettings = _getConfigObject();
+		var finalObj = {};
+
+		// header title
+		var headerTitleTextDiff = allSettings.header.title.text != defaultSettings.header.title.text;
+		var headerTitleColorDiff = allSettings.header.title.color != defaultSettings.header.title.color;
+		var headerTitleFontSizeDiff = allSettings.header.title.fontSize != defaultSettings.header.title.fontSize;
+		var headerTitleFontDiff = allSettings.header.title.font != defaultSettings.header.title.font;
+		if (headerTitleTextDiff || headerTitleColorDiff || headerTitleFontSizeDiff || headerTitleFontDiff) {
+			finalObj.header = {
+				title: {}
+			};
+			if (headerTitleTextDiff) {
+				finalObj.header.title.text = allSettings.header.title.text;
+			}
+			if (headerTitleColorDiff) {
+				finalObj.header.title.color = allSettings.header.title.color;
+			}
+			if (headerTitleFontSizeDiff) {
+				finalObj.header.title.fontSize = parseInt(allSettings.header.title.fontSize, 10);
+			}
+			if (headerTitleFontDiff) {
+				finalObj.header.title.font = allSettings.header.title.font;
+			}
+		}
+
+		// header subtitle
+		var headerSubtitleTextDiff = allSettings.header.subtitle.text != defaultSettings.header.subtitle.text;
+		var headerSubtitleColorDiff = allSettings.header.subtitle.color != defaultSettings.header.subtitle.color;
+		var headerSubtitleFontSizeDiff = allSettings.header.subtitle.fontSize != defaultSettings.header.subtitle.fontSize;
+		var headerSubtitleFontDiff = allSettings.header.subtitle.font != defaultSettings.header.subtitle.font;
+		if (headerSubtitleTextDiff || headerSubtitleColorDiff || headerSubtitleFontSizeDiff || headerSubtitleFontDiff) {
+			if (!finalObj.hasOwnProperty("header")) { finalObj.header = {}; }
+			finalObj.header.subtitle = {};
+
+			if (headerSubtitleTextDiff) {
+				finalObj.header.subtitle.text = allSettings.header.subtitle.text;
+			}
+			if (headerSubtitleColorDiff) {
+				finalObj.header.subtitle.color = allSettings.header.subtitle.color;
+			}
+			if (headerSubtitleFontSizeDiff) {
+				finalObj.header.subtitle.fontSize = parseInt(allSettings.header.subtitle.fontSize, 10);
+			}
+			if (headerSubtitleFontDiff) {
+				finalObj.header.subtitle.font = allSettings.header.subtitle.font;
+			}
+		}
+
+		if (allSettings.header.location != defaultSettings.header.location) {
+			if (!finalObj.hasOwnProperty("header")) { finalObj.header = {}; }
+			finalObj.header.location = allSettings.header.location;
+		}
+
+		if (allSettings.header.titleSubtitlePadding != defaultSettings.header.titleSubtitlePadding) {
+			if (!finalObj.hasOwnProperty("header")) { finalObj.header = {}; }
+			finalObj.header.titleSubtitlePadding = parseInt(allSettings.header.titleSubtitlePadding, 10);
+		}
+
+		// footer
+		var footerTextDiff = allSettings.footer.text != defaultSettings.footer.text;
+		var footerColorDiff = allSettings.footer.color != defaultSettings.footer.color;
+		var footerFontSizeDiff = allSettings.footer.fontSize != defaultSettings.footer.fontSize;
+		var footerFontDiff = allSettings.footer.font != defaultSettings.footer.font;
+		var footerLocationDiff = allSettings.footer.font != defaultSettings.footer.location;
+		if (footerTextDiff || footerColorDiff || footerFontSizeDiff || footerFontDiff) {
+			finalObj.footer = {};
+			if (footerTextDiff) {
+				finalObj.footer.text = allSettings.footer.text;
+			}
+			if (footerColorDiff) {
+				finalObj.footer.color = allSettings.footer.color;
+			}
+			if (footerFontSizeDiff) {
+				finalObj.footer.fontSize = parseInt(allSettings.footer.fontSize, 10);
+			}
+			if (footerFontDiff) {
+				finalObj.footer.font = allSettings.footer.font;
+			}
+			if (footerLocationDiff) {
+				finalObj.footer.location = allSettings.footer.location;
+			}
+		}
+
+		// size
+		var canvasHeightDiff = allSettings.size.canvasHeight != defaultSettings.size.canvasHeight;
+		var canvasWidthDiff = allSettings.size.canvasWidth != defaultSettings.size.canvasWidth;
+		var pieInnerRadiusDiff = allSettings.size.pieInnerRadius != defaultSettings.size.pieInnerRadius;
+		var pieOuterRadiusDiff = allSettings.size.pieOuterRadius != defaultSettings.size.pieOuterRadius;
+		if (canvasHeightDiff || canvasWidthDiff || pieInnerRadiusDiff || pieOuterRadiusDiff) {
+			finalObj.size = {};
+			if (canvasHeightDiff) {
+				finalObj.size.canvasHeight = allSettings.size.canvasHeight;
+			}
+			if (canvasWidthDiff) {
+				finalObj.size.canvasWidth = allSettings.size.canvasWidth;
+			}
+			if (pieInnerRadiusDiff) {
+				finalObj.size.pieInnerRadius = allSettings.size.pieInnerRadius;
+			}
+			if (pieInnerRadiusDiff) {
+				finalObj.size.pieOuterRadius = allSettings.size.pieOuterRadius;
+			}
+		}
+
+		// data
+		finalObj.data = {};
+		if (allSettings.data.sortOrder != defaultSettings.data.sortOrder) {
+			finalObj.data.sortOrder = allSettings.data.sortOrder;
+		}
+		finalObj.data.content = allSettings.data.content;
+
+		// outer labels
+		var outerLabelFormatDiff = allSettings.labels.outer.format != defaultSettings.labels.outer.format;
+		var outerLabelHideDiff = allSettings.labels.outer.hideWhenLessThanPercentage != defaultSettings.labels.outer.hideWhenLessThanPercentage;
+		var outerLabelPieDistDiff = allSettings.labels.outer.pieDistance != defaultSettings.labels.outer.pieDistance;
+		if (outerLabelFormatDiff || outerLabelHideDiff || outerLabelPieDistDiff) {
+			finalObj.labels = {
+				outer: {}
+			};
+			if (outerLabelFormatDiff) {
+				finalObj.labels.outer.format = allSettings.labels.outer.format;
+			}
+			if (outerLabelHideDiff) {
+				finalObj.labels.outer.hideWhenLessThanPercentage = allSettings.labels.outer.hideWhenLessThanPercentage;
+			}
+			if (outerLabelPieDistDiff) {
+				finalObj.labels.outer.pieDistance = allSettings.labels.outer.pieDistance;
+			}
+		}
+
+		var innerLabelFormatDiff = allSettings.labels.inner.format != defaultSettings.labels.inner.format;
+		var innerLabelHideDiff = allSettings.labels.inner.hideWhenLessThanPercentage != defaultSettings.labels.inner.hideWhenLessThanPercentage;
+		if (innerLabelFormatDiff || innerLabelHideDiff) {
+			if (finalObj.hasOwnProperty("labels")) { finalObj.labels = {}; }
+			finalObj.labels.inner = {};
+			if (innerLabelFormatDiff) {
+				finalObj.labels.inner.format = allSettings.labels.inner.format;
+			}
+			if (innerLabelHideDiff) {
+				finalObj.labels.inner.hideWhenLessThanPercentage = allSettings.labels.inner.hideWhenLessThanPercentage;
+			}
+		}
+
+		/*
+		labels: {
+			mainLabel: {
+				color: "#333333",
+				font: "helvetica",
+				fontSize: 10
+			},
+			percentage: {
+				color: "#999999",
+				font: "helvetica",
+				fontSize: 10,
+				decimalPlaces: 0
+			},
+			value: {
+				color: "#cccc44",
+				font: "helvetica",
+				fontSize: 10
+			},
+			lines: {
+				enabled: true,
+				style: "curved",
+				color: "segment"
+			}
+		},
+		effects: {
+			load: {
+				effect: "default",
+				speed: 1000
+			},
+			pullOutSegmentOnClick: {
+				effect: "bounce",
+				speed: 300,
+				size: 10
+			},
+			highlightSegmentOnMouseover: true,
+			highlightLuminosity: -0.2
+		},
+		misc: {
+			cssPrefix: null,
+				colors: {
+				background: null,
+					segments: [
+					"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
+				],
+					segmentStroke: "#ffffff"
+			},
+			canvasPadding: {
+				top: 5,
+					right: 5,
+					bottom: 5,
+					left: 5
+			},
+			pieCenterOffset: {
+				x: 0,
+					y: 0
+			},
+			footerPiePadding: 0
+		},
+		callbacks: {
+			onload: null,
+				onMouseoverSegment: null,
+				onMouseoutSegment: null,
+				onClickSegment: null
+		}
+		*/
+
 	};
 
 	mediator.register(_MODULE_ID);

@@ -1,16 +1,18 @@
 // --------- _default-settings.js -----------/**
 /**
  * Contains the out-the-box settings for the script. Any of these settings that aren't explicitly overridden for the
- * d3pie instance will inherit from these.
+ * d3pie instance will inherit from these. This is also included on the main website for use in the generation script.
  */
 var defaultSettings = {
 	header: {
 		title: {
+			text:     "",
 			color:    "#333333",
 			fontSize: 18,
 			font:     "helvetica"
 		},
 		subtitle: {
+			text:     "",
 			color:    "#666666",
 			fontSize: 14,
 			font:     "helvetica"
@@ -32,7 +34,8 @@ var defaultSettings = {
 		pieOuterRadius: null
 	},
 	data: {
-		sortOrder: "value-asc"
+		sortOrder: "value-asc",
+		content: []
 	},
 	labels: {
 		outer: {
@@ -63,7 +66,6 @@ var defaultSettings = {
 		lines: {
 			enabled: true,
 			style: "curved",
-			length: 16,
 			color: "segment"
 		}
 	},
