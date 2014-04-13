@@ -424,3 +424,13 @@ body pre {
 .aboutPageList li {
 	font-size: 10pt;
 }
+
+.label-purple {
+	background-color: #9300ca;
+}
+.label-pink {
+	background-color: #bf4bc9;
+}
+.label-green {
+	background-color: #4bc94b;
+}

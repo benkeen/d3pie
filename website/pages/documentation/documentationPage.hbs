@@ -474,7 +474,7 @@ myPie.redraw();
 				</tr>
 				<tr>
 					<td>data.content</td>
-					<td><span class="label label-default">array</span></td>
+					<td><span class="label label-purple">array</span></td>
 					<td>&#8212;</td>
 					<td>
 						This is where you specify the actual to be displayed in the pie chart. This field is an array of
@@ -630,7 +630,7 @@ myPie.redraw();
 				</tr>
 				<tr>
 					<td>labels.lines.enabled</td>
-					<td><span class="label label-primary">boolean</span></td>
+					<td><span class="label label-pink">boolean</span></td>
 					<td>null</td>
 					<td>
 
@@ -654,7 +654,7 @@ myPie.redraw();
 				</tr>
 				<tr>
 					<td>labels.truncation.enabled</td>
-					<td><span class="label label-primary">boolean</span></td>
+					<td><span class="label label-pink">boolean</span></td>
 					<td>null</td>
 					<td>
 
@@ -687,46 +687,178 @@ myPie.redraw();
 
 					</td>
 				</tr>
+				<tr>
+					<td>effects.pullOutSegmentOnClick.effect</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>bounce</td>
+					<td>
 
+					</td>
+				</tr>
+				<tr>
+					<td>effects.pullOutSegmentOnClick.speed</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>300</td>
+					<td>
 
-				<!--
-	effects: {
-		pullOutSegmentOnClick: {
-			effect: "bounce",
-			speed: 300,
-			size: 10
-		},
-		highlightSegmentOnMouseover: true,
-		highlightLuminosity: -0.2
-	},
-	misc: {
-		colors: {
-			background: null,
-			segments: [
-				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
-			],
-			segmentStroke: "#ffffff"
-		},
-		canvasPadding: {
-			top: 5,
-			right: 5,
-			bottom: 5,
-			left: 5
-		},
-		pieCenterOffset: {
-			x: 0,
-			y: 0
-		},
-		cssPrefix: null
-	},
-	callbacks: {
-		onload: null,
-		onMouseoverSegment: null,
-		onMouseoutSegment: null,
-		onClickSegment: null
-	}
-	-->
-
+					</td>
+				</tr>
+				<tr>
+					<td>effects.pullOutSegmentOnClick.size</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>10</td>
+					<td>
+						The distance in pixels that the segment gets pulled out when clicked.
+					</td>
+				</tr>
+				<tr>
+					<td>effects.highlightSegmentOnMouseover</td>
+					<td><span class="label label-pink">boolean</span></td>
+					<td>true</td>
+					<td>
+						Whether or not the pie segments are highlighted when the user mouseovers them.
+					</td>
+				</tr>
+				<tr>
+					<td>effects.highlightLuminosity</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>-0.2</td>
+					<td>
+						The luminosity of the segment that's being mouseovered. Valid range: <code>-0.99</code> to
+						<code>0.99</code>.
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">Misc</th>
+				</tr>
+				<tr>
+					<td>misc.colors.background</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null (transparent)</td>
+					<td>
+						The background color for the entire pie chart, defined as a color hex code (e.g. <code>#efefef</code>).
+						The background is transparent (null) by default.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.colors.segments</td>
+					<td><span class="label label-purple">array</span></td>
+					<td>array of colors</td>
+					<td>
+						As described in the <a href="#docs-colors">Segment Colors</a> section, you have three ways to
+						define the colours for your pie chart segments. This setting lets you provide a single array
+						of hex codes. If there are "inline" colors - colors defined in the <code>data.content</code> array
+						- they will override those that you enter here.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.colors.segmentStroke</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>#ffffff</td>
+					<td>
+						The coloured line that appears between the pie chart segments.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.canvasPadding.top</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>5</td>
+					<td>
+						Extra padding for the top of the pie chart.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.canvasPadding.right</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>5</td>
+					<td>
+						Extra padding for the right of the pie chart.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.canvasPadding.bottom</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>5</td>
+					<td>
+						Extra padding for the bottom of the pie chart.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.canvasPadding.left</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>5</td>
+					<td>
+						Extra padding for the left of the pie chart.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.pieCenterOffset.x</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>0</td>
+					<td>
+						This setting lets you fine-tune the position of the pie chart on the canvas. A positive value
+						for this field will move the pie chart down; a negative one moves it up.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.pieCenterOffset.y</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>0</td>
+					<td>
+						Like the previous setting, this lets you fine-tune the position of the pie chart on the canvas. A
+						positive value for this field will move the pie chart right; a negative one moves it left.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.cssPrefix</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+						To keep things speedy, d3pie assigns a lot of IDs and classes to the SVG elements. To accommodate
+						multiple pie charts in a single page, it uses a unique string as a prefix for all elements. This
+						setting lets you provide your own. It can be helpful if you intend to target or access the SVG
+						nodes programmatically and want to ensure consistent names.
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">Callbacks</th>
+				</tr>
+				<tr>
+					<td>misc.callbacks.onload</td>
+					<td><span class="label label-green">function</span></td>
+					<td>null</td>
+					<td>
+						If you want to attach your own code to the pie chart onload event, pass a function callback to this
+						setting.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.callbacks.onMouseoverSegment</td>
+					<td><span class="label label-green">function</span></td>
+					<td>null</td>
+					<td>
+						This callback lets you access the info for the segments being mouseovered, via a single parameter.
+						This includes: the segment index, the segment SVG node, whether it's expanded or not and the data
+						associated with the segment.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.callbacks.onMouseoutSegment</td>
+					<td><span class="label label-green">function</span></td>
+					<td>null</td>
+					<td>
+						The counterpart of the <code>misc.callbacks.onMouseover</code> callback. It's passed the same info.
+					</td>
+				</tr>
+				<tr>
+					<td>misc.callbacks.onClickSegment</td>
+					<td><span class="label label-green">function</span></td>
+					<td>null</td>
+					<td>
+						A callback for whenever the user clicks a segment. Like the two previous callbacks, it's passed
+						all pertinent info via a single parameter.
+					</td>
+				</tr>
 				</tbody>
 			</table>
 
