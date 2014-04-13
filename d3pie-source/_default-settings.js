@@ -9,13 +9,13 @@ var defaultSettings = {
 			text:     "",
 			color:    "#333333",
 			fontSize: 18,
-			font:     "helvetica"
+			font:     "arial"
 		},
 		subtitle: {
 			text:     "",
 			color:    "#666666",
 			fontSize: 14,
-			font:     "helvetica"
+			font:     "arial"
 		},
 		location: "top-center",
 		titleSubtitlePadding: 8
@@ -24,7 +24,7 @@ var defaultSettings = {
 		text: 	  "",
 		color:    "#666666",
 		fontSize: 14,
-		font:     "helvetica",
+		font:     "arial",
 		location: "left"
 	},
 	size: {
@@ -49,18 +49,18 @@ var defaultSettings = {
 		},
 		mainLabel: {
 			color: "#333333",
-			font: "helvetica",
+			font: "arial",
 			fontSize: 10
 		},
 		percentage: {
 			color: "#999999",
-			font: "helvetica",
+			font: "arial",
 			fontSize: 10,
 			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
-			font: "helvetica",
+			font: "arial",
 			fontSize: 10
 		},
 		lines: {
@@ -90,6 +90,7 @@ var defaultSettings = {
 		colors: {
 			background: null,
 			segments: [
+				// TODO - need 50 default colors (good ones!)
 				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
 			],
 			segmentStroke: "#ffffff"

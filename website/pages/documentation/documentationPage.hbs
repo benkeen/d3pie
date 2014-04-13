@@ -150,20 +150,21 @@ myPie.redraw();
 						repaint. Right now it only has a few options that can be updated, but I hope to update it to
 						allow for a lot more. The valid <code>propKeys</code> are a string versions of the flattened configuration
 						object. These values are:
-
-						<code>"header.title.text"</code><br />
-						<code>"header.subtitle.text"</code><br />
-						Updating either of these properties works the same way. If the value is entirely removed / added, it causes
-						a complete repaint of the pie so it can make use the available space. Otherwise it just updates
-						the title or subtitle element itself.
-						<code>"callbacks.onMouseoverSegment"</code><br/>
-						<code>"callbacks.onMouseoutSegment"</code><br/>
-						<code>"callbacks.onClickSegment"</code><br/>
-						<code>"effects.pullOutSegmentOnClick.effect"</code><br/>
-						<code>"effects.pullOutSegmentOnClick.speed"</code><br/>
-						<code>"effects.pullOutSegmentOnClick.size"</code><br/>
-						<code>"effects.highlightSegmentOnMouseover"</code><br/>
-						<code>"effects.highlightLuminosity"</code><br/>
+						<ul>
+							<li><code>"header.title.text"</code></li>
+							<li><code>"header.subtitle.text"</code>
+								Updating either of these properties works the same way. If the value is entirely removed / added, it causes
+								a complete repaint of the pie so it can make use the available space. Otherwise it just updates
+								the title or subtitle element individually without causing a repaint.</li>
+							<li><code>"callbacks.onMouseoverSegment"</code></li>
+							<li><code>"callbacks.onMouseoutSegment"</code></li>
+							<li><code>"callbacks.onClickSegment"</code></li>
+							<li><code>"effects.pullOutSegmentOnClick.effect"</code></li>
+							<li><code>"effects.pullOutSegmentOnClick.speed"</code></li>
+							<li><code>"effects.pullOutSegmentOnClick.size"</code></li>
+							<li><code>"effects.highlightSegmentOnMouseover"</code></li>
+							<li><code>"effects.highlightLuminosity"</code></li>
+						</ul>
 					</td>
 				</tr>
 				<tr>
@@ -178,7 +179,7 @@ myPie.redraw();
 
 			<p>
 				In addition to the above functions, see the <b>callbacks</b> section of the configuration object
-				to tie in your own code with events such as
+				to tie in your own code with events such as clicks and mouseovers.
 			</p>
 		</section>
 
@@ -204,12 +205,12 @@ myPie.redraw();
 			title:    "",
 			color:    "#333333",
 			fontSize: 14,
-			font:     "helvetica"
+			font:     "arial"
 		},
 		subtitle: {
 			color:    "#333333",
 			fontSize: 14,
-			font:     "helvetica"
+			font:     "arial"
 		},
 		location: "top-center",
 		titleSubtitlePadding: 8
@@ -218,7 +219,7 @@ myPie.redraw();
 		text: 	  "",
 		color:    "#666666",
 		fontSize: 14,
-		font:     "helvetica",
+		font:     "arial",
 		location: "left"
 	},
 	size: {
@@ -246,18 +247,18 @@ myPie.redraw();
 		},
 		mainLabel: {
 			color: "#333333",
-			font: "Open sans",
+			font: "arial",
 			fontSize: 10
 		},
 		percentage: {
 			color: "#999999",
-			font: "Open sans",
+			font: "arial",
 			fontSize: 10,
 			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
-			font: "Open sans",
+			font: "arial",
 			fontSize: 10
 		},
 		lines: {
