@@ -28,9 +28,12 @@ body .navbar {
 #generatorTabs .active {
 	width: 105px;
 }
-
 .container {
 	margin-top: 40px;
+}
+body .navbar-nav>li>a {
+	padding-top: 13px;
+	padding-bottom: 13px;
 }
 
 #mainContent {
@@ -380,7 +383,7 @@ a[target=_blank], a[target=standalone] {
 body .nav-pills>li>a.generateNavItem,
 body .nav-pills>li>a.generateNavItem>:hover,
 body .nav-pills>li>a.generateNavItem:focus {
-	color: #5bc0de;
+	color: #000000;
 }
 body .nav-pills>li.active>a.generateNavItem {
 	background-color: #5bc0de;

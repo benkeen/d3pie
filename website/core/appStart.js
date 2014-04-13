@@ -19,16 +19,16 @@ require([
 	howToUsePage.init();
 	documentationPage.init();
 
-	// select the default one (for local dev work, really)
+	// load the appropriate page
 	pageHelper.initPage();
 
-	$(function() {
-		$("#aboutPageSlides").slidesjs({
-			width: 940,
-			height: 320,
-			navigation: true
-		});
-	});
+//	$(function() {
+//		$("#aboutPageSlide").slidesjs({
+//			width: 940,
+//			height: 528,
+//			navigation: false
+//		});
+//	});
 
 	prettyPrint();
 });

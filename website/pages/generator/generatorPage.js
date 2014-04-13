@@ -211,7 +211,8 @@ define([
 	};
 
 	/**
-	 * Bloody awful function! This is called whenever the page/tab is changed.
+	 * Bloody awful function! This is called whenever the page/tab is changed. It got way out of control. Nav should
+	 * be moved to a single, top-level area.
 	 * @param msg
 	 * @private
 	 */
@@ -239,15 +240,17 @@ define([
 				$("#sidebar,#pieChartDiv").addClass("hidden").removeClass("fadeOut");
 				$("#generator-result").removeClass("hidden fadeOut").addClass("fadeIn");
 			}, C.OTHER.PAGE_LOAD_SPEED);
+		} else if (pageHash === "generator" && tab === "generator-result") {
+			// do nothing. This happens when a user's on the generator-result tab, goes to
+			// another page (not tab), then clicks back to the generator tab
 		} else {
 			// if the previous tab was generator-result
 			if (_currentTab === "generator-result") {
 				$("#generator-result").addClass("fadeOut");
 				setTimeout(function() {
 					$("#generator-result").addClass("hidden").removeClass("fadeOut");
+					_renderWithNoAnimation();
 					$("#sidebar,#pieChartDiv").removeClass("hidden fadeOut").addClass("fadeIn");
-
-
 				}, C.OTHER.PAGE_LOAD_SPEED);
 			}
 		}
@@ -269,12 +272,17 @@ define([
 			$generatorTabs.find("a[href=#" + tab + "]").closest("li").addClass("active");
 			$("#" + _currentTab).removeClass("hidden fadeIn").addClass("fadeOut");
 
-			(function(ct) {
-				setTimeout(function() {
-					$("#" + ct).addClass("hidden").removeClass("fadeOut");
-					$("#" + tab).removeClass("hidden fadeOut").addClass("fadeIn");
-				}, C.OTHER.PAGE_LOAD_SPEED);
-			})(_currentTab);
+			// another klutzy workaround
+			if (pageHash === "generator" && tab === "generator-result") {
+				$("#" + tab).removeClass("hidden fadeOut");
+			} else {
+				(function(ct) {
+					setTimeout(function() {
+						$("#" + ct).addClass("hidden").removeClass("fadeOut");
+						$("#" + tab).removeClass("hidden fadeOut").addClass("fadeIn");
+					}, C.OTHER.PAGE_LOAD_SPEED);
+				})(_currentTab);
+			}
 		}
 		_currentTab = tab;
 	};

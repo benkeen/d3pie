@@ -10,11 +10,19 @@ define([
 	var _demoPie1, _demoPie2, _demoPie3;
 	var _firstPageLoaded = false;
 	var _firstPage;
+	var _isRendered = false;
 
 	var _init = function() {
 		$("#about").html(aboutPageTemplate());
 
-		// very fussy stuff, jeez.
+		var subscriptions = {};
+		subscriptions[C.EVENT.PAGE.LOAD] = _onPageSelected;
+		mediator.subscribe(_MODULE_ID, subscriptions);
+	};
+
+	var _renderContent = function() {
+		_initSlides();
+
 		_demoPie1 = new d3pie("aboutTabDemoPie1", aboutPageDemoPies[0]);
 		_demoPie2 = new d3pie("aboutTabDemoPie2", aboutPageDemoPies[1]);
 		_demoPie3 = new d3pie("aboutTabDemoPie3", aboutPageDemoPies[2]);
@@ -24,9 +32,7 @@ define([
 			$("#demoPie1-createSimilarBtn,#demoPie2-createSimilarBtn,#demoPie3-createSimilarBtn").fadeIn(400);
 		}, 2000);
 
-		var subscriptions = {};
-		subscriptions[C.EVENT.PAGE.LOAD] = _onPageSelected;
-		mediator.subscribe(_MODULE_ID, subscriptions);
+		_isRendered = true;
 	};
 
 	// a bit fussy, but unavoidable. Whenever a page changes, we need to re-draw the pies IFF (if and only if)
@@ -35,15 +41,33 @@ define([
 		if (!_firstPageLoaded) {
 			_firstPage = msg.data.page;
 			_firstPageLoaded = true;
+			if (_firstPage === "about") {
+				setTimeout(_renderContent, 10);
+			}
 			return;
 		}
 
 		if (msg.data.page === "about" || _firstPage !== "about") {
+			if (!_isRendered) {
+				_renderContent();
+			}
+
 			_demoPie1.redraw();
 			_demoPie2.redraw();
 			_demoPie3.redraw();
 		}
 	};
+
+	var _initSlides = function() {
+
+			$("#aboutPageSlides").slidesjs({
+				width: 940,
+				height: 320,
+				navigation: true
+			});
+
+	};
+
 
 	mediator.register(_MODULE_ID);
 

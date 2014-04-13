@@ -54,7 +54,7 @@ define([
 		var publishData = { page: page, prevPage: _currentPage, pageHash: pageCandidateNoHash };
 		if (page !== _currentPage) {
 
-			// fade out the old page, if one was selected (not true for first load)
+			// fade out the old page, if one was selected (not the case for first load)
 			if (_currentPage) {
 
 				_$topNav.find(".active").removeClass("active");
