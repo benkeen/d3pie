@@ -22,13 +22,5 @@ require([
 	// load the appropriate page
 	pageHelper.initPage();
 
-//	$(function() {
-//		$("#aboutPageSlide").slidesjs({
-//			width: 940,
-//			height: 528,
-//			navigation: false
-//		});
-//	});
-
 	prettyPrint();
 });

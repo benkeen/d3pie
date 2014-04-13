@@ -46,6 +46,10 @@ var validate = {
 		}
 		pie.options.data.content = data;
 
+
+		// pieInnerRadius - should be 0-99
+
+
 		return true;
 	}
 };

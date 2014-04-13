@@ -23,7 +23,6 @@
 
 		<section id="docs-intro">
 			<h3>Intro</h3>
-
 			<p>
 				This page documents everything you need to know about d3pie: all about the available configuration
 				settings, the API functions, and more. If you think there's something missing,
@@ -31,12 +30,10 @@
 				I'll see to it. Better yet, <a href="https://github.com/benkeen/d3pie/">fork the project</a> and
 				update the documentation yourself! Woo! Go open source.
 			</p>
-
 			<p>
 				If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
 				<a href="#howToUse" class="selectPage">How to Use</a> page.
 			</p>
-
 			<p>
 				But before digging into the code, a quick disclaimer...
 			</p>
@@ -44,14 +41,12 @@
 
 		<section id="docs-disclaimer">
 			<h3>Disclaimer</h3>
-
 			<p>
 				At some point when I was designing this thing, it dawned on me that creating a re-usable pie chart was
 				tantamount to building an entire rendering engine. If I made it as customizable as I wanted it to be,
 				it would open the door to letting people generate really ugly, unreadable pie charts. On the other
 				hand, if I limited the available functionality it wouldn't be as useful for many people.
 			</p>
-
 			<p>
 				So I decided on the following approach: I wouldn't limit the functionality, but make it as hard as possible
 				for you to shoot yourself in the foot. d3pie does a bunch of "automatic" stuff: reasonable placement of
@@ -62,7 +57,6 @@
 				time, I hope to make the rendering code smarter but ultimately the responsibility will always lie with
 				you to <i>know thy data</i> and choose appropriate configuration settings.
 			</p>
-
 			<p>
 				Okay, disclaimer over. :)
 			</p>
@@ -209,12 +203,12 @@ myPie.redraw();
 		title: {
 			title:    "",
 			color:    "#333333",
-			fontSize: "14px",
+			fontSize: 14,
 			font:     "helvetica"
 		},
 		subtitle: {
 			color:    "#333333",
-			fontSize: "14px",
+			fontSize: 14,
 			font:     "helvetica"
 		},
 		location: "top-center",
@@ -223,14 +217,14 @@ myPie.redraw();
 	footer: {
 		text: 	  "",
 		color:    "#666666",
-		fontSize: "14px",
+		fontSize: 14,
 		font:     "helvetica",
 		location: "left"
 	},
 	size: {
 		canvasHeight: 500,
 		canvasWidth: 500,
-		pieInnerRadius: "0%",
+		pieInnerRadius: 0,
 		pieOuterRadius: null
 	},
 	data: {
@@ -253,18 +247,18 @@ myPie.redraw();
 		mainLabel: {
 			color: "#333333",
 			font: "Open sans",
-			fontSize: "10px"
+			fontSize: 10
 		},
 		percentage: {
 			color: "#999999",
 			font: "Open sans",
-			fontSize: "10px",
+			fontSize: 10,
 			decimalPlaces: 0
 		},
 		value: {
 			color: "#cccc44",
 			font: "Open sans",
-			fontSize: "10px"
+			fontSize: 10
 		},
 		lines: {
 			enabled: true,
@@ -289,7 +283,8 @@ myPie.redraw();
 		colors: {
 			background: null,
 			segments: [
-				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
+				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56",
+				"#d0743c", "#ff8c00", "#635222", "#00dd00"
 			],
 			segmentStroke: "#ffffff"
 		},
@@ -434,12 +429,29 @@ myPie.redraw();
 					<td>500</td>
 					<td>The width of the pie chart, in pixels.</td>
 				</tr>
-
-				<!--
-				pieInnerRadius: "0%",
-				pieOuterRadius: null
-				-->
-
+				<tr>
+					<td>size.pieOuterRadius</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>&#8212;</td>
+					<td>
+						The inner and outer radius settings can be specified as a percentage value (e.g. a string like
+						<code>"50%"</code>) or a pixel value (e.g. a number like <code>200</code>). This setting is
+						the <b>percentage/pixel</b> size of the outer radius. Valid percentage values are <code>"1%"</code>
+						to <code>"100%"</code>; <code>100</code> takes up the full allocates space (no room for outer labels);
+						<code>1</code> is a very, very teeny pie. Valid pixel values are anything greater than 0.
+					</td>
+				</tr>
+				<tr>
+					<td>size.pieInnerRadius</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>0</td>
+					<td>
+						This setting is the <b>percentage/pixel</b> size of the inner radius. Valid percentage values
+						are <code>"1%"</code> to <code>"100%"</code>; <code>100</code> takes up the full allocates
+						space (no room for outer labels); <code>1</code> is a very, very teeny pie. Valid pixel values
+						are anything greater than 0.
+					</td>
+				</tr>
 				</tbody>
 			</table>
 

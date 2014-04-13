@@ -9,10 +9,16 @@ module.exports = function(grunt) {
 	}.bind(this);
 	var packageFile = grunt.file.readJSON("package.json");
 
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-template');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-md5');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-handlebars');
+
 
 	_includeInThisScope("grunt-templates/filePaths.js");
 	_includeInThisScope("grunt-templates/env-specific-constants.js");
@@ -65,9 +71,11 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'index.html': ['grunt-templates/template-index.html']
-					//'core/require.config.js':          ['source-templates/template-require.config.js']
 				}
 			}
+
+			//'core/require.config.js':          ['source-templates/template-require.config.js']
+
 		},
 
 		watch: {
@@ -81,6 +89,16 @@ module.exports = function(grunt) {
 			d3pie: {
 				src: 'd3pie/d3pie.js',
 				dest: 'd3pie/d3pie.min.js'
+			}
+		},
+
+		handlebars: {
+			compile: {
+				options: {
+					amd: true,
+					namespace: false
+				},
+				files: {} // populated by md5 task
 			}
 		},
 
@@ -101,4 +119,6 @@ module.exports = function(grunt) {
 	grunt.registerTask("default", ["createD3PieFiles", "uglify:d3pie"]);
 	grunt.registerTask("dev", function() { buildDev(); });
 	grunt.registerTask("prod", function() { buildProd(); });
+
+
 };

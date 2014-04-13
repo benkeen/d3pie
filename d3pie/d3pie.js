@@ -182,6 +182,10 @@ var validate = {
 		}
 		pie.options.data.content = data;
 
+
+		// pieInnerRadius - should be 0-99
+
+
 		return true;
 	}
 };
@@ -408,11 +412,8 @@ var math = {
 				percent = (percent < 0) ? 0 : percent;
 
 				var smallestDimension = (w < h) ? w : h;
-
-
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
-				// TODO bounds checking
 				outerRadius = parseInt(size.pieOuterRadius, 10);
 			}
 		}
