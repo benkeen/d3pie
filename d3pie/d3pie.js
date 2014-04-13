@@ -54,7 +54,7 @@ var defaultSettings = {
 		pieOuterRadius: null
 	},
 	data: {
-		sortOrder: "value-asc",
+		sortOrder: "none",
 		content: []
 	},
 	labels: {
@@ -184,6 +184,9 @@ var validate = {
 
 
 		// pieInnerRadius - should be 0-99
+
+		// labels.outer.hideWhenLessThanPercentage - 1-100
+		// labels.inner.hideWhenLessThanPercentage - 1-100
 
 
 		return true;

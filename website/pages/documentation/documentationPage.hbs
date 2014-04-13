@@ -431,7 +431,7 @@ myPie.redraw();
 				</tr>
 				<tr>
 					<td>size.pieOuterRadius</td>
-					<td><span class="label label-primary">number</span></td>
+					<td><span class="label label-info">mixed</span></td>
 					<td>&#8212;</td>
 					<td>
 						The inner and outer radius settings can be specified as a percentage value (e.g. a string like
@@ -443,7 +443,7 @@ myPie.redraw();
 				</tr>
 				<tr>
 					<td>size.pieInnerRadius</td>
-					<td><span class="label label-primary">number</span></td>
+					<td><span class="label label-info">mixed</span></td>
 					<td>0</td>
 					<td>
 						This setting is the <b>percentage/pixel</b> size of the inner radius. Valid percentage values
@@ -452,6 +452,281 @@ myPie.redraw();
 						are anything greater than 0.
 					</td>
 				</tr>
+				<tr>
+					<th colspan="4">Data</th>
+				</tr>
+				<tr>
+					<td>data.sortOrder</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>none</td>
+					<td>
+						This specifies the sort order for the data specified in the <code>data.content</code>
+						setting. Valid strings are:
+						<ul>
+							<li><code>none</code> (default) - this lists them in the order of the <code>data.content</code> array.</li>
+							<li><code>random</code></li>
+							<li><code>value-asc</code> - value, ascending</li>
+							<li><code>value-desc</code> - value, descending</li>
+							<li><code>label-asc</code> - alphabetically by label, A-Z</li>
+							<li><code>label-desc</code> - reverse alphabetically by label, Z-A</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>data.content</td>
+					<td><span class="label label-default">array</span></td>
+					<td>&#8212;</td>
+					<td>
+						This is where you specify the actual to be displayed in the pie chart. This field is an array of
+						objects, where each object is of the form: <code>{ label: "label here", value: 123 }</code>. You
+						can also include an optional <code>color</code> property that contains a color in hex format (e.g.
+						<code>color: "#123456"</code>.
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">Labels</th>
+				</tr>
+				<tr>
+					<td>labels.outer.format</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>label</td>
+					<td>
+						This setting governs what appears in the outer label. The following options are available:
+						<ul>
+							<li><code>label</code> - the segment label</li>
+							<li><code>value</code> - the segment value</li>
+							<li><code>percentage</code> - the segment percentage</li>
+							<li><code>label-value1</code> - the label followed by the value on the same line</li>
+							<li><code>label-value2</code> - the label followed by the value on a different line</li>
+							<li><code>label-percentage1</code> - the label followed by the percentage on the same line</li>
+							<li><code>label-percentage2</code> - the label followed by the percentage on a different line</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>labels.outer.hideWhenLessThanPercentage</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+						This setting lets you hide the outer label when the percentage is less than a certain amount. Just
+						enter a number value in this field from <code>1</code> to <code>100</code>.
+					</td>
+				</tr>
+				<tr>
+					<td>labels.outer.pieDistance</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>30</td>
+					<td>
+						The distance in pixels from the outside of the pie to the start of the outer label.
+					</td>
+				</tr>
+				<tr>
+					<td>labels.inner.format</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>30</td>
+					<td>
+						This setting controls what appears in the inner label. This has the same options as
+						<code>labels.outer.format</code>:
+
+						<ul>
+							<li><code>label</code> - the segment label</li>
+							<li><code>value</code> - the segment value</li>
+							<li><code>percentage</code> - the segment percentage</li>
+							<li><code>label-value1</code> - the label followed by the value on the same line</li>
+							<li><code>label-value2</code> - the label followed by the value on a different line</li>
+							<li><code>label-percentage1</code> - the label followed by the percentage on the same line</li>
+							<li><code>label-percentage2</code> - the label followed by the percentage on a different line</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>labels.inner.hideWhenLessThanPercentage</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+						This setting lets you hide the inner label when the percentage is less than a certain amount. Just
+						enter a number value in this field from <code>1</code> to <code>100</code>.
+					</td>
+				</tr>
+				<tr>
+					<td>labels.mainLabel.color</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.mainLabel.font</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.mainLabel.fontSize</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.percentage.color</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.percentage.font</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.percentage.fontSize</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.percentage.decimalPlaces</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.value.color</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.value.font</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.value.fontSize</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.lines.enabled</td>
+					<td><span class="label label-primary">boolean</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.lines.style</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.lines.color</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.truncation.enabled</td>
+					<td><span class="label label-primary">boolean</span></td>
+					<td>null</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>labels.truncation.length</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>30</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">Effects</th>
+				</tr>
+				<tr>
+					<td>effects.load.effect</td>
+					<td><span class="label label-warning">string</span></td>
+					<td>default</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>effects.load.speed</td>
+					<td><span class="label label-primary">number</span></td>
+					<td>1000</td>
+					<td>
+
+					</td>
+				</tr>
+
+
+				<!--
+	effects: {
+		pullOutSegmentOnClick: {
+			effect: "bounce",
+			speed: 300,
+			size: 10
+		},
+		highlightSegmentOnMouseover: true,
+		highlightLuminosity: -0.2
+	},
+	misc: {
+		colors: {
+			background: null,
+			segments: [
+				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#635222", "#00dd00"
+			],
+			segmentStroke: "#ffffff"
+		},
+		canvasPadding: {
+			top: 5,
+			right: 5,
+			bottom: 5,
+			left: 5
+		},
+		pieCenterOffset: {
+			x: 0,
+			y: 0
+		},
+		cssPrefix: null
+	},
+	callbacks: {
+		onload: null,
+		onMouseoverSegment: null,
+		onMouseoutSegment: null,
+		onClickSegment: null
+	}
+	-->
+
 				</tbody>
 			</table>
 

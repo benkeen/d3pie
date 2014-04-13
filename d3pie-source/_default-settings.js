@@ -34,7 +34,7 @@ var defaultSettings = {
 		pieOuterRadius: null
 	},
 	data: {
-		sortOrder: "value-asc",
+		sortOrder: "none",
 		content: []
 	},
 	labels: {
