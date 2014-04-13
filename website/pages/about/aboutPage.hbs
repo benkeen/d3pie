@@ -1,75 +1,111 @@
 <div class="page-header">
-	<h1>About d3pie</h1>
+	<h1>d3pie</h1>
 </div>
 
-<div class="row">
-	<div class="col-lg-4">
-		<p>
-			d3pie is a simple, highly configurable script built on <a href=http://d3js.org/" target="_blank">d3.js</a>
-			and jQuery for creating simple, attractive pie charts. It's free, open source, and found on
-			<a href="https://github.com/benkeen/d3-pie-charts">github</a>.
-		</p>
-		<p>
-			To get started, check out the <a href="#generator" class="selectPage" data-toggle="tab">generator</a> -
-			it lets you see some examples, and construct and fine-tune your own pie charts via a simple UI. For further
-			info on the script, visit the <a href="#docs" class="selectPage" data-toggle="tab">documentation</a>. Enjoy!
-		</p>
+<div id="aboutPageSlides">
+	<div class="row aboutPageRow">
+		<div class="col-lg-4">
+			<h3>About</h3>
+			<p>
+				d3pie is a simple, highly configurable script built on <a href=http://d3js.org/" target="_blank">d3.js</a>
+				and jQuery for creating simple, attractive pie charts. It's free, open source, and found on
+				<a href="https://github.com/benkeen/d3-pie-charts">github</a>.
+			</p>
+			<p>
+				To get started, check out the <a href="#generator" class="selectPage" data-toggle="tab">generator</a> -
+				it lets you see some examples, and construct and fine-tune your own pie charts via a simple UI. For further
+				info on the script, visit the <a href="#docs" class="selectPage" data-toggle="tab">documentation</a>. Enjoy!
+			</p>
 
-		<h3>Browser Support</h3>
+			<h3>Browser Support</h3>
+			<p>
+				All modern browsers. Which means Chrome, Firefox, Safari and IE9 and up.
+			</p>
+		</div>
+		<div class="col-lg-4">
+			<div id="aboutTabDemoPie1"></div>
+			<a href="#generator-start-pie1" id="demoPie1-createSimilarBtn" style="display: none" class="selectPage createSimilarPieLink label label-info">Create Similar &raquo;</a>
+		</div>
+		<div class="col-lg-4">
+			<p>
+				Configuration options include:
+			</p>
+			<ul class="aboutPageList">
+				<li>Pie / donut charts</li>
+				<li>Canvas size</li>
+				<li>Title, subtitle, footer text and control over placement</li>
+				<li>Inner and outer labels, and choice of what data appears in each</li>
+				<li>Automatic percentage calculations</li>
+				<li>Unlimited data set size</li>
+				<li>Full control over font, font sizes, colors</li>
+				<li>Segment colors</li>
+				<li>Background color / transparency</li>
+				<li>Load, mouseover and click effects</li>
+				<li>API for certain events (click, mouseover, mouseout and more)</li>
+				<li>API for refreshing and recreating pie dynamically</li>
+				<li>Control over pie chart padding, pie chart x/y offsets</li>
+			</ul>
+		</div>
+	</div>
 
-		<p>
-			All modern browsers. Which means...
-		</p>
-		<ul>
-			<li>Chrome</li>
-			<li>Firefox</li>
-			<li>Safari</li>
-			<li>IE 9+</li>
-		</ul>
-	</div>
-	<div class="col-lg-4">
-		<div id="aboutTabDemoPie1"></div>
-		<a href="#generator-start-pie2" id="demoPie1-createSimilarBtn" style="display: none" class="selectPage createSimilarPieLink label label-info">Create Similar &raquo;</a>
+
+	<div class="row aboutPageRow">
+		<div class="col-lg-5">
+			<h3>Standalone Examples</h3>
+			<p>
+				Here are a few examples with nothing more than the base CSS, JS and HTML needed to get the pie
+				charts rendering on your own site.
+			</p>
+			<ul>
+				<li><a href="standalone/simple.html" target="standalone">Simple Pie Chart</a></li>
+				<li><a href="standalone/animation.html" target="standalone">Pie Chart with animation</a></li>
+				<li><a href="standalone/donut.html" target="standalone">Donut chart with all the frills</a></li>
+			</ul>
+		</div>
+
+		<div class="col-lg-7">
+			<div id="aboutTabDemoPie2"></div>
+			<a href="#generator-start-pie2" id="demoPie1-createSimilarBtn" style="display: none" class="selectPage createSimilarPieLink label label-info">Create Similar &raquo;</a>
+		</div>
 	</div>
 
-	<div class="col-lg-4">
-		<div id="aboutTabDemoPie2"></div>
-		<a href="#generator-start-pie1" id="demoPie2-createSimilarBtn" style="display: none" class="selectPage createSimilarPieLink label label-info">Create Similar &raquo;</a>
+
+	<div class="row aboutPageRow">
+		<div class="col-lg-5">
+			<h3>Let's get Dynamic</h3>
+			<p>
+				Here's a few more standalone examples for programmers to see how to do some on-the-fly stuff.
+			</p>
+			<ul>
+				<li><a href="#" target="standalone">Refreshing the pie chart with JS</a></li>
+				<li><a href="#" target="standalone">Changing pie configs without a repaint</a></li>
+				<li><a href="#" target="standalone">Updating title / subtitle / footer</a></li>
+				<li><a href="#" target="standalone">Custom event handlers 101</a></li>
+			</ul>
+		</div>
+
+		<div class="col-lg-7">
+			<div id="aboutTabDemoPie3"></div>
+			<a href="#generator-start-pie3" id="demoPie3-createSimilarBtn" style="display: none" class="selectPage createSimilarPieLink label label-info">Create Similar &raquo;</a>
+		</div>
 	</div>
+
+
+	<a href="#" class="slidesjs-previous slidesjs-navigation"><i class="icon-chevron-left icon-large"></i></a>
+	<a href="#" class="slidesjs-next slidesjs-navigation"><i class="icon-chevron-right icon-large"></i></a>
 </div>
-
+<!--
 <hr size="1" />
 
 <div class="row">
-	<div class="col-lg-4">
-		<h3>Standalone Examples</h3>
-		<p>
-			Here are a few examples with nothing more than the base CSS, JS and HTML needed to get the pie
-			charts rendering on your own site.
-		</p>
-		<ul>
-			<li><a href="standalone/simple.html" target="standalone">Simple Pie Chart</a></li>
-			<li><a href="standalone/animation.html" target="standalone">Pie Chart with animation</a></li>
-			<li><a href="standalone/donut.html" target="standalone">Donut chart with all the frills</a></li>
-		</ul>
-	</div>
 
-	<div class="col-lg-4" style="border-right: 1px solid #cccccc">
-		<h3>Let's get Dynamic</h3>
-		<p>
-			Here's a few more standalone examples for programmers to see how to do a few things on-the-fly.
-		</p>
-		<ul>
-			<li><a href="#" target="standalone">Refreshing the pie chart with JS</a></li>
-			<li><a href="#" target="standalone">Changing pie configs without a repaint</a></li>
-			<li><a href="#" target="standalone">Updating title / subtitle / footer</a></li>
-			<li><a href="#" target="standalone">Custom event handlers 101</a></li>
-		</ul>
-	</div>
 
-	<div class="col-lg-4">
-		<div id="aboutTabDemoPie3"></div>
-		<a href="##generator-start-pie5" id="demoPie2-createSimilarBtn" style="display: none"
-		   class="createSimilarPieLink label label-info">Create Similar &raquo;</a>
-	</div>
 </div>
+-->
+
+<!--
+	<div id="aboutTabDemoPie3"></div>
+	<a href="##generator-start-pie5" id="demoPie2-createSimilarBtn" style="display: none"
+	   class="createSimilarPieLink label label-info">Create Similar &raquo;</a>
+-->
+

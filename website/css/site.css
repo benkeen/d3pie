@@ -369,7 +369,7 @@ label.disabled {
 .createSimilarPieLink {
 	text-decoration: none;
 	float: right;
-	margin-top: 10px;
+	margin-top: 0px;
 }
 a[target=_blank], a[target=standalone] {
 	background: url(../images/open_new_window_icon.png) no-repeat right center;
@@ -413,4 +413,11 @@ body pre {
 	height: 400px;
 	border: 1px solid #999999;
 	overflow: scroll;
+}
+
+.aboutPageRow h3 {
+	margin-top: 0px;
+}
+.aboutPageList li {
+	font-size: 10pt;
 }

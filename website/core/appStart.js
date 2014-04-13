@@ -22,5 +22,13 @@ require([
 	// select the default one (for local dev work, really)
 	pageHelper.initPage();
 
+	$(function() {
+		$("#aboutPageSlides").slidesjs({
+			width: 940,
+			height: 320,
+			navigation: true
+		});
+	});
+
 	prettyPrint();
 });

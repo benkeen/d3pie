@@ -150,20 +150,20 @@ define([], function() {
 		// ----------------------------------------------------------------------------------------
 
 		{
-			label: "Top 15 Fears",
+			label: "Donut chart",
 			showCanvasOutline: true,
 			config: {
 				header: {
 					title: {
 						text:     "Top 15 Fears",
 						color:    "#333333",
-						fontSize: "30px",
+						fontSize: 30,
 						font:     "courier"
 					},
 					subtitle: {
 						text:     "What strikes the most terror in people?",
 						color:    "#999999",
-						fontSize: "10px",
+						fontSize: 10,
 						font:     "courier"
 					},
 					location: "pie-center",
@@ -198,7 +198,8 @@ define([], function() {
 						{ label: "Planes, with/without snakes", value: 5, color: "#ae83d5" },
 						{ label: "Off-by-one errors", value: 3, color: "#111111"},
 						{ label: "Chickadees", value: 4, color: "#050505" },
-						{ label: "A never-ending Harper Government", value: 1, color: "#646464" }
+						{ label: "A never-ending Harper Government", value: 1, color: "#646464" },
+						{ label: "Rewatching The Matrix Reloaded", value: 4, color: "#747474" }
 					]
 				},
 				labels: {
@@ -274,7 +275,7 @@ define([], function() {
 
 
 		{
-			label: "Spousal Resentment",
+			label: "Standard pie chart, small data set",
 			showCanvasOutline: true,
 			config: {
 				header: {
@@ -294,7 +295,7 @@ define([], function() {
 					titleSubtitlePadding: 12
 				},
 				footer: {
-					text: "Source: me, my room, the last 2 months.",
+					text: "Source: me, my room, the last couple of months.",
 					color:    "#999999",
 					fontSize: "11",
 					font:     "open sans",
@@ -309,13 +310,13 @@ define([], function() {
 				data: {
 					sortOrder: "none",
 					content: [
-						{ label: "When's it going to be done?", value: 8, color: "#4e3a3a" },
-						{ label: "Bennnnn!", value: 5, color: "#4a4e3a" },
-						{ label: "Oh, god.", value: 2, color: "#414e3a" },
-						{ label: "But it's Friday night!", value: 3, color: "#3a4e43" },
-						{ label: "Again?", value: 2, color: "#3a4c4e" },
-						{ label: "I'm considering an affair.", value: 1, color: "#3a3f4e" },
-						{ label: "[baleful stare]", value: 3, color: "#3c3a4e" }
+						{ label: "When's it going to be done?", value: 8, color: "#7e3838" },
+						{ label: "Bennnnn!", value: 5, color: "#7e6538" },
+						{ label: "Oh, god.", value: 2, color: "#7c7e38" },
+						{ label: "But it's Friday night!", value: 3, color: "#587e38" },
+						{ label: "Again?", value: 2, color: "#387e45" },
+						{ label: "I'm considering an affair.", value: 1, color: "#387e6a" },
+						{ label: "[baleful stare]", value: 3, color: "#386a7e" }
 					]
 				},
 				labels: {
@@ -389,7 +390,7 @@ define([], function() {
 		},
 
 		{
-			label: "The Sun",
+			label: "Inverted colors",
 			showCanvasOutline: false,
 			config: {
 				header: {

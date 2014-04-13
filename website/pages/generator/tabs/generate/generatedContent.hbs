@@ -8,9 +8,12 @@
 &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">&lt;/script>
 &lt;script src="d3pie.min.js">&lt;/script>
 &lt;script>
-	var pie = new d3pie("pieChart", {{configObject}});
+var pie = new d3pie("pieChart", {{configObject}});
 &lt;/script>
 
 &lt;/body>
 &lt;/html>
+{{/compare}}{{#compare generationFormat "js"}}&lt;script>
+var pie = new d3pie("pieChart", {{configObject}});
+&lt;/script>
 {{/compare}}

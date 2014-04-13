@@ -11,7 +11,7 @@
 		<div class="row">
 			<div class="radio">
 				<label class="col-lg-12" for="outputFormat1">
-					<input type="radio" name="outputFormat" value="full" id="outputFormat1" checked="checked" />
+					<input type="radio" name="outputFormat" class="triggerGenerationUpdate" value="full" id="outputFormat1" checked="checked" />
 					Full HTML
 				</label>
 			</div>
@@ -19,28 +19,20 @@
 		<div class="row">
 			<div class="radio">
 				<label class="col-lg-12" for="outputFormat2">
-					<input type="radio" name="outputFormat" value="js" id="outputFormat2" />
+					<input type="radio" name="outputFormat" class="triggerGenerationUpdate" value="js" id="outputFormat2" />
 					Javascript only
-				</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="radio">
-				<label class="col-lg-12" for="outputFormat3">
-					<input type="radio" name="outputFormat" value="config" id="outputFormat3" />
-					Config object only
 				</label>
 			</div>
 		</div>
 
 		<hr size="1" />
 
-		<input id="minimizeJS" type="checkbox" />
+		<input id="minimizeJS" type="checkbox" class="triggerGenerationUpdate" />
 			<label for="minimizeJS">Minimize JS</label>
 
 	</div>
 	<div class="col-lg-10">
-		<pre class="language-html" id="finalResult"></pre>
+		<pre id="finalResult" class="language-html"></pre>
 	</div>
 </div>
 

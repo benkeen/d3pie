@@ -8,6 +8,7 @@ define([
 	"use strict";
 
 	var _MODULE_ID = "generateTab";
+	var _finalConfigObject;
 
 
 	/**
@@ -18,7 +19,7 @@ define([
 		mediator.register(_MODULE_ID);
 
 		var subscriptions = {};
-		subscriptions[C.EVENT.DEMO_PIE.SEND_DATA] = _generatePieCode;
+		subscriptions[C.EVENT.DEMO_PIE.SEND_DATA] = _onSelectTab;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
@@ -26,16 +27,20 @@ define([
 		$(tabEl).html(generateTabTemplate());
 
 		// add the event handlers
+		$("#generator-result").on("click", ".triggerGenerationUpdate", _generatePieCode);
 	};
 
-	var _generatePieCode = function(msg) {
-		var finalConfigObject = _generateFinalConfigObject(msg.data);
+	var _onSelectTab = function(msg) {
+		_finalConfigObject = _generateFinalConfigObject(msg.data);
+		_generatePieCode();
+	};
 
+	var _generatePieCode = function() {
 		var minimizeJS = $("#minimizeJS")[0].checked;
-		var configObject = (minimizeJS) ? JSON.stringify(finalConfigObject) : JSON.stringify(finalConfigObject, null, "\t");
+		var configObject = (minimizeJS) ? JSON.stringify(_finalConfigObject) : JSON.stringify(_finalConfigObject, null, "\t");
 		var generationFormat = $("input[name=outputFormat]:checked").val();
 
-		$("#finalResult").addClass("prettyprint").html(generatedContentTemplate({
+		$("#finalResult").removeClass("prettyprinted").addClass("prettyprint").html(generatedContentTemplate({
 			generationFormat: generationFormat,
 			configObject: configObject
 		}));
