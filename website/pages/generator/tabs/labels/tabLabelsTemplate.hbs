@@ -106,13 +106,21 @@
 		</div>
 		<div class="col-md-4">
 			<select id="mainLabelFont" class="form-control form-group changeUpdateNoAnimation">
-				<option value="arial" {{#compare config.labels.mainLabel.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-				<option value="open sans" {{#compare config.labels.mainLabel.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-				<option value="times new roman" {{#compare config.labels.mainLabel.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-				<option value="courier" {{#compare config.labels.mainLabel.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-				<option value="verdana" {{#compare config.labels.mainLabel.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-				<option value="helvetica" {{#compare config.labels.mainLabel.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-				<option value="garamond" {{#compare config.labels.mainLabel.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<optgroup label="Standard Fonts">
+					<option value="arial" {{#compare config.labels.mainLabel.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+					<option value="courier" {{#compare config.labels.mainLabel.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+					<option value="garamond" {{#compare config.labels.mainLabel.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+					<option value="georgia" {{#compare config.labels.mainLabel.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
+					<option value="helvetica" {{#compare config.labels.mainLabel.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+					<option value="lucida sans" {{#compare config.labels.mainLabel.font "lucida sans"}}selected="selected"{{/compare}}>Lucida Sans</option>
+					<option value="times new roman" {{#compare config.labels.mainLabel.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+					<option value="verdana" {{#compare config.labels.mainLabel.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				</optgroup>
+				<optgroup label="Web Fonts">
+					<option value="cinzel" {{#compare config.labels.mainLabel.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
+					<option value="exo" {{#compare config.labels.mainLabel.font "exo"}}selected="selected"{{/compare}}>Exo</option>
+					<option value="open sans" {{#compare config.labels.mainLabel.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				</optgroup>
 			</select>
 		</div>
 		<div class="col-md-3">
@@ -131,13 +139,21 @@
 		</div>
 		<div class="col-md-4">
 			<select id="labelValueFont" class="form-control form-group changeUpdateNoAnimation">
-				<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-				<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-				<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-				<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-				<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-				<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-				<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<optgroup label="Standard Fonts">
+					<option value="arial" {{#compare config.labels.value.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+					<option value="courier" {{#compare config.labels.value.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+					<option value="garamond" {{#compare config.labels.value.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+					<option value="georgia" {{#compare config.labels.value.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
+					<option value="helvetica" {{#compare config.labels.value.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+					<option value="lucida sans" {{#compare config.labels.value.font "lucida sans"}}selected="selected"{{/compare}}>Lucida Sans</option>
+					<option value="times new roman" {{#compare config.labels.value.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+					<option value="verdana" {{#compare config.labels.value.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				</optgroup>
+				<optgroup label="Web Fonts">
+					<option value="cinzel" {{#compare config.labels.value.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
+					<option value="exo" {{#compare config.labels.value.font "exo"}}selected="selected"{{/compare}}>Exo</option>
+					<option value="open sans" {{#compare config.labels.value.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				</optgroup>
 			</select>
 		</div>
 		<div class="col-md-3">
@@ -156,13 +172,21 @@
 		</div>
 		<div class="col-md-4">
 			<select id="labelPercentageFont" class="form-control form-group changeUpdateNoAnimation">
-				<option value="arial" {{#compare config.labels.percentage.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-				<option value="open sans" {{#compare config.labels.percentage.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-				<option value="times new roman" {{#compare config.labels.percentage.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-				<option value="courier" {{#compare config.labels.percentage.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-				<option value="verdana" {{#compare config.labels.percentage.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-				<option value="helvetica" {{#compare config.labels.percentage.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-				<option value="garamond" {{#compare config.labels.percentage.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<optgroup label="Standard Fonts">
+					<option value="arial" {{#compare config.labels.percentage.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+					<option value="courier" {{#compare config.labels.percentage.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+					<option value="garamond" {{#compare config.labels.percentage.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+					<option value="georgia" {{#compare config.labels.percentage.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
+					<option value="helvetica" {{#compare config.labels.percentage.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+					<option value="lucida sans" {{#compare config.labels.percentage.font "lucida sans"}}selected="selected"{{/compare}}>Lucida Sans</option>
+					<option value="times new roman" {{#compare config.labels.percentage.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+					<option value="verdana" {{#compare config.labels.percentage.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				</optgroup>
+				<optgroup label="Web Fonts">
+					<option value="cinzel" {{#compare config.labels.percentage.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
+					<option value="exo" {{#compare config.labels.percentage.font "exo"}}selected="selected"{{/compare}}>Exo</option>
+					<option value="open sans" {{#compare config.labels.percentage.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				</optgroup>
 			</select>
 		</div>
 		<div class="col-md-3">
@@ -242,18 +266,3 @@
 		</div>
 	</div>
 </div>
-
-
-<!--
-<h4 class="panelToggle{{#if openSections.panelTooltips}} expanded{{/if}}" data-section="panelTooltips">Tooltips<span></span></h4>
-
-<div id="panelTooltips" {{#compare openSections.panelTooltips false}}class="hidden"{{/compare}}>
-	<div class="row form-group">
-		<div class="col-md-6">
-			<input type="checkbox" id="enableTooltips" {{#compare config.labels.enableTooltips true}}checked="checked"{{/compare}}
-				class="changeUpdateNoAnimation" />
-			<label for="enableTooltips">Include mouseover tooltips</label>
-		</div>
-	</div>
-</div>
--->

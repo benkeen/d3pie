@@ -19,8 +19,8 @@ define([
 		});
 
 
-		$("#pieInnerRadius").on("change", _onChangeInnerRadius);
-		$("#pieOuterRadius").on("change", _onChangeOuterRadius);
+		$("#pieInnerRadius").on("input change", _onChangeInnerRadius);
+		$("#pieOuterRadius").on("input change", _onChangeOuterRadius);
 
 		$("#pieIconPie").on("click", function() {
 			$("#pieInnerRadius").val("0");

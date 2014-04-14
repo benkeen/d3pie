@@ -20,21 +20,6 @@ define([
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
-	var _renderContent = function() {
-		_initSlides();
-
-		_demoPie1 = new d3pie("aboutTabDemoPie1", aboutPageDemoPies[0]);
-		_demoPie2 = new d3pie("aboutTabDemoPie2", aboutPageDemoPies[1]);
-		_demoPie3 = new d3pie("aboutTabDemoPie3", aboutPageDemoPies[2]);
-
-		// fade in the "create similar" buttons
-		setTimeout(function() {
-			$("#demoPie1-createSimilarBtn,#demoPie2-createSimilarBtn,#demoPie3-createSimilarBtn").fadeIn(400);
-		}, 2000);
-
-		_isRendered = true;
-	};
-
 	// a bit fussy, but unavoidable. Whenever a page changes, we need to re-draw the pies IFF (if and only if)
 	// the initial page load wasn't the about page
 	var _onPageSelected = function(msg) {
@@ -47,25 +32,36 @@ define([
 			return;
 		}
 
-		if (msg.data.page === "about" || _firstPage !== "about") {
+		if (msg.data.page === "about") {
+			//_firstPage !== "about"
 			if (!_isRendered) {
 				_renderContent();
 			}
-
-			_demoPie1.redraw();
-			_demoPie2.redraw();
-			_demoPie3.redraw();
+//			setTimeout(function() {
+//				_demoPie1.redraw();
+//				_demoPie2.redraw();
+//				_demoPie3.redraw();
+//			}, 2000);
 		}
 	};
 
-	var _initSlides = function() {
+	var _renderContent = function() {
+		$("#aboutPageSlides").slidesjs({
+			width: 940,
+			height: 320,
+			navigation: true
+		});
 
-			$("#aboutPageSlides").slidesjs({
-				width: 940,
-				height: 320,
-				navigation: true
-			});
+		_demoPie1 = new d3pie("aboutTabDemoPie1", aboutPageDemoPies[0]);
+		_demoPie2 = new d3pie("aboutTabDemoPie2", aboutPageDemoPies[1]);
+		_demoPie3 = new d3pie("aboutTabDemoPie3", aboutPageDemoPies[2]);
 
+		// fade in the "create similar" buttons
+		setTimeout(function() {
+			$("#demoPie1-createSimilarBtn,#demoPie2-createSimilarBtn,#demoPie3-createSimilarBtn").fadeIn(400);
+		}, 2000);
+
+		_isRendered = true;
 	};
 
 

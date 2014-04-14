@@ -51,13 +51,21 @@
 		</div>
 		<div class="col-md-4">
 			<select id="titleFont" class="form-control changeUpdateNoAnimation">
-				<option value="arial" {{#compare config.header.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-				<option value="open sans" {{#compare config.header.title.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-				<option value="times new roman" {{#compare config.header.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-				<option value="courier" {{#compare config.header.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-				<option value="verdana" {{#compare config.header.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-				<option value="helvetica" {{#compare config.header.title.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-				<option value="garamond" {{#compare config.header.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<optgroup label="Standard Fonts">
+					<option value="arial" {{#compare config.header.title.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+					<option value="courier" {{#compare config.header.title.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+					<option value="garamond" {{#compare config.header.title.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+					<option value="georgia" {{#compare config.header.title.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
+					<option value="helvetica" {{#compare config.header.title.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+					<option value="lucida sans" {{#compare config.header.title.font "georgia"}}selected="selected"{{/compare}}>Lucida Sans</option>
+					<option value="times new roman" {{#compare config.header.title.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+					<option value="verdana" {{#compare config.header.title.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				</optgroup>
+				<optgroup label="Web Fonts">
+					<option value="cinzel" {{#compare config.header.title.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
+					<option value="exo" {{#compare config.header.title.font "exo"}}selected="selected"{{/compare}}>Exo</option>
+					<option value="open sans" {{#compare config.header.title.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				</optgroup>
 			</select>
 		</div>
 		<div class="col-md-3">
@@ -76,13 +84,21 @@
 		</div>
 		<div class="col-md-4">
 			<select id="subtitleFont" class="form-control changeUpdateNoAnimation">
-				<option value="arial" {{#compare config.header.subtitle.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-				<option value="open sans" {{#compare config.header.subtitle.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-				<option value="times new roman" {{#compare config.header.subtitle.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-				<option value="courier" {{#compare config.header.subtitle.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-				<option value="verdana" {{#compare config.header.subtitle.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-				<option value="helvetica" {{#compare config.header.subtitle.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-				<option value="garamond" {{#compare config.header.subtitle.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+				<optgroup label="Standard Fonts">
+					<option value="arial" {{#compare config.header.subtitle.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+					<option value="courier" {{#compare config.header.subtitle.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+					<option value="garamond" {{#compare config.header.subtitle.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+					<option value="georgia" {{#compare config.header.subtitle.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
+					<option value="helvetica" {{#compare config.header.subtitle.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+					<option value="lucida sans" {{#compare config.header.subtitle.font "lucida sans"}}selected="selected"{{/compare}}>Lucida Sans</option>
+					<option value="times new roman" {{#compare config.header.subtitle.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+					<option value="verdana" {{#compare config.header.subtitle.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+				</optgroup>
+				<optgroup label="Web Fonts">
+					<option value="cinzel" {{#compare config.header.subtitle.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
+					<option value="exo" {{#compare config.header.subtitle.font "exo"}}selected="selected"{{/compare}}>Exo</option>
+					<option value="open sans" {{#compare config.header.subtitle.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+				</optgroup>
 			</select>
 		</div>
 		<div class="col-md-3">

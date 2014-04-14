@@ -288,7 +288,7 @@ define([
 	};
 
 	var _onPageResize = function() {
-		_demoD3Pie.redraw(false);
+		_demoD3Pie.redraw();
 	};
 
 	mediator.register(_MODULE_ID);
