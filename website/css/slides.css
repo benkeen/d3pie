@@ -26,25 +26,23 @@
 	float: left;
 	margin: 0 1px;
 }
-
 .slidesjs-pagination li a {
 	display: block;
-	width: 13px;
+	width: 22px;
 	height: 0;
-	padding-top: 13px;
+	padding-top: 22px;
 	background-image: url(../images/pagination.png);
-	background-position: 0 0;
+	background-position: 0px -1px;
 	float: left;
 	overflow: hidden;
 }
 .slidesjs-pagination li a.active,
 .slidesjs-pagination li a:hover.active {
-	background-position: 0 -13px
+	background-position: 0 -25px
 }
 .slidesjs-pagination li a:hover {
-	background-position: 0 -26px
+	background-position: 0 -48px;
 }
-
 #aboutPageSlides {
 	text-align: center;
 }
@@ -54,7 +52,7 @@
 	margin-bottom: 12px;
 }
 .slidesjs-pagination {
-	width: 126px;
+	width: 160px;
 	margin: 0px auto;
 	float: none !important;
 	padding-right: 40px;

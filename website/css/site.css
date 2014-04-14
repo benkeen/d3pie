@@ -442,3 +442,24 @@ body pre {
 		display: none;
 	}
 }
+
+.slidesjs-control, .slidesjs-container {
+	height: 388px !important;
+}
+@media (min-width: 992px) {
+	.aboutPageRow .col-lg-4 {
+		float: left;
+		width: 50%;
+	}
+	.aboutPageRow .col3 {
+		display: none;
+	}
+}
+@media (min-width: 1200px) {
+	.aboutPageRow .col-lg-4 {
+		width: 33.3333333%;
+	}
+	.aboutPageRow .col3 {
+		display: block;
+	}
+}
