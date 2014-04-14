@@ -27,7 +27,8 @@ define([], function() {
 			SEND_DATA: 'demo-pie-send-data'
 		},
 		PAGE: {
-			LOAD: 'load-page'
+			LOAD: 'load-page',
+			RESIZE: 'page-resize'
 		}
 	};
 

@@ -67,7 +67,7 @@ define([
 		subscriptions[C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP]    = _updateProperty;
 		subscriptions[C.EVENT.DEMO_PIE.SELECT_SEGMENT]        = _selectPieSegment;
 		subscriptions[C.EVENT.PAGE.LOAD]                      = _onPageSelected;
-
+		subscriptions[C.EVENT.PAGE.RESIZE]                    = _onPageResize;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
@@ -285,6 +285,10 @@ define([
 			}
 		}
 		_currentTab = tab;
+	};
+
+	var _onPageResize = function() {
+		_demoD3Pie.redraw(false);
 	};
 
 	mediator.register(_MODULE_ID);

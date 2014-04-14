@@ -1,10 +1,10 @@
-<div class="page-header affix" style="padding-top: 18px; margin: 0px; width: 100%; background-color: white; z-index:2">
+<div class="page-header">
 	<h1>Docs</h1>
 </div>
 
 <div class="row">
 	<div class="col-lg-3 bs-docs-sidebar" id="pagenav">
-		<ul class="nav nav-list bs-docs-sidenav affix" data-spy="affix" style="top: 170px">
+		<ul class="nav nav-list bs-docs-sidenav" style="top: 170px">
 			<li class="active"><a href="#docs-intro"><i class="icon-chevron-right"></i> Intro</a></li>
 			<li><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
 			<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
@@ -13,13 +13,14 @@
 			<li><a href="#docs-default-settings"><i class="icon-chevron-right"></i> &#8212; Default settings</a></li>
 			<li><a href="#docs-settings"><i class="icon-chevron-right"></i> &#8212; Setting Details</a></li>
 			<li><a href="#docs-colors"><i class="icon-chevron-right"></i> Segment Colors</a></li>
+			<li><a href="#docs-fonts"><i class="icon-chevron-right"></i> Fonts</a></li>
 			<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
 			<li><a href="#docs-feature-requests"><i class="icon-chevron-right"></i> Feature Requests!</a></li>
 			<li><a href="#docs-siteinfo"><i class="icon-chevron-right"></i> About this Site</a></li>
 		</ul>
 	</div>
 
-	<div class="col-lg-9" style="top: 112px; z-index: 1">
+	<div class="col-lg-9">
 
 		<section id="docs-intro">
 			<h3>Intro</h3>
@@ -204,11 +205,11 @@ myPie.redraw();
 		title: {
 			title:    "",
 			color:    "#333333",
-			fontSize: 14,
+			fontSize: 18,
 			font:     "arial"
 		},
 		subtitle: {
-			color:    "#333333",
+			color:    "#666666",
 			fontSize: 14,
 			font:     "arial"
 		},
@@ -273,7 +274,7 @@ myPie.redraw();
 			speed: 1000
 		},
 		pullOutSegmentOnClick: {
-			effect: "bounce", // none / linear / bounce
+			effect: "bounce", // none / linear / bounce / elastic / back
 			speed: 300,
 			size: 10
 		},
@@ -552,122 +553,103 @@ myPie.redraw();
 				<tr>
 					<td>labels.mainLabel.color</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
+					<td>#333333</td>
 					<td>
-
+						The colour of the main label (hex code). This may appear in either the inner or outer label (or neither)
+						depending on your settings for <code>labels.inner.format</code> and <code>labels.outer.format</code>.
 					</td>
 				</tr>
 				<tr>
 					<td>labels.mainLabel.font</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>arial</td>
+					<td>The font for the main label.</td>
 				</tr>
 				<tr>
 					<td>labels.mainLabel.fontSize</td>
 					<td><span class="label label-primary">number</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>10</td>
+					<td>The main label font size in pixels.</td>
 				</tr>
 				<tr>
 					<td>labels.percentage.color</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>#999999</td>
+					<td>The colour of the percentage label.</td>
 				</tr>
 				<tr>
 					<td>labels.percentage.font</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>arial</td>
+					<td>The font for the percentage.</td>
 				</tr>
 				<tr>
 					<td>labels.percentage.fontSize</td>
 					<td><span class="label label-primary">number</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>10</td>
+					<td>The percentage font size in pixels.</td>
 				</tr>
 				<tr>
 					<td>labels.percentage.decimalPlaces</td>
 					<td><span class="label label-primary">number</span></td>
-					<td>null</td>
-					<td>
-
+					<td>0</td>
+					<td>If you data contains floating pointing numbers, this setting lets you specify the
+						number of decimal places that should appear for each segment.
 					</td>
 				</tr>
 				<tr>
 					<td>labels.value.color</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>#cccc44</td>
+					<td>The colour of the value labels.</td>
 				</tr>
 				<tr>
 					<td>labels.value.font</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
-					<td>
-
+					<td>arial</td>
+					<td>The font used to display the value. The "Value" is whatever you entered in the
+						segment's value property in the <code>data.content</code> array.
 					</td>
 				</tr>
 				<tr>
 					<td>labels.value.fontSize</td>
 					<td><span class="label label-primary">number</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>10</td>
+					<td>The value font size in pixels.</td>
 				</tr>
 				<tr>
 					<td>labels.lines.enabled</td>
 					<td><span class="label label-pink">boolean</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>true</td>
+					<td>Whether or not lines are displayed that link from the outer label to the pie segment.</td>
 				</tr>
 				<tr>
 					<td>labels.lines.style</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>curved</td>
+					<td>The style for the label lines: <code>curved</code> or <code>straight</code>.</td>
 				</tr>
 				<tr>
 					<td>labels.lines.color</td>
 					<td><span class="label label-warning">string</span></td>
-					<td>null</td>
+					<td>segment</td>
 					<td>
-
+						Unlike the other colour settings, this setting has two options. If you enter the string "segment"
+						the label lines will appear as the same colour as the segments; or you can enter a
+						hex code for all the label lines to be the same colour.
 					</td>
 				</tr>
 				<tr>
 					<td>labels.truncation.enabled</td>
 					<td><span class="label label-pink">boolean</span></td>
-					<td>null</td>
-					<td>
-
-					</td>
+					<td>false</td>
+					<td>This enables truncation of the main labels.</td>
 				</tr>
 				<tr>
 					<td>labels.truncation.length</td>
 					<td><span class="label label-primary">number</span></td>
 					<td>30</td>
-					<td>
-
-					</td>
+					<td>The max length of the main labels before they are truncated with an ellipsis (...)</td>
 				</tr>
 				<tr>
 					<th colspan="4">Effects</th>
@@ -677,40 +659,37 @@ myPie.redraw();
 					<td><span class="label label-warning">string</span></td>
 					<td>default</td>
 					<td>
-
+						The pie chart loading effect. There are currently only two options: <code>default</code> which
+						slides in the pie chart segments then fades in the labels, and <code>none</code> where the
+						pie chart appears immediately.
 					</td>
 				</tr>
 				<tr>
 					<td>effects.load.speed</td>
 					<td><span class="label label-primary">number</span></td>
 					<td>1000</td>
-					<td>
-
-					</td>
+					<td>The speed in milliseconds of the load effect.</td>
 				</tr>
 				<tr>
 					<td>effects.pullOutSegmentOnClick.effect</td>
 					<td><span class="label label-warning">string</span></td>
 					<td>bounce</td>
-					<td>
-
+					<td>The effect used when a user clicks on a pie chart segments. You may use any of the following
+						values: <code>none</code>, <code>linear</code>, <code>bounce</code>, <code>elastic</code>,
+						<code>back</code>.
 					</td>
 				</tr>
 				<tr>
 					<td>effects.pullOutSegmentOnClick.speed</td>
 					<td><span class="label label-primary">number</span></td>
 					<td>300</td>
-					<td>
-
-					</td>
+					<td>The speed in milliseconds for the pullout effect.</td>
 				</tr>
 				<tr>
 					<td>effects.pullOutSegmentOnClick.size</td>
 					<td><span class="label label-primary">number</span></td>
 					<td>10</td>
-					<td>
-						The distance in pixels that the segment gets pulled out when clicked.
-					</td>
+					<td>The distance in pixels that the segment gets pulled out when clicked.</td>
 				</tr>
 				<tr>
 					<td>effects.highlightSegmentOnMouseover</td>
@@ -901,6 +880,18 @@ data: {
 
 		</section>
 
+		<section id="docs-fonts">
+			<h3>Fonts</h3>
+			<p>
+				You can set the various fonts for the different pie chart components (title, subtitle, label elements)
+				but please note that those onts need to be available to the user's own computer - just like with regular
+				web pages. So either stick to "standard" web fonts like arial, verdana, helvetica that are likely to be
+				available, or include a web font in your page.
+			</p>
+			<p>
+				This site uses web fonts to improve the look and feel of the generated pie charts.
+			</p>
+		</section>
 
 		<section id="docs-upgrading">
 			<h3>Upgrading</h3>

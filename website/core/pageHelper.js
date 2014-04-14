@@ -28,7 +28,12 @@ define([
 		$(document).on("click", ".selectPage", function(e) {
 			e.preventDefault();
 			_selectPage(this.hash);
-		})
+		});
+
+		$(window).on("resize", function() {
+			mediator.publish(_MODULE_ID, C.EVENT.PAGE.RESIZE, { });
+		});
+
 	};
 
 	/**
