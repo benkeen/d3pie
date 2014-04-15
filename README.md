@@ -18,10 +18,10 @@ To download the script, go to the [./d3pie](d3pie) folder and pick one of the fi
 
 ### The code
 
-...
+If you fancy hacking on the d3pie code, awesome! Visit the [./d3pie-source](d3pie-source) folder. That contains some
+more info about how the code is organized and how the file is generated.
 
-
-### Script used on the site
+### Script used on the website
 
 Lots! A big thanks to the developers of these scripts.
 

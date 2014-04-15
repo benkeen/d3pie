@@ -73,7 +73,7 @@ var defaultSettings = {
 			fontSize: 10
 		},
 		percentage: {
-			color: "#999999",
+			color: "#dddddd",
 			font: "arial",
 			fontSize: 10,
 			decimalPlaces: 0
@@ -405,7 +405,7 @@ var math = {
 			h -= pie.textComponents.footer.h;
 		}
 
-		var outerRadius = ((w < h) ? w : h) / 2.8;
+		var outerRadius = ((w < h) ? w : h) / 3;
 		var innerRadius, percent;
 
 		// if the user specified something, use that instead
@@ -1091,7 +1091,7 @@ var segments = {
 		var $arc = $("." + pie.cssPrefix + "arc");
 		$arc.on("click", function(e) {
 			var $segment = $(e.currentTarget).find("path");
-			var isExpanded = $segment.attr("class") === "expanded";
+			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
 
 			segments.onSegmentEvent(pie.options.callbacks.onClickSegment, $segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
@@ -1399,7 +1399,15 @@ var text = {
 	var d3pie = function(element, options) {
 
 		// element can be an ID or DOM element
-		this.element = (typeof element === "string") ? $("#" + element)[0] : element;
+		this.element = element;
+		if (typeof element === "string") {
+			if (/#/.test(element)) {
+				this.element = $(element)[0];
+			} else {
+				this.element = $("#" + element)[0]
+			}
+		}
+
 		this.options = $.extend(true, {}, defaultSettings, options);
 
 		// if the user specified a custom CSS element prefix (ID, class), use it. Otherwise use the
@@ -1465,6 +1473,14 @@ var text = {
 			return;
 		}
 		segments.openSegment(this, $("#" + this.cssPrefix + "segment" + index)[0]);
+	};
+
+	d3pie.prototype.closeSegment = function(index) {
+		var index = parseInt(index, 10);
+		if (index < 0 || index > this.options.data.length-1) {
+			return;
+		}
+		segments.closeSegment(this, $("#" + this.cssPrefix + "segment" + index)[0]);
 	};
 
 	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
@@ -1592,7 +1608,7 @@ var text = {
 			labels.positionLabelElements(self, "outer", self.options.labels.outer.format);
 			labels.computeOuterLabelCoords(self);
 
-			// this is (and should be) dumb. It just places the outer groups at their pre-calculated, collision-free positions
+			// this is (and should be) dumb. It just places the outer groups at their calculated, collision-free positions
 			labels.positionLabelGroups(self, "outer");
 
 			// we use the label line positions for many other calculations, so ALWAYS compute them

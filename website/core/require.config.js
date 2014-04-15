@@ -26,17 +26,19 @@ require.config({
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
-		// How to Use page
-		howToUsePage: "pages/howToUse/howToUsePage",
-		howToUsePageTemplate: "pages/howToUse/howToUsePage.hbs",
-
 		// Download page
 		downloadPage: "pages/download/downloadPage",
 		downloadPageTemplate: "pages/download/downloadPage.hbs",
 
-		// Documentation page
+		// Documentation pages
 		documentationPage: "pages/documentation/documentationPage",
 		documentationPageTemplate: "pages/documentation/documentationPage.hbs",
+		quickStartPage: "pages/documentation/quickStartPage",
+		quickStartsPageTemplate: "pages/documentation/quickStartPage.hbs",
+		topLevelDocPage: "pages/documentation/topLevelDocPage",
+		topLevelDocPageTemplate: "pages/documentation/topLevelDocPage.hbs",
+		examplesPage: "pages/documentation/examplesPage",
+		examplesPageTemplate: "pages/documentation/examplesPage.hbs",
 
 		// --- tabs ---
 		startTab: "pages/generator/tabs/start/tabStart",

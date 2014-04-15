@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie standalone examples</title>
+</head>
+<body>
+<h1>
+	<a href="./">Standalone d3pie Examples</a> &raquo; Basic Pie Chart
+</h1>
+
+<p>
+	This example shows a bar-bones pie chart, with a small data set and a title. Everything else pulls from the
+	default d3pie settings (pie size, canvas size, colours, fonts etc).
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<!--
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+-->
+
+<script src="../website/libs/jquery.js"></script>
+<script src="../website/libs/d3.min.js"></script>
+<script src="../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "A Very Simple Pie"
+			}
+		},
+		data: {
+			content: [
+				{ label: "JavaScript", value: 264131 },
+				{ label: "Ruby", value: 218812 },
+				{ label: "Java", value: 157618}
+			]
+		}
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "A very simple example pie"
+		}
+	},
+	data: {
+		content: [
+			{ label: "JavaScript", value: 264131 },
+			{ label: "Ruby", value: 218812 },
+			{ label: "Java", value: 157618},
+		]
+	}
+});
+</pre></blockquote>
+
+</body>
+</html>

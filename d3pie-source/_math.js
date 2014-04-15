@@ -27,7 +27,7 @@ var math = {
 			h -= pie.textComponents.footer.h;
 		}
 
-		var outerRadius = ((w < h) ? w : h) / 2.8;
+		var outerRadius = ((w < h) ? w : h) / 3;
 		var innerRadius, percent;
 
 		// if the user specified something, use that instead

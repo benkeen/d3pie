@@ -5,13 +5,6 @@ body .navbar {
 	top: 0;
 	z-index: 1000;
 }
-
-#mainNav1 {
-    width: 102px;
-}
-#mainNav2 {
-    width: 90px;
-}
 #sidebar {
 	width: 400px;
 	float: left;
@@ -140,6 +133,9 @@ input.ib, .ib {
 body .navbar-brand {
     width: 150px;
 }
+body .form-control {
+	font-size: 14px;
+}
 .scriptVersion {
 	color: #dddddd;
 	margin-left: 8px;
@@ -160,7 +156,7 @@ body .colorGroup {
 a.docAnchor {
 	display: block;
 	position: relative;
-	top: -250px;
+	top: -60px;
 	visibility: hidden;
 }
 
@@ -457,6 +453,7 @@ body pre {
 .slidesjs-pagination {
 	display: none;
 }
+
 @media (min-width: 200px) {
 	.slidesjs-pagination {
 		display: block;
@@ -464,6 +461,14 @@ body pre {
 	}
 }
 
+@media (min-width: 768px) {
+	#mainNav1 {
+		width: 102px;
+	}
+	#mainNav2 {
+		width: 90px;
+	}
+}
 @media (min-width: 992px) {
 	.aboutPageRow .col-lg-4 {
 		float: left;

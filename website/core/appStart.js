@@ -6,18 +6,26 @@ require([
 	"aboutPage",
 	"generatorPage",
 	"downloadPage",
-	"howToUsePage",
+
+	"topLevelDocPage",
+	"quickStartPage",
 	"documentationPage",
+	"examplesPage",
+
 	"handlebarsHelpers"
-], function(C, mediator, utils, pageHelper, aboutPage, generatorPage, downloadPage, howToUsePage, documentationPage) {
+], function(C, mediator, utils, pageHelper, aboutPage, generatorPage, downloadPage,
+			topLevelDocPage, quickStartPage, documentationPage, examplesPage) {
 	"use strict";
 
 	// initialize our pages
 	aboutPage.init();
 	generatorPage.init();
 	downloadPage.init();
-	howToUsePage.init();
+
+	topLevelDocPage.init();
+	quickStartPage.init();
 	documentationPage.init();
+	examplesPage.init();
 
 	// load the appropriate page
 	pageHelper.initPage();

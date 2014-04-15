@@ -53,7 +53,7 @@ var defaultSettings = {
 			fontSize: 10
 		},
 		percentage: {
-			color: "#999999",
+			color: "#dddddd",
 			font: "arial",
 			fontSize: 10,
 			decimalPlaces: 0
