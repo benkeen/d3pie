@@ -7,14 +7,14 @@ require([
 	"generatorPage",
 	"downloadPage",
 
-	"topLevelDocPage",
+	"helpPage",
 	"quickStartPage",
 	"documentationPage",
 	"examplesPage",
 
 	"handlebarsHelpers"
-], function(C, mediator, utils, pageHelper, aboutPage, generatorPage, downloadPage,
-			topLevelDocPage, quickStartPage, documentationPage, examplesPage) {
+], function(C, mediator, utils, pageHelper, aboutPage, generatorPage, downloadPage, helpPage, quickStartPage,
+			documentationPage, examplesPage) {
 	"use strict";
 
 	// initialize our pages
@@ -22,7 +22,7 @@ require([
 	generatorPage.init();
 	downloadPage.init();
 
-	topLevelDocPage.init();
+	helpPage.init();
 	quickStartPage.init();
 	documentationPage.init();
 	examplesPage.init();

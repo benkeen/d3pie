@@ -4,12 +4,15 @@
 	<title>d3pie</title>
 	<meta charset="utf-8">
 	<meta name="description" content="A small, re-usable pie chart component built on d3.js and jQuery for creating clear, attractive charts." />
-	
+	<% if (C.MINIMIZED) { %>
+	<link href="build/<%=SITE_CSS%>" type="text/css" rel="stylesheet" />
+	<% } else { %>
 	<link href="website/css/site.css" type="text/css" rel="stylesheet" />
 	<link href="website/css/bootstrap.css" type="text/css" rel="stylesheet" />
 	<link href="website/css/bootstrap-colorpicker.css" type="text/css" rel="stylesheet" />
 	<link href="website/css/prettify.css" type="text/css" rel="stylesheet" />
 	<link href="website/css/slides.css" type="text/css" rel="stylesheet" />
+	<% } %>
 </head>
 <body>
 
@@ -17,7 +20,7 @@
 	<div class="navbar-header">
 		<div class="navbar-brand">
 			d3pie
-			<span class="scriptVersion">0.1.0</span>
+			<span class="scriptVersion"><%=D3PIE_VERSION%></span>
 		</div>
 		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="sr-only">Toggle navigation</span>
@@ -30,8 +33,7 @@
 		<ul id="topNav" class="nav navbar-nav">
 			<li id="mainNav1"><a href="#about" class="selectPage">About d3pie</a></li>
 			<li id="mainNav2"><a href="#generator" class="selectPage">Generator</a></li>
-			<li><a href="#download" class="selectPage">Download</a></li>
-			<li><a href="#help" class="selectPage">Help</a></li>
+			<li><a href="#docs" class="selectPage">Documentation</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="https://github.com/benkeen/d3pie">Fork on Github</a></li>
@@ -43,18 +45,26 @@
 	<div class="hidden topPage" id="about"></div>
 	<div class="hidden topPage" id="generator"></div>
 	<div class="hidden topPage" id="download"></div>
-	<div class="hidden topPage" id="help"></div>
 	<div class="hidden topPage" id="quickStart"></div>
 	<div class="hidden topPage" id="examples"></div>
 	<div class="hidden topPage" id="docs"></div>
+
+	<div id="footerRow" class="hidden">
+		<hr />
+	</div>
 </div>
 
+<% if (C.MINIMIZED) { %>
+<script src="build/<%=CORE_LIBS_JS%>"></script>
+<script src="website/core/require.config.js"></script>
+<script>require(["appStartBuild"], function() { });</script>
+<% } else { %>
 <script src="website/libs/jquery.js"></script>
 <script src="website/libs/jquery-ui.js"></script>
 <script src="website/libs/jquery.slides.js"></script>
 <script src="website/libs/d3.min.js"></script>
-<script src="website/libs/modernizr.js"></script>
 <script src="d3pie-source/_default-settings.js"></script>
+<script src="website/libs/modernizr.js"></script>
 <script src="d3pie/d3pie.js"></script>
 <script src="website/libs/bootstrap.min.js"></script>
 <script src="website/libs/bootstrap-colorpicker.js"></script>
@@ -63,7 +73,7 @@
 <script src="website/libs/require.js"></script>
 <script src="website/core/require.config.js"></script>
 <script>require(["website/core/appStart.js"], function() { });</script>
-
+<% } %>
 <script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

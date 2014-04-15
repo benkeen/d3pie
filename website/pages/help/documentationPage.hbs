@@ -1,0 +1,1006 @@
+<div class="page-header">
+	<h1>Docs</h1>
+</div>
+
+<div class="row">
+<div class="col-lg-3 bs-docs-sidebar" id="pagenav">
+	<ul class="nav nav-list bs-docs-sidenav" style="top: 170px">
+		<li class="active"><a href="#docs-intro"><i class="icon-chevron-right"></i> Intro</a></li>
+		<li><a href="#docs-disclaimer"><i class="icon-chevron-right"></i> Disclaimer</a></li>
+		<li><a href="#docs-dependencies"><i class="icon-chevron-right"></i> Script Dependencies</a></li>
+		<li><a href="#docs-api"><i class="icon-chevron-right"></i> The API</a></li>
+		<li><a href="#docs-configuration"><i class="icon-chevron-right"></i> The Configuration Object</a></li>
+		<li><a href="#docs-default-settings"><i class="icon-chevron-right"></i> &#8212; Default settings</a></li>
+		<li><a href="#docs-settings"><i class="icon-chevron-right"></i> &#8212; Setting Details</a></li>
+		<li><a href="#docs-colors"><i class="icon-chevron-right"></i> Segment Colors</a></li>
+		<li><a href="#docs-fonts"><i class="icon-chevron-right"></i> Fonts</a></li>
+		<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
+		<li><a href="#docs-feature-requests"><i class="icon-chevron-right"></i> Feature Requests!</a></li>
+		<li><a href="#docs-siteinfo"><i class="icon-chevron-right"></i> About this Site</a></li>
+	</ul>
+</div>
+
+<div class="col-lg-9">
+
+<section>
+	<a id="docs-intro" class="docAnchor"></a>
+	<h3>Intro</h3>
+	<p>
+		This page documents everything you need to know about d3pie: the available configuration
+		settings, the API functions, how to style your pie chart and more. If you think there's something
+		missing, <a href="https://github.com/benkeen/d3pie/issues" target="_blank">open a ticket on github</a> and
+		I'll see to it. Better yet, <a href="https://github.com/benkeen/d3pie/">fork the project</a> and
+		update the documentation yourself! Woo! Go open source.
+	</p>
+	<p>
+		If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
+		<a href="#howToUse" class="selectPage">How to Use</a> page, or even try out
+		<a href="#generator-start" class="selectPage">Generator</a> to create a pie chart on the fly and generate the source code.
+	</p>
+	<p>
+		But before we get to the doc, a short disclaimer.
+	</p>
+</section>
+
+<section>
+	<a id="docs-disclaimer" class="docAnchor"></a>
+	<h3>Disclaimer</h3>
+
+	<p>
+		At some point when I was designing this thing, I realized that if I made it as customizable as I wanted
+		it to be, it would open the door to letting people generate really ugly, unreadable pie charts. But if
+		I limited the available functionality it wouldn't be as useful. It's kind of a balancing act.
+	</p>
+	<p>
+		So I decided on the following approach: I would impose as few restrictions as possible, but make it as
+		hard as possible for you to shoot yourself in the foot. As such, d3pie does a bunch of "automatic" stuff:
+		reasonable placement of outer labels, titles, and other text fields, best-guess default pie sizes if
+		nothing is specified and more stuff of that ilk. Secondly, I included several user-defined options that
+		anticipate the sort of problems that are likely to occur, such as truncating long labels, hiding labels
+		for small data values. Between them all, it should go a long way to help you construct clear, readable
+		charts. But it's far from infallible! Over time, I hope to make the rendering code smarter but ultimately
+		the responsibility will always lie with you to <i>know thy data</i> and choose appropriate settings.
+	</p>
+	<p>
+		Okay, disclaimer over. :)
+	</p>
+</section>
+
+<section>
+	<a id="docs-dependencies" class="docAnchor"></a>
+
+	<h3>Script Dependencies</h3>
+	<ul>
+		<li><a href="https://github.com/mbostock/d3/releases" target="_blank">d3.js</a> - version 3.4 or later.</li>
+		<li><a href="http://jquery.com/" target="_blank">jQuery</a> - version 1.10 or later.</li>
+	</ul>
+
+	<p>
+		To be honest, d3pie will probably work just fine with earlier versions of both of those scripts - certainly
+		jQuery - but I won't guarantee it. If you find it does work fine, drop me a note on github and I'll update
+		the docs. d3pie will always rely on d3, but over time I plan to remove the need for jQuery. This is an early
+		version.
+	</p>
+</section>
+
+<section>
+	<a id="docs-api" class="docAnchor"></a>
+
+	<h3>The API</h3>
+	<p>
+		There are a few API functions available on your d3pie object. These are accessible like so:
+	</p>
+
+			<pre class="prettyprint language-js">var myPie = new d3pie("element", { ... });
+var openSegment = myPie.getOpenSegment();
+myPie.redraw();
+// ...</pre>
+
+	<table class="table table-striped table-hover ">
+		<thead>
+		<tr>
+			<th>Function</th>
+			<th>Params</th>
+			<th>Description</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>d3pie()</td>
+			<td>
+				element <span class="label label-success">mixed</span>,
+				config <span class="label label-danger">object</span>
+			</td>
+			<td>
+				The d3pie constructor, which takes two params. The first parameter is the element that is being
+				targeted for the pie chart: it can either be a string of the ID or the actual DOM element. The ID
+				string can either be the jQuery selector, like <code>#myPie</code> or without the hash tag. Either
+				is fine. The second parameter is the d3pie configuration object. See the
+				<a href="#docs-configuration">section below</a> for more information on that.
+			</td>
+		</tr>
+		<tr>
+			<td>d3pie.redraw()</td>
+			<td>&#8212;</td>
+			<td>
+				This redraws the entire pie chart. <b>Important</b>: if the pie chart is initially created in a
+				hidden element in your webpage, you will need to run this function when the pie chart is first
+				made visible (just once is fine). The reason is that d3pie needs to actually "see" the dimensions
+				of the labels that have been placed on the canvas in order to get their visible dimensions and
+				place them appropriately - and it can't do this unless the canvas is visible.
+			</td>
+		</tr>
+		<tr>
+			<td>d3pie.openSegment()</td>
+			<td>index <span class="label label-primary">number</span></td>
+			<td>
+				Calling this function does the same action as clicking a pie segment. You just pass in the index
+				of the segment you wish to open. If an existing segment is opened, d3pie will automatically close
+				it as it opens the new one. <b>Note</b>: this and the following <code>closeSegment</code> methods
+				have one oddity (which I hope to improve on in a later version of the script). Technically this
+				method still works if you have <code>effects.pullOutSegmentOnClick.effect</code> set to
+				<code>none</code>. That setting lets you choose the pull-out effect used for when the <i>user</i>
+				clicks on the pie segment. If you set it to <code>none</code> the user won't be able to expand the
+				segment via a click. But if it's set to <code>none</code> and you call this function, the segment
+				<b>will</b> be pulled out - just without any sliding effect. So generally you'll want to use
+				this method with <code>effects.pullOutSegmentOnClick.effect</code> set to something other than
+				<code>none</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>d3pie.closeSegment()</td>
+			<td>index <span class="label label-primary">number</span></td>
+			<td>
+				Calling this function does the same action as clicking an open pie segment. You just pass in the index
+				of the segment you wish to open. If the segment is open, it will close it. Otherwise it does
+				nothing.
+			</td>
+		</tr>
+		<tr>
+			<td>d3pie.getOpenSegment()</td>
+			<td>&#8212;</td>
+			<td>
+				Returns an object containing all pertinent info about the open segment. If nothing is open,
+				it returns <code>null</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>d3pie.updateProp()</td>
+			<td>
+				propKey <span class="label label-warning">string</span>,
+				value <span class="label label-success">mixed</span>
+			</td>
+			<td>
+				Destroying and recreating a pie chart can take a little time, so the user sees a visual flash
+				in the page. This function lets you update a single property on the fly, without causing a complete
+				repaint. Right now it only has a few options that can be updated, but I hope to update it to
+				allow for a lot more. The valid <code>propKeys</code> are a string versions of the flattened configuration
+				object. These values are:
+				<ul>
+					<li><code>"header.title.text"</code></li>
+					<li><code>"header.subtitle.text"</code>
+						Updating either of these properties works the same way. If the value is entirely removed / added, it causes
+						a complete repaint of the pie so it can make use the available space. Otherwise it just updates
+						the title or subtitle element individually without causing a repaint.</li>
+					<li><code>"callbacks.onMouseoverSegment"</code></li>
+					<li><code>"callbacks.onMouseoutSegment"</code></li>
+					<li><code>"callbacks.onClickSegment"</code></li>
+					<li><code>"effects.pullOutSegmentOnClick.effect"</code></li>
+					<li><code>"effects.pullOutSegmentOnClick.speed"</code></li>
+					<li><code>"effects.pullOutSegmentOnClick.size"</code></li>
+					<li><code>"effects.highlightSegmentOnMouseover"</code></li>
+					<li><code>"effects.highlightLuminosity"</code></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>d3pie.destroy()</td>
+			<td>&#8212;</td>
+			<td>
+				Removes a d3pie instance altogether - including deleting the actual pie chart in the page. This
+				can be handy if you want to dynamically recreate the whole thing with different data sets. Just
+				destroy() it then recreate it.
+			</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<p>
+		In addition to the above functions, see the <b>callbacks</b> section of the configuration object
+		to tie in your own code with events such as clicks and mouseovers.
+	</p>
+</section>
+
+<section>
+<a id="docs-configuration" class="docAnchor"></a>
+<h3>The Configuration Object</h3>
+
+<p>
+	The configuration object is where all aspects of your pie chart is defined: data, colors, fonts, labels
+	and more. d3pie comes with a bunch of reasonable defaults for each field, so other than the required
+	<code>data.content</code> field, you only need to define whatever settings you wish to override.
+</p>
+
+
+<a id="docs-default-settings" class="docAnchor"></a>
+<h4>Default settings</h4>
+
+<p>
+	Here are the default settings that will be applied to your pie chart. A description of each field, its
+	type (object, array, number, string, mixed)
+</p>
+
+<pre class="prettyprint language-js">{
+	header: {
+		title: {
+			title:    "",
+			color:    "#333333",
+			fontSize: 18,
+			font:     "arial"
+		},
+		subtitle: {
+			color:    "#666666",
+			fontSize: 14,
+			font:     "arial"
+		},
+		location: "top-center",
+		titleSubtitlePadding: 8
+	},
+	footer: {
+		text: 	  "",
+		color:    "#666666",
+		fontSize: 14,
+		font:     "arial",
+		location: "left"
+	},
+	size: {
+		canvasHeight: 500,
+		canvasWidth: 500,
+		pieInnerRadius: 0,
+		pieOuterRadius: null
+	},
+	data: {
+		sortOrder: "value-asc",
+
+		// REQUIRED! This is where you enter your pie data; it needs to be an array of objects
+		// of this form: { label: "label", value: 1.5, color: "#000000" } - color is optional
+		content: []
+	},
+	labels: {
+		outer: {
+			format: "label",
+			hideWhenLessThanPercentage: null,
+			pieDistance: 30
+		},
+		inner: {
+			format: "percentage",
+			hideWhenLessThanPercentage: null
+		},
+		mainLabel: {
+			color: "#333333",
+			font: "arial",
+			fontSize: 10
+		},
+		percentage: {
+			color: "#dddddd",
+			font: "arial",
+			fontSize: 10,
+			decimalPlaces: 0
+		},
+		value: {
+			color: "#cccc44",
+			font: "arial",
+			fontSize: 10
+		},
+		lines: {
+			enabled: true,
+			style: "curved",
+			color: "segment" // "segment" or a hex color
+		}
+	},
+	effects: {
+		load: {
+			effect: "default", // none / default
+			speed: 1000
+		},
+		pullOutSegmentOnClick: {
+			effect: "bounce", // none / linear / bounce / elastic / back
+			speed: 300,
+			size: 10
+		},
+		highlightSegmentOnMouseover: true,
+		highlightLuminosity: -0.2
+	},
+	misc: {
+		colors: {
+			background: null,
+			segments: [
+				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56",
+				"#d0743c", "#ff8c00", "#635222", "#00dd00"
+			],
+			segmentStroke: "#ffffff"
+		},
+		canvasPadding: {
+			top: 5,
+			right: 5,
+			bottom: 5,
+			left: 5
+		},
+		pieCenterOffset: {
+			x: 0,
+			y: 0
+		},
+		cssPrefix: null
+	},
+	callbacks: {
+		onload: null,
+		onMouseoverSegment: null,
+		onMouseoutSegment: null,
+		onClickSegment: null
+	}
+}
+</pre>
+
+
+<a id="docs-settings" class="docAnchor"></a>
+<h4>Setting Details</h4>
+
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+	<th>Setting</th>
+	<th>Type</th>
+	<th>Default Value</th>
+	<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<th colspan="4">Header</th>
+</tr>
+<tr>
+	<td>header.title.text</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>&#8212;</td>
+	<td>The title. If this isn't defined, or set to an empty string, the entire title is omitted.</td>
+</tr>
+<tr>
+	<td>header.title.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#333333</td>
+	<td>The title color, in hex code, e.g. <code>#333333</code></td>
+</tr>
+<tr>
+	<td>header.title.fontSize</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>18</td>
+	<td>The font size, in pixels.</td>
+</tr>
+<tr>
+	<td>header.title.font</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>helvetica</td>
+	<td>A font name.</td>
+</tr>
+<tr>
+	<td>header.subtitle.text</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>&#8212;</td>
+	<td>The subtitle. If this isn't defined, or set to an empty string, the subtitle is omitted.</td>
+</tr>
+<tr>
+	<td>header.subtitle.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#666666</td>
+	<td>The subtitle color, in hex code, e.g. <code>#333333</code></td>
+</tr>
+<tr>
+	<td>header.subtitle.fontSize</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>14</td>
+	<td>The font size, in pixels.</td>
+</tr>
+<tr>
+	<td>header.subtitle.font</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>helvetica</td>
+	<td>A font name.</td>
+</tr>
+<tr>
+	<td>header.location</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>top-center</td>
+	<td>This header contains the title and subtitle and they are positioned as a group. This setting specifies
+		where on the canvas they should appear: <code>top-center</code>, <code>top-left</code>, or
+		<code>pie-center</code>. The last option, pie-center, is intended for "donut" pie charts, which
+		have a space in the middle. The title will always be placed above the pie chart, but in most cases
+		you'll probably want to keep the title and subtitle labels short to make it prevent any overlap.
+	</td>
+</tr>
+<tr>
+	<td>header.titleSubtitlePadding</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>9</td>
+	<td>This setting lets you control the amount of space between the title and subtitle. In pixels.</td>
+</tr>
+<tr>
+	<th colspan="4">Footer</th>
+</tr>
+<tr>
+	<td>footer.text</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>&#8212;</td>
+	<td>The footer text. If this isn't defined, or set to an empty string, the footer is omitted.</td>
+</tr>
+<tr>
+	<td>footer.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#666666</td>
+	<td>The title color, in hex code, e.g. <code>#333333</code></td>
+</tr>
+<tr>
+	<td>footer.fontSize</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>14</td>
+	<td>The font size, in pixels.</td>
+</tr>
+<tr>
+	<td>footer.font</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>helvetica</td>
+	<td>A font name.</td>
+</tr>
+<tr>
+	<th colspan="4">Size</th>
+</tr>
+<tr>
+	<td>size.canvasHeight</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>500</td>
+	<td>The height of the pie chart in pixels.</td>
+</tr>
+<tr>
+	<td>size.canvasWidth</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>500</td>
+	<td>The width of the pie chart in pixels.</td>
+</tr>
+<tr>
+	<td>size.pieOuterRadius</td>
+	<td><span class="label label-info">mixed</span></td>
+	<td>&#8212;</td>
+	<td>
+		The inner and outer radius settings can be specified as a percentage value (e.g. a string like
+		<code>"50%"</code>) or a pixel value (e.g. a number like <code>200</code>). This setting is
+		the <b>percentage/pixel</b> size of the outer radius. Valid percentage values are <code>"1%"</code>
+		to <code>"100%"</code>; <code>"100%"</code> takes up the full allocates space (no room for outer labels);
+		<code>1</code> is a very, very teeny pie. Valid pixel values are anything greater than 0. If you
+		plan on having the same pie chart appear in different sizes, you'll obviously want to use the relative
+		percentage values. The <a href="#generator">Generator</a> exclusively generates percentage values
+		for the best experience.
+	</td>
+</tr>
+<tr>
+	<td>size.pieInnerRadius</td>
+	<td><span class="label label-info">mixed</span></td>
+	<td>0</td>
+	<td>
+		This setting is the <b>percentage/pixel</b> size of the inner radius. Valid percentage values
+		are <code>"1%"</code> to <code>"100%"</code>; <code>100</code> takes up the full allocates
+		space (no room for outer labels); <code>1</code> is a very, very teeny pie. Valid pixel values
+		are anything greater than 0.
+	</td>
+</tr>
+<tr>
+	<th colspan="4">Data</th>
+</tr>
+<tr>
+	<td>data.sortOrder</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>none</td>
+	<td>
+		This specifies the sort order for the data specified in the <code>data.content</code>
+		setting. Valid strings are:
+		<ul>
+			<li><code>none</code> (default) - this lists them in the order of the <code>data.content</code> array.</li>
+			<li><code>random</code></li>
+			<li><code>value-asc</code> - value, ascending</li>
+			<li><code>value-desc</code> - value, descending</li>
+			<li><code>label-asc</code> - alphabetically by label, A-Z</li>
+			<li><code>label-desc</code> - reverse alphabetically by label, Z-A</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td>data.content</td>
+	<td><span class="label label-purple">array</span></td>
+	<td>&#8212;</td>
+	<td>
+		This is where you specify the actual to be displayed in the pie chart. This field is an array of
+		objects, where each object is of the form: <code>{ label: "label here", value: 123 }</code>. You
+		can also include an optional <code>color</code> property that contains a color in hex format (e.g.
+		<code>color: "#123456"</code>.
+	</td>
+</tr>
+<tr>
+	<th colspan="4">Labels</th>
+</tr>
+<tr>
+	<td>labels.outer.format</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>label</td>
+	<td>
+		This setting governs what appears in the outer label. The following options are available:
+		<ul>
+			<li><code>label</code> - the segment label</li>
+			<li><code>value</code> - the segment value</li>
+			<li><code>percentage</code> - the segment percentage</li>
+			<li><code>label-value1</code> - the label followed by the value on the same line</li>
+			<li><code>label-value2</code> - the label followed by the value on a different line</li>
+			<li><code>label-percentage1</code> - the label followed by the percentage on the same line</li>
+			<li><code>label-percentage2</code> - the label followed by the percentage on a different line</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td>labels.outer.hideWhenLessThanPercentage</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>null</td>
+	<td>
+		This setting lets you hide the outer label when the percentage is less than a certain amount. Just
+		enter a number value in this field from <code>1</code> to <code>100</code>.
+	</td>
+</tr>
+<tr>
+	<td>labels.outer.pieDistance</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>30</td>
+	<td>
+		The distance in pixels from the outside of the pie to the start of the outer label.
+	</td>
+</tr>
+<tr>
+	<td>labels.inner.format</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>30</td>
+	<td>
+		This setting controls what appears in the inner label. This has the same options as
+		<code>labels.outer.format</code>:
+
+		<ul>
+			<li><code>label</code> - the segment label</li>
+			<li><code>value</code> - the segment value</li>
+			<li><code>percentage</code> - the segment percentage</li>
+			<li><code>label-value1</code> - the label followed by the value on the same line</li>
+			<li><code>label-value2</code> - the label followed by the value on a different line</li>
+			<li><code>label-percentage1</code> - the label followed by the percentage on the same line</li>
+			<li><code>label-percentage2</code> - the label followed by the percentage on a different line</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td>labels.inner.hideWhenLessThanPercentage</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>null</td>
+	<td>
+		This setting lets you hide the inner label when the percentage is less than a certain amount. Just
+		enter a number value in this field from <code>1</code> to <code>100</code>.
+	</td>
+</tr>
+<tr>
+	<td>labels.mainLabel.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#333333</td>
+	<td>
+		The colour of the main label (hex code). This may appear in either the inner or outer label (or neither)
+		depending on your settings for <code>labels.inner.format</code> and <code>labels.outer.format</code>.
+	</td>
+</tr>
+<tr>
+	<td>labels.mainLabel.font</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>arial</td>
+	<td>The font for the main label.</td>
+</tr>
+<tr>
+	<td>labels.mainLabel.fontSize</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>10</td>
+	<td>The main label font size in pixels.</td>
+</tr>
+<tr>
+	<td>labels.percentage.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#999999</td>
+	<td>The colour of the percentage label.</td>
+</tr>
+<tr>
+	<td>labels.percentage.font</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>arial</td>
+	<td>The font for the percentage.</td>
+</tr>
+<tr>
+	<td>labels.percentage.fontSize</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>10</td>
+	<td>The percentage font size in pixels.</td>
+</tr>
+<tr>
+	<td>labels.percentage.decimalPlaces</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>0</td>
+	<td>If you data contains floating pointing numbers, this setting lets you specify the
+		number of decimal places that should appear for each segment.
+	</td>
+</tr>
+<tr>
+	<td>labels.value.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#cccc44</td>
+	<td>The colour of the value labels.</td>
+</tr>
+<tr>
+	<td>labels.value.font</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>arial</td>
+	<td>The font used to display the value. The "Value" is whatever you entered in the
+		segment's value property in the <code>data.content</code> array.
+	</td>
+</tr>
+<tr>
+	<td>labels.value.fontSize</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>10</td>
+	<td>The value font size in pixels.</td>
+</tr>
+<tr>
+	<td>labels.lines.enabled</td>
+	<td><span class="label label-pink">boolean</span></td>
+	<td>true</td>
+	<td>Whether or not lines are displayed that link from the outer label to the pie segment.</td>
+</tr>
+<tr>
+	<td>labels.lines.style</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>curved</td>
+	<td>The style for the label lines: <code>curved</code> or <code>straight</code>.</td>
+</tr>
+<tr>
+	<td>labels.lines.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>segment</td>
+	<td>
+		Unlike the other colour settings, this setting has two options. If you enter the string "segment"
+		the label lines will appear as the same colour as the segments; or you can enter a
+		hex code for all the label lines to be the same colour.
+	</td>
+</tr>
+<tr>
+	<td>labels.truncation.enabled</td>
+	<td><span class="label label-pink">boolean</span></td>
+	<td>false</td>
+	<td>This enables truncation of the main labels.</td>
+</tr>
+<tr>
+	<td>labels.truncation.length</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>30</td>
+	<td>The max length of the main labels before they are truncated with an ellipsis (...)</td>
+</tr>
+<tr>
+	<th colspan="4">Effects</th>
+</tr>
+<tr>
+	<td>effects.load.effect</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>default</td>
+	<td>
+		The pie chart loading effect. There are currently only two options: <code>default</code> which
+		slides in the pie chart segments then fades in the labels, and <code>none</code> where the
+		pie chart appears immediately.
+	</td>
+</tr>
+<tr>
+	<td>effects.load.speed</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>1000</td>
+	<td>The speed in milliseconds of the load effect.</td>
+</tr>
+<tr>
+	<td>effects.pullOutSegmentOnClick.effect</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>bounce</td>
+	<td>The effect used when a user clicks on a pie chart segments. You may use any of the following
+		values: <code>none</code>, <code>linear</code>, <code>bounce</code>, <code>elastic</code>,
+		<code>back</code>.
+	</td>
+</tr>
+<tr>
+	<td>effects.pullOutSegmentOnClick.speed</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>300</td>
+	<td>The speed in milliseconds for the pullout effect.</td>
+</tr>
+<tr>
+	<td>effects.pullOutSegmentOnClick.size</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>10</td>
+	<td>The distance in pixels that the segment gets pulled out when clicked.</td>
+</tr>
+<tr>
+	<td>effects.highlightSegmentOnMouseover</td>
+	<td><span class="label label-pink">boolean</span></td>
+	<td>true</td>
+	<td>
+		Whether or not the pie segments are highlighted when the user mouseovers them.
+	</td>
+</tr>
+<tr>
+	<td>effects.highlightLuminosity</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>-0.2</td>
+	<td>
+		The luminosity of the segment that's being mouseovered. Valid range: <code>-0.99</code> to
+		<code>0.99</code>.
+	</td>
+</tr>
+<tr>
+	<th colspan="4">Misc</th>
+</tr>
+<tr>
+	<td>misc.colors.background</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>null (transparent)</td>
+	<td>
+		The background color for the entire pie chart, defined as a color hex code (e.g. <code>#efefef</code>).
+		The background is transparent (null) by default.
+	</td>
+</tr>
+<tr>
+	<td>misc.colors.segments</td>
+	<td><span class="label label-purple">array</span></td>
+	<td>array of colors</td>
+	<td>
+		As described in the <a href="#docs-colors">Segment Colors</a> section, you have three ways to
+		define the colours for your pie chart segments. This setting lets you provide a single array
+		of hex codes. If there are "inline" colors - colors defined in the <code>data.content</code> array
+		- they will override those that you enter here.
+	</td>
+</tr>
+<tr>
+	<td>misc.colors.segmentStroke</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>#ffffff</td>
+	<td>
+		The coloured line that appears between the pie chart segments.
+	</td>
+</tr>
+<tr>
+	<td>misc.canvasPadding.top</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>5</td>
+	<td>
+		Extra padding for the top of the pie chart.
+	</td>
+</tr>
+<tr>
+	<td>misc.canvasPadding.right</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>5</td>
+	<td>
+		Extra padding for the right of the pie chart.
+	</td>
+</tr>
+<tr>
+	<td>misc.canvasPadding.bottom</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>5</td>
+	<td>
+		Extra padding for the bottom of the pie chart.
+	</td>
+</tr>
+<tr>
+	<td>misc.canvasPadding.left</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>5</td>
+	<td>
+		Extra padding for the left of the pie chart.
+	</td>
+</tr>
+<tr>
+	<td>misc.pieCenterOffset.x</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>0</td>
+	<td>
+		This setting lets you fine-tune the position of the pie chart on the canvas. A positive value
+		for this field will move the pie chart down; a negative one moves it up.
+	</td>
+</tr>
+<tr>
+	<td>misc.pieCenterOffset.y</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>0</td>
+	<td>
+		Like the previous setting, this lets you fine-tune the position of the pie chart on the canvas. A
+		positive value for this field will move the pie chart right; a negative one moves it left.
+	</td>
+</tr>
+<tr>
+	<td>misc.cssPrefix</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>null</td>
+	<td>
+		To keep things speedy, d3pie assigns a lot of IDs and classes to the SVG elements. To accommodate
+		multiple pie charts in a single page, it uses a unique string as a prefix for all elements. This
+		setting lets you provide your own. It can be helpful if you intend to target or access the SVG
+		nodes programmatically and want to ensure consistent names.
+	</td>
+</tr>
+<tr>
+	<th colspan="4">Callbacks</th>
+</tr>
+<tr>
+	<td>misc.callbacks.onload</td>
+	<td><span class="label label-green">function</span></td>
+	<td>null</td>
+	<td>
+		If you want to attach your own code to the pie chart onload event, pass a function callback to this
+		setting.
+	</td>
+</tr>
+<tr>
+	<td>misc.callbacks.onMouseoverSegment</td>
+	<td><span class="label label-green">function</span></td>
+	<td>null</td>
+	<td>
+		This callback lets you access the info for the segments being mouseovered, via a single parameter.
+		This includes: the segment index, the segment SVG node, whether it's expanded or not and the data
+		associated with the segment.
+	</td>
+</tr>
+<tr>
+	<td>misc.callbacks.onMouseoutSegment</td>
+	<td><span class="label label-green">function</span></td>
+	<td>null</td>
+	<td>
+		The counterpart of the <code>misc.callbacks.onMouseover</code> callback. It's passed the same info.
+	</td>
+</tr>
+<tr>
+	<td>misc.callbacks.onClickSegment</td>
+	<td><span class="label label-green">function</span></td>
+	<td>null</td>
+	<td>
+		A callback for whenever the user clicks a segment. Like the two previous callbacks, it's passed
+		all pertinent info via a single parameter.
+	</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+
+<section>
+	<a id="docs-colors" class="docAnchor"></a>
+
+	<h3>Segment Colors</h3>
+
+	<p>
+		Segment colours can be assigned in three ways.
+	</p>
+
+	<ol>
+		<li>
+			<p>
+				Do nothing! d3pie includes 50 default colours that get assigned to your data.
+			</p>
+		</li>
+		<li>
+			<p>
+				Explicitly set them as part of your <code>data.content</code> attribute. For example:
+			</p>
+					<pre class="prettyprint language-js">
+data: {
+	sortOrder: "none",
+	content: [
+		{ label: "label 1", value: 8, color: "#cccccc" },
+		{ label: "label 2", value: 5, color: "#bbbbbb" },
+		{ label: "label 3", value: 2, color: "#aaaaaa" },
+		{ label: "label 4", value: 3, color: "#999999" },
+		{ label: "label 5", value: 2, color: "#888888" }
+	]
+}</pre>
+		</li>
+		<li>
+			<p>
+				Define them in an array of <code>misc.</code>
+			</p>
+		</li>
+	</ol>
+
+</section>
+
+<section>
+	<a id="docs-fonts" class="docAnchor"></a>
+
+	<h3>Fonts</h3>
+	<p>
+		The generator contains a few different fonts to choose from for the different labels (title, subtitle,
+		label elements) but you can actually choose whatever you want. The one big proviso is that
+		whatever font you choose need to be available to the user's own computer - it's no different from fonts
+		on regular  web pages. So either stick to commonly available fonts like arial, verdana, helvetica that are
+		likely to be available, or include a web font in your page. Or there's one more option...
+	</p>
+
+	<h4>Web Fonts</h4>
+	<p>
+		Web fonts are fonts that you explicitly download in your page to make them available to everyone who visits.
+		They can significantly improve the feel of a page but need to be used judiciously because you risk
+		increasing page load times.
+	</p>
+	<p>
+		The Generator contains three example web fonts: <b>Cinzel</b>, <b>Exo</b> and <b>Open Sans</b>. I wanted to
+		include them just so you can see how great they look, but also so you get a sense of how they can be used.
+		All you need to do is specific the appropriate font in the settings, then include the font via the usual
+		methods <span class="red">*</span>, e.g. in your CSS file:
+	</p>
+
+			<pre class="prettyprint language-html">
+&lt;style type="text/css">
+@import url("//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+&lt;/style>
+</pre>
+
+	<p>
+		<span class="red">*</span> There are few different ways to include it. Just do a google search for more info.
+	</p>
+
+</section>
+
+<section>
+	<a id="docs-upgrading" class="docAnchor"></a>
+
+	<h3>Upgrading</h3>
+	<p>
+		<b>I make no promises that future versions won't change the appearance of your pie charts.</b> I'll keep the
+		d3pie JSON config object consistent for as long as I can, but I <i>do</i> anticipate changes to the exact
+		appearance of the generate pie chart - albeit small ones. Things like exact locations of labels, label line
+		shapes and so on are prime real estate for being improved.
+	</p>
+	<p>
+		So please upgrade carefully.
+	</p>
+</section>
+
+<section>
+	<a id="docs-feature-requests" class="docAnchor"></a>
+
+	<h3>Feature Requests</h3>
+	<p>
+		Got an idea for a new feature! Awesome! Create a new issue on
+		<a href="https://github.com/benkeen/d3pie" target="_blank">github here</a>. Just describe exactly what you'd
+		like to see in as much details as possible.
+	</p>
+	<p>
+		This is very much an early release - I have a lot of things I'd like to add myself (tooltips, legends,
+		dynamic update of data sets, d3 force layouts for better label placement are highest on the list), but
+		it's going to come down a matter of time. If you're a developer and would like to help, drop me a line
+		on github. :)
+	</p>
+</section>
+
+<section>
+	<a id="docs-siteinfo" class="docAnchor"></a>
+	<h3>About this Site</h3>
+	<p>
+		The codebase for this entire site is available for viewing and download on github, along with
+		the d3pie source code. To learn more about the site, view the
+		<a href="https://github.com/benkeen/d3pie" target="_blank">github</a>
+		page. The documentation about the script is all housed here; the documentation about how the site all works
+		is found on github. Hope it comes in handy!
+	</p>
+</section>
+
+</div>
+</div>

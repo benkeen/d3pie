@@ -26,19 +26,17 @@ require.config({
 		examplePiesTemplate: "pages/generator/examplePies.hbs",
 		generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
+		// How to Use page
+		howToUsePage: "pages/howToUse/howToUsePage",
+		howToUsePageTemplate: "pages/howToUse/howToUsePage.hbs",
+
 		// Download page
 		downloadPage: "pages/download/downloadPage",
 		downloadPageTemplate: "pages/download/downloadPage.hbs",
 
-		// Help pages
-		helpPage: "pages/help/helpPage",
-		helpPageTemplate: "pages/help/helpPage.hbs",
-		documentationPage: "pages/help/documentationPage",
-		documentationPageTemplate: "pages/help/documentationPage.hbs",
-		quickStartPage: "pages/help/quickStartPage",
-		quickStartPageTemplate: "pages/help/quickStartPage.hbs",
-		examplesPage: "pages/help/examplesPage",
-		examplesPageTemplate: "pages/help/examplesPage.hbs",
+		// Documentation page
+		documentationPage: "pages/documentation/documentationPage",
+		documentationPageTemplate: "pages/documentation/documentationPage.hbs",
 
 		// --- tabs ---
 		startTab: "pages/generator/tabs/start/tabStart",
@@ -69,10 +67,6 @@ require.config({
 
 		eventsTab: "pages/generator/tabs/events/tabEvents",
 		eventsTabTemplate: "pages/generator/tabs/events/tabEventsTemplate.hbs",
-
-		generateTab: "pages/generator/tabs/generate/tabGenerate",
-		generateTabTemplate: "pages/generator/tabs/generate/tabGenerateTemplate.hbs",
-		generatedContentTemplate: "pages/generator/tabs/generate/generatedContent.hbs",
 
 		// misc
 		birds: "pages/generator/birds"
