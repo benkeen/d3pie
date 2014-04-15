@@ -2,8 +2,8 @@
 
 This folder contains the d3pie source code.
 
-* jquery.d3pie.js
-* jquery.d3pie.min.js - the minified version of the source code (generally this is the one you'll want to use)
+* d3pie.js
+* d3pie.min.js - the minified version of the source code (generally this is the one you'll want to use)
 
 
 ### For developers

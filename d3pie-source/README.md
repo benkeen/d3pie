@@ -10,8 +10,8 @@ To re-generate the code from these source files, just run:
 
 `grunt bundle`
 
-(Yeah, you'll need to Google grunt & get it installed first. I know it's a pain for newbies, but you'll thank me. Honest.
-Tough love).
+(Yeah, you'll need to Google <code>Grunt</code> & get it installed first. I know it's a pain for newbies, but you'll
+thank me. Honest. Tough love).
 
 The end code is a little more verbose than it need be because I wrapped each file except `core.js` into their
 own module pattern. The advantage was that this makes it really clear from a dev perspective: you know where a chunk of
@@ -20,7 +20,8 @@ code is grouped by it's `d3pie.helpers` or `d3.math` prefix.
 #### Relationship to the website
 
 None! Well, basically none. The website - i.e. the pretty site that contains the blurb, documentation and generator page
-is a completely separate layer about the actual d3pie script.
+is a completely separate layer about the actual d3pie script. It uses the same version of d3pie that's available for
+download - it just makes judicious use of the available API functions to update / redraw the pie charts when needed.
 
 ### The files
 
