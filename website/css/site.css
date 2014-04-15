@@ -137,7 +137,7 @@ input.ib, .ib {
 }
 
 /* overridden bootstrap CSS */
-body .navbar-header {
+body .navbar-brand {
     width: 150px;
 }
 .scriptVersion {
@@ -155,6 +155,13 @@ body .form-group .btn, body .input-group-addon, body .input-group-btn .btn {
 }
 body .colorGroup {
     width: 100px;
+}
+
+a.docAnchor {
+	display: block;
+	position: relative;
+	top: -250px;
+	visibility: hidden;
 }
 
 #generatorPieChart {
@@ -446,6 +453,17 @@ body pre {
 .slidesjs-control, .slidesjs-container {
 	height: 388px !important;
 }
+
+.slidesjs-pagination {
+	display: none;
+}
+@media (min-width: 200px) {
+	.slidesjs-pagination {
+		display: block;
+
+	}
+}
+
 @media (min-width: 992px) {
 	.aboutPageRow .col-lg-4 {
 		float: left;
@@ -453,6 +471,14 @@ body pre {
 	}
 	.aboutPageRow .col3 {
 		display: none;
+	}
+	.aboutPageRow .col-lg-5 {
+		float: left;
+		width: 34%;
+	}
+	.aboutPageRow .col-lg-7 {
+		float: left;
+		width: 66%;
 	}
 }
 @media (min-width: 1200px) {

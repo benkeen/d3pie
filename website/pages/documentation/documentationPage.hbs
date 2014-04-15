@@ -36,27 +36,28 @@
 				<a href="#howToUse" class="selectPage">How to Use</a> page.
 			</p>
 			<p>
-				But before digging into the code, a quick disclaimer...
+				But before we get to the doc, a short disclaimer.
 			</p>
 		</section>
 
 		<section id="docs-disclaimer">
 			<h3>Disclaimer</h3>
+
 			<p>
-				At some point when I was designing this thing, it dawned on me that creating a re-usable pie chart was
-				tantamount to building an entire rendering engine. If I made it as customizable as I wanted it to be,
-				it would open the door to letting people generate really ugly, unreadable pie charts. On the other
-				hand, if I limited the available functionality it wouldn't be as useful for many people.
+				At some point when I was designing this thing, I realized that if I made it as customizable as I wanted
+				it to be, it would open the door to letting people generate really ugly, unreadable pie charts. But if
+				I limited the available functionality it wouldn't be as useful.
 			</p>
 			<p>
-				So I decided on the following approach: I wouldn't limit the functionality, but make it as hard as possible
-				for you to shoot yourself in the foot. d3pie does a bunch of "automatic" stuff: reasonable placement of
-				outer labels, titles, and other text fields, best-guess default pie sizes if nothing is specified and more.
-				Secondly, there are various user-defined options that anticipate and mitigate the sort of problems that
-				are likely to occur, such as truncating long labels, hiding labels for small data values. Between them all,
-				it should go a long way to help you construct clear, readable charts. But it's far from infallible! Over
-				time, I hope to make the rendering code smarter but ultimately the responsibility will always lie with
-				you to <i>know thy data</i> and choose appropriate configuration settings.
+				So I decided on the following approach: I would impose as few restrictions as possible, but make it as
+				hard as possible for you to shoot yourself in the foot. As such, d3pie does a bunch of "automatic" stuff:
+				reasonable placement of outer labels, titles, and other text fields, best-guess default pie sizes if
+				nothing is specified and stuff of that ilk. Secondly, I included several user-defined options that anticipate
+				the sort of problems that are likely to occur, such as truncating long labels, hiding labels for small
+				data values. Between them all, it should go a long way to help you construct clear, readable charts. But
+				it's far from infallible! Over time, I hope to make the rendering code smarter but ultimately the
+				responsibility will always lie with you to <i>know thy data</i> and choose appropriate configuration
+				settings.
 			</p>
 			<p>
 				Okay, disclaimer over. :)
@@ -72,7 +73,8 @@
 
 			<p>
 				To be honest, d3pie will probably work just fine with earlier versions of both of those scripts - certainly
-				jQuery -, but I won't guarantee it. d3pie will always rely on d3, but over time I plan to remove the need for jQuery.
+				jQuery - but I won't guarantee it. d3pie will always rely on d3, but over time I plan to remove the need
+				for jQuery.
 			</p>
 		</section>
 
