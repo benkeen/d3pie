@@ -6,7 +6,7 @@ define([
 	var _MODULE_ID = "examplesPage";
 
 	var _init = function() {
-		$("#examples").html(examplesPageTemplate());
+		$("#examplesPage").html(examplesPageTemplate());
 	};
 
 	return {

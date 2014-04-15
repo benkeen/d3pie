@@ -54,6 +54,8 @@ module.exports = function(grunt) {
 	};
 
 	var config = {
+		clean: ["build"],
+
 		template: {
 			d3pieBundle: {
 				options: { data: {} },
@@ -102,6 +104,19 @@ module.exports = function(grunt) {
 			}
 		},
 
+		cssmin: {
+			target: {
+				files: {
+					'build/core.css': [
+						'website/css/site.css',
+						'website/css/bootstrap.css',
+						'website/css/bootstrap-colorpicker.css',
+						'website/css/prettify.css',
+						'website/css/slides.css'
+					]
+				}
+			}
+		},
 		requirejs: {
 			compile: {
 				options: {
@@ -111,14 +126,30 @@ module.exports = function(grunt) {
 					out: "build/appStart.js"
 				}
 			}
+		},
+
+		md5: {
+
 		}
 	};
 
 	grunt.initConfig(config);
 	grunt.registerTask("createD3PieFiles", _createD3PieFiles);
+
+	// the default task is to regenerate the d3pie.js and d3pie.min.js files based on the latest files in d3pie-source/
 	grunt.registerTask("default", ["createD3PieFiles", "uglify:d3pie"]);
-	grunt.registerTask("dev", function() { buildDev(); });
-	grunt.registerTask("prod", function() { buildProd(); });
 
+	// tasks for building the website. There are only 2 options: dev and prod
+	grunt.registerTask("dev", [
 
+	]);
+	grunt.registerTask("prod", [
+		"clean",
+
+		// bundle the CSS
+		"cssmin",
+
+		// rename
+		"md5:css"
+	]);
 };

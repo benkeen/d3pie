@@ -6,7 +6,7 @@ define([
 
 	var _MODULE_ID = "pageHelper";
 
-	var _pages = ["about", "generator", "download", "howToUse", "docs"];
+	var _pages = ["about", "generator", "download", "help", "quickStart", "examples", "docs"];
 	var _$topNav;
 	var _currentPage = null;
 	var _currentPageHash = null;
