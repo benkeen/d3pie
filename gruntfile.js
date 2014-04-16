@@ -190,7 +190,8 @@ module.exports = function(grunt) {
 
 	// tasks for building the website. There are only 2 options: dev and prod
 	grunt.registerTask("dev", [
-		"setEnv_Dev"
+		"setEnv_Dev",
+		"template:indexFile"
 	]);
 
 	grunt.registerTask("prod", [
