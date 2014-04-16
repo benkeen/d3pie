@@ -36,7 +36,7 @@ require.config({
 		documentationPage: "pages/help/documentationPage",
 		documentationPageTemplate: "pages/help/documentationPage.hbs",
 		quickStartPage: "pages/help/quickStartPage",
-		quickStartPageTemplate: "pages/help/quickStartPage.hbs",
+		quickStartsPageTemplate: "pages/help/quickStartPage.hbs",
 		examplesPage: "pages/help/examplesPage",
 		examplesPageTemplate: "pages/help/examplesPage.hbs",
 

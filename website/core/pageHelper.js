@@ -33,7 +33,6 @@ define([
 		$(window).on("resize", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.PAGE.RESIZE, { });
 		});
-
 	};
 
 	/**

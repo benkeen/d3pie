@@ -2596,5 +2596,4 @@ define([], function() {
 
 
 	return Handlebars;
-
 });
