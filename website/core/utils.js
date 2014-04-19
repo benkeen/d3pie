@@ -106,7 +106,6 @@ define([
 
 	// ------------------------------------------
 
-
 	return {
 		addColorpicker: _addColorpicker,
 		rgb2hex: _rgb2hex,

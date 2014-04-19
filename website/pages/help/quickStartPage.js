@@ -3,10 +3,8 @@ define([
 ], function(quickStartPageTemplate) {
 	"use strict";
 
-	var _MODULE_ID = "quickStartPage";
-
 	var _init = function() {
-		$("#howToUse").html(quickStartPageTemplate());
+		$("#quickStart").html(quickStartPageTemplate());
 	};
 
 	return {

@@ -22,7 +22,7 @@ define([
 		var index = pageHelper.getDemoPieChartIndex(EXAMPLE_PIES);
 
 		$(tabEl).html(startTabTemplate({
-			examples: examplePiesTemplate({ examples: EXAMPLE_PIES }),
+			examplePies: examplePiesTemplate({ examples: EXAMPLE_PIES }),
 			currentExamplePieName: EXAMPLE_PIES[index].label
 		}));
 
