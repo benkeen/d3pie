@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Customizing segment colours
+</h1>
+
+<p>
+	This example shows you how to set custom colours for a your pie chart segments. It demonstrates two techniques:
+</p>
+<ol>
+	<li>The default colours have been set in <b>misc.colors.segments</b> (the greys).</li>
+	<li>The third segment has been set to green directly in the segment's entry in <b>data.content</b>. That location
+	will always overwrite the <b>misc.colors.segments</b> setting.</li>
+</ol>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "Fun with Colours"
+			}
+		},
+		size: {
+			pieOuterRadius: "56%",
+			canvasHeight: 360
+		},
+		data: {
+			content: [
+				{ label: "Bushtit", value: 5 },
+				{ label: "Chickadee", value: 2 },
+				{ label: "Elephants", value: 6, color: "#00aa00" }, // here!
+				{ label: "Killdeer", value: 3 },
+				{ label: "Caspian Tern", value: 2 },
+				{ label: "Blackbird", value: 1 },
+				{ label: "Song Sparrow", value: 6 },
+				{ label: "Blue Jay", value: 5 }
+			]
+		},
+		misc: {
+			colors: {
+				segments: [
+					"#999999", "#888888", "#777777", "#666666", "#555555", "#444444", "#333333", "#222222"
+				]
+			}
+		}
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "Fun with Colours"
+		}
+	},
+	size: {
+		pieOuterRadius: "56%",
+		canvasHeight: 360
+	},
+	data: {
+		content: [
+			{ label: "Bushtit", value: 5 },
+			{ label: "Chickadee", value: 2 },
+			{ label: "Elephants", value: 6, color: "#00aa00" }, // here!
+			{ label: "Killdeer", value: 3 },
+			{ label: "Caspian Tern", value: 2 },
+			{ label: "Blackbird", value: 1 },
+			{ label: "Song Sparrow", value: 6 },
+			{ label: "Blue Jay", value: 5 }
+		]
+	},
+	misc: {
+		colors: {
+			segments: [
+				"#999999", "#888888", "#777777", "#666666", "#555555", "#444444", "#333333", "#222222"
+			]
+		}
+	}
+});</pre></blockquote>
+
+</body>
+</html>
