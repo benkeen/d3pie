@@ -62,6 +62,7 @@ define([
 
 	var _removeRow = function(e) {
 		$(e.target).closest("li").remove();
+		_updateCounter();
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
@@ -95,8 +96,6 @@ define([
 		}
 		colors = utils.shuffleArray(colors);
 		_setColors(colors);
-
-//		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
 
 	var _selectColorset = function(e) {
@@ -104,10 +103,15 @@ define([
 		if (parts.length !== 2) {
 			return;
 		}
-
 		var group = parts[0];
 		var index = parts[1];
-		var colors = COLORSETS[group][index].colors;
+
+		var colors = [];
+		if (group === "default") {
+			colors = defaultSettings.misc.colors.segments;
+		} else {
+			colors = COLORSETS[group][index].colors;
+		}
 		_setColors(colors);
 
 		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
