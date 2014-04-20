@@ -46,7 +46,6 @@ define([
 			} else {
 				$labels.addClass("disabled");
 			}
-
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, { prop: "effects.highlightSegmentOnMouseover", value: this.checked });
 		});
 

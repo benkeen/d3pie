@@ -1457,7 +1457,7 @@ var text = {
 	 */
 	d3pie.prototype.getOpenSegment = function() {
 		var segment = this.currentlyOpenSegment;
-		if (segment !== null) {
+		if (segment !== null && typeof segment !== "undefined") {
 			var index = parseInt($(segment).data("index"), 10);
 			return {
 				element: segment,
@@ -1531,6 +1531,7 @@ var text = {
 
 		// 1. prep-work
 		this.svg = helpers.addSVGSpace(this);
+
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
