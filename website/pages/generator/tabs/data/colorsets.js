@@ -119,9 +119,25 @@ define([], function() {
 			{
 				label: "Palette 2 - pastels",
 				colors: [
-					"#fcdddd", "#fcdde7", "#fcddef", "#fcddf6", "#fcddfb", "#f7ddfc", "#f1ddfc", "#eaddfc", "#e5ddfc", "#dfddfc",
-					"#dde2fc", "#dde7fc", "#ddedfc", "#ddf4fc", "#ddfbfc", "#ddfcf7", "#ddfcf1", "#ddfceb", "#ddfce5", "#ddfcde",
-					"#e2fcdd", "#e8fcdd", "#f0fcdd", "#f5fcdd", "#fbfcdd", "#fcf7dd", "#fcf2dd", "#fcecdd", "#fce6dd", "#fce1dd"
+					"#f5c2c2", "#f5c2cc", "#f5c2d4", "#f5c2df", "#f5c2e7", "#f5c2f3", "#eec2f5", "#e7c2f5", "#dcc2f5", "#d5c2f5",
+					"#cac2f5", "#c2c2f5", "#c2cdf5", "#c2d8f5", "#c2e4f5", "#c2edf5", "#c2f5f2", "#c2f5e8", "#c2f5e0", "#c2f5d4",
+					"#c2f5ca", "#c2f5ca", "#d0f5c2", "#daf5c2", "#e5f5c2", "#eef5c2", "#f5f4c2", "#f5e8c2", "#f5dec2", "#f5d3c2"
+				]
+			},
+			{
+				label: "Palette 3 - medium colors",
+				colors: [
+ 					"#7e3939", "#7e4b39", "#7e5939", "#7e6539", "#7e7239", "#7c7e39", "#707e39", "#637e39", "#537e39", "#487e39",
+					"#3e7e39", "#397e41", "#397e50", "#397e5d", "#397e6a", "#397e77", "#39757e", "#39667e", "#39567e", "#394b7e",
+					"#393c7e", "#43397e", "#51397e", "#62397e", "#6f397e", "#7c397e", "#7e3977", "#7e3965", "#7e3958", "#7e3946"
+				]
+			},
+			{
+				label: "Palette 4 - darker colors",
+				colors: [
+					"#4e3a3a", "#4e3d3a", "#4e413a", "#4e443a", "#4e483a", "#4e4d3a", "#4b4e3a", "#484e3a", "#434e3a", "#404e3a",
+					"#3b4e3a", "#3a4e3d", "#3a4e40", "#3a4e44", "#3a4e48", "#3a4e48", "#3a4d4e", "#3a454e", "#3a424e", "#3a3e4e",
+					"#3c3a4e", "#403a4e", "#433a4e", "#473a4e", "#4a3a4e", "#4d3a4e", "#4e3a4b", "#4e3a48", "#4e3a43", "#4e3a40"
 				]
 			}
 		]
