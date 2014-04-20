@@ -71,8 +71,7 @@ var segments = {
 		$arc.on("click", function(e) {
 			var $segment = $(e.currentTarget).find("path");
 			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
-
-			segments.onSegmentEvent(pie.options.callbacks.onClickSegment, $segment, isExpanded);
+			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, $segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
 					segments.closeSegment(pie, $segment[0]);

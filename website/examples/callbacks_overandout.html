@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Mouseover/out events
+</h1>
+
+<p>
+	This example shows how to attach your own code to the mouseover / mouseout events. You'll need to open your
+	browser console to see the output from the events.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "Yet Another Pie"
+			}
+		},
+		data: {
+			content: [
+				{ label: "One", value: 0.125 },
+				{ label: "Two", value: 0.81 },
+				{ label: "Three", value: 0.3 }
+			]
+		},
+		callbacks: {
+			onMouseoverSegment: function(info) {
+				console.log("mouseover:", info);
+			},
+			onMouseoutSegment: function(info) {
+				console.log("mouseout:", info);
+			}
+		}
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "Yet Another Pie"
+		}
+	},
+	data: {
+		content: [
+			{ label: "One", value: 0.125 },
+			{ label: "Two", value: 0.81 },
+			{ label: "Three", value: 0.3 }
+		]
+	},
+	callbacks: {
+		onMouseoverSegment: function(info) {
+			console.log("mouseover:", info);
+		},
+		onMouseoutSegment: function(info) {
+			console.log("mouseout:", info);
+		}
+	}
+});
+</pre></blockquote>
+
+</body>
+</html>

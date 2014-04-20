@@ -33,15 +33,10 @@ define([
 		}
 
 		if (msg.data.page === "about") {
-			//_firstPage !== "about"
 			if (!_isRendered) {
 				_renderContent();
 			}
-//			setTimeout(function() {
-//				_demoPie1.redraw();
-//				_demoPie2.redraw();
-//				_demoPie3.redraw();
-//			}, 2000);
+			$("#aboutPageSlides").slidesjs("refresh");
 		}
 	};
 

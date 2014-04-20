@@ -53,6 +53,128 @@
       return Plugin;
 
     })();
+
+	  Plugin.prototype.refresh = function (number){
+		  var $element=$(this.element);
+		  var _this = this;
+		  this.data = $.data(this);
+		  $(this.element).find(".slidesjs-pagination-item").remove();
+		  $.data(this, "total", $(".slidesjs-control", $element).children().not(".slidesjs-navigation", $element).length);
+		  $.each($(".slidesjs-control", $element).children(), function(i) {
+			  var $slide;
+			  $slide = $(this);
+			  return $slide.attr("slidesjs-index", i);
+		  });
+		  $.each($(".slidesjs-control", $element).children(), function(i) {
+			  var $slide;
+			  $slide = $(this);
+			  return $slide.attr("slidesjs-index", i);
+		  });
+		  if (this.data.touch) {
+			  $(".slidesjs-control", $element).on("touchstart", function(e) {
+				  return _this._touchstart(e);
+			  });
+			  $(".slidesjs-control", $element).on("touchmove", function(e) {
+				  return _this._touchmove(e);
+			  });
+			  $(".slidesjs-control", $element).on("touchend", function(e) {
+				  return _this._touchend(e);
+			  });
+		  }
+		  $element.fadeIn(0);
+		  this.update();
+		  if (this.data.touch) {
+			  this._setuptouch();
+		  }
+		  $(".slidesjs-control", $element).children(":eq(" + this.data.current + ")").eq(0).fadeIn(0, function() {
+			  return $(this).css({
+				  zIndex: 10
+			  });
+		  });
+		  if (this.options.navigation.active) {
+			  prevButton = $("<a>", {
+				  "class": "slidesjs-previous slidesjs-navigation",
+				  href: "#",
+				  title: "Previous",
+				  text: "Previous"
+			  }).appendTo($element);
+			  nextButton = $("<a>", {
+				  "class": "slidesjs-next slidesjs-navigation",
+				  href: "#",
+				  title: "Next",
+				  text: "Next"
+			  }).appendTo($element);
+		  }
+		  $(".slidesjs-next", $element).click(function(e) {
+			  e.preventDefault();
+			  _this.stop(true);
+			  return _this.next(_this.options.navigation.effect);
+		  });
+		  $(".slidesjs-previous", $element).click(function(e) {
+			  e.preventDefault();
+			  _this.stop(true);
+			  return _this.previous(_this.options.navigation.effect);
+		  });
+		  if (this.options.play.active) {
+			  playButton = $("<a>", {
+				  "class": "slidesjs-play slidesjs-navigation",
+				  href: "#",
+				  title: "Play",
+				  text: "Play"
+			  }).appendTo($element);
+			  stopButton = $("<a>", {
+				  "class": "slidesjs-stop slidesjs-navigation",
+				  href: "#",
+				  title: "Stop",
+				  text: "Stop"
+			  }).appendTo($element);
+			  playButton.click(function(e) {
+				  e.preventDefault();
+				  return _this.play(true);
+			  });
+			  stopButton.click(function(e) {
+				  e.preventDefault();
+				  return _this.stop(true);
+			  });
+			  if (this.options.play.swap) {
+				  stopButton.css({
+					  display: "none"
+				  });
+			  }
+		  }
+		  if (this.options.pagination.active) {
+			  pagination = $("<ul>", {
+				  "class": "slidesjs-pagination"
+			  }).appendTo($element);
+			  $.each(new Array(this.data.total), function(i) {
+				  var paginationItem, paginationLink;
+				  paginationItem = $("<li>", {
+					  "class": "slidesjs-pagination-item"
+				  }).appendTo(pagination);
+				  paginationLink = $("<a>", {
+					  href: "#",
+					  "data-slidesjs-item": i,
+					  html: i + 1
+				  }).appendTo(paginationItem);
+				  return paginationLink.click(function(e) {
+					  e.preventDefault();
+					  _this.stop(true);
+					  return _this.goto(($(e.currentTarget).attr("data-slidesjs-item") * 1) + 1);
+				  });
+			  });
+		  }
+		  $(window).bind("resize", function() {
+			  return _this.update();
+		  });
+		  this._setActive();
+		  if (number){
+			  this.goto(number+1);
+		  } else {
+			  this.goto(0);
+		  }
+
+	  };
+
     Plugin.prototype.init = function() {
       var $element, nextButton, pagination, playButton, prevButton, stopButton,
         _this = this;
@@ -586,13 +708,35 @@
       }
       return false;
     };
-    return $.fn[pluginName] = function(options) {
+
+    /*return $.fn[pluginName] = function(options) {
       return this.each(function() {
         if (!$.data(this, "plugin_" + pluginName)) {
           return $.data(this, "plugin_" + pluginName, new Plugin(this, options));
         }
       });
-    };
+    }*/
+
+	  return $.fn[pluginName] = function(options,the_args) {
+		  var the_return=this.each(function() {
+			  if (!$.data(this, "plugin_" + pluginName)) {
+				  return $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+			  }
+		  });
+		  if (typeof options=="string"){
+			  var element=this.get(0);
+			  if (arguments.length>1){
+				  var the_args=Array.prototype.slice.call(arguments);;
+				  the_args.splice(0,1);
+				  var plugin=$.data(element, "plugin_" + pluginName);
+				  return plugin[options].apply(plugin,the_args);
+			  } else {
+				  return $.data(element, "plugin_" + pluginName)[options]();
+			  }
+		  }
+		  return the_return;
+	  };
+
   })(jQuery, window, document);
 
 }).call(this);
