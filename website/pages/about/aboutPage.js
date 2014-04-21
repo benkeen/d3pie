@@ -58,7 +58,26 @@ define([
 		$("#aboutPageSlides").slidesjs({
 			width: 940,
 			height: 320,
-			navigation: true
+			navigation: true,
+			callback: {
+				// bah! God this plugin sucks. Doesn't even pass in the slide number we're going TO.
+				start: function(number) {
+					switch (number) {
+						case 1:
+							_demoPie2.redraw();
+							_demoPie3.redraw();
+							break;
+						case 2:
+							_demoPie1.redraw();
+							_demoPie3.redraw();
+							break;
+						case 3:
+							_demoPie1.redraw();
+							_demoPie2.redraw();
+							break;
+					}
+				}
+			}
 		});
 
 		_demoPie1 = new d3pie("aboutTabDemoPie1", aboutPageDemoPies[0]);

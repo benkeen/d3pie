@@ -8,13 +8,13 @@ define([], function() {
 				title: {
 					text:     "Programming Languages",
 					color:    "#333333",
-					fontSize: "22",
+					fontSize: 22,
 					font:     "open sans"
 				},
 				subtitle: {
 					text:     "A full pie chart to show off a few features.",
 					color:    "#999999",
-					fontSize: "10",
+					fontSize: 10,
 					font:     "open sans"
 				},
 				location: "top-center",
@@ -23,7 +23,7 @@ define([], function() {
 			footer: {
 				text: "",
 				color:    "#999999",
-				fontSize: "10px",
+				fontSize: 10,
 				font:     "open sans",
 				location: "bottom-left"
 			},
@@ -69,18 +69,18 @@ define([], function() {
 				mainLabel: {
 					color: "#333333",
 					font: "Open sans",
-					fontSize: "11px"
+					fontSize: 11
 				},
 				percentage: {
 					color: "#ffffff",
 					font: "Open sans",
-					fontSize: "10px",
+					fontSize: 10,
 					decimalPlaces: 0
 				},
 				value: {
 					color: "#adadad",
 					font: "Open sans",
-					fontSize: "11px"
+					fontSize: 11
 				},
 				lines: {
 					enabled: true,
@@ -125,18 +125,18 @@ define([], function() {
 					font:     "courier"
 				},
 				subtitle: {
-					text:     "What strikes the most terror in people?",
+					text:     "What do people fear the most?",
 					color:    "#777777",
-					fontSize: 10,
+					fontSize: 11,
 					font:     "courier"
 				},
 				location: "pie-center",
 				titleSubtitlePadding: 6
 			},
 			footer: {
-				text:     "* We're not sure why people regard Winnipeg as a Top 10 Fear.",
+				text:     "* We're not sure why several people regard Winnipeg as a Top 10 Fear.",
 				color:    "#999999",
-				fontSize: "10px",
+				fontSize: 10,
 				font:     "open sans",
 				location: "bottom-center"
 			},
@@ -144,7 +144,7 @@ define([], function() {
 				canvasWidth: 700,
 				canvasHeight: 360,
 				pieInnerRadius: "95%",
-				pieOuterRadius: "90%"
+				pieOuterRadius: "100%"
 			},
 			data: {
 				sortOrder: "none",
@@ -190,7 +190,7 @@ define([], function() {
 				value: {
 					color: "#cccc44",
 					font: "Open sans",
-					fontSize: "11"
+					fontSize: 11
 				},
 				lines: {
 					enabled: true,
@@ -257,7 +257,7 @@ define([], function() {
 			size: {
 				canvasWidth: 700,
 				canvasHeight: 350,
-				pieOuterRadius: "75%"
+				pieOuterRadius: "78%"
 			},
 			data: {
 				sortOrder: "none",
@@ -290,13 +290,13 @@ define([], function() {
 					percentage: {
 						color: "#e1e1e1",
 						font: "verdana",
-						fontSize: "10",
+						fontSize: 10,
 						decimalPlaces: 0
 					},
 					value: {
 						color: "#e1e1e1",
 						font: "verdana",
-						fontSize: "10"
+						fontSize: 10
 					},
 					lines: {
 						enabled: true,
