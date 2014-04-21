@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Changing pie configs without a repaint
+</h1>
+
+<p>
+
+</p>
+
+<hr size="1" />
+
+<input type="text" id="title" value="New title!" />
+<input type="button" id="updateTitleBtn" value="Update Title" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "A Very Simple Pie"
+			}
+		},
+		data: {
+			content: [
+				{ label: "JavaScript", value: 264131 },
+				{ label: "Ruby", value: 218812 },
+				{ label: "Java", value: 157618}
+			]
+		}
+	});
+	$(function() {
+		$("#updateTitleBtn").on("click", function() {
+			pie.updateProp("header.title.text", $("#title").val());
+		});
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "A Very Simple Pie"
+		}
+	},
+	data: {
+		content: [
+			{ label: "JavaScript", value: 264131 },
+			{ label: "Ruby", value: 218812 },
+			{ label: "Java", value: 157618}
+		]
+	}
+});
+$(function() {
+	$("#updateTitleBtn").on("click", function() {
+		pie.updateProp("header.title.text", $("#title").val());
+	});
+});
+</pre></blockquote>
+
+</body>
+</html>

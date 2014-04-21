@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Refreshing the pie chart
+</h1>
+
+<p>
+	This shows how to refresh the pie chart dynamically.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+<input type="button" value="Refresh" id="refreshBtn" />
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "A Very Simple Pie"
+			}
+		},
+		data: {
+			content: [
+				{ label: "JavaScript", value: 264131 },
+				{ label: "Ruby", value: 218812 },
+				{ label: "Java", value: 157618}
+			]
+		}
+	});
+
+	$(function() {
+		$("#refreshBtn").on("click", function(e) {
+			pie.redraw();
+		});
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "A Very Simple Pie"
+		}
+	},
+	data: {
+		content: [
+			{ label: "JavaScript", value: 264131 },
+			{ label: "Ruby", value: 218812 },
+			{ label: "Java", value: 157618}
+		]
+	}
+});
+
+$(function() {
+	$("#refreshBtn").on("click", function(e) {
+		pie.redraw();
+	});
+});
+</pre></blockquote>
+
+</body>
+</html>

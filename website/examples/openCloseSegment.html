@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Opening / Closing a segment
+</h1>
+
+<p>
+	This shows how you can use the <b>d3pie.openSegment()</b> and <b>d3pie.closeSegment()</b> functions to dynamically
+	open or close a pie segment. Click on the buttons underneath the chart.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "Another Pie Chart"
+			}
+		},
+		data: {
+			content: [
+				{ label: "A", value: 1 },
+				{ label: "B", value: 2 },
+				{ label: "C", value: 3 },
+				{ label: "D", value: 4 },
+				{ label: "E", value: 5 },
+				{ label: "F", value: 6 },
+				{ label: "G", value: 7 },
+				{ label: "H", value: 8 }
+			]
+		}
+	});
+
+	// some custom code to illustrate how to use openSegment() and closeSegment()
+	$(function() {
+		$(".openSegmentBtn").on("click", function(e) {
+			var index = parseInt($(e.target).data("index"), 10);
+			pie.openSegment(index);
+		});
+
+		$("#closeSegmentBtn").on("click", function() {
+			pie.closeSegment();
+		});
+	});
+</script>
+
+<input type="button" class="openSegmentBtn" data-index="0" value="Open Segment #1" />
+<input type="button" class="openSegmentBtn" data-index="1" value="Open Segment #2" />
+<input type="button" class="openSegmentBtn" data-index="2" value="Open Segment #3" />
+<input type="button" class="openSegmentBtn" data-index="3" value="Open Segment #4" />
+<input type="button" id="closeSegmentBtn" value="Close Segment" />
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "Another Pie Chart"
+		}
+	},
+	data: {
+		content: [
+			{ label: "A", value: 1 },
+			{ label: "B", value: 2 },
+			{ label: "C", value: 3 },
+			{ label: "D", value: 4 },
+			{ label: "E", value: 5 },
+			{ label: "F", value: 6 },
+			{ label: "G", value: 7 },
+			{ label: "H", value: 8 }
+		]
+	}
+});
+
+// some custom code to illustrate how to use openSegment() and closeSegment()
+$(function() {
+	$(".openSegmentBtn").on("click", function(e) {
+		var index = parseInt($(e.target).data("index"), 10);
+		pie.openSegment(index);
+	});
+
+	$("#closeSegmentBtn").on("click", function() {
+		pie.closeSegment();
+	});
+});
+</pre></blockquote>
+
+</body>
+</html>

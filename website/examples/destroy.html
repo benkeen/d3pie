@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Destroying the pie chart
+</h1>
+
+<p>
+	This shows how to destroy and recreate the pie chart.
+</p>
+
+<hr size="1" />
+<input type="button" value="Recreate" id="recreateBtn" />
+<input type="button" value="Destroy" id="destroyBtn" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = null;
+	function create() {
+		pie = new d3pie("pie", {
+			header: {
+				title: {
+					text: "A Very Simple Pie"
+				}
+			},
+			data: {
+				content: [
+					{ label: "JavaScript", value: 264131 },
+					{ label: "Ruby", value: 218812 },
+					{ label: "Java", value: 157618}
+				]
+			}
+		});
+	}
+
+	$(function() {
+		create();
+
+		// assign event handlers for the demo
+		$("#destroyBtn").on("click", function(e) {
+			if (pie !== null) {
+				pie.destroy();
+				pie = null;
+			}
+		});
+		$("#recreateBtn").on("click", function(e) {
+			create();
+		});
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = null;
+function create() {
+	pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "A Very Simple Pie"
+			}
+		},
+		data: {
+			content: [
+				{ label: "JavaScript", value: 264131 },
+				{ label: "Ruby", value: 218812 },
+				{ label: "Java", value: 157618}
+			]
+		}
+	});
+}
+
+$(function() {
+	create();
+
+	// assign event handlers for the demo
+	$("#destroyBtn").on("click", function(e) {
+		if (pie !== null) {
+			pie.destroy();
+			pie = null;
+		}
+	});
+	$("#recreateBtn").on("click", function(e) {
+		create();
+	});
+});
+</pre></blockquote>
+
+</body>
+</html>

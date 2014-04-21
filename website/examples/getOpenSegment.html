@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; d3pie.getOpenSegment()
+</h1>
+
+<p>
+	This example shows you how to use the <b>getOpenSegment()</b> function to retrieve information about the currently open
+	segment. Click on a segment then on the "Get the Open Segment" button.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<input type="button" value="Get the Open Segment" id="btn" />
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "Another pie chart"
+			}
+		},
+		labels: {
+			inner: {
+				format: "value"
+			},
+			value: {
+				color: "#ffffff"
+			}
+		},
+		data: {
+			content: [
+				{ label: "One", value: 0.1 },
+				{ label: "Two", value: 0.56 },
+				{ label: "Three", value: 0.12 },
+				{ label: "Four", value: 0.4 },
+				{ label: "Three", value: 0.51 },
+				{ label: "Three", value: 0.2 }
+			]
+		}
+	});
+
+	$(function() {
+		$("#btn").on("click", function() {
+			var segment = pie.getOpenSegment();
+			if (segment === null) {
+				alert("No segment open. Click on a segment then re-click the button.");
+			} else {
+				alert("Segment open. View the console to see full details about the segment.");
+				console.log(segment);
+			}
+		});
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "Another pie chart"
+		}
+	},
+	labels: {
+		inner: {
+			format: "value"
+		},
+		value: {
+			color: "#ffffff"
+		}
+	},
+	data: {
+		content: [
+			{ label: "One", value: 0.1 },
+			{ label: "Two", value: 0.56 },
+			{ label: "Three", value: 0.12 },
+			{ label: "Four", value: 0.4 },
+			{ label: "Three", value: 0.51 },
+			{ label: "Three", value: 0.2 }
+		]
+	}
+});
+
+$(function() {
+	$("#btn").on("click", function() {
+		var segment = pie.getOpenSegment();
+		if (segment === null) {
+			alert("No segment open. Click on a segment then re-click the button.");
+		} else {
+			alert("Segment open. View the console to see full details about the segment.");
+			console.log(segment);
+		}
+	});
+});
+</pre></blockquote>
+
+</body>
+</html>
