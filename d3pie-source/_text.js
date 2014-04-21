@@ -22,7 +22,7 @@ var text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.style("font-size", function(d) { return d.fontSize; })
+			.style("font-size", function(d) { return d.fontSize + "px"; })
 			.style("font-family", function(d) { return d.font; });
 	},
 
@@ -75,7 +75,7 @@ var text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.style("font-size", function(d) { return d.fontSize; })
+			.style("font-size", function(d) { return d.fontSize + "px"; })
 			.style("font-family", function(d) { return d.font; });
 	},
 
@@ -107,7 +107,7 @@ var text = {
 				return location;
 			})
 			.attr("fill", function(d) { return d.color; })
-			.style("font-size", function(d) { return d.fontSize; })
+			.style("font-size", function(d) { return d.fontSize + "px"; })
 			.style("font-family", function(d) { return d.font; });
 	},
 

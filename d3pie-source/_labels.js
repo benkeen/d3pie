@@ -37,7 +37,7 @@ var labels = {
 					}
 					return str;
 				})
-				.style("font-size", settings.mainLabel.fontSize)
+				.style("font-size", settings.mainLabel.fontSize + "px")
 				.style("font-family", settings.mainLabel.font)
 				.style("fill", settings.mainLabel.color);
 		}
@@ -51,7 +51,7 @@ var labels = {
 					var percent = (d.value / pie.totalSize) * 100;
 					return percent.toFixed(pie.options.labels.percentage.decimalPlaces) + "%";
 				})
-				.style("font-size", settings.percentage.fontSize)
+				.style("font-size", settings.percentage.fontSize + "px")
 				.style("font-family", settings.percentage.font)
 				.style("fill", settings.percentage.color);
 		}
@@ -62,7 +62,7 @@ var labels = {
 				.attr("id", function(d, i) { return pie.cssPrefix +  "segmentValue" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentValue-" + section)
 				.text(function(d) { return d.value; })
-				.style("font-size", settings.value.fontSize)
+				.style("font-size", settings.value.fontSize + "px")
 				.style("font-family", settings.value.font)
 				.style("fill", settings.value.color);
 		}

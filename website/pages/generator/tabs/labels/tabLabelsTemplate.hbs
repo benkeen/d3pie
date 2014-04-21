@@ -252,9 +252,9 @@
 		<div class="col-md-5">
 			<input type="radio" name="labelLineColorType" id="labelLineColorType1" value="segment"
 				{{#compare config.labels.lines.color "segment"}}checked="checked"{{/compare}} />
-			<label for="labelLineColorType1">Same color as segment</label>
+			<label for="labelLineColorType1">Same as segment</label>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4" style="padding-right: 0px">
 			<div class="form-group">
 				<input type="radio" name="labelLineColorType" id="labelLineColorType2" value="solid" style="float: left; margin-right: 10px;"
 					{{#compare config.labels.lines.color "segment" operator="!="}}checked="checked"{{/compare}} />

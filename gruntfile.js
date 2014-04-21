@@ -196,11 +196,14 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("prod", [
 		"setEnv_Prod", // set the build environment constants
-		"clean", // wipe out the build folder
-		"cssmin", // bundle the CSS into a single file
+		"clean",       // wipe out the build folder
+		"cssmin",      // bundle the CSS into a single file
 		"md5:coreCSS", // rename the file to include it's file hash
 		"uglify:coreJS", // bundle the core JS
-		"md5:coreJS", // rename the JS lib file
+		"md5:coreJS",   // rename the JS lib file
+
+
+
 		"requirejs", // run the requireJS task to bundle up everything into a single file, then regenerate
 		"template:indexFile" // alright! Now re-generate the index file
 	]);
