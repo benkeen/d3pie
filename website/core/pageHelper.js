@@ -20,6 +20,7 @@ define([
 	var _initPage = function() {
 		_$topNav = $("#topNav");
 		_initPageNavEventHandlers();
+		_updateBodySizeClass();
 		_selectPage(document.location.hash);
 	};
 
@@ -31,8 +32,37 @@ define([
 		});
 
 		$(window).on("resize", function() {
-			mediator.publish(_MODULE_ID, C.EVENT.PAGE.RESIZE, { });
+			var width = $(window).width();
+			var height = $(window).height();
+			var breakPoint = _updateBodySizeClass(width);
+			mediator.publish(_MODULE_ID, C.EVENT.PAGE.RESIZE, {
+				width: width,
+				height: height,
+				breakPoint: breakPoint
+			});
 		});
+	};
+
+	/**
+	 * This was added to get around some CSS nonsense with the homepage slider script. It adds a class to the body
+	 * element that specifies the current viewport width.
+	 * @private
+	 */
+	var _updateBodySizeClass = function(width) {
+		var breakPointIndex = null;
+		for (var i=0; i< C.OTHER.BREAKPOINTS.length; i++) {
+			if (width >= C.OTHER.BREAKPOINTS[i]) {
+				breakPointIndex = i;
+			}
+		}
+
+		$("body").removeClass("size768 size992 size1200");
+		var breakPoint = null;
+		if (breakPointIndex !== null) {
+			breakPoint = C.OTHER.BREAKPOINTS[breakPointIndex];
+			$("body").addClass("size" + breakPoint);
+		}
+		return breakPoint;
 	};
 
 	/**

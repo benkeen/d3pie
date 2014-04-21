@@ -33,7 +33,8 @@ define([], function() {
 	};
 
 	C.OTHER = {
-		PAGE_LOAD_SPEED: 200
+		PAGE_LOAD_SPEED: 200,
+		BREAKPOINTS: [768, 992, 1200]
 	};
 
 	return C;

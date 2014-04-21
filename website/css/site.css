@@ -464,7 +464,7 @@ body pre {
 	text-align: center;
 }
 .aboutPageRow2, .aboutPageRow3 {
-	display: none !important;
+	display: none; /* STILL the problem! */
 }
 .aboutPageRow1 .col3 p {
 	margin-top: 30px;
@@ -484,7 +484,7 @@ body pre {
 		margin-top: 0px;
 	}
 	.aboutPageRow2, .aboutPageRow3 {
-		display: block !important;
+		display: block;
 	}
 	.slidesjs-pagination {
 		display: block;

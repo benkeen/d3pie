@@ -17,6 +17,7 @@ define([
 
 		var subscriptions = {};
 		subscriptions[C.EVENT.PAGE.LOAD] = _onPageSelected;
+		subscriptions[C.EVENT.PAGE.RESIZE] = _onPageResize;
 		mediator.subscribe(_MODULE_ID, subscriptions);
 	};
 
@@ -27,7 +28,20 @@ define([
 			_firstPage = msg.data.page;
 			_firstPageLoaded = true;
 			if (_firstPage === "about") {
-				setTimeout(_renderContent, 10);
+				setTimeout(function() {
+					_renderContent();
+					var width = $(window).width();
+
+					var breakPointIndex = null;
+					for (var i=0; i< C.OTHER.BREAKPOINTS.length; i++) {
+						if (width >= C.OTHER.BREAKPOINTS[i]) {
+							breakPointIndex = i;
+						}
+					}
+					if (breakPointIndex === null) {
+						_handleViewport("small");
+					}
+				}, 10);
 			}
 			return;
 		}
@@ -59,6 +73,21 @@ define([
 		_isRendered = true;
 	};
 
+	var _onPageResize = function(msg) {
+		if (msg.data.breakPoint === null) {
+			_handleViewport("small");
+		} else {
+			_handleViewport("large");
+		}
+	};
+
+	var _handleViewport = function(size) {
+		if (size === "small") {
+			$(".aboutPageRow2, .aboutPageRow3").css("display", "none");
+		} else {
+			$(".aboutPageRow2, .aboutPageRow3").css("display", "block");
+		}
+	};
 
 	mediator.register(_MODULE_ID);
 
