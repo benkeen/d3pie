@@ -404,9 +404,13 @@ var math = {
 		var h = size.canvasHeight - canvasPadding.top - canvasPadding.bottom;
 
 		// now factor in the footer, title & subtitle
+		h -= pie.textComponents.headerHeight;
 		if (pie.textComponents.footer.exists) {
 			h -= pie.textComponents.footer.h;
 		}
+
+		// for really teeny pies, h may be < 0. Adjust it back
+		h = (h < 0) ? 0 : h;
 
 		var outerRadius = ((w < h) ? w : h) / 3;
 		var innerRadius, percent;
@@ -419,6 +423,15 @@ var math = {
 				percent = (percent < 0) ? 0 : percent;
 
 				var smallestDimension = (w < h) ? w : h;
+
+				// now factor in the label line size
+				if (pie.options.labels.outer.format !== "none") {
+					var pieDistanceSpace = parseInt(pie.options.labels.outer.pieDistance, 10) * 2;
+					if (smallestDimension - pieDistanceSpace > 0) {
+						smallestDimension -= pieDistanceSpace;
+					}
+				}
+
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
 				outerRadius = parseInt(size.pieOuterRadius, 10);
@@ -1534,6 +1547,7 @@ var text = {
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
+			headerHeight: 0,
 			title: {
 				exists: this.options.header.title.text !== "",
 				h: 0,
@@ -1587,6 +1601,20 @@ var text = {
 				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
+			}
+			// now compute the full header height
+			if (self.textComponents.title.exists || self.textComponents.subtitle.exists) {
+				var headerHeight = 0;
+				if (self.textComponents.title.exists) {
+					headerHeight += self.textComponents.title.h;
+					if (self.textComponents.subtitle.exists) {
+						headerHeight += self.options.header.titleSubtitlePadding;
+					}
+				}
+				if (self.textComponents.subtitle.exists) {
+					headerHeight += self.textComponents.subtitle.h;
+				}
+				self.textComponents.headerHeight = headerHeight;
 			}
 
 			// at this point, all main text component dimensions have been calculated

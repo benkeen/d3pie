@@ -5,6 +5,9 @@ body .navbar {
 	top: 0;
 	z-index: 1000;
 }
+body input {
+	font-size: 13px;
+}
 #sidebar {
 	width: 400px;
 	float: left;
@@ -134,7 +137,7 @@ body .navbar-brand {
     width: 150px;
 }
 body .form-control {
-	font-size: 14px;
+	font-size: 13px;
 }
 .scriptVersion {
 	color: #dddddd;

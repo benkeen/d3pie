@@ -23,9 +23,13 @@ var math = {
 		var h = size.canvasHeight - canvasPadding.top - canvasPadding.bottom;
 
 		// now factor in the footer, title & subtitle
+		h -= pie.textComponents.headerHeight;
 		if (pie.textComponents.footer.exists) {
 			h -= pie.textComponents.footer.h;
 		}
+
+		// for really teeny pies, h may be < 0. Adjust it back
+		h = (h < 0) ? 0 : h;
 
 		var outerRadius = ((w < h) ? w : h) / 3;
 		var innerRadius, percent;
@@ -38,6 +42,15 @@ var math = {
 				percent = (percent < 0) ? 0 : percent;
 
 				var smallestDimension = (w < h) ? w : h;
+
+				// now factor in the label line size
+				if (pie.options.labels.outer.format !== "none") {
+					var pieDistanceSpace = parseInt(pie.options.labels.outer.pieDistance, 10) * 2;
+					if (smallestDimension - pieDistanceSpace > 0) {
+						smallestDimension -= pieDistanceSpace;
+					}
+				}
+
 				outerRadius = Math.floor((smallestDimension / 100) * percent) / 2;
 			} else {
 				outerRadius = parseInt(size.pieOuterRadius, 10);

@@ -6,7 +6,7 @@ define([], function() {
 		{
 			header: {
 				title: {
-					text:     "Lots of Programming Languages",
+					text:     "Programming Languages",
 					color:    "#333333",
 					fontSize: "22",
 					font:     "open sans"
@@ -28,10 +28,10 @@ define([], function() {
 				location: "bottom-left"
 			},
 			size: {
-				canvasWidth: 380,
+				canvasWidth: 350,
 				canvasHeight: 350,
 				pieInnerRadius: "0%",
-				pieOuterRadius: "58%"
+				pieOuterRadius: "75%"
 			},
 			data: {
 				sortOrder: "value-desc",
@@ -144,7 +144,7 @@ define([], function() {
 				canvasWidth: 700,
 				canvasHeight: 360,
 				pieInnerRadius: "95%",
-				pieOuterRadius: "76%"
+				pieOuterRadius: "90%"
 			},
 			data: {
 				sortOrder: "none",
@@ -257,7 +257,7 @@ define([], function() {
 			size: {
 				canvasWidth: 700,
 				canvasHeight: 350,
-				pieOuterRadius: "56%"
+				pieOuterRadius: "75%"
 			},
 			data: {
 				sortOrder: "none",

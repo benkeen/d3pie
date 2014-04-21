@@ -41,7 +41,7 @@ define([], function() {
 					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "0%",
-					pieOuterRadius: "66%"
+					pieOuterRadius: "90%"
 				},
 				data: {
 					sortOrder: "value-desc",
@@ -157,7 +157,7 @@ define([], function() {
 					title: {
 						text:     "Top 15 Fears",
 						color:    "#333333",
-						fontSize: 30,
+						fontSize: 34,
 						font:     "courier"
 					},
 					subtitle: {
@@ -167,10 +167,10 @@ define([], function() {
 						font:     "courier"
 					},
 					location: "pie-center",
-					titleSubtitlePadding: 6
+					titleSubtitlePadding: 10
 				},
 				footer: {
-					text:     "* This was curious. We're not sure why over 400 people regard Winnipeg as a Top 15 Fear.",
+					text:     "* This was curious. We're not sure why over several people regard Winnipeg as a Top 15 Fear.",
 					color:    "#999999",
 					fontSize: "10px",
 					font:     "open sans",
@@ -180,10 +180,10 @@ define([], function() {
 					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "95%",
-					pieOuterRadius: "56%"
+					pieOuterRadius: "80%"
 				},
 				data: {
-					sortOrder: "label-asc",
+					sortOrder: "label-desc",
 					content: [
 						{ label: "Spiders", value: 2, color: "#333333" },
 						{ label: "Mother-in-laws", value: 10, color: "#444444" },
@@ -195,11 +195,11 @@ define([], function() {
 						{ label: "The Zombie Apocalypse", value: 4, color: "#cb2121" },
 						{ label: "The City of Winnipeg *", value: 3, color: "#830909" },
 						{ label: "IE 6", value: 2, color: "#923e99" },
-						{ label: "Planes, with/without snakes", value: 5, color: "#ae83d5" },
+						{ label: "Planes with/out snakes", value: 5, color: "#ae83d5" },
 						{ label: "Off-by-one errors", value: 3, color: "#111111"},
 						{ label: "Chickadees", value: 4, color: "#050505" },
 						{ label: "A never-ending Harper Government", value: 1, color: "#646464" },
-						{ label: "Rewatching The Matrix Reloaded", value: 4, color: "#747474" }
+						{ label: "Canada", value: 4, color: "#747474" }
 					]
 				},
 				labels: {
@@ -207,7 +207,7 @@ define([], function() {
 					outer: {
 						format: "label-percentage1",
 						hideWhenLessThanPercentage: null,
-						pieDistance: 32
+						pieDistance: 20
 					},
 					inner: {
 						format: "none",
@@ -255,7 +255,7 @@ define([], function() {
 				misc: {
 					colors: {
 						background: null,
-						segmentStroke: "#adadad"
+						segmentStroke: "#000000"
 					},
 					canvasPadding: {
 						top: 5,
@@ -305,7 +305,7 @@ define([], function() {
 					canvasWidth: 590,
 					canvasHeight: 400,
 					pieInnerRadius: "0%",
-					pieOuterRadius: "59%"
+					pieOuterRadius: "88%"
 				},
 				data: {
 					sortOrder: "none",
@@ -420,7 +420,7 @@ define([], function() {
 					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "0%",
-					pieOuterRadius: "66%"
+					pieOuterRadius: "100%"
 				},
 				data: {
 					sortOrder: "label-desc",

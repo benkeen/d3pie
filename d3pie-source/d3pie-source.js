@@ -166,6 +166,7 @@
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
+			headerHeight: 0,
 			title: {
 				exists: this.options.header.title.text !== "",
 				h: 0,
@@ -219,6 +220,20 @@
 				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
+			}
+			// now compute the full header height
+			if (self.textComponents.title.exists || self.textComponents.subtitle.exists) {
+				var headerHeight = 0;
+				if (self.textComponents.title.exists) {
+					headerHeight += self.textComponents.title.h;
+					if (self.textComponents.subtitle.exists) {
+						headerHeight += self.options.header.titleSubtitlePadding;
+					}
+				}
+				if (self.textComponents.subtitle.exists) {
+					headerHeight += self.textComponents.subtitle.h;
+				}
+				self.textComponents.headerHeight = headerHeight;
 			}
 
 			// at this point, all main text component dimensions have been calculated

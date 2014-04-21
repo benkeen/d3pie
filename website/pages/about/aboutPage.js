@@ -83,6 +83,7 @@ define([
 
 	var _handleViewport = function(size) {
 		if (size === "small") {
+			//$(".aboutPageRow1").css("display", "block");
 			$(".aboutPageRow2, .aboutPageRow3").css("display", "none");
 		} else {
 			$(".aboutPageRow2, .aboutPageRow3").css("display", "block");
