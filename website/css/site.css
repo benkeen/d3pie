@@ -464,7 +464,7 @@ body pre {
 	text-align: center;
 }
 .aboutPageRow2, .aboutPageRow3 {
-	display: none; /* STILL the problem! */
+	display: none;
 }
 .aboutPageRow1 .col3 p {
 	margin-top: 30px;

@@ -34,8 +34,8 @@
 	</p>
 	<p>
 		If you're looking for a quick <i>how-on-earth-do-I-get-this-working-on-my-site</i>, check out the
-		<a href="#quickStart" class="selectPage">Quick Start</a> page, or even try out
-		<a href="#generator-start" class="selectPage">Generator</a> to create a pie chart on the fly and generate the source code.
+		<a href="#quickStart" class="selectPage">Quick-start Guide</a>, or try out the <a href="#generator-start"
+			class="selectPage">generator</a> to create a pie chart on the fly and generate the source code.
 	</p>
 	<p>
 		But before we get to the doc, a short disclaimer.
@@ -227,7 +227,8 @@ myPie.redraw();
 
 <p>
 	Here are the default settings that will be applied to your pie chart. A description of each field, its
-	type (object, array, number, string, mixed)
+	type (object, array, etc.) and the default value are all itemized in the next section. This just gives you a
+	quick visual reference for the whole shebang.
 </p>
 
 <pre class="prettyprint language-js">{
@@ -260,7 +261,7 @@ myPie.redraw();
 		pieOuterRadius: null
 	},
 	data: {
-		sortOrder: "value-asc",
+		sortOrder: "none",
 
 		// REQUIRED! This is where you enter your pie data; it needs to be an array of objects
 		// of this form: { label: "label", value: 1.5, color: "#000000" } - color is optional
@@ -313,10 +314,18 @@ myPie.redraw();
 	},
 	misc: {
 		colors: {
-			background: null,
+			background: null, // transparent
 			segments: [
-				"#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56",
-				"#d0743c", "#ff8c00", "#635222", "#00dd00"
+				"#2484c1", "#65a620", "#7b6888", "#a05d56", "#961a1a",
+				"#d8d23a", "#e98125", "#d0743c", "#635222", "#6ada6a",
+				"#0c6197", "#7d9058", "#207f33", "#44b9b0", "#bca44a",
+				"#e4a14b", "#a3acb2", "#8cc3e9", "#69a6f9", "#5b388f",
+				"#546e91", "#8bde95", "#d2ab58", "#273c71", "#98bf6e",
+				"#4daa4b", "#98abc5", "#cc1010", "#31383b", "#006391",
+				"#c2643f", "#b0a474", "#a5a39c", "#a9c2bc", "#22af8c",
+				"#7fcecf", "#987ac6", "#3d3b87", "#b77b1c", "#c9c2b6",
+				"#807ece", "#8db27c", "#be66a2", "#9ed3c6", "#00644b",
+				"#005064", "#77979f", "#77e079", "#9c73ab", "#1f79a7"
 			],
 			segmentStroke: "#ffffff"
 		},
@@ -362,7 +371,10 @@ myPie.redraw();
 	<td>header.title.text</td>
 	<td><span class="label label-warning">string</span></td>
 	<td>&#8212;</td>
-	<td>The title. If this isn't defined, or set to an empty string, the entire title is omitted.</td>
+	<td>
+		The title. If this isn't defined, or set to an empty string, the entire title is omitted and the pie
+		chart makes use of the extra space.
+	</td>
 </tr>
 <tr>
 	<td>header.title.color</td>
@@ -544,11 +556,12 @@ myPie.redraw();
 </tr>
 <tr>
 	<td>labels.outer.hideWhenLessThanPercentage</td>
-	<td><span class="label label-warning">string</span></td>
+	<td><span class="label label-primary">number</span></td>
 	<td>null</td>
 	<td>
 		This setting lets you hide the outer label when the percentage is less than a certain amount. Just
-		enter a number value in this field from <code>1</code> to <code>100</code>.
+		enter a number value in this field from <code>1</code> to <code>100</code>. If it's set to <code>null</code>,
+		it never hides the outer labels.
 	</td>
 </tr>
 <tr>
@@ -556,13 +569,14 @@ myPie.redraw();
 	<td><span class="label label-primary">number</span></td>
 	<td>30</td>
 	<td>
-		The distance in pixels from the outside of the pie to the start of the outer label.
+		The distance in pixels from the outside of the pie to the start of the outer label. This also governs the
+		length of the label lines.
 	</td>
 </tr>
 <tr>
 	<td>labels.inner.format</td>
 	<td><span class="label label-warning">string</span></td>
-	<td>30</td>
+	<td>percentage</td>
 	<td>
 		This setting controls what appears in the inner label. This has the same options as
 		<code>labels.outer.format</code>:
@@ -570,7 +584,7 @@ myPie.redraw();
 		<ul>
 			<li><code>label</code> - the segment label</li>
 			<li><code>value</code> - the segment value</li>
-			<li><code>percentage</code> - the segment percentage</li>
+			<li><code>percentage</code> - (default) the segment percentage</li>
 			<li><code>label-value1</code> - the label followed by the value on the same line</li>
 			<li><code>label-value2</code> - the label followed by the value on a different line</li>
 			<li><code>label-percentage1</code> - the label followed by the percentage on the same line</li>
@@ -580,11 +594,12 @@ myPie.redraw();
 </tr>
 <tr>
 	<td>labels.inner.hideWhenLessThanPercentage</td>
-	<td><span class="label label-warning">string</span></td>
+	<td><span class="label label-primary">number</span></td>
 	<td>null</td>
 	<td>
 		This setting lets you hide the inner label when the percentage is less than a certain amount. Just
-		enter a number value in this field from <code>1</code> to <code>100</code>.
+		enter a number value in this field from <code>1</code> to <code>100</code>. By default it's set to
+		<code>null</code>, which means that the inner labels are never hidden.
 	</td>
 </tr>
 <tr>
@@ -644,7 +659,7 @@ myPie.redraw();
 	<td>labels.value.font</td>
 	<td><span class="label label-warning">string</span></td>
 	<td>arial</td>
-	<td>The font used to display the value. The "Value" is whatever you entered in the
+	<td>The font used to display the value. The "value" is whatever you entered in the
 		segment's value property in the <code>data.content</code> array.
 	</td>
 </tr>
@@ -658,7 +673,7 @@ myPie.redraw();
 	<td>labels.lines.enabled</td>
 	<td><span class="label label-pink">boolean</span></td>
 	<td>true</td>
-	<td>Whether or not lines are displayed that link from the outer label to the pie segment.</td>
+	<td>Whether or not lines are displayed the lines from each pie segment to it's corresponding label.</td>
 </tr>
 <tr>
 	<td>labels.lines.style</td>
@@ -831,10 +846,11 @@ myPie.redraw();
 	<td><span class="label label-warning">string</span></td>
 	<td>null</td>
 	<td>
-		To keep things speedy, d3pie assigns a lot of IDs and classes to the SVG elements. To accommodate
-		multiple pie charts in a single page, it uses a unique string as a prefix for all elements. This
-		setting lets you provide your own. It can be helpful if you intend to target or access the SVG
-		nodes programmatically and want to ensure consistent names.
+		To keep things speedy, d3pie assigns a lot of IDs and classes to the SVG elements that it creates. To
+		accommodate multiple pie charts in a single page, it uses a unique string as a prefix for all classes and IDs.
+		This setting lets you provide your own. It can be helpful if you intend to target or access the SVG
+		nodes programmatically and want to ensure consistent names. By default it uses <code>p0_</code>, <code>p1_</code>,
+		etc.
 	</td>
 </tr>
 <tr>
@@ -914,10 +930,17 @@ data: {
 		</li>
 		<li>
 			<p>
-				Define them in an array of <code>misc.</code>
+				Define them in <code>misc.colors.segments</code> as an array of hex codes.
 			</p>
 		</li>
 	</ol>
+
+	<p>
+		One other tip is that you can also use <code>misc.colors.segments</code> to provide a default base-set of colours,
+		then override them in your <code>data.content</code> array. Specifying the colour along with the data content
+		will override corresponding <code>misc.colors.segments</code> value, so you can provide a simple override for a single
+		piece of data, should it be useful to do so.
+	</p>
 
 </section>
 
@@ -936,8 +959,7 @@ data: {
 	<h4>Web Fonts</h4>
 	<p>
 		Web fonts are fonts that you explicitly download in your page to make them available to everyone who visits.
-		They can significantly improve the feel of a page but need to be used judiciously because you risk
-		increasing page load times.
+		They can look pretty great, but bear in mind each one you include will increase your page weight.
 	</p>
 	<p>
 		The Generator contains three example web fonts: <b>Cinzel</b>, <b>Exo</b> and <b>Open Sans</b>. I wanted to
@@ -953,7 +975,11 @@ data: {
 </pre>
 
 	<p>
-		<span class="red">*</span> There are few different ways to include it. Just do a google search for more info.
+		Once that's done, just pass the name of the font to the appropriate d3pie setting. Easy-peasy.
+	</p>
+
+	<p>
+		<span class="red">*</span> There are few different ways to include the web font. Just do a google search for more info.
 	</p>
 
 </section>
