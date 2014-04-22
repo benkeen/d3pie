@@ -85,6 +85,7 @@ define([
 	var _onKeyupUpdateNoAnimation = function(e) {
 		var val = e.target.value;
 		var isNumberField = $(e.target).hasClass("numbers");
+		var isFloat = $(e.target).hasClass("floatingNum");
 
 		// check it's not empty and contains only numbers
 		if (isNumberField) {
@@ -93,6 +94,13 @@ define([
 				return;
 			}
 		}
+		if (isFloat) {
+			if (/[^\d\.]/.test(val) || val === "") {
+				$(e.target).addClass("hasError");
+				return;
+			}
+		}
+
 		$(e.target).removeClass("hasError");
 		_renderWithNoAnimation();
 	};

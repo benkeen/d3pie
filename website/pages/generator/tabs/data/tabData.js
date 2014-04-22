@@ -74,7 +74,7 @@ define([
 			var row = $(trs[i]);
 			data.push({
 				label: row.find(".dataLabel").val(),
-				value: parseInt(row.find(".dataValue").val(), 10),
+				value: parseFloat(row.find(".dataValue").val()),
 				color: utils.rgb2hex(row.find(".segmentColor").css("background-color"))
 			});
 		}
