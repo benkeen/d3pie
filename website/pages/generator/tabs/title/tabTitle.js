@@ -38,22 +38,37 @@ define([
 	};
 
 	var _getTabData = function() {
-		return {
+		var data = {
 			title: {
 				text:     $("#pieTitle").val(),
 				color:    $("#titleColor").val(),
-				fontSize: $("#titleFontSize").val(),
 				font:     $("#titleFont").val()
 			},
 			subtitle: {
 				text:     $("#pieSubtitle").val(),
 				color:    $("#subtitleColor").val(),
-				fontSize: $("#subtitleFontSize").val(),
 				font:     $("#subtitleFont").val()
 			},
-			location: $("#titleLocation").val(),
-			titleSubtitlePadding: parseInt($("#titleSubtitlePadding").val(), 10)
+			location: $("#titleLocation").val()
 		};
+
+		// validation. If none are these are entered properly, it relies on the default values in d3pie to handle them.
+		// The error class
+		var numberRegExp = /^[\d]+$/;
+		var titleFontSize = $("#titleFontSize").val();
+		if (numberRegExp.test(titleFontSize)) {
+			data.title.fontSize = titleFontSize;
+		}
+		var subtitleFontSize = $("#subtitleFontSize").val();
+		if (numberRegExp.test(subtitleFontSize)) {
+			data.subtitle.fontSize = subtitleFontSize;
+		}
+		var titleSubtitlePadding = $("#titleSubtitlePadding").val();
+		if (numberRegExp.test(titleSubtitlePadding)) {
+			data.titleSubtitlePadding = parseInt(titleSubtitlePadding, 10);
+		}
+
+		return data;
 	};
 
 

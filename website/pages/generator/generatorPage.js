@@ -93,7 +93,6 @@ define([
 				return;
 			}
 		}
-
 		$(e.target).removeClass("hasError");
 		_renderWithNoAnimation();
 	};

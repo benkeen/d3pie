@@ -38,20 +38,20 @@ var validate = {
 		// clear out any invalid data. Each data row needs a valid number and a label
 		var data = [];
 		for (var i=0; i<options.data.content.length; i++) {
-			if (typeof options.data.content[i].value !== "number") {
+			if (typeof options.data.content[i].value !== "number" || isNaN(options.data.content[i].value)) {
 				console.log("not valid: ", options.data.content[i]);
+				continue;
+			}
+			if (options.data.content[i].value === 0) {
+				console.log("not valid - should have positive value: ", options.data.content[i]);
 				continue;
 			}
 			data.push(options.data.content[i]);
 		}
 		pie.options.data.content = data;
 
-
-		// pieInnerRadius - should be 0-99
-
 		// labels.outer.hideWhenLessThanPercentage - 1-100
 		// labels.inner.hideWhenLessThanPercentage - 1-100
-
 
 		return true;
 	}

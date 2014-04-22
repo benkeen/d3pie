@@ -5,12 +5,14 @@
 <div class="row form-group">
 	<div class="col-md-3">
 		<label for="canvasWidth" class="control-label bl">Canvas Width</label>
-		<input type="number" id="canvasWidth" value="{{config.size.canvasWidth}}" class="form-control smallField ib keyupUpdateNoAnimation" />
+		<input type="number" id="canvasWidth" value="{{config.size.canvasWidth}}"
+			class="form-control smallField ib keyupUpdateNoAnimation" min="1" />
 		<label class="ib">px</label>
 	</div>
 	<div class="col-md-3" style="padding-right: 0px;">
 		<label for="canvasHeight" class="control-label bl">Canvas Height</label>
-		<input type="number" id="canvasHeight" value="{{config.size.canvasHeight}}" class="form-control smallField ib keyupUpdateNoAnimation" />
+		<input type="number" id="canvasHeight" value="{{config.size.canvasHeight}}"
+			class="form-control smallField ib keyupUpdateNoAnimation" min="1" />
 		<label class="ib">px</label>
 	</div>
 	<div class="col-md-6">

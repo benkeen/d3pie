@@ -69,7 +69,8 @@
 			</select>
 		</div>
 		<div class="col-md-3">
-			<input id="titleFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.header.title.fontSize}}" />
+			<input id="titleFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation numbers"
+				value="{{numbersOnly config.header.title.fontSize}}" min="1" />
 			<label for="titleFontSize">px</label>
 		</div>
 	</div>
@@ -102,7 +103,8 @@
 			</select>
 		</div>
 		<div class="col-md-3">
-			<input id="subtitleFontSize" type="number" class="pixelSizeField keyupUpdateNoAnimation" value="{{numbersOnly config.header.subtitle.fontSize}}" />
+			<input id="subtitleFontSize" type="number" class="pixelSizeField numbers keyupUpdateNoAnimation"
+				value="{{numbersOnly config.header.subtitle.fontSize}}" min="1" />
 			<label for="subtitleFontSize">px</label>
 		</div>
 	</div>
@@ -113,7 +115,7 @@
 		</div>
 		<div class="col-lg-7">
 			<input type="number" id="titleSubtitlePadding" value="{{config.header.titleSubtitlePadding}}" min="0"
-				class="smallField keyupUpdateNoAnimation" />
+				class="pixelSizeField numbers keyupUpdateNoAnimation" />
 		</div>
 	</div>
 </div>

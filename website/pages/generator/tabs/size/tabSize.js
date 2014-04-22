@@ -18,17 +18,17 @@ define([
 			_toggleOutline(e.target.checked);
 		});
 
-
-		$("#pieInnerRadius").on("input change", _onChangeInnerRadius);
-		$("#pieOuterRadius").on("input change", _onChangeOuterRadius);
+		var $pieInnerRadius = $("#pieInnerRadius");
+		$pieInnerRadius.on("input change", _onChangeInnerRadius);
+		$pieInnerRadius.on("input change", _onChangeOuterRadius);
 
 		$("#pieIconPie").on("click", function() {
-			$("#pieInnerRadius").val("0");
+			$pieInnerRadius.val("0");
 			_setInnerRadiusDisplayValue("0");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 		$("#pieIconDonut").on("click", function() {
-			$("#pieInnerRadius").val("100");
+			$pieInnerRadius.val("100");
 			_setInnerRadiusDisplayValue("100");
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
