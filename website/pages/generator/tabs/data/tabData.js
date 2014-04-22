@@ -10,14 +10,11 @@ define([
 	"use strict";
 
 	var _MODULE_ID = "dataTab";
-
+	var _$sortableDataList;
 
 	var _init = function() {
 		Handlebars.registerPartial("data-row", dataRowPartial);
 		mediator.register(_MODULE_ID);
-
-		// temporary
-		window.outputColors = _outputColors;
 	};
 
 	var _render = function(tabEl, config) {
@@ -28,13 +25,14 @@ define([
 			colorsets: COLORSETS
 		}));
 
-		$("#sortableDataList").find(".segmentColor").colorpicker().on("changeColor", function(e) {
+		_$sortableDataList = $("#sortableDataList");
+		_$sortableDataList.find(".segmentColor").colorpicker().on("changeColor", function(e) {
 			$(e.target).css("background-color", e.color.toHex());
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
 		// make the data vertically sortable
-		$("#sortableDataList").sortable({
+		_$sortableDataList.sortable({
 			handle: ".handle",
 			axis: "y",
 			update: function() {
@@ -43,18 +41,21 @@ define([
 			}
 		});
 
-		$("#sortableDataList").on("click", ".removeRow", _removeRow);
+		_$sortableDataList.on("click", ".removeRow", _removeRow);
 		$("#colorSets").on("change", _selectColorset);
 		$("#shuffleColors").on("click", _randomizeColorset);
 		$("#addRow").on("click", _addRow);
+		_$sortableDataList.on("keyup", ".dataLabel", function() {
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
 	};
 
 	var _addRow = function(e) {
 		e.preventDefault();
-		$("#sortableDataList").append(dataRowPartial({ color: "#efefef" }));
+		_$sortableDataList.append(dataRowPartial({ color: "#efefef" }));
 		_updateCounter();
 
-		$("#sortableDataList").children().last().find(".segmentColor").colorpicker().on("changeColor", function(e) {
+		_$sortableDataList.children().last().find(".segmentColor").colorpicker().on("changeColor", function(e) {
 			$(e.target).css("background-color", e.color.toHex());
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
@@ -68,7 +69,7 @@ define([
 
 	var _getTabData = function() {
 		var data = [];
-		var trs = $("#sortableDataList").find("li");
+		var trs = _$sortableDataList.find("li");
 		for (var i=0; i<trs.length; i++) {
 			var row = $(trs[i]);
 			data.push({
@@ -90,7 +91,7 @@ define([
 	 */
 	var _randomizeColorset = function() {
 		var colors = []
-		var trs = $("#sortableDataList").find("li");
+		var trs = _$sortableDataList.find("li");
 		for (var i=0; i<trs.length; i++) {
 			colors.push(utils.rgb2hex($(trs[i]).find(".segmentColor").css("background-color")));
 		}
@@ -120,28 +121,19 @@ define([
 	var _setColors = function(colors) {
 		// reset them all to black - we want any superfluous entries to be clearly shown to be black - users
 		// can always change them
-		$("#sortableDataList").find(".segmentColor").css("backgroundColor", "#000000").attr("data-color", "#000000");
+		_$sortableDataList.find(".segmentColor").css("backgroundColor", "#000000").attr("data-color", "#000000");
 
-		var trs = $("#sortableDataList").find("li");
+		var trs = _$sortableDataList.find("li");
 		for (var i=0; i<trs.length; i++) {
 			$(trs[i]).find(".segmentColor").colorpicker("setValue", colors[i]);
 		}
 	};
 
 	var _updateCounter = function() {
-		var trs = $("#sortableDataList").find(".dataRowIndex");
+		var trs = _$sortableDataList.find(".dataRowIndex");
 		for (var i=0; i<trs.length; i++) {
 			$(trs[i]).html(i+1);
 		}
-	};
-
-	var _outputColors = function() {
-		var colors = [];
-		var trs = $("#sortableDataList li");
-		for (var i=0; i<trs.length; i++) {
-			colors.push(utils.rgb2hex($(trs[i]).find(".segmentColor").css("background-color")));
-		}
-		console.log(colors);
 	};
 
 

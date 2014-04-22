@@ -201,7 +201,8 @@ var labels = {
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
 				var segmentPercentage = segments.getPercentage(pie, i);
-				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data[i].label === "";
+				return isHidden ? 0 : 1;
 			})
 	},
 

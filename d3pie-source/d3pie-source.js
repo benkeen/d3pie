@@ -163,7 +163,6 @@
 		// 1. prep-work
 		this.svg = helpers.addSVGSpace(this);
 
-
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
 			headerHeight: 0,

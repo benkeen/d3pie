@@ -784,7 +784,8 @@ var labels = {
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
 				var segmentPercentage = segments.getPercentage(pie, i);
-				return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data[i].label === "";
+				return isHidden ? 0 : 1;
 			})
 	},
 
@@ -1543,7 +1544,6 @@ var text = {
 
 		// 1. prep-work
 		this.svg = helpers.addSVGSpace(this);
-
 
 		// 2. store info about the main text components as part of the d3pie object instance. This is populated
 		this.textComponents = {
