@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-handlebars');
 
-	_includeInThisScope("website/grunt-templates/filePaths.js");
+	_includeInThisScope("website/grunt-templates/file-paths.js");
 	_includeInThisScope("website/grunt-templates/env-specific-constants.js");
 
 
@@ -50,6 +50,16 @@ module.exports = function(grunt) {
 		config.template.indexFile.options.data.C = _CONSTANTS.PROD;
 		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
 	};
+
+	var _getMD5PathMap = function() {
+		var obj = {};
+		for (var i in _requireJSModulePaths) {
+			var path = _requireJSModulePaths[i];
+			obj["build/" + path] = path;
+		}
+		return obj;
+	};
+
 
 	var config = {
 		clean: ["build"],
@@ -176,6 +186,48 @@ module.exports = function(grunt) {
 						config.template.indexFile.options.data.CORE_JS = fileChanges[0].newPath;
 					}
 				}
+			},
+			requireJS: {
+				files: _getMD5PathMap(),
+				options: {
+					encoding: null,
+					keepBasename: true,
+					keepExtension: true,
+					after: function (fileChanges, options) {
+						var fileMap = {};         // for the new source-require.config.js file
+						var newJSFiles = {};      // for uglification
+						var newHBSFiles = {};     // for handlebars precompilation
+
+						for (var i = 0; i < fileChanges.length; i++) {
+							fileMap[fileChanges[i].oldPath] = fileChanges[i].newPath;
+
+							if (fileChanges[i].newPath.match(/\.js$/)) {
+								newJSFiles[fileChanges[i].newPath] = fileChanges[i].newPath;
+							} else if (fileChanges[i].newPath.match(/\.hbs$/)) {
+								var parts = fileChanges[i].newPath.split("/");
+
+								parts[parts.length - 1] = "hbs-" + parts[parts.length - 1].replace(/\.hbs$/, ".js");
+								var hbsFileNameAndPath = parts.join("/");
+
+								// prefix all handlebar template names with "hbs". This prevents any accidental
+								// naming conflicts, should we name a js and an hbs file the same
+								newHBSFiles[hbsFileNameAndPath] = fileChanges[i].newPath;
+
+								// now it's a JS file (or will be in a sec) also add this to the newJSFiles for uglification
+								newJSFiles[hbsFileNameAndPath] = hbsFileNameAndPath;
+
+								fileMap[fileChanges[i].oldPath] = hbsFileNameAndPath;
+							}
+						}
+
+						// this is done because it appears the template task's data object is instantiated
+						// the moment the FIRST task runs, so we have to manually update it now the md5 filenames
+						// are available
+						//config.template.main.options.data.componentList = _getRequireConfigJSComponentList({ isBundled: true, fileMap: fileMap });
+						config.uglify.main.files = newJSFiles;
+						config.handlebars.compile.files = newHBSFiles;
+					}
+				}
 			}
 		}
 	};
@@ -202,6 +254,7 @@ module.exports = function(grunt) {
 		"uglify:coreJS", // bundle the core JS
 		"md5:coreJS",   // rename the JS lib file
 
+		"md5:requireJS",
 
 
 		"requirejs", // run the requireJS task to bundle up everything into a single file, then regenerate
