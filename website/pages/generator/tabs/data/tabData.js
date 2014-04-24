@@ -1,11 +1,12 @@
 define([
 	"constants",
 	"mediator",
+	"handlebars",
 	"utils",
 	"colorsets",
 	"hbs!dataTabTemplate",
 	"hbs!dataRowPartial"
-], function(C, mediator, utils, COLORSETS, dataTabTemplate, dataRowPartial) {
+], function(C, mediator, Handlebars, utils, COLORSETS, dataTabTemplate, dataRowPartial) {
 	"use strict";
 
 	var _MODULE_ID = "dataTab";

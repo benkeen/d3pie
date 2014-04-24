@@ -51,11 +51,37 @@ module.exports = function(grunt) {
 		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
 	};
 
+
+	var _getRequireConfigJSComponentList = function(fileMap) {
+		var list = [];
+
+		// invert _requireJSModulePaths so the paths point to the module key
+		var invertedInfo = {};
+		for (var i in _requireJSModulePaths) {
+			invertedInfo[_requireJSModulePaths[i]] = i;
+		}
+
+		for (var oldPath in fileMap) {
+
+			var newPath = fileMap[oldPath];
+			//if (!(/\/hbs\-/.test(fileMap[oldPath]))) {
+				newPath = newPath.replace(/\.js$/, "");
+			//}
+
+			var oldPath = oldPath.replace(/website\//, "");
+			var currModuleKey = invertedInfo[oldPath];
+
+			list.push('\t\t"' + currModuleKey + '": "' + newPath + '"');
+		}
+
+		return list.join(",\n");
+	};
+
 	var _getMD5PathMap = function() {
 		var obj = {};
 		for (var i in _requireJSModulePaths) {
 			var path = _requireJSModulePaths[i];
-			obj["build/" + path] = path;
+			obj["build/" + path] = "website/" + path;
 		}
 		return obj;
 	};
@@ -83,6 +109,16 @@ module.exports = function(grunt) {
 				files: {
 					"index.html": ["website/grunt-templates/template-index.html"]
 				}
+			},
+			requireConfig: {
+				options: {
+					data: {
+						moduleStr: ""
+					}
+				},
+				files: {
+					"website/core/require.config.js": ["website/grunt-templates/template-require.config.js"]
+				}
 			}
 		},
 
@@ -105,10 +141,8 @@ module.exports = function(grunt) {
 						"website/libs/jquery.js",
 						"website/libs/jquery-ui.js",
 						"website/libs/jquery.slides.js",
-						"website/libs/d3.min.js",
 						"d3pie-source/_default-settings.js",
 						"website/libs/modernizr.js",
-						"website/libs/handlebars.prod.js",
 						"d3pie/d3pie.js",
 						"website/libs/bootstrap.min.js",
 						"website/libs/bootstrap-colorpicker.js",
@@ -139,7 +173,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'build/core.css': [
+					'build/css/core.css': [
 						'website/css/site.css',
 						'website/css/bootstrap.css',
 						'website/css/bootstrap-colorpicker.css',
@@ -164,13 +198,15 @@ module.exports = function(grunt) {
 		md5: {
 			coreCSS: {
 				files: {
-					"build/core.css": "build/core.css"
+					"build/css/core.css": "build/css/core.css"
 				},
 				options: {
 					encoding: null,
 					keepBasename: true,
 					keepExtension: true,
 					after: function(fileChanges, options) {
+
+						// store the new CSS filename in the index file template script
 						config.template.indexFile.options.data.SITE_CSS = fileChanges[0].newPath;
 					}
 				}
@@ -224,8 +260,8 @@ module.exports = function(grunt) {
 						// this is done because it appears the template task's data object is instantiated
 						// the moment the FIRST task runs, so we have to manually update it now the md5 filenames
 						// are available
-						//config.template.main.options.data.componentList = _getRequireConfigJSComponentList({ isBundled: true, fileMap: fileMap });
-						config.uglify.main.files = newJSFiles;
+						config.template.requireConfig.options.data.moduleStr = _getRequireConfigJSComponentList(fileMap);
+						//config.uglify.main.files = newJSFiles;
 						config.handlebars.compile.files = newHBSFiles;
 					}
 				}
@@ -251,14 +287,18 @@ module.exports = function(grunt) {
 		"setEnv_Prod", // set the build environment constants
 		"clean",       // wipe out the build folder
 		"cssmin",      // bundle the CSS into a single file
-		"md5:coreCSS", // rename the file to include it's file hash
+		"md5:coreCSS", // rename the file to include its file hash
 		"uglify:coreJS", // bundle the core JS
 		"md5:coreJS",   // rename the JS lib file
 
 		"md5:requireJS",
+		"handlebars",
 
+//		"requirejs", // run the requireJS task to bundle up everything into a single file, then regenerate
 
-		"requirejs", // run the requireJS task to bundle up everything into a single file, then regenerate
+		// generate the require.config.js file with the latest content
+		"template:requireConfig",
+
 		"template:indexFile" // alright! Now re-generate the index file
 	]);
 };

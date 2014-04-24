@@ -1,4 +1,4 @@
-define([], function() {
+define(["handlebars"], function(Handlebars) {
 
 	Handlebars.registerHelper("compare", function(lvalue, rvalue, options) {
 		if (arguments.length < 3) {

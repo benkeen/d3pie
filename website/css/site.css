@@ -60,7 +60,7 @@ body .navbar-nav>li>a {
 .removeRow {
     width: 24px;
     height: 24px;
-    background-image: url(../images/remove-icon.png);
+    background-image: url(../../website/images/remove-icon.png);
     background-size: 100%;
     display: inline-block;
     opacity: 0.5;
@@ -181,7 +181,7 @@ a.docAnchor {
     color: #999999;
 }
 .handle {
-    background: transparent url(../images/drag.png) 50% 50% no-repeat;
+    background: transparent url(../../website/images/drag.png) 50% 50% no-repeat;
     cursor: pointer;
 }
 .clear {
@@ -215,7 +215,7 @@ a.docAnchor {
     width: 15px;
     height: 17px;
     display: inline-block;
-    background: transparent url(../images/drag_sm.png) 50% 50% no-repeat;
+    background: transparent url(../../website/images/drag_sm.png) 50% 50% no-repeat;
     cursor: pointer;
     margin: 3px 0px -3px;
 }
@@ -385,7 +385,7 @@ label.disabled {
 	margin-top: 0px;
 }
 a[target=_blank] {
-	background: url(../images/open_new_window_icon.png) no-repeat right center;
+	background: url(../../website/images/open_new_window_icon.png) no-repeat right center;
 	background-size: 12px 12px;
 	padding-right: 16px;
 }

@@ -1,77 +1,73 @@
 var _requireJSModulePaths = {
 
-	// library stuff
-	text: "libs/text",
-	hbs: "libs/hbs",
-	handlebars: "libs/handlebars.dev",
-
 	// core stuff
-	handlebarsHelpers: "core/handlebarsHelpers",
-	constants: "core/constants",
-	mediator: "core/mediator",
-	utils: "core/utils",
-	pageHelper: "core/pageHelper",
+	appStart: "core/appStart.js",
+	handlebarsHelpers: "core/handlebarsHelpers.js",
+	constants: "core/constants.js",
+	mediator: "core/mediator.js",
+	utils: "core/utils.js",
+	pageHelper: "core/pageHelper.js",
 
 	// About page
-	aboutPage: "pages/about/aboutPage",
+	aboutPage: "pages/about/aboutPage.js",
 	aboutPageTemplate: "pages/about/aboutPage.hbs",
-	aboutPageDemoPies: "pages/about/aboutPageDemoPies",
+	aboutPageDemoPies: "pages/about/aboutPageDemoPies.js",
 
 	// Generator page
-	generatorPage: "pages/generator/generatorPage",
-	generatorTabs: "pages/generator/generatorTabs",
-	examplePies: "pages/generator/examplePies",
+	generatorPage: "pages/generator/generatorPage.js",
+	generatorTabs: "pages/generator/generatorTabs.js",
+	examplePies: "pages/generator/examplePies.js",
 	examplePiesTemplate: "pages/generator/examplePies.hbs",
 	generatorPageTemplate: "pages/generator/generatorPage.hbs",
 
 	// Download page
-	downloadPage: "pages/download/downloadPage",
+	downloadPage: "pages/download/downloadPage.js",
 	downloadPageTemplate: "pages/download/downloadPage.hbs",
 
 	// Help pages
-	helpPage: "pages/help/helpPage",
+	helpPage: "pages/help/helpPage.js",
 	helpPageTemplate: "pages/help/helpPage.hbs",
-	documentationPage: "pages/help/documentationPage",
+	documentationPage: "pages/help/documentationPage.js",
 	documentationPageTemplate: "pages/help/documentationPage.hbs",
-	quickStartPage: "pages/help/quickStartPage",
+	quickStartPage: "pages/help/quickStartPage.js",
 	quickStartPageTemplate: "pages/help/quickStartPage.hbs",
-	examplesPage: "pages/help/examplesPage",
+	examplesPage: "pages/help/examplesPage.js",
 	examplesPageTemplate: "pages/help/examplesPage.hbs",
 
 	// --- tabs ---
-	startTab: "pages/generator/tabs/start/tabStart",
+	startTab: "pages/generator/tabs/start/tabStart.js",
 	startTabTemplate: "pages/generator/tabs/start/tabStartTemplate.hbs",
 
-	titleTab: "pages/generator/tabs/title/tabTitle",
+	titleTab: "pages/generator/tabs/title/tabTitle.js",
 	titleTabTemplate: "pages/generator/tabs/title/tabTitleTemplate.hbs",
 
-	sizeTab: "pages/generator/tabs/size/tabSize",
+	sizeTab: "pages/generator/tabs/size/tabSize.js",
 	sizeTabTemplate: "pages/generator/tabs/size/tabSizeTemplate.hbs",
 
-	miscTab: "pages/generator/tabs/misc/tabMisc",
+	miscTab: "pages/generator/tabs/misc/tabMisc.js",
 	miscTabTemplate: "pages/generator/tabs/misc/tabMiscTemplate.hbs",
 
-	dataTab: "pages/generator/tabs/data/tabData",
+	dataTab: "pages/generator/tabs/data/tabData.js",
 	dataTabTemplate: "pages/generator/tabs/data/tabDataTemplate.hbs",
 	dataRowPartial: "pages/generator/tabs/data/dataRowPartial.hbs",
-	colorsets: "pages/generator/tabs/data/colorsets",
+	colorsets: "pages/generator/tabs/data/colorsets.js",
 
-	labelsTab: "pages/generator/tabs/labels/tabLabels",
+	labelsTab: "pages/generator/tabs/labels/tabLabels.js",
 	labelsTabTemplate: "pages/generator/tabs/labels/tabLabelsTemplate.hbs",
 
-	footerTab: "pages/generator/tabs/footer/tabFooter",
+	footerTab: "pages/generator/tabs/footer/tabFooter.js",
 	footerTabTemplate: "pages/generator/tabs/footer/tabFooterTemplate.hbs",
 
-	effectsTab: "pages/generator/tabs/effects/tabEffects",
+	effectsTab: "pages/generator/tabs/effects/tabEffects.js",
 	effectsTabTemplate: "pages/generator/tabs/effects/tabEffectsTemplate.hbs",
 
-	eventsTab: "pages/generator/tabs/events/tabEvents",
+	eventsTab: "pages/generator/tabs/events/tabEvents.js",
 	eventsTabTemplate: "pages/generator/tabs/events/tabEventsTemplate.hbs",
 
-	generateTab: "pages/generator/tabs/generate/tabGenerate",
+	generateTab: "pages/generator/tabs/generate/tabGenerate.js",
 	generateTabTemplate: "pages/generator/tabs/generate/tabGenerateTemplate.hbs",
 	generatedContentTemplate: "pages/generator/tabs/generate/generatedContent.hbs",
 
 	// misc
-	birds: "pages/generator/birds"
+	birds: "pages/generator/birds.js"
 };
