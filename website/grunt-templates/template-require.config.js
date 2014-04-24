@@ -1,10 +1,10 @@
 require.config({
-	baseUrl: "website/",
+	baseUrl: "<%=baseUrl%>",
 
 	paths: {
 		text: "website/libs/text",
 		hbs: "website/libs/hbs",
-		handlebars: "website/libs/handlebars.prod",
+		handlebars: "<%=handlebarsLib%>",
 
 		<%=moduleStr%>
 	}

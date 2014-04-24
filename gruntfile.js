@@ -44,11 +44,15 @@ module.exports = function(grunt) {
 	var setEnv_Dev = function() {
 		config.template.indexFile.options.data.C = _CONSTANTS.DEV;
 		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
+		config.template.requireConfig.options.data.handlebarsLib = _CONSTANTS.DEV.HANDLEBARS_LIB;
+		config.template.requireConfig.options.data.baseUrl = _CONSTANTS.DEV.BASE_URL;
 	};
 
 	var setEnv_Prod = function() {
 		config.template.indexFile.options.data.C = _CONSTANTS.PROD;
 		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
+		config.template.requireConfig.options.data.handlebarsLib = _CONSTANTS.PROD.HANDLEBARS_LIB;
+		config.template.requireConfig.options.data.baseUrl = _CONSTANTS.PROD.BASE_URL;
 	};
 
 
@@ -62,12 +66,7 @@ module.exports = function(grunt) {
 		}
 
 		for (var oldPath in fileMap) {
-
-			var newPath = fileMap[oldPath];
-			//if (!(/\/hbs\-/.test(fileMap[oldPath]))) {
-				newPath = newPath.replace(/\.js$/, "");
-			//}
-
+			var newPath = fileMap[oldPath].replace(/\.js$/, "");
 			var oldPath = oldPath.replace(/website\//, "");
 			var currModuleKey = invertedInfo[oldPath];
 
@@ -103,7 +102,8 @@ module.exports = function(grunt) {
 						C: null,
 						VERSION: "",
 						SITE_CSS: "",
-						CORE_JS: ""
+						CORE_JS: "",
+						APP_START_FILE: ""
 					}
 				},
 				files: {
@@ -113,7 +113,9 @@ module.exports = function(grunt) {
 			requireConfig: {
 				options: {
 					data: {
-						moduleStr: ""
+						moduleStr: "",
+						handlebarsLib: "",
+						baseUrl: ""
 					}
 				},
 				files: {
@@ -157,6 +159,15 @@ module.exports = function(grunt) {
 						except: ["jQuery", "Backbone"]
 					}
 				}
+			},
+
+			requireConfig: {
+				files: {
+					"build/appStartBuild.js": ["build/appStartBuild.js"]
+				},
+				options: {
+					compress: true
+				}
 			}
 		},
 
@@ -187,9 +198,9 @@ module.exports = function(grunt) {
 		requirejs: {
 			compile: {
 				options: {
-					name: "core/appStart.js",
+					name: null, // filled in dynamically
 					out: "build/appStartBuild.js",
-					baseUrl: "website/",
+					baseUrl: "./",
 					mainConfigFile: "website/core/require.config.js"
 				}
 			}
@@ -234,10 +245,14 @@ module.exports = function(grunt) {
 						var fileMap = {};         // for the new source-require.config.js file
 						var newJSFiles = {};      // for uglification
 						var newHBSFiles = {};     // for handlebars precompilation
+						var appStartFile = "";
 
 						for (var i = 0; i < fileChanges.length; i++) {
 							fileMap[fileChanges[i].oldPath] = fileChanges[i].newPath;
 
+							if (/appStart/.test(fileChanges[i].newPath)) {
+								appStartFile = fileChanges[i].newPath;
+							}
 							if (fileChanges[i].newPath.match(/\.js$/)) {
 								newJSFiles[fileChanges[i].newPath] = fileChanges[i].newPath;
 							} else if (fileChanges[i].newPath.match(/\.hbs$/)) {
@@ -257,12 +272,23 @@ module.exports = function(grunt) {
 							}
 						}
 
-						// this is done because it appears the template task's data object is instantiated
-						// the moment the FIRST task runs, so we have to manually update it now the md5 filenames
-						// are available
 						config.template.requireConfig.options.data.moduleStr = _getRequireConfigJSComponentList(fileMap);
-						//config.uglify.main.files = newJSFiles;
 						config.handlebars.compile.files = newHBSFiles;
+						config.requirejs.compile.options.name = appStartFile.replace(/\.js$/, "");
+					}
+				}
+			},
+			requireConfig: {
+				files: {
+					"build/appStartBuild.js": "build/appStartBuild.js"
+				},
+				options: {
+					encoding: null,
+					keepBasename: true,
+					keepExtension: true,
+					after: function(fileChanges, options) {
+
+						config.template.indexFile.options.data.APP_START_FILE = fileChanges[0].newPath;
 					}
 				}
 			}
@@ -294,10 +320,12 @@ module.exports = function(grunt) {
 		"md5:requireJS",
 		"handlebars",
 
-//		"requirejs", // run the requireJS task to bundle up everything into a single file, then regenerate
+		"requirejs", // run the requireJS task to bundle up everything into a single file
 
 		// generate the require.config.js file with the latest content
 		"template:requireConfig",
+		"uglify:requireConfig",
+		"md5:requireConfig",
 
 		"template:indexFile" // alright! Now re-generate the index file
 	]);
