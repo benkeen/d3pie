@@ -2,7 +2,10 @@
 
 ### About
 
-![d3pie](http://d3pie.org/website/images/d3pie-screenshot.png "d3pie") d3pie is a highly configurable, re-usable script built on d3.js and jQuery for creating clear, attractive pie charts.
+<div style="float: right">
+![d3pie](http://d3pie.org/website/images/d3pie-screenshot.png "d3pie")
+</div>
+d3pie is a highly configurable, re-usable script built on d3.js and jQuery for creating clear, attractive pie charts.
 It's free, open source, and the source code for the website and script are found right here on github.
 
 Visit [d3pie.org](http://d3pie.org) to learn about the script and create your own pie charts via the online
