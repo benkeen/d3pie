@@ -3,8 +3,9 @@
 ### About
 
 <div style="float: right">
-![d3pie](http://d3pie.org/website/images/d3pie-screenshot.png "d3pie")
+    <img src="http://d3pie.org/website/images/d3pie-screenshot.png" alt="d3pie" title="d3pie"/>
 </div>
+
 d3pie is a highly configurable, re-usable script built on d3.js and jQuery for creating clear, attractive pie charts.
 It's free, open source, and the source code for the website and script are found right here on github.
 
