@@ -5,7 +5,6 @@ require.config({
 		// library stuff
 		text: "libs/text",
 		hbs: "libs/hbs",
-		handlebars: "libs/handlebars.dev",
 
 		// core stuff
 		handlebarsHelpers: "core/handlebarsHelpers",

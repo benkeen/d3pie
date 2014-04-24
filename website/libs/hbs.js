@@ -4,9 +4,8 @@
  * to the precompiled JS, minified version.
  */
 define([
-	"constants",
-	"handlebars"
-], function(C, Handlebars) {
+	"constants"
+], function(C) {
 
 	var loadResource = function(resourceName, parentRequire, callback, config) {
 		var isPrecompiled = C.MINIFIED;

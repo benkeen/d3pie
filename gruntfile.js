@@ -98,6 +98,7 @@ module.exports = function(grunt) {
 						"website/libs/d3.min.js",
 						"d3pie-source/_default-settings.js",
 						"website/libs/modernizr.js",
+						"website/libs/handlebars.prod.js",
 						"d3pie/d3pie.js",
 						"website/libs/bootstrap.min.js",
 						"website/libs/bootstrap-colorpicker.js",
@@ -142,10 +143,10 @@ module.exports = function(grunt) {
 		requirejs: {
 			compile: {
 				options: {
-					name: "core/appStart",
+					name: "core/appStart.js",
+					out: "build/appStartBuild.js",
 					baseUrl: "website/",
-					mainConfigFile: "website/core/require.config.js",
-					out: "build/appStartBuild.js"
+					mainConfigFile: "website/core/require.config.js"
 				}
 			}
 		},
@@ -195,16 +196,13 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask("prod", [
-		"setEnv_Prod", // set the build environment constants
-		"clean",       // wipe out the build folder
-		"cssmin",      // bundle the CSS into a single file
-		"md5:coreCSS", // rename the file to include it's file hash
-		"uglify:coreJS", // bundle the core JS
-		"md5:coreJS",   // rename the JS lib file
-
-
-
-		"requirejs", // run the requireJS task to bundle up everything into a single file, then regenerate
+		"setEnv_Prod",   // set the build environment constants
+		"clean",         // wipe out the build folder
+		"cssmin",        // bundle the CSS into a single file
+		"md5:coreCSS",   // rename the file to include it's file hash
+		//"uglify:coreJS", // bundle the core JS
+		//"md5:coreJS",    // rename the JS lib file
+		"requirejs",     // run the requireJS task to bundle up everything into a single file
 		"template:indexFile" // alright! Now re-generate the index file
 	]);
 };

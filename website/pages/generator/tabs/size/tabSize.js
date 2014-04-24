@@ -20,7 +20,7 @@ define([
 
 		var $pieInnerRadius = $("#pieInnerRadius");
 		$pieInnerRadius.on("input change", _onChangeInnerRadius);
-		$pieInnerRadius.on("input change", _onChangeOuterRadius);
+		$("#pieOuterRadius").on("input change", _onChangeOuterRadius);
 
 		$("#pieIconPie").on("click", function() {
 			$pieInnerRadius.val("0");
