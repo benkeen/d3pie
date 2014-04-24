@@ -523,3 +523,7 @@ body pre {
 		display: block;
 	}
 }
+a.btn-info[target=_blank] {
+	background-color: #5bc0de;
+	background-image: none;
+}
