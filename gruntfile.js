@@ -44,45 +44,61 @@ module.exports = function(grunt) {
 	var setEnv_Dev = function() {
 		config.template.indexFile.options.data.C = _CONSTANTS.DEV;
 		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
-		config.template.requireConfig.options.data.handlebarsLib = _CONSTANTS.DEV.HANDLEBARS_LIB;
-		config.template.requireConfig.options.data.baseUrl = _CONSTANTS.DEV.BASE_URL;
+		config.template.devRequireConfig.options.data.handlebarsLib = _CONSTANTS.DEV.HANDLEBARS_LIB;
+		config.template.devRequireConfig.options.data.baseUrl = _CONSTANTS.DEV.BASE_URL;
+		var lines = [];
+		for (var i in _requireJSModulePaths) {
+			var file = _requireJSModulePaths[i].replace(/\.js$/, "");
+			lines.push('\t\t"' + i + '": "' + file + '"');
+		}
+		config.template.devRequireConfig.options.data.moduleStr = lines.join(",\n");
+
+		config.template.constants.options.data.VERSION = packageFile.version;
+		config.template.constants.options.data.MINIMIZED = _CONSTANTS.DEV.MINIMIZED;
+		config.template.constants.options.data.DEBUG = _CONSTANTS.DEV.DEBUG;
 	};
 
 	var setEnv_Prod = function() {
+		var info = _getHandlebarsFileMap();
+
 		config.template.indexFile.options.data.C = _CONSTANTS.PROD;
 		config.template.indexFile.options.data.D3PIE_VERSION = packageFile.version;
-		config.template.requireConfig.options.data.handlebarsLib = _CONSTANTS.PROD.HANDLEBARS_LIB;
-		config.template.requireConfig.options.data.baseUrl = _CONSTANTS.PROD.BASE_URL;
+		config.template.prodRequireConfig.options.data.handlebarsLib = _CONSTANTS.PROD.HANDLEBARS_LIB;
+		config.template.prodRequireConfig.options.data.baseUrl = _CONSTANTS.PROD.BASE_URL;
+		config.template.prodRequireConfig.options.data.moduleStr = info.allModules;
+
+		config.template.constants.options.data.VERSION = packageFile.version;
+		config.template.constants.options.data.MINIMIZED = _CONSTANTS.PROD.MINIMIZED;
+		config.template.constants.options.data.DEBUG = _CONSTANTS.PROD.DEBUG;
+
+		config.handlebars.compile.files = info.handlebarsMap;
 	};
 
-
-	var _getRequireConfigJSComponentList = function(fileMap) {
-		var list = [];
-
-		// invert _requireJSModulePaths so the paths point to the module key
-		var invertedInfo = {};
-		for (var i in _requireJSModulePaths) {
-			invertedInfo[_requireJSModulePaths[i]] = i;
-		}
-
-		for (var oldPath in fileMap) {
-			var newPath = fileMap[oldPath].replace(/\.js$/, "");
-			var oldPath = oldPath.replace(/website\//, "");
-			var currModuleKey = invertedInfo[oldPath];
-
-			list.push('\t\t"' + currModuleKey + '": "' + newPath + '"');
-		}
-
-		return list.join(",\n");
-	};
-
-	var _getMD5PathMap = function() {
+	var _getHandlebarsFileMap = function() {
 		var obj = {};
+		var allModules = [];
 		for (var i in _requireJSModulePaths) {
 			var path = _requireJSModulePaths[i];
-			obj["build/" + path] = "website/" + path;
+
+			if (/\.hbs$/.test(_requireJSModulePaths[i])) {
+				var parts = _requireJSModulePaths[i].split("/");
+				parts[parts.length - 1] = "hbs-" + parts[parts.length - 1].replace(/\.hbs$/, ".js");
+				var hbsFileNameAndPath = parts.join("/");
+
+				obj["build/" + hbsFileNameAndPath] = "website/" + path;
+
+				var requireJSModuleName1 = "build/" + hbsFileNameAndPath.replace(/\.js$/, "");
+				allModules.push('"' + i + '": "' + requireJSModuleName1 + '"');
+			} else {
+				var requireJSModuleName2 = "build/" + _requireJSModulePaths[i].replace(/\.js$/, "");
+				allModules.push('"' + i + '": "' + requireJSModuleName2 + '"');
+			}
 		}
-		return obj;
+
+		return {
+			handlebarsMap: obj,
+			allModules: allModules.join(",\n")
+		}
 	};
 
 
@@ -110,16 +126,26 @@ module.exports = function(grunt) {
 					"index.html": ["website/grunt-templates/template-index.html"]
 				}
 			},
-			requireConfig: {
+			devRequireConfig: {
 				options: {
-					data: {
-						moduleStr: "",
-						handlebarsLib: "",
-						baseUrl: ""
-					}
+					data: { }
 				},
 				files: {
 					"website/core/require.config.js": ["website/grunt-templates/template-require.config.js"]
+				}
+			},
+			prodRequireConfig: {
+				options: {
+					data: { }
+				},
+				files: {
+					"build/core/require.config.js": ["website/grunt-templates/template-require.config.js"]
+				}
+			},
+			constants: {
+				options: { data: {} },
+				files: {
+					"website/core/constants.js": ["website/grunt-templates/template-constants.js"]
 				}
 			}
 		},
@@ -161,9 +187,9 @@ module.exports = function(grunt) {
 				}
 			},
 
-			requireConfig: {
+			appStart: {
 				files: {
-					"build/appStartBuild.js": ["build/appStartBuild.js"]
+					"build/core/appStart.js": ["build/core/appStart.js"]
 				},
 				options: {
 					compress: true
@@ -177,7 +203,7 @@ module.exports = function(grunt) {
 					amd: true,
 					namespace: false
 				},
-				files: {} // populated by md5 task
+				files: {}
 			}
 		},
 
@@ -198,10 +224,10 @@ module.exports = function(grunt) {
 		requirejs: {
 			compile: {
 				options: {
-					name: null, // filled in dynamically
-					out: "build/appStartBuild.js",
+					name: "build/core/appStart.js",
+					out: "build/core/appStartBuild.js",
 					baseUrl: "./",
-					mainConfigFile: "website/core/require.config.js"
+					mainConfigFile: "build/core/require.config.js"
 				}
 			}
 		},
@@ -216,7 +242,6 @@ module.exports = function(grunt) {
 					keepBasename: true,
 					keepExtension: true,
 					after: function(fileChanges, options) {
-
 						// store the new CSS filename in the index file template script
 						config.template.indexFile.options.data.SITE_CSS = fileChanges[0].newPath;
 					}
@@ -235,62 +260,27 @@ module.exports = function(grunt) {
 					}
 				}
 			},
-			requireJS: {
-				files: _getMD5PathMap(),
-				options: {
-					encoding: null,
-					keepBasename: true,
-					keepExtension: true,
-					after: function (fileChanges, options) {
-						var fileMap = {};         // for the new source-require.config.js file
-						var newJSFiles = {};      // for uglification
-						var newHBSFiles = {};     // for handlebars precompilation
-						var appStartFile = "";
-
-						for (var i = 0; i < fileChanges.length; i++) {
-							fileMap[fileChanges[i].oldPath] = fileChanges[i].newPath;
-
-							if (/appStart/.test(fileChanges[i].newPath)) {
-								appStartFile = fileChanges[i].newPath;
-							}
-							if (fileChanges[i].newPath.match(/\.js$/)) {
-								newJSFiles[fileChanges[i].newPath] = fileChanges[i].newPath;
-							} else if (fileChanges[i].newPath.match(/\.hbs$/)) {
-								var parts = fileChanges[i].newPath.split("/");
-
-								parts[parts.length - 1] = "hbs-" + parts[parts.length - 1].replace(/\.hbs$/, ".js");
-								var hbsFileNameAndPath = parts.join("/");
-
-								// prefix all handlebar template names with "hbs". This prevents any accidental
-								// naming conflicts, should we name a js and an hbs file the same
-								newHBSFiles[hbsFileNameAndPath] = fileChanges[i].newPath;
-
-								// now it's a JS file (or will be in a sec) also add this to the newJSFiles for uglification
-								newJSFiles[hbsFileNameAndPath] = hbsFileNameAndPath;
-
-								fileMap[fileChanges[i].oldPath] = hbsFileNameAndPath;
-							}
-						}
-
-						config.template.requireConfig.options.data.moduleStr = _getRequireConfigJSComponentList(fileMap);
-						config.handlebars.compile.files = newHBSFiles;
-						config.requirejs.compile.options.name = appStartFile.replace(/\.js$/, "");
-					}
-				}
-			},
-			requireConfig: {
+			appStart: {
 				files: {
-					"build/appStartBuild.js": "build/appStartBuild.js"
+					"build/core/appStartBuild.js": "build/core/appStartBuild.js"
 				},
 				options: {
 					encoding: null,
 					keepBasename: true,
 					keepExtension: true,
 					after: function(fileChanges, options) {
-
 						config.template.indexFile.options.data.APP_START_FILE = fileChanges[0].newPath;
 					}
 				}
+			}
+		},
+
+		copy: {
+			core: {
+				expand: true,
+				cwd: "website",
+				src: ['**'],
+				dest: 'build/'
 			}
 		}
 	};
@@ -306,26 +296,27 @@ module.exports = function(grunt) {
 	// tasks for building the website. There are only 2 options: dev and prod
 	grunt.registerTask("dev", [
 		"setEnv_Dev",
-		"template:indexFile"
+		"template:indexFile",
+		"template:devRequireConfig",
+		"template:constants"
 	]);
 
 	grunt.registerTask("prod", [
 		"setEnv_Prod", // set the build environment constants
 		"clean",       // wipe out the build folder
+		"template:constants", // create the constants file
 		"cssmin",      // bundle the CSS into a single file
 		"md5:coreCSS", // rename the file to include its file hash
 		"uglify:coreJS", // bundle the core JS
 		"md5:coreJS",   // rename the JS lib file
 
-		"md5:requireJS",
+		// now copy EVERYTHING in the /website folder over to /build. We're about to do terrible things to it
+		"copy:core",
 		"handlebars",
-
+		"template:prodRequireConfig",
+		"uglify:appStart",
 		"requirejs", // run the requireJS task to bundle up everything into a single file
-
-		// generate the require.config.js file with the latest content
-		"template:requireConfig",
-		"uglify:requireConfig",
-		"md5:requireConfig",
+		"md5:appStart",
 
 		"template:indexFile" // alright! Now re-generate the index file
 	]);

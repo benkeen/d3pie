@@ -24,6 +24,9 @@
 
  @license
  */
+
+define([], function() {
+
 /* exported Handlebars */
 var Handlebars = (function() {
 // handlebars/safe-string.js
@@ -2744,3 +2747,6 @@ var Handlebars = (function() {
 
 	return __module0__;
 })();
+
+	return Handlebars;
+});

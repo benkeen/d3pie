@@ -1,9 +1,9 @@
 define([], function() {
 
 	var C = {
-		VERSION: "0.1.0",
-		MINIMIZED: false,
-		DEBUG: true
+		VERSION: "<%=VERSION%>",
+		MINIMIZED: <%=MINIMIZED%>,
+		DEBUG: <%=DEBUG%>
 	};
 
 	C.EVENT = {

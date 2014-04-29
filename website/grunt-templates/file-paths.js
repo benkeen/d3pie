@@ -3,6 +3,8 @@ var _requireJSModulePaths = {
 	// core stuff
 	appStart: "core/appStart.js",
 	handlebarsHelpers: "core/handlebarsHelpers.js",
+	text: "libs/text.js",
+	hbs: "libs/hbs.js",
 	constants: "core/constants.js",
 	mediator: "core/mediator.js",
 	utils: "core/utils.js",

@@ -9,7 +9,7 @@ define([
 ], function(C, Handlebars) {
 
 	var loadResource = function(resourceName, parentRequire, callback, config) {
-		var isPrecompiled = C.MINIFIED;
+		var isPrecompiled = C.MINIMIZED;
 
 		// if this is PROD, the handlebar templates have already been precompiled and are available
 		// in AMD format, in the same folder with a "hbs-" prefix;
