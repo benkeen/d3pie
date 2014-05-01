@@ -1,99 +1,150 @@
-<h4>Misc Colors</h4>
+<h4 class="panelToggle panelMiscToggle{{#if openSections.panelMiscColors}} expanded{{/if}}" data-section="panelMiscColors">Misc Colors<span></span></h4>
 
-<div class="row">
-	<div class="col-md-6">
-		<input type="radio" name="backgroundColorType" id="backgroundColor1" value="transparent" style="float: left; margin-right: 8px"
-			   value="transparent" {{#compare config.misc.colors.background null operator="=="}}checked="checked"{{/compare}} />
-		<label for="backgroundColor1" style="margin-left:5px">Transparent background</label>
-		<span class="label label-default hidden" id="transparencyProof" style="margin-left: 10px">It looks white! Prove it!</span>
+<div id="panelMiscColors" {{#compare openSections.panelMiscColors false}}class="hidden"{{/compare}}>
+	<div class="row">
+		<div class="col-md-6">
+			<input type="radio" name="backgroundColorType" id="backgroundColor1" value="transparent" style="float: left; margin-right: 8px"
+				   value="transparent" {{#compare config.misc.colors.background null operator="=="}}checked="checked"{{/compare}} />
+			<label for="backgroundColor1" style="margin-left:5px">Transparent background</label>
+			<span class="label label-default hidden" id="transparencyProof" style="margin-left: 10px">It looks white! Prove it!</span>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<input type="radio" name="backgroundColorType" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
+					   value="color" {{#compare config.misc.colors.background null operator="!="}}checked="checked"{{/compare}} />
+				<label for="backgroundColor">Solid background:</label>
+				<div id="backgroundColorGroup" class="colorGroup input-group">
+					<input type="text" id="backgroundColor" class="form-control"
+						value="{{#compare config.misc.colors.background null operator="=="}}#ffffff{{/compare}}{{#compare config.misc.colors.background null operator="!="}}{{config.misc.colors.background}}{{/compare}}"  />
+					<span class="input-group-addon"><i></i></span>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="col-md-6">
-		<div class="form-group">
-			<input type="radio" name="backgroundColorType" id="backgroundColor2" value="solid" style="float: left; margin-right: 10px;"
-				   value="color" {{#compare config.misc.colors.background null operator="!="}}checked="checked"{{/compare}} />
-			<label for="backgroundColor">Solid background:</label>
-			<div id="backgroundColorGroup" class="colorGroup input-group">
-				<input type="text" id="backgroundColor" class="form-control"
-					value="{{#compare config.misc.colors.background null operator="=="}}#ffffff{{/compare}}{{#compare config.misc.colors.background null operator="!="}}{{config.misc.colors.background}}{{/compare}}"  />
+
+	<div class="row">
+		<div class="col-md-6">
+			<label for="segmentStrokeColor">Segment stroke color</label>
+		</div>
+		<div class="col-md-6">
+			<div id="segmentStrokeColorGroup" class="colorGroup input-group">
+				<input type="text" id="segmentStrokeColor" value="{{config.misc.colors.segmentStroke}}" class="form-control" />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-6">
-		<label for="segmentStrokeColor">Segment stroke color</label>
+
+<h4 class="panelToggle panelMiscToggle{{#if openSections.panelSegmentGradients}} expanded{{/if}}" data-section="panelSegmentGradients">Segment Gradients<span></span></h4>
+
+<div id="panelSegmentGradients" {{#compare openSections.panelSegmentGradients false}}class="hidden"{{/compare}}>
+	<div class="row">
+		<div class="col-md-4">
+			<input type="radio" name="segmentGradient" id="segmentGradient1" value="disabled" style="float: left; margin-right: 8px"
+				   value="transparent" {{#unless config.misc.gradient.enabled}}checked="checked"{{/unless}} />
+			<label for="segmentGradient1" style="margin-left:5px">Disabled</label>
+		</div>
+		<div class="col-md-4">
+			<input type="radio" name="segmentGradient" id="segmentGradient2" value="enabled" style="float: left; margin-right: 10px;"
+				   value="color" {{#if config.misc.gradient.enabled}}checked="checked"{{/if}} />
+			<label for="segmentGradient2">Enabled, color: </label>
+		</div>
+		<div class="col-md-4">
+			<div id="segmentGradientColorGroup" class="colorGroup input-group">
+				<input type="text" id="segmentGradientColor" class="form-control" value="{{config.misc.gradients.color}}" />
+				<span class="input-group-addon"><i></i></span>
+			</div>
+		</div>
 	</div>
-	<div class="col-md-6">
-		<div id="segmentStrokeColorGroup" class="colorGroup input-group">
-			<input type="text" id="segmentStrokeColor" value="{{config.misc.colors.segmentStroke}}" class="form-control" />
-			<span class="input-group-addon"><i></i></span>
+	<div class="row">
+		<div class="col-lg-12">
+			<label for="pieInnerRadius" class="control-label">Gradient percentage</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<input type="range" class="fullWidthRange" id="pieOuterRadius" min="1" max="100" value="{{numbersOnly config.size.pieOuterRadius}}" />
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-2">
+
+		</div>
+		<div class="col-lg-8" style="text-align: center">
+			<span class="label label-default" id="pieInnerRadiusDisplayValue">{{config.size.pieInnerRadius}}</span>
+		</div>
+		<div class="col-lg-2" style="text-align: right">
+
 		</div>
 	</div>
 </div>
 
 
-<h4 style="margin-top: 20px">Padding</h4>
+<h4 class="panelToggle panelMiscToggle{{#if openSections.panelPadding}} expanded{{/if}}" data-section="panelPadding">Padding<span></span></h4>
 
-<div class="misc">
-	<div class="row">
-		<div class="col-lg-3">
-			<label>Canvas Top</label>
+<div id="panelPadding" {{#compare openSections.panelPadding false}}class="hidden"{{/compare}}>
+	<div class="misc">
+		<div class="row">
+			<div class="col-lg-3">
+				<label>Canvas Top</label>
+			</div>
+			<div class="col-lg-3">
+				<label>Canvas Right</label>
+			</div>
+			<div class="col-lg-3">
+				<label>Canvas Bottom</label>
+			</div>
+			<div class="col-lg-3">
+				<label>Canvas Left</label>
+			</div>
 		</div>
-		<div class="col-lg-3">
-			<label>Canvas Right</label>
-		</div>
-		<div class="col-lg-3">
-			<label>Canvas Bottom</label>
-		</div>
-		<div class="col-lg-3">
-			<label>Canvas Left</label>
-		</div>
-	</div>
 
-	<div class="row form-group">
-		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0"
-				class="smallField keyupUpdateNoAnimation" />
-		</div>
-		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" min="0"
-				class="smallField keyupUpdateNoAnimation" />
-		</div>
-		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" min="0"
-				class="smallField keyupUpdateNoAnimation" />
-		</div>
-		<div class="col-lg-3">
-			<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" min="0"
-				class="smallField keyupUpdateNoAnimation" />
+		<div class="row form-group">
+			<div class="col-lg-3">
+				<input type="number" id="canvasPaddingTop" value="{{config.misc.canvasPadding.top}}" min="0"
+					class="smallField keyupUpdateNoAnimation" />
+			</div>
+			<div class="col-lg-3">
+				<input type="number" id="canvasPaddingRight" value="{{config.misc.canvasPadding.right}}" min="0"
+					class="smallField keyupUpdateNoAnimation" />
+			</div>
+			<div class="col-lg-3">
+				<input type="number" id="canvasPaddingBottom" value="{{config.misc.canvasPadding.bottom}}" min="0"
+					class="smallField keyupUpdateNoAnimation" />
+			</div>
+			<div class="col-lg-3">
+				<input type="number" id="canvasPaddingLeft" value="{{config.misc.canvasPadding.left}}" min="0"
+					class="smallField keyupUpdateNoAnimation" />
+			</div>
 		</div>
 	</div>
 </div>
 
 
-<h4 style="margin-top: 30px">Pie Center Offset</h4>
-<div class="misc">
-	<div class="row">
-		<div class="col-lg-3">
-			<label>&plusmn; x</label>
-		</div>
-		<div class="col-lg-3">
-			<label>&plusmn; y</label>
-		</div>
-	</div>
+<h4 class="panelToggle panelMiscToggle{{#if openSections.panelPieCenterOffset}} expanded{{/if}}" data-section="panelPieCenterOffset">Pie Center Offset<span></span></h4>
 
-	<div class="row form-group">
-		<div class="col-lg-3">
-			<input type="number" id="pieCenterOffsetX" value="{{config.misc.pieCenterOffset.x}}" min="-500" max="500" step="5"
-				class="smallField keyupUpdateNoAnimation" />
+<div id="panelPieCenterOffset" {{#compare openSections.panelPieCenterOffset false}}class="hidden"{{/compare}}>
+	<div class="misc">
+		<div class="row">
+			<div class="col-lg-3">
+				<label>&plusmn; x</label>
+			</div>
+			<div class="col-lg-3">
+				<label>&plusmn; y</label>
+			</div>
 		</div>
-		<div class="col-lg-3">
-			<input type="number" id="pieCenterOffsetY" value="{{config.misc.pieCenterOffset.y}}" min="-500" max="500" step="5"
-				class="smallField keyupUpdateNoAnimation" />
-		</div>
-		<div class="col-lg-6">
+		<div class="row form-group">
+			<div class="col-lg-3">
+				<input type="number" id="pieCenterOffsetX" value="{{config.misc.pieCenterOffset.x}}" min="-500" max="500" step="5"
+					class="smallField keyupUpdateNoAnimation" />
+			</div>
+			<div class="col-lg-3">
+				<input type="number" id="pieCenterOffsetY" value="{{config.misc.pieCenterOffset.y}}" min="-500" max="500" step="5"
+					class="smallField keyupUpdateNoAnimation" />
+			</div>
+			<div class="col-lg-6">
+			</div>
 		</div>
 	</div>
 </div>

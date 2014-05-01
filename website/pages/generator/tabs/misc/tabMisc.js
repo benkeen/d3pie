@@ -11,6 +11,12 @@ define([
 	var _proofLoading = true;
 	var _canvasHeight = null;
 	var _canvasWidth = null;
+	var _openSections = {
+		panelMiscColors: true,
+		panelSegmentGradients: false,
+		panelPadding: false,
+		panelPieCenterOffset: false
+	};
 
 
 	var _init = function() {
@@ -26,7 +32,10 @@ define([
 		_canvasWidth = config.size.canvasWidth;
 		_canvasHeight = config.size.canvasHeight;
 
-		$(tabEl).html(miscTabTemplate({ config: config }));
+		$(tabEl).html(miscTabTemplate({
+			config: config,
+			openSections: _openSections
+		}));
 
 		utils.addColorpicker("backgroundColor");
 		$("input[name=backgroundColorType]").on("change", function() {
@@ -39,6 +48,19 @@ define([
 		});
 
 		utils.addColorpicker("segmentStrokeColor");
+
+		$(".panelMiscToggle").on("click", function() {
+			var $sectionHeading = $(this);
+			var section = $sectionHeading.data("section");
+			var $el = $("#" + section);
+			if ($sectionHeading.hasClass("expanded")) {
+				$el.hide("blind", function() { $sectionHeading.removeClass("expanded"); });
+				_openSections[section] = false;
+			} else {
+				$el.css("display", "none").removeClass("hidden").show("blind", function() { $sectionHeading.addClass("expanded"); });
+				_openSections[section] = true;
+			}
+		});
 
 		if (Modernizr.webgl) {
 			$("#transparencyProof").removeClass("hidden").on("click", _toggleProof);

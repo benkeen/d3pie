@@ -1,4 +1,4 @@
-<h4 class="panelToggle{{#if openSections.panelOuterLabels}} expanded{{/if}}" data-section="panelOuterLabels">Outer Labels<span></span></h4>
+<h4 class="panelToggle panelLabelSectionToggle{{#if openSections.panelOuterLabels}} expanded{{/if}}" data-section="panelOuterLabels">Outer Labels<span></span></h4>
 
 <div id="panelOuterLabels" {{#compare openSections.panelOuterLabels false}}class="hidden"{{/compare}}>
 	<div class="row paddedRow">
@@ -47,7 +47,7 @@
 </div>
 
 
-<h4 class="panelToggle{{#if openSections.panelInnerLabels}} expanded{{/if}}" data-section="panelInnerLabels">Inner Labels<span></span></h4>
+<h4 class="panelToggle panelLabelSectionToggle{{#if openSections.panelInnerLabels}} expanded{{/if}}" data-section="panelInnerLabels">Inner Labels<span></span></h4>
 
 <div id="panelInnerLabels" {{#compare openSections.panelInnerLabels false}}class="hidden"{{/compare}}>
 	<div class="row paddedRow">
@@ -86,7 +86,7 @@
 </div>
 
 
-<h4 class="panelToggle{{#if openSections.panelLabelStyles}} expanded{{/if}}" data-section="panelLabelStyles">Label Styles / Settings<span></span></h4>
+<h4 class="panelToggle panelLabelSectionToggle{{#if openSections.panelLabelStyles}} expanded{{/if}}" data-section="panelLabelStyles">Label Styles / Settings<span></span></h4>
 
 <div id="panelLabelStyles" {{#compare openSections.panelLabelStyles false}}class="hidden"{{/compare}}>
 	<div class="row">
@@ -223,7 +223,7 @@
 </div>
 
 
-<h4 class="panelToggle{{#if openSections.panelLabelLines}} expanded{{/if}}" data-section="panelLabelLines">Label Lines<span></span></h4>
+<h4 class="panelToggle panelLabelSectionToggle{{#if openSections.panelLabelLines}} expanded{{/if}}" data-section="panelLabelLines">Label Lines<span></span></h4>
 
 <div id="panelLabelLines" {{#compare openSections.panelLabelLines false}}class="hidden"{{/compare}}>
 	<div class="row paddedRow">

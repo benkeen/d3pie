@@ -35,7 +35,7 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
-		$(".panelToggle").on("click", function() {
+		$(".panelLabelSectionToggle").on("click", function() {
 			var $sectionHeading = $(this);
 			var section = $sectionHeading.data("section");
 			var $el = $("#" + section);
