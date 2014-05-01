@@ -38,7 +38,13 @@ var segments = {
 
 		g.append("path")
 			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
-			.style("fill", function(d, index) { return colors[index]; })
+			.attr("fill", function(d, i) {
+				var color = colors[i];
+				if (pie.options.misc.gradient.enabled) {
+					color = "url(#" + pie.cssPrefix + "grad" + i + ")";
+				}
+				return color;
+			})
 			.style("stroke", segmentStroke)
 			.style("stroke-width", 1)
 			.transition()
@@ -64,6 +70,21 @@ var segments = {
 		);
 
 		pie.arc = arc;
+	},
+
+	addGradients: function(pie) {
+		var grads = pie.svg.append("defs")
+			.selectAll("radialGradient")
+			.data(pie.options.data)
+			.enter().append("radialGradient")
+			.attr("gradientUnits", "userSpaceOnUse")
+			.attr("cx", 0)
+			.attr("cy", 0)
+			.attr("r", "100%")
+			.attr("id", function(d, i) { return pie.cssPrefix + "grad" + i; });
+
+		grads.append("stop").attr("offset", "0%").style("stop-color", function(d, i) { return pie.options.colors[i]; });
+		grads.append("stop").attr("offset", pie.options.misc.gradient.percentage + "%").style("stop-color", pie.options.misc.gradient.color);
 	},
 
 	addSegmentEventHandlers: function(pie) {

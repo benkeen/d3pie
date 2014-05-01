@@ -98,6 +98,11 @@ var defaultSettings = {
 			],
 			segmentStroke: "#ffffff"
 		},
+		gradient: {
+			enabled: false,
+			percentage: 95,
+			color: "#000000"
+		},
 		canvasPadding: {
 			top: 5,
 			right: 5,

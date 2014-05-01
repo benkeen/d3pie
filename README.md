@@ -48,7 +48,9 @@ Lots! A big thanks to the developers of these scripts.
 - requireJS
 - grunt, npm
 
+### Changelog
 
+- `0.1.0` - April 24, initial version
 
 ### Licence
 

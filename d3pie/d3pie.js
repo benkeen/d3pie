@@ -118,6 +118,11 @@ var defaultSettings = {
 			],
 			segmentStroke: "#ffffff"
 		},
+		gradient: {
+			enabled: false,
+			percentage: 95,
+			color: "#000000"
+		},
 		canvasPadding: {
 			top: 5,
 			right: 5,
@@ -1076,7 +1081,13 @@ var segments = {
 
 		g.append("path")
 			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
-			.style("fill", function(d, index) { return colors[index]; })
+			.attr("fill", function(d, i) {
+				var color = colors[i];
+				if (pie.options.misc.gradient.enabled) {
+					color = "url(#" + pie.cssPrefix + "grad" + i + ")";
+				}
+				return color;
+			})
 			.style("stroke", segmentStroke)
 			.style("stroke-width", 1)
 			.transition()
@@ -1102,6 +1113,21 @@ var segments = {
 		);
 
 		pie.arc = arc;
+	},
+
+	addGradients: function(pie) {
+		var grads = pie.svg.append("defs")
+			.selectAll("radialGradient")
+			.data(pie.options.data)
+			.enter().append("radialGradient")
+			.attr("gradientUnits", "userSpaceOnUse")
+			.attr("cx", 0)
+			.attr("cy", 0)
+			.attr("r", "100%")
+			.attr("id", function(d, i) { return pie.cssPrefix + "grad" + i; });
+
+		grads.append("stop").attr("offset", "0%").style("stop-color", function(d, i) { return pie.options.colors[i]; });
+		grads.append("stop").attr("offset", pie.options.misc.gradient.percentage + "%").style("stop-color", pie.options.misc.gradient.color);
 	},
 
 	addSegmentEventHandlers: function(pie) {
@@ -1628,7 +1654,10 @@ var text = {
 			text.positionTitle(self);
 			text.positionSubtitle(self);
 
-			// now create the pie chart segments
+			// now create the pie chart segments, and gradients if the user desired
+			if (self.options.misc.gradient.enabled) {
+				segments.addGradients(self);
+			}
 			segments.create(self); // also creates this.arc
 			labels.add(self, "inner", self.options.labels.inner.format);
 			labels.add(self, "outer", self.options.labels.outer.format);

@@ -246,7 +246,10 @@
 			text.positionTitle(self);
 			text.positionSubtitle(self);
 
-			// now create the pie chart segments
+			// now create the pie chart segments, and gradients if the user desired
+			if (self.options.misc.gradient.enabled) {
+				segments.addGradients(self);
+			}
 			segments.create(self); // also creates this.arc
 			labels.add(self, "inner", self.options.labels.inner.format);
 			labels.add(self, "outer", self.options.labels.outer.format);
