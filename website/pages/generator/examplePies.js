@@ -132,6 +132,11 @@ define([], function() {
 						background: null,
 						segmentStroke: "#ffffff"
 					},
+					gradient: {
+						enabled: false,
+						percentage: 95,
+						color: "#000000"
+					},
 					canvasPadding: {
 						top: 5,
 						right: 5,
@@ -256,6 +261,11 @@ define([], function() {
 					colors: {
 						background: null,
 						segmentStroke: "#000000"
+					},
+					gradient: {
+						enabled: false,
+						percentage: 95,
+						color: "#000000"
 					},
 					canvasPadding: {
 						top: 5,
@@ -487,6 +497,11 @@ define([], function() {
 					colors: {
 						background: "#000000",
 						segmentStroke: "#222222"
+					},
+					gradient: {
+						enabled: true,
+						percentage: 100,
+						color: "#ff0000"
 					},
 					canvasPadding: {
 						top: 5,

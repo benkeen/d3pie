@@ -41,18 +41,16 @@
 <div id="panelSegmentGradients" {{#compare openSections.panelSegmentGradients false}}class="hidden"{{/compare}}>
 	<div class="row">
 		<div class="col-md-4">
-			<input type="radio" name="segmentGradient" id="segmentGradient1" value="disabled" style="float: left; margin-right: 8px"
-				   value="transparent" {{#unless config.misc.gradient.enabled}}checked="checked"{{/unless}} />
+			<input type="radio" name="segmentGradient" id="segmentGradient1" value="disabled" style="float: left; margin-right: 8px" {{#unless config.misc.gradient.enabled}}checked="checked"{{/unless}} />
 			<label for="segmentGradient1" style="margin-left:5px">Disabled</label>
 		</div>
 		<div class="col-md-4">
-			<input type="radio" name="segmentGradient" id="segmentGradient2" value="enabled" style="float: left; margin-right: 10px;"
-				   value="color" {{#if config.misc.gradient.enabled}}checked="checked"{{/if}} />
+			<input type="radio" name="segmentGradient" id="segmentGradient2" value="enabled" style="float: left; margin-right: 10px;" {{#if config.misc.gradient.enabled}}checked="checked"{{/if}} />
 			<label for="segmentGradient2">Enabled, color: </label>
 		</div>
 		<div class="col-md-4">
 			<div id="segmentGradientColorGroup" class="colorGroup input-group">
-				<input type="text" id="segmentGradientColor" class="form-control" value="{{config.misc.gradients.color}}" />
+				<input type="text" id="segmentGradientColor" class="form-control" value="{{config.misc.gradient.color}}" />
 				<span class="input-group-addon"><i></i></span>
 			</div>
 		</div>
@@ -64,7 +62,7 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
-			<input type="range" class="fullWidthRange" id="pieOuterRadius" min="1" max="100" value="{{numbersOnly config.size.pieOuterRadius}}" />
+			<input type="range" class="fullWidthRange" id="gradientPercentage" min="1" max="100" value="{{config.misc.gradient.percentage}}" />
 		</div>
 	</div>
 	<div class="row form-group">
@@ -72,7 +70,7 @@
 
 		</div>
 		<div class="col-lg-8" style="text-align: center">
-			<span class="label label-default" id="pieInnerRadiusDisplayValue">{{config.size.pieInnerRadius}}</span>
+			<span class="label label-default" id="gradientPercentageDisplayValue">{{config.misc.gradient.percentage}}%</span>
 		</div>
 		<div class="col-lg-2" style="text-align: right">
 

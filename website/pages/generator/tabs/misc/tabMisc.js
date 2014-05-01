@@ -47,7 +47,14 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
+		$("input[name=segmentGradient]").on("change", function() {
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+		});
+		var $gradientPercentage = $("#gradientPercentage");
+		$gradientPercentage.on("input change", _onChangeGradientPercentage);
+
 		utils.addColorpicker("segmentStrokeColor");
+		utils.addColorpicker("segmentGradientColor");
 
 		$(".panelMiscToggle").on("click", function() {
 			var $sectionHeading = $(this);
@@ -67,6 +74,15 @@ define([
 		}
 	};
 
+	var _onChangeGradientPercentage = function(e) {
+		_setGradientPercentageDisplayValue(e.target.value);
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
+	};
+
+	var _setGradientPercentageDisplayValue = function(val) {
+		$("#gradientPercentageDisplayValue").html(val + "%");
+	};
+
 	var _getTabData = function() {
 		var backgroundColor = null;
 		var selectedBackgroundColorType = $("input[name=backgroundColorType]:checked").val();
@@ -78,6 +94,11 @@ define([
 			colors: {
 				background: backgroundColor,
 				segmentStroke: $("#segmentStrokeColor").val()
+			},
+			gradient: {
+				enabled: $("#segmentGradient2")[0].checked,
+				color: $("#segmentGradientColor").val(),
+				percentage: parseInt($("#gradientPercentage").val(), 10)
 			},
 			canvasPadding: {
 				top: parseInt($("#canvasPaddingTop").val(), 10),

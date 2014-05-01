@@ -1160,7 +1160,13 @@ var segments = {
 			var $segment = $(e.currentTarget).find("path");
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
-				d3.select($segment[0]).style("fill", pie.options.colors[index]);
+
+				var color = pie.options.colors[index];
+				if (pie.options.misc.gradient.enabled) {
+					color = "url(#" + pie.cssPrefix + "grad" + index + ")";
+				}
+
+				d3.select($segment[0]).style("fill", color);
 			}
 			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
