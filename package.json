@@ -1,6 +1,6 @@
 {
   "name": "d3pie",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A pie chart script and generator build on d3.js.",
   "main": "index.html",
   "scripts": {

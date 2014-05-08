@@ -21,6 +21,7 @@ var labels = {
 			.enter()
 			.append("g")
 			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
+			.attr("data-index", function(d, i) { return i; })
 			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 

@@ -609,6 +609,7 @@ var labels = {
 			.enter()
 			.append("g")
 			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
+			.attr("data-index", function(d, i) { return i; })
 			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 
@@ -1111,7 +1112,6 @@ var segments = {
 				return "rotate(" + angle + ")";
 			}
 		);
-
 		pie.arc = arc;
 	},
 
@@ -1123,7 +1123,7 @@ var segments = {
 			.attr("gradientUnits", "userSpaceOnUse")
 			.attr("cx", 0)
 			.attr("cy", 0)
-			.attr("r", "100%")
+			.attr("r", "120%")
 			.attr("id", function(d, i) { return pie.cssPrefix + "grad" + i; });
 
 		grads.append("stop").attr("offset", "0%").style("stop-color", function(d, i) { return pie.options.colors[i]; });
@@ -1131,9 +1131,15 @@ var segments = {
 	},
 
 	addSegmentEventHandlers: function(pie) {
-		var $arc = $("." + pie.cssPrefix + "arc");
+		var $arc = $("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
 		$arc.on("click", function(e) {
-			var $segment = $(e.currentTarget).find("path");
+			var $segment;
+			if (d3.select(e.currentTarget).attr("class") === pie.cssPrefix + "arc") {
+				$segment = $(e.currentTarget).find("path");
+			} else {
+				var index = $(e.currentTarget).data("index");
+				$segment = $("#" + pie.cssPrefix + "segment" + index);
+			}
 			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, $segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
@@ -1146,7 +1152,14 @@ var segments = {
 		});
 
 		$arc.on("mouseover", function(e) {
-			var $segment = $(e.currentTarget).find("path");
+			var $segment;
+			if (d3.select(e.currentTarget).attr("class") === pie.cssPrefix + "arc") {
+				$segment = $(e.currentTarget).find("path");
+			} else {
+				var index = $(e.currentTarget).data("index");
+				$segment = $("#" + pie.cssPrefix + "segment" + index);
+			}
+
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 				var segColor = pie.options.colors[index];
@@ -1157,7 +1170,14 @@ var segments = {
 		});
 
 		$arc.on("mouseout", function(e) {
-			var $segment = $(e.currentTarget).find("path");
+			var $segment;
+			if (d3.select(e.currentTarget).attr("class") === pie.cssPrefix + "arc") {
+				$segment = $(e.currentTarget).find("path");
+			} else {
+				var index = $(e.currentTarget).data("index");
+				$segment = $("#" + pie.cssPrefix + "segment" + index);
+			}
+
 			if (pie.options.effects.highlightSegmentOnMouseover) {
 				var index = $segment.data("index");
 

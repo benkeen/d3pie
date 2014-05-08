@@ -99,12 +99,17 @@ define([], function() {
 					size: 8
 				},
 				highlightSegmentOnMouseover: true,
-				highlightLuminosity: -0.2
+				highlightLuminosity: -0.4
 			},
 			misc: {
 				colors: {
 					background: null,
 					segmentStroke: "#ffffff"
+				},
+				gradient: {
+					enabled: true,
+					percentage: 85,
+					color: "#000000"
 				},
 				canvasPadding: {
 					top: 0,

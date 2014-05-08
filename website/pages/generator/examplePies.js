@@ -133,8 +133,8 @@ define([], function() {
 						segmentStroke: "#ffffff"
 					},
 					gradient: {
-						enabled: false,
-						percentage: 95,
+						enabled: true,
+						percentage: 85,
 						color: "#000000"
 					},
 					canvasPadding: {
