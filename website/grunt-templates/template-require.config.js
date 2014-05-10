@@ -3,6 +3,7 @@ require.config({
 
 	paths: {
 		handlebars: "<%=handlebarsLib%>",
+		birds: "pages/generator/birds",
 
 		<%=moduleStr%>
 	}

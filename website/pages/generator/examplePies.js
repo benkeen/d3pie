@@ -125,7 +125,7 @@ define([], function() {
 						size: 8
 					},
 					highlightSegmentOnMouseover: true,
-					highlightLuminosity: -0.2
+					highlightLuminosity: -0.5
 				},
 				misc: {
 					colors: {
@@ -133,8 +133,8 @@ define([], function() {
 						segmentStroke: "#ffffff"
 					},
 					gradient: {
-						enabled: false,
-						percentage: 95,
+						enabled: true,
+						percentage: 100,
 						color: "#000000"
 					},
 					canvasPadding: {

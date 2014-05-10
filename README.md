@@ -50,7 +50,7 @@ Lots! A big thanks to the developers of these scripts.
 
 ### Changelog
 
-- `0.1.0` - April 24, initial version
+- `0.1.0` - April 24, 2014. Initial version
 
 ### Licence
 

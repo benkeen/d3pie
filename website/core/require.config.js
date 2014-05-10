@@ -3,6 +3,7 @@ require.config({
 
 	paths: {
 		handlebars: "libs/handlebars.dev",
+		birds: "pages/generator/birds",
 
 				"appStart": "core/appStart",
 		"handlebarsHelpers": "core/handlebarsHelpers",
@@ -52,7 +53,6 @@ require.config({
 		"eventsTabTemplate": "pages/generator/tabs/events/tabEventsTemplate.hbs",
 		"generateTab": "pages/generator/tabs/generate/tabGenerate",
 		"generateTabTemplate": "pages/generator/tabs/generate/tabGenerateTemplate.hbs",
-		"generatedContentTemplate": "pages/generator/tabs/generate/generatedContent.hbs",
-		"birds": "pages/generator/birds"
+		"generatedContentTemplate": "pages/generator/tabs/generate/generatedContent.hbs"
 	}
 });
