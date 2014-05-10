@@ -325,6 +325,24 @@ define([
 			}
 		}
 
+		var gradientEnabledDiff = allSettings.misc.gradient.enabled != defaultSettings.misc.gradient.enabled;
+		if (gradientEnabledDiff) {
+			if (!finalObj.hasOwnProperty("misc")) { finalObj.misc = {}; }
+			finalObj.misc.gradient = {
+				enabled: true
+			};
+
+			var gradientPercentageDiff = allSettings.misc.gradient.percentage != defaultSettings.misc.gradient.percentage;
+			var gradientColorDiff = allSettings.misc.gradient.color != defaultSettings.misc.gradient.color;
+
+			if (gradientPercentageDiff) {
+				finalObj.misc.gradient.percentage = parseInt(allSettings.misc.gradient.percentage, 10);
+			}
+			if (gradientColorDiff) {
+				finalObj.misc.gradient.color = allSettings.misc.gradient.color;
+			}
+		}
+
 		var canvasPaddingTopDiff = allSettings.misc.canvasPadding.top != defaultSettings.misc.canvasPadding.top;
 		var canvasPaddingRightDiff = allSettings.misc.canvasPadding.right != defaultSettings.misc.canvasPadding.right;
 		var canvasPaddingBottomDiff = allSettings.misc.canvasPadding.bottom != defaultSettings.misc.canvasPadding.bottom;
