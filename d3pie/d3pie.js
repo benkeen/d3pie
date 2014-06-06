@@ -1,7 +1,7 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.0
+ * @version 0.1.2
  * @date Apr 2014
  * http://github.com/benkeen/d3pie
  */
@@ -9,7 +9,7 @@
 	"use strict";
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.0";
+	var _version = "0.1.2";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -1460,7 +1460,6 @@ var text = {
 	}
 };
 
-
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
@@ -1478,7 +1477,7 @@ var text = {
 
 		this.options = $.extend(true, {}, defaultSettings, options);
 
-		// if the user specified a custom CSS element prefix (ID, class), use it. Otherwise use the
+		// if the user specified a custom CSS element prefix (ID, class), use it
 		if (this.options.misc.cssPrefix !== null) {
 			this.cssPrefix = this.options.misc.cssPrefix;
 		} else {

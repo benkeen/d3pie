@@ -1,23 +1,23 @@
 module.exports = function(grunt) {
 	"use strict";
 
-	var fs = require('fs');
-	var vm = require('vm');
+	var fs = require("fs");
+	var vm = require("vm");
 	var _includeInThisScope = function (path) {
 		var code = fs.readFileSync(path);
 		vm.runInThisContext(code, path);
 	}.bind(this);
 	var packageFile = grunt.file.readJSON("package.json");
 
-	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-template');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.loadNpmTasks('grunt-md5');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-handlebars');
+	grunt.loadNpmTasks("grunt-contrib-clean");
+	grunt.loadNpmTasks("grunt-template");
+	grunt.loadNpmTasks("grunt-contrib-watch");
+	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-requirejs");
+	grunt.loadNpmTasks("grunt-md5");
+	grunt.loadNpmTasks("grunt-contrib-copy");
+	grunt.loadNpmTasks("grunt-contrib-cssmin");
+	grunt.loadNpmTasks("grunt-contrib-handlebars");
 
 	_includeInThisScope("website/grunt-templates/file-paths.js");
 	_includeInThisScope("website/grunt-templates/env-specific-constants.js");
@@ -35,6 +35,7 @@ module.exports = function(grunt) {
 			_validate:        fs.readFileSync("d3pie-source/_validate.js", 'utf8')
 		};
 		grunt.task.run("template:d3pieBundle");
+		grunt.task.run("uglify:d3pie");
 	};
 
 	/**
