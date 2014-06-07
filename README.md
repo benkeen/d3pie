@@ -29,9 +29,9 @@ script is intended for consumption by human beings.
 
 Anyway, I digress. This codebase contains the website code as well as the d3pie code. It uses requireJS and Handlebars,
 and a few other helper libraries here and there (jQuery, jQuery UI and others - see below). For the build process, I
-use Grunt - it minifies everything (CSS, JS), precompiles the Handlebar templates and bundles everything into md5-renamed files. It saves about
-0.5MB of space. Yay. I also use grunt to build the d3pie.js and d3pie.min.js files. See the gruntfile for the various
-tasks for all that.
+use Grunt - it minifies everything (CSS, JS), precompiles the Handlebar templates and bundles everything into
+md5-renamed files. It saves about 0.5MB of space. Yay. I also use grunt to build the d3pie.js and d3pie.min.js files.
+See the gruntfile for the various tasks for all that.
 
 ### Script used on the website
 
@@ -44,12 +44,14 @@ Lots! A big thanks to the developers of these scripts.
 - Handlebars
 - prettify
 - three.js
-- modernizr
+- Modernizr
 - requireJS
 - grunt, npm
 
 ### Changelog
 
+- `0.1.2` - June 7, 2014. Assorted bug fixes.
+- `0.1.1` - May 7, 2014. Gradients added.
 - `0.1.0` - April 24, 2014. Initial version
 
 ### Licence
