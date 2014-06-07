@@ -25,7 +25,6 @@ var labels = {
 			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 
-
 		// 1. Add the main label
 		if (include.mainLabel) {
 			labelGroup.append("text")

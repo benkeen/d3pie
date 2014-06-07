@@ -33,7 +33,12 @@ var text = {
 		var canvasWidth = pie.options.size.canvasWidth;
 		var titleSubtitlePadding = pie.options.header.titleSubtitlePadding;
 
-		var x = (headerLocation === "top-left") ? canvasPadding.left : canvasWidth / 2;
+		var x;
+		if (headerLocation === "top-left") {
+			x = canvasPadding.left;
+		} else {
+			x = ((canvasWidth - canvasPadding.right) / 2) + canvasPadding.left;
+		}
 		var y = canvasPadding.top + textComponents.title.h;
 
 		if (headerLocation === "pie-center") {
@@ -80,7 +85,15 @@ var text = {
 	},
 
 	positionSubtitle: function(pie) {
-		var x = (pie.options.header.location === "top-left") ? pie.options.misc.canvasPadding.left : pie.options.size.canvasWidth / 2;
+		var canvasPadding = pie.options.misc.canvasPadding;
+		var canvasWidth = pie.options.size.canvasWidth;
+
+		var x;
+		if (pie.options.header.location === "top-left") {
+			x = canvasPadding.left;
+		} else {
+			x = ((canvasWidth - canvasPadding.right) / 2) + canvasPadding.left;
+		}
 		var y = text.getHeaderHeight(pie);
 		pie.svg.select("#" + pie.cssPrefix + "subtitle")
 			.attr("x", x)
