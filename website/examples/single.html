@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Single Item
+</h1>
+
+<p>
+	A pie chart with a single item. Thrilling stuff, really.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "A Pie with One Item",
+				fontSize: 30
+			}
+		},
+		data: {
+			content: [
+				{ label: "JavaScript", value: 50 }
+			]
+		}
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+	header: {
+		title: {
+			text: "A Pie with One Item"
+		}
+	},
+	data: {
+		content: [
+			{ label: "JavaScript", value: 50 }
+		]
+	}
+});
+</pre></blockquote>
+
+</body>
+</html>

@@ -128,6 +128,12 @@ var labels = {
 		var quarter = Math.floor(angle / 90);
 		var midPoint = 4;
 		var x2, y2, x3, y3;
+
+		// this resolves an issue when the
+		if (quarter === 2 && angle === 180) {
+			quarter = 1;
+		}
+
 		switch (quarter) {
 			case 0:
 				x2 = pie.outerLabelGroupData[i].x - labelXMargin - ((pie.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
@@ -346,6 +352,10 @@ var labels = {
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
+		if (size <= 1) {
+			return;
+		}
+
 		var currIndexHemisphere = pie.outerLabelGroupData[currIndex].hs;
 		if (direction === "clockwise" && currIndexHemisphere != "right") {
 			return;

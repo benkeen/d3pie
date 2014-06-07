@@ -139,7 +139,7 @@ define([], function() {
 				titleSubtitlePadding: 6
 			},
 			footer: {
-				text:     "* We're not sure why several people regard Winnipeg as a Top 10 Fear.",
+				text:     "* We're not sure why several people regard Winnipeg as a Top 15 Fear.",
 				color:    "#999999",
 				fontSize: 10,
 				font:     "open sans",
