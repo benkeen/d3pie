@@ -1,7 +1,8 @@
 {
   "name": "d3pie",
   "version": "0.1.2",
-  "description": "A pie chart script and generator build on d3.js.",
+  "description": "A highly configurable, re-usable pie chart component built on d3.js and jQuery for creating clear, attractive charts.",
+  "homepage": "http://d3pie.org",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,10 +18,15 @@
     "graphs"
   ],
   "author": "Ben Keen",
+  "email": "ben.keen@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/benkeen/d3pie/issues"
   },
+  "files": [
+    "d3pie/d3pie.js",
+    "d3pie/d3pie.min.js"
+  ],
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
