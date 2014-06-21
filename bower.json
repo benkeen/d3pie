@@ -1,34 +1,26 @@
 {
 	"name": "d3pie",
 	"version": "0.1.0",
-	"homepage": "https://github.com/benkeen/polymer-country-region-selector",
+	"homepage": "https://github.com/benkeen/d3pie",
 	"authors": [
 		"Ben Keen <ben.keen@gmail.com>"
 	],
-	"description": "A Polymer component to add dynamic, connected country and region dropdowns to your forms.",
+	"description": "A pie chart script and generator build on d3.js.",
 	"keywords": [
-		"polymer",
-		"country",
-		"countries",
-		"regions",
-		"states",
-		"provinces",
-		"counties",
-		"territories",
-		"forms",
-		"dropdowns",
-		"select",
-		"boxes"
+		"d3",
+		"piecharts",
+		"charts",
+		"graphs"
 	],
 	"license": "MIT",
 	"ignore": [
-		"**/.*",
+		".*",
 		"node_modules",
 		"bower_components",
-		"test",
-		"tests"
+		"website",
+		"d3pie-source"
 	],
 	"dependencies": {
-		"polymer": "Polymer/polymer#~0.2.4"
+		
 	}
 }
