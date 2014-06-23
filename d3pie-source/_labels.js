@@ -221,7 +221,6 @@ var labels = {
 					x = pie.outerLabelGroupData[i].x;
 					y = pie.outerLabelGroupData[i].y;
 				} else {
-
 					var pieCenterCopy = $.extend(true, {}, pie.pieCenter);
 
 					// now recompute the "center" based on the current _innerRadius

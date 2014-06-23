@@ -1,10 +1,13 @@
 define([
+	"constants",
 	"hbs!downloadPageTemplate"
-], function(downloadPageTemplate) {
+], function(C, downloadPageTemplate) {
 	"use strict";
 
 	var _init = function() {
-		$("#download").html(downloadPageTemplate());
+		$("#download").html(downloadPageTemplate({
+			version: C.VERSION
+		}));
 	};
 
 	return {
