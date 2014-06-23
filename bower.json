@@ -1,11 +1,11 @@
 {
 	"name": "d3pie",
 	"version": "0.1.2",
-	"homepage": "https://github.com/benkeen/d3pie",
+	"homepage": "http://d3pie.org",
 	"authors": [
 		"Ben Keen <ben.keen@gmail.com>"
 	],
-	"description": "A highly configurable, re-usable pie chart component built on d3.js and jQuery for creating clear, attractive charts.",
+	"description": "A highly configurable, re-usable script built on d3.js and jQuery for creating clear, attractive pie charts.",
 	"keywords": [
 		"d3",
 		"d3js",
@@ -23,7 +23,8 @@
 		"website",
 		"d3pie-source"
 	],
-	"dependencies": {
-		
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/benkeen/d3pie"
 	}
 }
