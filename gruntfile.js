@@ -160,8 +160,18 @@ module.exports = function(grunt) {
 
 		uglify: {
 			d3pie: {
-				src: "d3pie/d3pie.js",
-				dest: "d3pie/d3pie.min.js"
+				files: {
+					"d3pie/d3pie.min.js": "d3pie/d3pie.js"
+				},
+				options: {
+					banner: "/*!\n" +
+						"* d3pie\n" +
+						"* @author Ben Keen\n" +
+						"* @version " + packageFile.version + "\n" +
+						"* @date June 2014\n" +
+						"* @repo http://github.com/benkeen/d3pie\n" +
+						"*/\n"
+				}
 			},
 
 			coreJS: {
