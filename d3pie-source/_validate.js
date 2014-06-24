@@ -26,7 +26,7 @@ var validate = {
 		}
 
 		// confirm some data has been supplied
-		if (!$.isArray(options.data.content)) {
+		if (!helpers.isArray(options.data.content)) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
 			return false;
 		}

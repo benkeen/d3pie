@@ -221,7 +221,7 @@ var labels = {
 					x = pie.outerLabelGroupData[i].x;
 					y = pie.outerLabelGroupData[i].y;
 				} else {
-					var pieCenterCopy = $.extend(true, {}, pie.pieCenter);
+					var pieCenterCopy = extend(true, {}, pie.pieCenter);
 
 					// now recompute the "center" based on the current _innerRadius
 					if (pie.innerRadius > 0) {
@@ -278,7 +278,7 @@ var labels = {
 				.style("opacity", 1);
 
 			// once everything's done loading, trigger the onload callback if defined
-			if ($.isFunction(pie.options.callbacks.onload)) {
+			if (helpers.isFunction(pie.options.callbacks.onload)) {
 				setTimeout(function() {
 					try {
 						pie.options.callbacks.onload();

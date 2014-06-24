@@ -5,7 +5,7 @@
  * @date Apr 2014
  * http://github.com/benkeen/d3pie
  */
-;(function($) {
+;(function() {
 	"use strict";
 
 	var _scriptName = "d3pie";
@@ -38,7 +38,10 @@
 			this.element = document.getElementById(el);
 		}
 
-		this.options = $.extend(true, {}, defaultSettings, options);
+
+		var opts = {};
+		extend(true, opts, defaultSettings, options);
+		this.options = opts;
 
 		// if the user specified a custom CSS element prefix (ID, class), use it
 		if (this.options.misc.cssPrefix !== null) {
@@ -54,7 +57,7 @@
 		}
 
 		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and the d3pie version
-		$(this.element).data(_scriptName, _version);
+		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
 		this.options.data   = math.sortPieData(this);
@@ -71,7 +74,7 @@
 
 	d3pie.prototype.destroy = function() {
 		this.element.innerHTML = ""; // clear out the SVG
-		$(this.element).removeData(_scriptName); // remove the data attr
+		d3.select(this.element).attr(_scriptName, null); // remove the data attr
 	};
 
 	/**
@@ -86,7 +89,7 @@
 	d3pie.prototype.getOpenSegment = function() {
 		var segment = this.currentlyOpenSegment;
 		if (segment !== null && typeof segment !== "undefined") {
-			var index = parseInt($(segment).data("index"), 10);
+			var index = parseInt(d3.select(segment).attr("data-index"), 10);
 			return {
 				element: segment,
 				index: index,
@@ -102,7 +105,7 @@
 		if (index < 0 || index > this.options.data.length-1) {
 			return;
 		}
-		segments.openSegment(this, $("#" + this.cssPrefix + "segment" + index)[0]);
+		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());
 	};
 
 	d3pie.prototype.closeSegment = function() {
@@ -276,4 +279,4 @@
 	// expose our d3pie function
 	window.d3pie = d3pie;
 
-})(jQuery);
+})();

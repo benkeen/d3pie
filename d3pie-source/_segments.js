@@ -158,7 +158,7 @@ var segments = {
 
 	// helper function used to call the click, mouseover, mouseout segment callback functions
 	onSegmentEvent: function(pie, func, segment, isExpanded) {
-		if (!$.isFunction(func)) {
+		if (!helpers.isFunction(func)) {
 			return;
 		}
 		try {
@@ -226,7 +226,7 @@ var segments = {
 	 * @param opts optional object for fine-tuning exactly what you want.
 	 */
 	getSegmentAngle: function(index, data, totalSize, opts) {
-		var options = $.extend({
+		var options = extend({
 
 			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
 			compounded: true,

@@ -5,7 +5,7 @@
  * @date Apr 2014
  * http://github.com/benkeen/d3pie
  */
-;(function($) {
+;(function() {
 	"use strict";
 
 	var _scriptName = "d3pie";
@@ -171,7 +171,7 @@ var validate = {
 		}
 
 		// confirm some data has been supplied
-		if (!$.isArray(options.data.content)) {
+		if (!helpers.isArray(options.data.content)) {
 			console.error("d3pie error: invalid config structure: missing data.content property.");
 			return false;
 		}
@@ -382,7 +382,107 @@ var helpers = {
 	// for debugging
 	showPoint: function(svg, x, y) {
 		svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
+	},
+
+	isFunction: function(functionToCheck) {
+		var getType = {};
+		return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	},
+
+	isArray: function(o) {
+		return Object.prototype.toString.call(o) === '[object Array]';
 	}
+};
+
+
+// taken from jQuery
+var extend = function() {
+	var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {},
+		i = 1,
+		length = arguments.length,
+		deep = false,
+		toString = Object.prototype.toString,
+		hasOwn = Object.prototype.hasOwnProperty,
+		class2type = {
+			"[object Boolean]": "boolean",
+			"[object Number]": "number",
+			"[object String]": "string",
+			"[object Function]": "function",
+			"[object Array]": "array",
+			"[object Date]": "date",
+			"[object RegExp]": "regexp",
+			"[object Object]": "object"
+		},
+
+		jQuery = {
+			isFunction: function (obj) {
+				return jQuery.type(obj) === "function"
+			},
+			isArray: Array.isArray ||
+				function (obj) {
+					return jQuery.type(obj) === "array"
+				},
+			isWindow: function (obj) {
+				return obj != null && obj == obj.window
+			},
+			isNumeric: function (obj) {
+				return !isNaN(parseFloat(obj)) && isFinite(obj)
+			},
+			type: function (obj) {
+				return obj == null ? String(obj) : class2type[toString.call(obj)] || "object"
+			},
+			isPlainObject: function (obj) {
+				if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
+					return false
+				}
+				try {
+					if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
+						return false
+					}
+				} catch (e) {
+					return false
+				}
+				var key;
+				for (key in obj) {}
+				return key === undefined || hasOwn.call(obj, key)
+			}
+		};
+	if (typeof target === "boolean") {
+		deep = target;
+		target = arguments[1] || {};
+		i = 2;
+	}
+	if (typeof target !== "object" && !jQuery.isFunction(target)) {
+		target = {}
+	}
+	if (length === i) {
+		target = this;
+		--i;
+	}
+	for (i; i < length; i++) {
+		if ((options = arguments[i]) != null) {
+			for (name in options) {
+				src = target[name];
+				copy = options[name];
+				if (target === copy) {
+					continue
+				}
+				if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)))) {
+					if (copyIsArray) {
+						copyIsArray = false;
+						clone = src && jQuery.isArray(src) ? src : []
+					} else {
+						clone = src && jQuery.isPlainObject(src) ? src : {};
+					}
+					// WARNING: RECURSION
+					target[name] = extend(deep, clone, copy);
+				} else if (copy !== undefined) {
+					target[name] = copy;
+				}
+			}
+		}
+	}
+	return target;
 };
 	//// --------- math.js -----------
 var math = {
@@ -809,7 +909,7 @@ var labels = {
 					x = pie.outerLabelGroupData[i].x;
 					y = pie.outerLabelGroupData[i].y;
 				} else {
-					var pieCenterCopy = $.extend(true, {}, pie.pieCenter);
+					var pieCenterCopy = extend(true, {}, pie.pieCenter);
 
 					// now recompute the "center" based on the current _innerRadius
 					if (pie.innerRadius > 0) {
@@ -866,7 +966,7 @@ var labels = {
 				.style("opacity", 1);
 
 			// once everything's done loading, trigger the onload callback if defined
-			if ($.isFunction(pie.options.callbacks.onload)) {
+			if (helpers.isFunction(pie.options.callbacks.onload)) {
 				setTimeout(function() {
 					try {
 						pie.options.callbacks.onload();
@@ -1210,7 +1310,7 @@ var segments = {
 
 	// helper function used to call the click, mouseover, mouseout segment callback functions
 	onSegmentEvent: function(pie, func, segment, isExpanded) {
-		if (!$.isFunction(func)) {
+		if (!helpers.isFunction(func)) {
 			return;
 		}
 		try {
@@ -1278,7 +1378,7 @@ var segments = {
 	 * @param opts optional object for fine-tuning exactly what you want.
 	 */
 	getSegmentAngle: function(index, data, totalSize, opts) {
-		var options = $.extend({
+		var options = extend({
 
 			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
 			compounded: true,
@@ -1500,7 +1600,10 @@ var text = {
 			this.element = document.getElementById(el);
 		}
 
-		this.options = $.extend(true, {}, defaultSettings, options);
+
+		var opts = {};
+		extend(true, opts, defaultSettings, options);
+		this.options = opts;
 
 		// if the user specified a custom CSS element prefix (ID, class), use it
 		if (this.options.misc.cssPrefix !== null) {
@@ -1516,7 +1619,7 @@ var text = {
 		}
 
 		// add a data-role to the DOM node to let anyone know that it contains a d3pie instance, and the d3pie version
-		$(this.element).data(_scriptName, _version);
+		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
 		this.options.data   = math.sortPieData(this);
@@ -1533,7 +1636,7 @@ var text = {
 
 	d3pie.prototype.destroy = function() {
 		this.element.innerHTML = ""; // clear out the SVG
-		$(this.element).removeData(_scriptName); // remove the data attr
+		d3.select(this.element).attr(_scriptName, null); // remove the data attr
 	};
 
 	/**
@@ -1548,7 +1651,7 @@ var text = {
 	d3pie.prototype.getOpenSegment = function() {
 		var segment = this.currentlyOpenSegment;
 		if (segment !== null && typeof segment !== "undefined") {
-			var index = parseInt($(segment).data("index"), 10);
+			var index = parseInt(d3.select(segment).attr("data-index"), 10);
 			return {
 				element: segment,
 				index: index,
@@ -1564,7 +1667,7 @@ var text = {
 		if (index < 0 || index > this.options.data.length-1) {
 			return;
 		}
-		segments.openSegment(this, $("#" + this.cssPrefix + "segment" + index)[0]);
+		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());
 	};
 
 	d3pie.prototype.closeSegment = function() {
@@ -1738,4 +1841,4 @@ var text = {
 	// expose our d3pie function
 	window.d3pie = d3pie;
 
-})(jQuery);
+})();
