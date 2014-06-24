@@ -72,14 +72,11 @@
 	<h3>Script Dependencies</h3>
 	<ul>
 		<li><a href="https://github.com/mbostock/d3/releases" target="_blank">d3.js</a> - version 3.4 or later.</li>
-		<li><a href="http://jquery.com/" target="_blank">jQuery</a> - version 1.10 or later.</li>
 	</ul>
 
 	<p>
-		To be honest, d3pie will probably work just fine with earlier versions of both of those scripts - certainly
-		jQuery - but I won't guarantee it. If you find it does work fine, drop me a note on github and I'll update
-		the docs. d3pie will always rely on d3, but over time I plan to remove the need for jQuery. This is an early
-		version.
+		To be honest, d3pie will probably work just fine with an earlier version of d3 but I won't guarantee it. If
+		you find it does work fine, drop me a note on github and I'll update the docs.
 	</p>
 </section>
 
@@ -91,7 +88,7 @@
 		There are a few API functions available on your d3pie object. These are accessible like so:
 	</p>
 
-			<pre class="prettyprint language-js">var myPie = new d3pie("element", { ... });
+	<pre class="prettyprint language-js">var myPie = new d3pie("element", { ... });
 var openSegment = myPie.getOpenSegment();
 myPie.redraw();
 // ...</pre>
@@ -114,7 +111,7 @@ myPie.redraw();
 			<td>
 				The d3pie constructor, which takes two params. The first parameter is the element that is being
 				targeted for the pie chart: it can either be a string of the ID or the actual DOM element. The ID
-				string can either be the jQuery selector, like <code>#myPie</code> or without the hash tag. Either
+				string can be with or without the hashtag, like <code>#myPie</code> or <code>myPie</code>. Either
 				is fine. The second parameter is the d3pie configuration object. See the
 				<a href="#docs-configuration">section below</a> for more information on that.
 			</td>
