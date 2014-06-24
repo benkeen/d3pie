@@ -26,5 +26,9 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/benkeen/d3pie"
+	},
+	"dependencies": {
+		"jquery": "^2.0",
+		"d3": "^3.4"
 	}
 }
