@@ -161,15 +161,14 @@ var segments = {
 		if (!helpers.isFunction(func)) {
 			return;
 		}
-		try {
-			var index = parseInt(segment.attr("data-index"), 10);
-			func({
-				segment: segment.node(),
-				index: index,
-				expanded: isExpanded,
-				data: pie.options.data[index]
-			});
-		} catch(e) { }
+		var index = parseInt(segment.attr("data-index"), 10);
+		
+		func({
+			segment: segment.node(),
+			index: index,
+			expanded: isExpanded,
+			data: pie.options.data[index]
+		});
 	},
 
 	openSegment: function(pie, segment) {
