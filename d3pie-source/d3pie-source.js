@@ -9,7 +9,7 @@
 	"use strict";
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.2";
+	var _version = "0.1.3";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -34,11 +34,8 @@
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
-			if (/#/.test(element)) {
-				this.element = $(element)[0];
-			} else {
-				this.element = $("#" + element)[0]
-			}
+			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
+			this.element = document.getElementById(el);
 		}
 
 		this.options = $.extend(true, {}, defaultSettings, options);
@@ -123,7 +120,7 @@
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				$("#" + this.cssPrefix + "title").html(value);
+				d3.select("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.redraw();
 				}
@@ -132,7 +129,7 @@
 			case "header.subtitle.text":
 				var oldValue = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				$("#" + this.cssPrefix + "subtitle").html(value);
+				d3.select("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 					this.redraw();
 				}

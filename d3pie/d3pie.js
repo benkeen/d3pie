@@ -9,7 +9,7 @@
 	"use strict";
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.2";
+	var _version = "0.1.3";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -663,17 +663,17 @@ var labels = {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = $("." + pie.cssPrefix + "labelGroup-" + section);
+		var labelGroups = d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section);
 
 		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentMainLabel-" + section);
-			var percentage = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentPercentage-" + section);
-			var value = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentValue-" + section);
+			var mainLabel  = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
+			var percentage = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
+			var value      = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
-				mainLabel: (mainLabel.length > 0) ? mainLabel[0].getBBox() : null,
-				percentage: (percentage.length > 0) ? percentage[0].getBBox() : null,
-				value: (value.length > 0) ? value[0].getBBox() : null
+				mainLabel:  (mainLabel.node() !== null) ? mainLabel.node().getBBox() : null,
+				percentage: (percentage.node() !== null) ? percentage.node().getBBox() : null,
+				value:      (value.node() !== null) ? value.node().getBBox() : null
 			});
 		}
 
@@ -809,7 +809,6 @@ var labels = {
 					x = pie.outerLabelGroupData[i].x;
 					y = pie.outerLabelGroupData[i].y;
 				} else {
-
 					var pieCenterCopy = $.extend(true, {}, pie.pieCenter);
 
 					// now recompute the "center" based on the current _innerRadius
@@ -1026,7 +1025,7 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = $("#" + pie.cssPrefix + "labelGroup" + i + "-outer")[0].getBBox();
+		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
@@ -1140,77 +1139,84 @@ var segments = {
 	},
 
 	addSegmentEventHandlers: function(pie) {
-		var $arc = $("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
-		$arc.on("click", function(e) {
-			var $segment;
-			if (d3.select(e.currentTarget).attr("class") === pie.cssPrefix + "arc") {
-				$segment = $(e.currentTarget).find("path");
+		var arc = d3.selectAll("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
+
+		arc.on("click", function() {
+			var currentEl = d3.select(this);
+			var segment;
+
+			// mouseover works on both the segments AND the segment labels, hence the following
+			if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+				segment = currentEl.select("path");
 			} else {
-				var index = $(e.currentTarget).data("index");
-				$segment = $("#" + pie.cssPrefix + "segment" + index);
+				var index = currentEl.attr("data-index");
+				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
 			}
-			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
-			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, $segment, isExpanded);
+			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
+			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
-					segments.closeSegment(pie, $segment[0]);
+					segments.closeSegment(pie, segment.node());
 				} else {
-					segments.openSegment(pie, $segment[0]);
+					segments.openSegment(pie, segment.node());
 				}
 			}
 		});
 
-		$arc.on("mouseover", function(e) {
-			var $segment;
-			if (d3.select(e.currentTarget).attr("class") === pie.cssPrefix + "arc") {
-				$segment = $(e.currentTarget).find("path");
+		arc.on("mouseover", function() {
+			var currentEl = d3.select(this);
+			var segment, index;
+
+			if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+				segment = currentEl.select("path");
 			} else {
-				var index = $(e.currentTarget).data("index");
-				$segment = $("#" + pie.cssPrefix + "segment" + index);
+				index = currentEl.attr("data-index");
+				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
 			}
 
 			if (pie.options.effects.highlightSegmentOnMouseover) {
-				var index = $segment.data("index");
+				index = segment.attr("data-index");
 				var segColor = pie.options.colors[index];
-				d3.select($segment[0]).style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
+				segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
-			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
-			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, $segment, isExpanded);
+			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
+			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
 		});
 
-		$arc.on("mouseout", function(e) {
-			var $segment;
-			if (d3.select(e.currentTarget).attr("class") === pie.cssPrefix + "arc") {
-				$segment = $(e.currentTarget).find("path");
+		arc.on("mouseout", function() {
+			var currentEl = d3.select(this);
+			var segment, index;
+
+			if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+				segment = currentEl.select("path");
 			} else {
-				var index = $(e.currentTarget).data("index");
-				$segment = $("#" + pie.cssPrefix + "segment" + index);
+				index = currentEl.attr("data-index");
+				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
 			}
 
 			if (pie.options.effects.highlightSegmentOnMouseover) {
-				var index = $segment.data("index");
-
+				index = segment.attr("data-index");
 				var color = pie.options.colors[index];
 				if (pie.options.misc.gradient.enabled) {
 					color = "url(#" + pie.cssPrefix + "grad" + index + ")";
 				}
-
-				d3.select($segment[0]).style("fill", color);
+				segment.style("fill", color);
 			}
-			var isExpanded = $segment.attr("class") === pie.cssPrefix + "expanded";
-			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, $segment, isExpanded);
+
+			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
+			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
 		});
 	},
 
 	// helper function used to call the click, mouseover, mouseout segment callback functions
-	onSegmentEvent: function(pie, func, $segment, isExpanded) {
+	onSegmentEvent: function(pie, func, segment, isExpanded) {
 		if (!$.isFunction(func)) {
 			return;
 		}
 		try {
-			var index = parseInt($segment.data("index"), 10);
+			var index = parseInt(segment.attr("data-index"), 10);
 			func({
-				segment: $segment[0],
+				segment: segment.node(),
 				index: index,
 				expanded: isExpanded,
 				data: pie.options.data[index]
@@ -1225,8 +1231,8 @@ var segments = {
 		pie.isOpeningSegment = true;
 
 		// close any open segments
-		if ($("." + pie.cssPrefix + "expanded").length > 0) {
-			segments.closeSegment(pie, $("." + pie.cssPrefix + "expanded")[0]);
+		if (d3.selectAll("." + pie.cssPrefix + "expanded").length > 0) {
+			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
 		}
 
 		d3.select(segment).transition()
@@ -1244,7 +1250,7 @@ var segments = {
 			.each("end", function(d, i) {
 				pie.currentlyOpenSegment = segment;
 				pie.isOpeningSegment = false;
-				$(this).attr("class", pie.cssPrefix + "expanded");
+				d3.select(this).attr("class", pie.cssPrefix + "expanded");
 			});
 	},
 
@@ -1253,7 +1259,7 @@ var segments = {
 			.duration(400)
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
-				$(this).attr("class", "");
+				d3.select(this).attr("class", "");
 				pie.currentlyOpenSegment = null;
 			});
 	},
@@ -1490,11 +1496,8 @@ var text = {
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
-			if (/#/.test(element)) {
-				this.element = $(element)[0];
-			} else {
-				this.element = $("#" + element)[0]
-			}
+			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
+			this.element = document.getElementById(el);
 		}
 
 		this.options = $.extend(true, {}, defaultSettings, options);
@@ -1579,7 +1582,7 @@ var text = {
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				$("#" + this.cssPrefix + "title").html(value);
+				d3.select("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.redraw();
 				}
@@ -1588,7 +1591,7 @@ var text = {
 			case "header.subtitle.text":
 				var oldValue = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				$("#" + this.cssPrefix + "subtitle").html(value);
+				d3.select("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 					this.redraw();
 				}

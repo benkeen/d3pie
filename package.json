@@ -1,6 +1,6 @@
 {
   "name": "d3pie",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A highly configurable, re-usable pie chart component built on d3.js and jQuery for creating clear, attractive charts.",
   "homepage": "http://d3pie.org",
   "main": "index.html",

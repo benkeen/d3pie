@@ -75,17 +75,17 @@ var labels = {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = $("." + pie.cssPrefix + "labelGroup-" + section);
+		var labelGroups = d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section);
 
 		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentMainLabel-" + section);
-			var percentage = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentPercentage-" + section);
-			var value = $(labelGroups[i]).find("." + pie.cssPrefix + "segmentValue-" + section);
+			var mainLabel  = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
+			var percentage = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
+			var value      = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
-				mainLabel: (mainLabel.length > 0) ? mainLabel[0].getBBox() : null,
-				percentage: (percentage.length > 0) ? percentage[0].getBBox() : null,
-				value: (value.length > 0) ? value[0].getBBox() : null
+				mainLabel:  (mainLabel.node() !== null) ? mainLabel.node().getBBox() : null,
+				percentage: (percentage.node() !== null) ? percentage.node().getBBox() : null,
+				value:      (value.node() !== null) ? value.node().getBBox() : null
 			});
 		}
 
@@ -437,7 +437,7 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = $("#" + pie.cssPrefix + "labelGroup" + i + "-outer")[0].getBBox();
+		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
