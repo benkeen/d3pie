@@ -55,6 +55,12 @@ var defaultSettings = {
 	},
 	data: {
 		sortOrder: "none",
+		smallSegmentGrouping: {
+			enabled: false,
+			value: 1,
+			valueType: "percentage", // "percent" / "value"
+			label: "Other"
+		},
 		content: []
 	},
 	labels: {
@@ -1314,7 +1320,6 @@ var segments = {
 			return;
 		}
 		var index = parseInt(segment.attr("data-index"), 10);
-		
 		func({
 			segment: segment.node(),
 			index: index,

@@ -1,65 +1,97 @@
-<h4>Data</h4>
+<h4 class="panelToggle panelDataSectionToggle{{#if openSections.panelData}} expanded{{/if}}" data-section="panelData">Data<span></span></h4>
 
-<div class="row">
-	<div class="col-md-3">
-		<label>Order data by</label>
+<div id="panelData" {{#compare openSections.panelData false}}class="hidden"{{/compare}}>
+	<div class="row">
+		<div class="col-md-3">
+			<label>Order data by</label>
+		</div>
+		<div class="col-md-9 form-group">
+			<select id="dataSortOrder" class="form-control changeUpdateNoAnimation">
+				<option value="none" {{#compare config.data.sortOrder "none"}}selected="selected"{{/compare}}>Item listing</option>
+				<option value="random" {{#compare config.data.sortOrder "random"}}selected="selected"{{/compare}}>Random</option>
+				<option value="value-asc" {{#compare config.data.sortOrder "value-asc"}}selected="selected"{{/compare}}>Value - Ascending</option>
+				<option value="value-desc" {{#compare config.data.sortOrder "value-desc"}}selected="selected"{{/compare}}>Value - Descending</option>
+				<option value="label-asc" {{#compare config.data.sortOrder "label-asc"}}selected="selected"{{/compare}}>Label - A-Z</option>
+				<option value="label-desc" {{#compare config.data.sortOrder "label-desc"}}selected="selected"{{/compare}}>Label - Z-A</option>
+			</select>
+		</div>
 	</div>
-	<div class="col-md-9 form-group">
-		<select id="dataSortOrder" class="form-control changeUpdateNoAnimation">
-			<option value="none" {{#compare config.data.sortOrder "none"}}selected="selected"{{/compare}}>Item listing</option>
-			<option value="random" {{#compare config.data.sortOrder "random"}}selected="selected"{{/compare}}>Random</option>
-			<option value="value-asc" {{#compare config.data.sortOrder "value-asc"}}selected="selected"{{/compare}}>Value - Ascending</option>
-			<option value="value-desc" {{#compare config.data.sortOrder "value-desc"}}selected="selected"{{/compare}}>Value - Descending</option>
-			<option value="label-asc" {{#compare config.data.sortOrder "label-asc"}}selected="selected"{{/compare}}>Label - A-Z</option>
-			<option value="label-desc" {{#compare config.data.sortOrder "label-desc"}}selected="selected"{{/compare}}>Label - Z-A</option>
-		</select>
+	<div class="row">
+		<div class="col-md-3">
+			<label>Color sets</label>
+		</div>
+		<div class="col-md-6 form-group">
+			<select id="colorSets" class="form-control">
+				<option value="">&#8212;</option>
+				<option value="default-palette">Default palette</option>
+				<optgroup label="Small sets (10 colors)">
+					{{#each colorsets.small}}
+						<option value="small-{{@index}}">{{label}}</option>
+					{{/each}}
+				</optgroup>
+				<optgroup label="Medium sets (20 colors)">
+					{{#each colorsets.medium}}
+						<option value="medium-{{@index}}">{{label}}</option>
+					{{/each}}
+				</optgroup>
+				<optgroup label="Large sets (30 colors)">
+					{{#each colorsets.large}}
+						<option value="large-{{@index}}">{{label}}</option>
+					{{/each}}
+				</optgroup>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<button id="shuffleColors" class="btn btn-info btn-sm">Shuffle</button>
+		</div>
 	</div>
+
+	<ul id="sortableDataListHeader">
+		<li class="col0"></li>
+		<li class="col1"></li>
+		<li class="col2">Text</li>
+		<li class="col3">Value</li>
+	</ul>
+	<div class="clear" />
+
+	<ul id="sortableDataList">
+	{{#each config.data.content}}
+		{{> data-row }}
+	{{/each}}
+	</ul>
+
+	<ul class="pager">
+		<li class="previous"><a href="#" id="addRow">Add row &raquo;</a></li>
+	</ul>
 </div>
-<div class="row">
-	<div class="col-md-3">
-		<label>Color sets</label>
+
+<h4 class="panelToggle panelDataSectionToggle{{#if openSections.panelSmallSegmentGrouping}} expanded{{/if}}" data-section="panelSmallSegmentGrouping">Small Segment Grouping<span></span></h4>
+
+<div id="panelSmallSegmentGrouping" {{#compare openSections.panelSmallSegmentGrouping false}}class="hidden"{{/compare}}>
+	<div class="row paddedRow">
+		<div class="col-md-12">
+			<input type="checkbox" />
+			<label class="control-label">Group segments with</label>
+			<select id="" class="form-control changeUpdateNoAnimation" style="width:100px; display:inline-block">
+				<option value="percent" {{#compare config.data.sortOrder "none"}}selected="selected"{{/compare}}>percentage</option>
+				<option value="value" {{#compare config.data.sortOrder "random"}}selected="selected"{{/compare}}>value</option>
+			</select>
+			<label>under</label>
+			<input type="number" class="pixelSizeField numbers" />
+			<label id="">%</label>
+		</div>
 	</div>
-	<div class="col-md-6 form-group">
-		<select id="colorSets" class="form-control">
-			<option value="">&#8212;</option>
-			<option value="default-palette">Default palette</option>
-			<optgroup label="Small sets (10 colors)">
-				{{#each colorsets.small}}
-					<option value="small-{{@index}}">{{label}}</option>
-				{{/each}}
-			</optgroup>
-			<optgroup label="Medium sets (20 colors)">
-				{{#each colorsets.medium}}
-					<option value="medium-{{@index}}">{{label}}</option>
-				{{/each}}
-			</optgroup>
-			<optgroup label="Large sets (30 colors)">
-				{{#each colorsets.large}}
-					<option value="large-{{@index}}">{{label}}</option>
-				{{/each}}
-			</optgroup>
-		</select>
+	<div class="row">
+		<div class="col-md-12">
+			<label class="control-label">Group Label</label>
+		</div>
 	</div>
-	<div class="col-md-3">
-		<button id="shuffleColors" class="btn btn-info btn-sm">Shuffle</button>
+	<div class="row form-group">
+		<div class="col-md-12">
+			<input type="text" class="form-control" />
+		</div>
 	</div>
+
 </div>
 
-<ul id="sortableDataListHeader">
-	<li class="col0"></li>
-	<li class="col1"></li>
-	<li class="col2">Text</li>
-	<li class="col3">Value</li>
-</ul>
-
-<div class="clear" />
-
-<ul id="sortableDataList">
-{{#each config.data.content}}
-	{{> data-row }}
-{{/each}}
-</ul>
-
-<ul class="pager">
-	<li class="previous"><a href="#" id="addRow">Add row &raquo;</a></li>
-</ul>
+<br />

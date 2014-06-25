@@ -11,6 +11,10 @@ define([
 
 	var _MODULE_ID = "dataTab";
 	var _$sortableDataList;
+	var _openSections = {
+		panelData: true,
+		panelSmallSegmentGrouping: false
+	};
 
 	var _init = function() {
 		Handlebars.registerPartial("data-row", dataRowPartial);
@@ -22,8 +26,22 @@ define([
 
 		$dataTab.html(dataTabTemplate({
 			config: config,
-			colorsets: COLORSETS
+			colorsets: COLORSETS,
+			openSections: _openSections
 		}));
+
+		$(".panelDataSectionToggle").on("click", function() {
+			var $sectionHeading = $(this);
+			var section = $sectionHeading.data("section");
+			var $el = $("#" + section);
+			if ($sectionHeading.hasClass("expanded")) {
+				$el.hide("blind", function() { $sectionHeading.removeClass("expanded"); });
+				_openSections[section] = false;
+			} else {
+				$el.css("display", "none").removeClass("hidden").show("blind", function() { $sectionHeading.addClass("expanded"); });
+				_openSections[section] = true;
+			}
+		});
 
 		_$sortableDataList = $("#sortableDataList");
 		_$sortableDataList.find(".segmentColor").colorpicker().on("changeColor", function(e) {
@@ -81,6 +99,12 @@ define([
 
 		return {
 			sortOrder: $("#dataSortOrder").val(),
+			smallSegmentGrouping: {
+				enabled: false,
+				value: 1,
+				valueType: "percentage",
+				label: "Other"
+			},
 			content: data
 		};
 	};

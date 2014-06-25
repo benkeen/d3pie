@@ -35,6 +35,12 @@ var defaultSettings = {
 	},
 	data: {
 		sortOrder: "none",
+		smallSegmentGrouping: {
+			enabled: false,
+			value: 1,
+			valueType: "percentage", // "percent" / "value"
+			label: "Other"
+		},
 		content: []
 	},
 	labels: {

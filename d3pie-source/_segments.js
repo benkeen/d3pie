@@ -162,7 +162,6 @@ var segments = {
 			return;
 		}
 		var index = parseInt(segment.attr("data-index"), 10);
-		
 		func({
 			segment: segment.node(),
 			index: index,
