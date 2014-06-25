@@ -12,8 +12,8 @@ define([
 	var _MODULE_ID = "dataTab";
 	var _$sortableDataList;
 	var _openSections = {
-		panelData: true,
-		panelSmallSegmentGrouping: false
+		panelData: false,
+		panelSmallSegmentGrouping: true
 	};
 
 	var _init = function() {
@@ -40,6 +40,12 @@ define([
 			} else {
 				$el.css("display", "none").removeClass("hidden").show("blind", function() { $sectionHeading.addClass("expanded"); });
 				_openSections[section] = true;
+			}
+		});
+
+		$("#groupSmallDataSegments").on("click", function() {
+			if (this.checked) {
+
 			}
 		});
 
@@ -100,10 +106,10 @@ define([
 		return {
 			sortOrder: $("#dataSortOrder").val(),
 			smallSegmentGrouping: {
-				enabled: false,
-				value: 1,
-				valueType: "percentage",
-				label: "Other"
+				enabled:   $("#groupSmallDataSegments")[0].checked,
+				value:     $("#smallSegmentGroupingValue").val(),
+				valueType: $("#smallSegmentGroupingValueType").val(),
+				label:     $("#smallSegmentGroupingLabel").val()
 			},
 			content: data
 		};

@@ -38,7 +38,7 @@ var defaultSettings = {
 		smallSegmentGrouping: {
 			enabled: false,
 			value: 1,
-			valueType: "percentage", // "percent" / "value"
+			valueType: "percentage",
 			label: "Other"
 		},
 		content: []

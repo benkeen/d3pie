@@ -70,14 +70,14 @@
 <div id="panelSmallSegmentGrouping" {{#compare openSections.panelSmallSegmentGrouping false}}class="hidden"{{/compare}}>
 	<div class="row paddedRow">
 		<div class="col-md-12">
-			<input type="checkbox" />
+			<input type="checkbox" id="groupSmallDataSegments" {{#if config.data.smallSegmentGrouping.enabled}}checked="checked"{{/if}} />
 			<label class="control-label">Group segments with</label>
-			<select id="" class="form-control changeUpdateNoAnimation" style="width:100px; display:inline-block">
-				<option value="percent" {{#compare config.data.sortOrder "none"}}selected="selected"{{/compare}}>percentage</option>
-				<option value="value" {{#compare config.data.sortOrder "random"}}selected="selected"{{/compare}}>value</option>
+			<select id="smallSegmentGrouping" class="form-control changeUpdateNoAnimation" style="width:100px; display:inline-block">
+				<option value="percent" {{#compare config.data.smallSegmentGrouping.valueType "percentage"}}selected="selected"{{/compare}}>percentage</option>
+				<option value="value" {{#compare config.data.smallSegmentGrouping.valueType "value"}}selected="selected"{{/compare}}>value</option>
 			</select>
 			<label>under</label>
-			<input type="number" class="pixelSizeField numbers" />
+			<input type="number" class="pixelSizeField numbers" id="smallSegmentGroupingValue" value="{{config.data.smallSegmentGrouping.value}}" />
 			<label id="">%</label>
 		</div>
 	</div>
@@ -88,10 +88,9 @@
 	</div>
 	<div class="row form-group">
 		<div class="col-md-12">
-			<input type="text" class="form-control" />
+			<input type="text" class="form-control" id="smallSegmentGroupingLabel" value="{{config.data.smallSegmentGrouping.label}}" />
 		</div>
 	</div>
-
 </div>
 
 <br />

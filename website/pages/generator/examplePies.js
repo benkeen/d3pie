@@ -45,6 +45,12 @@ define([], function() {
 				},
 				data: {
 					sortOrder: "value-desc",
+					smallSegmentGrouping: {
+						enabled: true,
+						value: 1,
+						valueType: "percentage",
+						label: "Other"
+					},
 					content: [
 						{ label: "JavaScript", value: 264131, color: "#2484c1" },
 						{ label: "Ruby", value: 218812, color: "#0c6197" },
