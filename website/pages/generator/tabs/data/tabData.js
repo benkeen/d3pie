@@ -44,8 +44,17 @@ define([
 		});
 
 		$("#groupSmallDataSegments").on("click", function() {
+			var section = $("#panelSmallSegmentGrouping");
+			var labels      = section.find("label");
+			var inputFields = section.find("input, select");
 			if (this.checked) {
-
+				labels.removeClass("disabled");
+				inputFields.removeAttr("disabled");
+			} else {
+				labels.addClass("disabled");
+				inputFields.attr("disabled", "disabled");
+				$("#groupSmallDataSegments").removeAttr("disabled");
+				$("#groupSmallDataSegmentsEnabled").removeClass("disabled");
 			}
 		});
 

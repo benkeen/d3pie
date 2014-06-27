@@ -71,7 +71,10 @@
 	<div class="row paddedRow">
 		<div class="col-md-12">
 			<input type="checkbox" id="groupSmallDataSegments" {{#if config.data.smallSegmentGrouping.enabled}}checked="checked"{{/if}} />
-			<label class="control-label">Group segments with</label>
+			<label for="groupSmallDataSegments" id="groupSmallDataSegmentsEnabled">Enabled</label>
+		</div>
+		<div class="col-md-12">
+			<label for="smallSegmentGrouping" class="control-label">Group segments with</label>
 			<select id="smallSegmentGrouping" class="form-control changeUpdateNoAnimation" style="width:100px; display:inline-block">
 				<option value="percent" {{#compare config.data.smallSegmentGrouping.valueType "percentage"}}selected="selected"{{/compare}}>percentage</option>
 				<option value="value" {{#compare config.data.smallSegmentGrouping.valueType "value"}}selected="selected"{{/compare}}>value</option>
