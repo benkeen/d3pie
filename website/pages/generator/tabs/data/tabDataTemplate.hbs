@@ -74,24 +74,26 @@
 			<label for="groupSmallDataSegments" id="groupSmallDataSegmentsEnabled">Enabled</label>
 		</div>
 		<div class="col-md-12">
-			<label for="smallSegmentGrouping" class="control-label">Group segments with</label>
-			<select id="smallSegmentGrouping" class="form-control changeUpdateNoAnimation" style="width:100px; display:inline-block">
+			<label for="smallSegmentGroupingValueType" class="control-label{{#compare config.data.smallSegmentGrouping.enabled false}} disabled{{/compare}}">Group segments with</label>
+			<select id="smallSegmentGroupingValueType" class="form-control changeUpdateNoAnimation" {{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}}>
 				<option value="percent" {{#compare config.data.smallSegmentGrouping.valueType "percentage"}}selected="selected"{{/compare}}>percentage</option>
 				<option value="value" {{#compare config.data.smallSegmentGrouping.valueType "value"}}selected="selected"{{/compare}}>value</option>
 			</select>
-			<label>under</label>
-			<input type="number" class="pixelSizeField numbers" id="smallSegmentGroupingValue" value="{{config.data.smallSegmentGrouping.value}}" />
-			<label id="">%</label>
+			<label class="{{#compare config.data.smallSegmentGrouping.enabled false}} disabled{{/compare}}">under</label>
+			<input type="number" class="pixelSizeField numbers" {{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}}
+				id="smallSegmentGroupingValue" value="{{config.data.smallSegmentGrouping.value}}" />
+			<label id="smallSegmentPercentageUnit" class="{{#compare config.data.smallSegmentGrouping.enabled false}}disabled{{/compare}}">%</label>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<label class="control-label">Group Label</label>
+			<label class="control-label {{#compare config.data.smallSegmentGrouping.enabled false}} disabled{{/compare}}">Group Label</label>
 		</div>
 	</div>
 	<div class="row form-group">
 		<div class="col-md-12">
-			<input type="text" class="form-control" id="smallSegmentGroupingLabel" value="{{config.data.smallSegmentGrouping.label}}" />
+			<input type="text" class="form-control" id="smallSegmentGroupingLabel" value="{{config.data.smallSegmentGrouping.label}}"
+				{{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}} />
 		</div>
 	</div>
 </div>

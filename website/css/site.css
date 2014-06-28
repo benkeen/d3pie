@@ -527,3 +527,8 @@ a.btn-info[target=_blank] {
 	background-color: #5bc0de;
 	background-image: none;
 }
+
+#smallSegmentGroupingValueType {
+    width: 100px;
+    display: inline-block;
+}

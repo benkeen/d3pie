@@ -38,7 +38,6 @@
 			this.element = document.getElementById(el);
 		}
 
-
 		var opts = {};
 		extend(true, opts, defaultSettings, options);
 		this.options = opts;

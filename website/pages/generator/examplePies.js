@@ -46,7 +46,7 @@ define([], function() {
 				data: {
 					sortOrder: "value-desc",
 					smallSegmentGrouping: {
-						enabled: true,
+						enabled: false,
 						value: 1,
 						valueType: "percentage",
 						label: "Other"

@@ -43,7 +43,8 @@ define([
 			}
 		});
 
-		$("#groupSmallDataSegments").on("click", function() {
+		var groupSmallDataSegments = $("#groupSmallDataSegments");
+		groupSmallDataSegments.on("click", function() {
 			var section = $("#panelSmallSegmentGrouping");
 			var labels      = section.find("label");
 			var inputFields = section.find("input, select");
@@ -56,6 +57,7 @@ define([
 				$("#groupSmallDataSegments").removeAttr("disabled");
 				$("#groupSmallDataSegmentsEnabled").removeClass("disabled");
 			}
+			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
 		_$sortableDataList = $("#sortableDataList");

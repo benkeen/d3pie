@@ -598,6 +598,8 @@ var math = {
 		return data;
 	},
 
+	
+
 	// var pieCenter = math.getPieCenter();
 	getPieTranslateCenter: function(pieCenter) {
 		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
@@ -1603,7 +1605,6 @@ var text = {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
 			this.element = document.getElementById(el);
 		}
-
 
 		var opts = {};
 		extend(true, opts, defaultSettings, options);
