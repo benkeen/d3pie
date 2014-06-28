@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Small Segment grouping
+</h1>
+
+<p>
+	Depending on your data set, you may find you have a lot of very small values, all getting scrunched up
+	at the end of your pie chart. To get around that you can use the "small segment grouping" option which lets
+	you group small values into a single segment with a custom label.
+</p>
+
+<p>
+	In the example below, any birds with
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		size: {
+			pieOuterRadius: "100%",
+			canvasHeight: 360
+		},
+		data: {
+			sortOrder: "value-asc",
+			smallSegmentGrouping: {
+				enabled: true,
+				value: 2,
+				valueType: "percentage",
+				label: "Other birds",
+				color: "#999999"
+			},
+			content: [
+				{ label: "Bushtit", value: 5 },
+				{ label: "Chickadee", value: 2 },
+				{ label: "Elephants", value: 6 },
+				{ label: "Killdeer", value: 3 },
+				{ label: "Caspian Tern", value: 2 },
+				{ label: "Blackbird", value: 1 },
+				{ label: "Song Sparrow", value: 6 },
+				{ label: "Blue Jay", value: 5 },
+				{ label: "Black-throated Gray warbler", value: 1 },
+				{ label: "Pelican", value: 6 },
+				{ label: "Bewick's Wren", value: 5 },
+				{ label: "Cowbird", value: 1 },
+				{ label: "Fox Sparrow", value: 6 },
+				{ label: "Common Yellowthroat", value: 5 },
+				{ label: "Virginia Rail", value: 1 },
+				{ label: "Sora", value: 1 },
+				{ label: "Osprey", value: 1 },
+				{ label: "Merlin", value: 1 },
+				{ label: "Kestrel", value: 1 }
+			]
+		}
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+		size: {
+			pieOuterRadius: "100%",
+			canvasHeight: 360
+		},
+		data: {
+			sortOrder: "value-asc",
+			smallSegmentGrouping: {
+				enabled: true,
+				value: 2,
+				valueType: "percentage",
+				label: "Other birds"
+			},
+			content: [
+				{ label: "Bushtit", value: 5 },
+				{ label: "Chickadee", value: 2 },
+				{ label: "Elephants", value: 6 },
+				{ label: "Killdeer", value: 3 },
+				{ label: "Caspian Tern", value: 2 },
+				{ label: "Blackbird", value: 1 },
+				{ label: "Song Sparrow", value: 6 },
+				{ label: "Blue Jay", value: 5 },
+				{ label: "Black-throated Gray warbler", value: 1 },
+				{ label: "Pelican", value: 6 },
+				{ label: "Bewick's Wren", value: 5 },
+				{ label: "Cowbird", value: 1 },
+				{ label: "Fox Sparrow", value: 6 },
+				{ label: "Common Yellowthroat", value: 5 },
+				{ label: "Virginia Rail", value: 1 },
+				{ label: "Sora", value: 1 },
+				{ label: "Osprey", value: 1 },
+				{ label: "Merlin", value: 1 },
+				{ label: "Kestrel", value: 1 }
+			]
+		}
+	});</pre></blockquote>
+
+</body>
+</html>

@@ -176,6 +176,51 @@ var helpers = {
 		return finalColors;
 	},
 
+	applySmallSegmentGrouping: function(data, smallSegmentGrouping) {
+		var totalSize;
+		if (smallSegmentGrouping.valueType === "percentage") {
+			totalSize = math.getTotalPieSize(data);
+		}
+
+		// loop through each data item
+		var newData = [];
+		var groupedData = [];
+		var totalGroupedData = 0;
+		for (var i=0; i<data.length; i++) {
+			if (smallSegmentGrouping.valueType === "percentage") {
+				var dataPercent = (data[i].value / totalSize) * 100;
+				if (dataPercent <= smallSegmentGrouping.value) {
+					groupedData.push(data[i]);
+					totalGroupedData += data[i].value;
+					continue;
+				}
+				data[i].isGrouped = false;
+				newData.push(data[i]);
+			} else {
+				if (data[i].value <= smallSegmentGrouping.value) {
+					groupedData.push(data[i]);
+					totalGroupedData += data[i].value;
+					continue;
+				}
+				data[i].isGrouped = false;
+				newData.push(data[i]);
+			}
+		}
+
+		// we're done! See if there's any small segment groups to add
+		if (groupedData.length) {
+			newData.push({
+				color: smallSegmentGrouping.color,
+				label: smallSegmentGrouping.label,
+				value: totalGroupedData,
+				isGrouped: true,
+				groupedData: groupedData
+			});
+		}
+
+		return newData;
+	},
+
 	// for debugging
 	showPoint: function(svg, x, y) {
 		svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");

@@ -59,7 +59,11 @@
 		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
-		this.options.data   = math.sortPieData(this);
+		var smallSegmentGrouping = this.options.data.smallSegmentGrouping;
+		this.options.data = math.sortPieData(this);
+		if (smallSegmentGrouping.enabled) {
+			this.options.data = helpers.applySmallSegmentGrouping(this.options.data, smallSegmentGrouping);
+		}
 		this.options.colors = helpers.initSegmentColors(this);
 		this.totalSize      = math.getTotalPieSize(this.options.data);
 

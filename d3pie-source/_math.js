@@ -80,12 +80,12 @@ var math = {
 	},
 
 	sortPieData: function(pie) {
-		var data      = pie.options.data.content;
-		var sortOrder = pie.options.data.sortOrder;
+		var data                 = pie.options.data.content;
+		var sortOrder            = pie.options.data.sortOrder;
 
 		switch (sortOrder) {
 			case "none":
-				// do nothing.
+				// do nothing
 				break;
 			case "random":
 				data = helpers.shuffleArray(data);
@@ -103,6 +103,7 @@ var math = {
 				data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
 				break;
 		}
+
 		return data;
 	},
 
