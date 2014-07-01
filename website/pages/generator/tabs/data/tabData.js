@@ -83,6 +83,8 @@ define([
 		_$sortableDataList.on("keyup", ".dataLabel", function() {
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
+
+		utils.addColorpicker("smallSegmentColor");
 	};
 
 	var _addRow = function(e) {
@@ -113,7 +115,6 @@ define([
 				color: utils.rgb2hex(row.find(".segmentColor").css("background-color"))
 			});
 		}
-
 		return {
 			sortOrder: $("#dataSortOrder").val(),
 			smallSegmentGrouping: {

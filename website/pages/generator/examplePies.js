@@ -49,7 +49,8 @@ define([], function() {
 						enabled: false,
 						value: 1,
 						valueType: "percentage",
-						label: "Other"
+						label: "Other",
+						color: "#cccccc"
 					},
 					content: [
 						{ label: "JavaScript", value: 264131, color: "#2484c1" },

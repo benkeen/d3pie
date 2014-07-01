@@ -59,7 +59,8 @@ var defaultSettings = {
 			enabled: false,
 			value: 1,
 			valueType: "percentage",
-			label: "Other"
+			label: "Other",
+			color: "#cacaca"
 		},
 		content: []
 	},
@@ -385,6 +386,51 @@ var helpers = {
 		return finalColors;
 	},
 
+	applySmallSegmentGrouping: function(data, smallSegmentGrouping) {
+		var totalSize;
+		if (smallSegmentGrouping.valueType === "percentage") {
+			totalSize = math.getTotalPieSize(data);
+		}
+
+		// loop through each data item
+		var newData = [];
+		var groupedData = [];
+		var totalGroupedData = 0;
+		for (var i=0; i<data.length; i++) {
+			if (smallSegmentGrouping.valueType === "percentage") {
+				var dataPercent = (data[i].value / totalSize) * 100;
+				if (dataPercent <= smallSegmentGrouping.value) {
+					groupedData.push(data[i]);
+					totalGroupedData += data[i].value;
+					continue;
+				}
+				data[i].isGrouped = false;
+				newData.push(data[i]);
+			} else {
+				if (data[i].value <= smallSegmentGrouping.value) {
+					groupedData.push(data[i]);
+					totalGroupedData += data[i].value;
+					continue;
+				}
+				data[i].isGrouped = false;
+				newData.push(data[i]);
+			}
+		}
+
+		// we're done! See if there's any small segment groups to add
+		if (groupedData.length) {
+			newData.push({
+				color: smallSegmentGrouping.color,
+				label: smallSegmentGrouping.label,
+				value: totalGroupedData,
+				isGrouped: true,
+				groupedData: groupedData
+			});
+		}
+
+		return newData;
+	},
+
 	// for debugging
 	showPoint: function(svg, x, y) {
 		svg.append("circle").attr("cx", x).attr("cy", y).attr("r", 2).style("fill", "black");
@@ -572,12 +618,12 @@ var math = {
 	},
 
 	sortPieData: function(pie) {
-		var data      = pie.options.data.content;
-		var sortOrder = pie.options.data.sortOrder;
+		var data                 = pie.options.data.content;
+		var sortOrder            = pie.options.data.sortOrder;
 
 		switch (sortOrder) {
 			case "none":
-				// do nothing.
+				// do nothing
 				break;
 			case "random":
 				data = helpers.shuffleArray(data);
@@ -595,6 +641,7 @@ var math = {
 				data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
 				break;
 		}
+
 		return data;
 	},
 
@@ -1627,7 +1674,11 @@ var text = {
 		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
-		this.options.data   = math.sortPieData(this);
+		var smallSegmentGrouping = this.options.data.smallSegmentGrouping;
+		this.options.data = math.sortPieData(this);
+		if (smallSegmentGrouping.enabled) {
+			this.options.data = helpers.applySmallSegmentGrouping(this.options.data, smallSegmentGrouping);
+		}
 		this.options.colors = helpers.initSegmentColors(this);
 		this.totalSize      = math.getTotalPieSize(this.options.data);
 

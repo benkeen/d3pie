@@ -79,23 +79,34 @@
 				<option value="percent" {{#compare config.data.smallSegmentGrouping.valueType "percentage"}}selected="selected"{{/compare}}>percentage</option>
 				<option value="value" {{#compare config.data.smallSegmentGrouping.valueType "value"}}selected="selected"{{/compare}}>value</option>
 			</select>
-			<label class="{{#compare config.data.smallSegmentGrouping.enabled false}} disabled{{/compare}}">under</label>
-			<input type="number" class="pixelSizeField numbers" {{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}}
+			<label class="{{#compare config.data.smallSegmentGrouping.enabled false}}disabled{{/compare}}">under</label>
+			<input type="number" class="pixelSizeField numbers keyupUpdateNoAnimation" {{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}}
 				id="smallSegmentGroupingValue" value="{{config.data.smallSegmentGrouping.value}}" />
 			<label id="smallSegmentPercentageUnit" class="{{#compare config.data.smallSegmentGrouping.enabled false}}disabled{{/compare}}">%</label>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<label class="control-label {{#compare config.data.smallSegmentGrouping.enabled false}} disabled{{/compare}}">Group Label</label>
+		</div>
+		<div class="col-md-6">
+			<label class="control-label {{#compare config.data.smallSegmentGrouping.enabled false}} disabled{{/compare}}">Segment Color</label>
 		</div>
 	</div>
 	<div class="row form-group">
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<input type="text" class="form-control" id="smallSegmentGroupingLabel" value="{{config.data.smallSegmentGrouping.label}}"
 				{{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}} />
 		</div>
+		<div class="col-md-6">
+		</div>
 	</div>
+
+	<div id="smallSegmentGroup" class="colorGroup input-group form-group">
+		<input type="text" id="smallSegmentColor" value="{{config.data.smallSegmentGrouping.color}}" class="form-control" />
+		<span class="input-group-addon"><i></i></span>
+	</div>
+
 </div>
 
 <br />
