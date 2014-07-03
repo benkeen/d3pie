@@ -119,9 +119,10 @@ define([
 			sortOrder: $("#dataSortOrder").val(),
 			smallSegmentGrouping: {
 				enabled:   $("#groupSmallDataSegments")[0].checked,
-				value:     $("#smallSegmentGroupingValue").val(),
+				value:     parseFloat($("#smallSegmentGroupingValue").val()),
 				valueType: $("#smallSegmentGroupingValueType").val(),
-				label:     $("#smallSegmentGroupingLabel").val()
+				label:     $("#smallSegmentGroupingLabel").val(),
+				color:     $("#smallSegmentColor").val()
 			},
 			content: data
 		};

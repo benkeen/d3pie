@@ -25,7 +25,7 @@ var segments = {
 			});
 
 		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
-			.data(pie.options.data)
+			.data(pie.options.data.content)
 			.enter()
 			.append("g")
 			.attr("class", pie.cssPrefix + "arc");
@@ -63,7 +63,7 @@ var segments = {
 			function(d, i) {
 				var angle = 0;
 				if (i > 0) {
-					angle = segments.getSegmentAngle(i-1, pie.options.data, pie.totalSize);
+					angle = segments.getSegmentAngle(i-1, pie.options.data.content, pie.totalSize);
 				}
 				return "rotate(" + angle + ")";
 			}
@@ -74,7 +74,7 @@ var segments = {
 	addGradients: function(pie) {
 		var grads = pie.svg.append("defs")
 			.selectAll("radialGradient")
-			.data(pie.options.data)
+			.data(pie.options.data.content)
 			.enter().append("radialGradient")
 			.attr("gradientUnits", "userSpaceOnUse")
 			.attr("cx", 0)
@@ -166,7 +166,7 @@ var segments = {
 			segment: segment.node(),
 			index: index,
 			expanded: isExpanded,
-			data: pie.options.data[index]
+			data: pie.options.data.content[index]
 		});
 	},
 
@@ -225,7 +225,6 @@ var segments = {
 	 */
 	getSegmentAngle: function(index, data, totalSize, opts) {
 		var options = extend({
-
 			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
 			compounded: true,
 
@@ -261,6 +260,6 @@ var segments = {
 	},
 
 	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data[index].value / pie.totalSize) * 100);
+		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
 	}
 };

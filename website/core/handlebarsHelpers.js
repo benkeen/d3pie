@@ -31,9 +31,9 @@ define(["handlebars"], function(Handlebars) {
 	});
 
 	Handlebars.registerHelper("numbersOnly", function(str) {
-		var s = str;
+		var s = str.toString();
 		try {
-			s = str.replace(/[^0-9]/g, "");
+			s = s.replace(/[^0-9]/g, "");
 		} catch (e) {
 			console.error("problem in {{numbersOnly}}", arguments);
 		}

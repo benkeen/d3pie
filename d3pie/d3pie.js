@@ -369,7 +369,7 @@ var helpers = {
 	 * @param data
 	 */
 	initSegmentColors: function(pie) {
-		var data   = pie.options.data;
+		var data   = pie.options.data.content;
 		var colors = pie.options.misc.colors.segments;
 
 		// TODO this needs a ton of error handling
@@ -760,7 +760,7 @@ var labels = {
 			.attr("class", pie.cssPrefix + "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
-			.data(pie.options.data)
+			.data(pie.options.data.content)
 			.enter()
 			.append("g")
 			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
@@ -819,18 +819,17 @@ var labels = {
 
 		// get the latest widths, heights
 		var labelGroups = d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section);
-
-		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel  = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
-			var percentage = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
-			var value      = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentValue-" + section);
+		labelGroups.each(function(d, i) {
+			var mainLabel  = d3.select(this).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
+			var percentage = d3.select(this).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
+			var value      = d3.select(this).selectAll("." + pie.cssPrefix + "segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
 				mainLabel:  (mainLabel.node() !== null) ? mainLabel.node().getBBox() : null,
 				percentage: (percentage.node() !== null) ? percentage.node().getBBox() : null,
 				value:      (value.node() !== null) ? value.node().getBBox() : null
 			});
-		}
+		});
 
 		var singleLinePad = 5;
 		var dims = labels["dimensions-" + section];
@@ -862,7 +861,7 @@ var labels = {
 	},
 
 	computeLinePosition: function(pie, i) {
-		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 		var originCoords = math.rotate(pie.pieCenter.x, pie.pieCenter.y - pie.outerRadius, pie.pieCenter.x, pie.pieCenter.y, angle);
 		var heightOffset = pie.outerLabelGroupData[i].h / 5; // TODO check
 		var labelXMargin = 6; // the x-distance of the label from the end of the line [TODO configurable]
@@ -950,7 +949,7 @@ var labels = {
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
 				var segmentPercentage = segments.getPercentage(pie, i);
-				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data[i].label === "";
+				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
 			})
 	},
@@ -968,7 +967,7 @@ var labels = {
 
 					// now recompute the "center" based on the current _innerRadius
 					if (pie.innerRadius > 0) {
-						var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+						var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 						var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
 						pieCenterCopy.x = newCoords.x;
 						pieCenterCopy.y = newCoords.y;
@@ -1087,7 +1086,7 @@ var labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function(pie) {
-		var size = pie.options.data.length;
+		var size = pie.options.data.content.length;
 		labels.checkConflict(pie, 0, "clockwise", size);
 		labels.checkConflict(pie, size-1, "anticlockwise", size);
 	},
@@ -1181,7 +1180,7 @@ var labels = {
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
 		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
-		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
 		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);
@@ -1232,7 +1231,7 @@ var segments = {
 			});
 
 		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
-			.data(pie.options.data)
+			.data(pie.options.data.content)
 			.enter()
 			.append("g")
 			.attr("class", pie.cssPrefix + "arc");
@@ -1270,7 +1269,7 @@ var segments = {
 			function(d, i) {
 				var angle = 0;
 				if (i > 0) {
-					angle = segments.getSegmentAngle(i-1, pie.options.data, pie.totalSize);
+					angle = segments.getSegmentAngle(i-1, pie.options.data.content, pie.totalSize);
 				}
 				return "rotate(" + angle + ")";
 			}
@@ -1281,7 +1280,7 @@ var segments = {
 	addGradients: function(pie) {
 		var grads = pie.svg.append("defs")
 			.selectAll("radialGradient")
-			.data(pie.options.data)
+			.data(pie.options.data.content)
 			.enter().append("radialGradient")
 			.attr("gradientUnits", "userSpaceOnUse")
 			.attr("cx", 0)
@@ -1373,7 +1372,7 @@ var segments = {
 			segment: segment.node(),
 			index: index,
 			expanded: isExpanded,
-			data: pie.options.data[index]
+			data: pie.options.data.content[index]
 		});
 	},
 
@@ -1432,7 +1431,6 @@ var segments = {
 	 */
 	getSegmentAngle: function(index, data, totalSize, opts) {
 		var options = extend({
-
 			// if true, this returns the full angle from the origin. Otherwise it returns the single segment angle
 			compounded: true,
 
@@ -1468,7 +1466,7 @@ var segments = {
 	},
 
 	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data[index].value / pie.totalSize) * 100);
+		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
 	}
 };
 	//// --------- text.js -----------
@@ -1674,13 +1672,12 @@ var text = {
 		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
-		var smallSegmentGrouping = this.options.data.smallSegmentGrouping;
-		this.options.data = math.sortPieData(this);
-		if (smallSegmentGrouping.enabled) {
-			this.options.data = helpers.applySmallSegmentGrouping(this.options.data, smallSegmentGrouping);
+		this.options.data.content = math.sortPieData(this);
+		if (this.options.data.smallSegmentGrouping.enabled) {
+			this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
 		}
 		this.options.colors = helpers.initSegmentColors(this);
-		this.totalSize      = math.getTotalPieSize(this.options.data);
+		this.totalSize      = math.getTotalPieSize(this.options.data.content);
 
 		_init.call(this);
 	};
@@ -1711,7 +1708,7 @@ var text = {
 			return {
 				element: segment,
 				index: index,
-				data: this.options.data[index]
+				data: this.options.data.content[index]
 			}
 		} else {
 			return null;
@@ -1720,7 +1717,7 @@ var text = {
 
 	d3pie.prototype.openSegment = function(index) {
 		var index = parseInt(index, 10);
-		if (index < 0 || index > this.options.data.length-1) {
+		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}
 		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());

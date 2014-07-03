@@ -159,7 +159,7 @@ var helpers = {
 	 * @param data
 	 */
 	initSegmentColors: function(pie) {
-		var data   = pie.options.data;
+		var data   = pie.options.data.content;
 		var colors = pie.options.misc.colors.segments;
 
 		// TODO this needs a ton of error handling

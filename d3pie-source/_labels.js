@@ -17,7 +17,7 @@ var labels = {
 			.attr("class", pie.cssPrefix + "labels-" + section);
 
 		var labelGroup = outerLabel.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
-			.data(pie.options.data)
+			.data(pie.options.data.content)
 			.enter()
 			.append("g")
 			.attr("id", function(d, i) { return pie.cssPrefix + "labelGroup" + i + "-" + section; })
@@ -76,18 +76,17 @@ var labels = {
 
 		// get the latest widths, heights
 		var labelGroups = d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section);
-
-		for (var i=0; i<labelGroups.length; i++) {
-			var mainLabel  = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
-			var percentage = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
-			var value      = d3.selectAll(labelGroups[i]).selectAll("." + pie.cssPrefix + "segmentValue-" + section);
+		labelGroups.each(function(d, i) {
+			var mainLabel  = d3.select(this).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
+			var percentage = d3.select(this).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
+			var value      = d3.select(this).selectAll("." + pie.cssPrefix + "segmentValue-" + section);
 
 			labels["dimensions-" + section].push({
 				mainLabel:  (mainLabel.node() !== null) ? mainLabel.node().getBBox() : null,
 				percentage: (percentage.node() !== null) ? percentage.node().getBBox() : null,
 				value:      (value.node() !== null) ? value.node().getBBox() : null
 			});
-		}
+		});
 
 		var singleLinePad = 5;
 		var dims = labels["dimensions-" + section];
@@ -119,7 +118,7 @@ var labels = {
 	},
 
 	computeLinePosition: function(pie, i) {
-		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 		var originCoords = math.rotate(pie.pieCenter.x, pie.pieCenter.y - pie.outerRadius, pie.pieCenter.x, pie.pieCenter.y, angle);
 		var heightOffset = pie.outerLabelGroupData[i].h / 5; // TODO check
 		var labelXMargin = 6; // the x-distance of the label from the end of the line [TODO configurable]
@@ -207,7 +206,7 @@ var labels = {
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
 				var segmentPercentage = segments.getPercentage(pie, i);
-				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data[i].label === "";
+				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
 			})
 	},
@@ -225,7 +224,7 @@ var labels = {
 
 					// now recompute the "center" based on the current _innerRadius
 					if (pie.innerRadius > 0) {
-						var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+						var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 						var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
 						pieCenterCopy.x = newCoords.x;
 						pieCenterCopy.y = newCoords.y;
@@ -344,7 +343,7 @@ var labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function(pie) {
-		var size = pie.options.data.length;
+		var size = pie.options.data.content.length;
 		labels.checkConflict(pie, 0, "clockwise", size);
 		labels.checkConflict(pie, size-1, "anticlockwise", size);
 	},
@@ -438,7 +437,7 @@ var labels = {
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
 		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
-		var angle = segments.getSegmentAngle(i, pie.options.data, pie.totalSize, { midpoint: true });
+		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
 		var originalY = pie.pieCenter.y - (pie.outerRadius + pie.options.labels.outer.pieDistance);

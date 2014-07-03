@@ -18,13 +18,13 @@ define([], function() {
 					title: {
 						text:     "Lots of Programming Languages",
 						color:    "#333333",
-						fontSize: "24px",
+						fontSize: 24,
 						font:     "open sans"
 					},
 					subtitle: {
 						text:     "A full pie chart to show off label collision detection and resolution.",
 						color:    "#999999",
-						fontSize: "12px",
+						fontSize: 12,
 						font:     "open sans"
 					},
 					location: "top-center",
@@ -33,7 +33,7 @@ define([], function() {
 				footer: {
 					text: "",
 					color:    "#999999",
-					fontSize: "10px",
+					fontSize: 10,
 					font:     "open sans",
 					location: "bottom-left"
 				},
@@ -97,18 +97,18 @@ define([], function() {
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
-						fontSize: "11px"
+						fontSize: 11
 					},
 					percentage: {
 						color: "#ffffff",
 						font: "Open sans",
-						fontSize: "10px",
+						fontSize: 10,
 						decimalPlaces: 0
 					},
 					value: {
 						color: "#adadad",
 						font: "Open sans",
-						fontSize: "11px"
+						fontSize: 11
 					},
 					lines: {
 						enabled: true,
@@ -184,7 +184,7 @@ define([], function() {
 				footer: {
 					text:     "* This was curious. We're not sure why over several people regard Winnipeg as a Top 15 Fear.",
 					color:    "#999999",
-					fontSize: "10px",
+					fontSize: 10,
 					font:     "open sans",
 					location: "bottom-left"
 				},
@@ -196,6 +196,13 @@ define([], function() {
 				},
 				data: {
 					sortOrder: "label-desc",
+					smallSegmentGrouping: {
+						enabled: false,
+						value: 1,
+						valueType: "percentage",
+						label: "Other",
+						color: "#cccccc"
+					},
 					content: [
 						{ label: "Spiders", value: 2, color: "#333333" },
 						{ label: "Mother-in-laws", value: 10, color: "#444444" },
@@ -228,18 +235,18 @@ define([], function() {
 					mainLabel: {
 						color: "#333333",
 						font: "Open sans",
-						fontSize: "11"
+						fontSize: 11
 					},
 					percentage: {
 						color: "#999999",
 						font: "Open sans",
-						fontSize: "11",
+						fontSize: 11,
 						decimalPlaces: 0
 					},
 					value: {
 						color: "#cccc44",
 						font: "Open sans",
-						fontSize: "11"
+						fontSize: 11
 					},
 					lines: {
 						enabled: true,
@@ -326,6 +333,13 @@ define([], function() {
 				},
 				data: {
 					sortOrder: "none",
+					smallSegmentGrouping: {
+						enabled: false,
+						value: 1,
+						valueType: "percentage",
+						label: "Other",
+						color: "#cccccc"
+					},
 					content: [
 						{ label: "When's it going to be done?", value: 8, color: "#7e3838" },
 						{ label: "Bennnnn!", value: 5, color: "#7e6538" },
@@ -441,6 +455,13 @@ define([], function() {
 				},
 				data: {
 					sortOrder: "label-desc",
+					smallSegmentGrouping: {
+						enabled: false,
+						value: 1,
+						valueType: "percentage",
+						label: "Other",
+						color: "#cccccc"
+					},
 					content: [
 						{ label: "Hydrogen", value: 74.9, color: "#fdd000" },
 						{ label: "Helium", value: 23.8, color: "#ccab12" },

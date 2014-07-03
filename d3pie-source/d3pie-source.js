@@ -59,13 +59,12 @@
 		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
-		var smallSegmentGrouping = this.options.data.smallSegmentGrouping;
-		this.options.data = math.sortPieData(this);
-		if (smallSegmentGrouping.enabled) {
-			this.options.data = helpers.applySmallSegmentGrouping(this.options.data, smallSegmentGrouping);
+		this.options.data.content = math.sortPieData(this);
+		if (this.options.data.smallSegmentGrouping.enabled) {
+			this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
 		}
 		this.options.colors = helpers.initSegmentColors(this);
-		this.totalSize      = math.getTotalPieSize(this.options.data);
+		this.totalSize      = math.getTotalPieSize(this.options.data.content);
 
 		_init.call(this);
 	};
@@ -96,7 +95,7 @@
 			return {
 				element: segment,
 				index: index,
-				data: this.options.data[index]
+				data: this.options.data.content[index]
 			}
 		} else {
 			return null;
@@ -105,7 +104,7 @@
 
 	d3pie.prototype.openSegment = function(index) {
 		var index = parseInt(index, 10);
-		if (index < 0 || index > this.options.data.length-1) {
+		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}
 		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());

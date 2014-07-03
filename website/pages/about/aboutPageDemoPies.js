@@ -168,7 +168,8 @@ define([], function() {
 					{ label: "Off-by-one errors", value: 3, color: "#111111"},
 					{ label: "Chickadees", value: 4, color: "#050505" },
 					{ label: "A never-ending Harper Government", value: 1, color: "#646464" },
-					{ label: "Rewatching The Matrix Reloaded", value: 4, color: "#747474" }				]
+					{ label: "Rewatching The Matrix Reloaded", value: 4, color: "#747474" }
+				]
 			},
 			labels: {
 				enableTooltips: true,
