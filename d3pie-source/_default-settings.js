@@ -40,7 +40,7 @@ var defaultSettings = {
 			value: 1,
 			valueType: "percentage",
 			label: "Other",
-			color: "#cacaca"
+			color: "#cccccc"
 		},
 		content: []
 	},

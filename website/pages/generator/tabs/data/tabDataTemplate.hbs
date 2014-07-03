@@ -80,7 +80,7 @@
 				<option value="value" {{#compare config.data.smallSegmentGrouping.valueType "value"}}selected="selected"{{/compare}}>value</option>
 			</select>
 			<label class="{{#compare config.data.smallSegmentGrouping.enabled false}}disabled{{/compare}}">under</label>
-			<input type="number" class="pixelSizeField keyupUpdateNoAnimation" {{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}}
+			<input type="number" class="keyupUpdateNoAnimation" min="0" style="width:80px" {{#compare config.data.smallSegmentGrouping.enabled false}}disabled="disabled"{{/compare}}
 				id="smallSegmentGroupingValue" value="{{config.data.smallSegmentGrouping.value}}" />
 			<label id="smallSegmentPercentageUnit" class="{{#compare config.data.smallSegmentGrouping.enabled false}}disabled{{/compare}}">%</label>
 		</div>

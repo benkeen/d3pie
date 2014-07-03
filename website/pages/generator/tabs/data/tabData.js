@@ -84,6 +84,14 @@ define([
 			mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 		});
 
+		$("#smallSegmentGroupingValueType").on("change", function() {
+			if (this.value === "percentage") {
+				$("#smallSegmentPercentageUnit").show();
+			} else {
+				$("#smallSegmentPercentageUnit").hide();
+			}
+		});
+
 		utils.addColorpicker("smallSegmentColor");
 	};
 

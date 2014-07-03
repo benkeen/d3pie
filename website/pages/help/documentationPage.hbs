@@ -259,6 +259,13 @@ myPie.redraw();
 	},
 	data: {
 		sortOrder: "none",
+		smallSegmentGrouping: {
+			enabled: false,
+			value: 1,
+			valueType: "percentage",
+			label: "Other",
+			color: "#cccccc"
+		},
 
 		// REQUIRED! This is where you enter your pie data; it needs to be an array of objects
 		// of this form: { label: "label", value: 1.5, color: "#000000" } - color is optional
@@ -525,6 +532,49 @@ myPie.redraw();
 		</ul>
 	</td>
 </tr>
+<tr>
+	<td>data.smallSegmentGrouping.enabled</td>
+	<td><span class="label label-pink">boolean</span></td>
+	<td>false</td>
+	<td>
+		This enables the option to group small segments.
+	</td>
+</tr>
+<tr>
+	<td>data.smallSegmentGrouping.value</td>
+	<td><span class="label label-primary">number</span></td>
+	<td>1</td>
+	<td>
+		The threshold value - either percent or value - that segments have to be under in order to be grouped into the
+		small segment group.
+	</td>
+</tr>
+<tr>
+	<td>data.smallSegmentGrouping.valueType</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>percentage</td>
+	<td>
+		This determines the type of the value used to determine which small segment values get grouped. It can be either
+		<code>percentage</code> or <code>value</code>.
+	</td>
+</tr>
+<tr>
+	<td>data.smallSegmentGrouping.label</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>Other</td>
+	<td>
+		The label for the small segment group.
+	</td>
+</tr>
+<tr>
+	<td>data.smallSegmentGrouping.color</td>
+	<td><span class="label label-warning">string</span></td>
+	<td>Other</td>
+	<td>
+		The hex code color for the small segment group.
+	</td>
+</tr>
+
 <tr>
 	<td>data.content</td>
 	<td><span class="label label-purple">array</span></td>

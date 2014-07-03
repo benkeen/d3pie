@@ -165,6 +165,31 @@ define([
 		if (allSettings.data.sortOrder != defaultSettings.data.sortOrder) {
 			finalObj.data.sortOrder = allSettings.data.sortOrder;
 		}
+
+		var smallSegmentGroupingEnabledDiff = allSettings.data.smallSegmentGrouping.enabled != defaultSettings.data.smallSegmentGrouping.enabled;
+		if (smallSegmentGroupingEnabledDiff) {
+			finalObj.data.smallSegmentGrouping = {};
+			finalObj.data.smallSegmentGrouping.enabled = allSettings.data.smallSegmentGrouping.enabled;
+
+			var smallSegmentGroupingValDiff     = allSettings.data.smallSegmentGrouping.value != defaultSettings.data.smallSegmentGrouping.value;
+			var smallSegmentGroupingValTypeDiff = allSettings.data.smallSegmentGrouping.valueType != defaultSettings.data.smallSegmentGrouping.valueType;
+			var smallSegmentGroupingLabelDiff   = allSettings.data.smallSegmentGrouping.label != defaultSettings.data.smallSegmentGrouping.label;
+			var smallSegmentGroupingColorDiff   = allSettings.data.smallSegmentGrouping.color != defaultSettings.data.smallSegmentGrouping.color;
+
+			if (smallSegmentGroupingValDiff) {
+				finalObj.data.smallSegmentGrouping.value = allSettings.data.smallSegmentGrouping.value;
+			}
+			if (smallSegmentGroupingValTypeDiff) {
+				finalObj.data.smallSegmentGrouping.valueType = allSettings.data.smallSegmentGrouping.valueType;
+			}
+			if (smallSegmentGroupingLabelDiff) {
+				finalObj.data.smallSegmentGrouping.label = allSettings.data.smallSegmentGrouping.label;
+			}
+			if (smallSegmentGroupingColorDiff) {
+				finalObj.data.smallSegmentGrouping.color = allSettings.data.smallSegmentGrouping.color;
+			}
+		}
+
 		finalObj.data.content = allSettings.data.content;
 
 		// outer labels
