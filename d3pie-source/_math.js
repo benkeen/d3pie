@@ -91,16 +91,16 @@ var math = {
 				data = helpers.shuffleArray(data);
 				break;
 			case "value-asc":
-				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1; });
 				break;
 			case "value-desc":
-				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1; });
 				break;
 			case "label-asc":
-				data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1; });
 				break;
 			case "label-desc":
-				data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1; });
 				break;
 		}
 
@@ -111,7 +111,7 @@ var math = {
 
 	// var pieCenter = math.getPieCenter();
 	getPieTranslateCenter: function(pieCenter) {
-		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
+		return "translate(" + pieCenter.x + "," + pieCenter.y + ")";
 	},
 
 	/**
@@ -158,11 +158,11 @@ var math = {
 	 * @returns {Array}
 	 */
 	rotate: function(x, y, xm, ym, a) {
-		var cos = Math.cos,
+
+        a = a * Math.PI / 180; // convert to radians
+
+        var cos = Math.cos,
 			sin = Math.sin,
-
-		a = a * Math.PI / 180, // convert to radians
-
 		// subtract midpoints, so that midpoint is translated to origin and add it in the end again
 		xr = (x - xm) * cos(a) - (y - ym) * sin(a) + xm,
 		yr = (x - xm) * sin(a) + (y - ym) * cos(a) + ym;

@@ -96,14 +96,14 @@
 				element: segment,
 				index: index,
 				data: this.options.data.content[index]
-			}
+			};
 		} else {
 			return null;
 		}
 	};
 
 	d3pie.prototype.openSegment = function(index) {
-		var index = parseInt(index, 10);
+		index = parseInt(index, 10);
 		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}
