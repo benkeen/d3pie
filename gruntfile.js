@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-handlebars");
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
 	_includeInThisScope("website/grunt-templates/file-paths.js");
 	_includeInThisScope("website/grunt-templates/env-specific-constants.js");
@@ -293,7 +294,10 @@ module.exports = function(grunt) {
 				src: ['**'],
 				dest: 'build/'
 			}
-		}
+		},
+        jshint: {
+            all: ['d3pie-source/*.js']
+        }
 	};
 
 	grunt.initConfig(config);
@@ -302,10 +306,11 @@ module.exports = function(grunt) {
 	grunt.registerTask("setEnv_Prod", setEnv_Prod);
 
 	// the default task is to regenerate the d3pie.js and d3pie.min.js files based on the latest files in d3pie-source/
-	grunt.registerTask("default", ["createD3PieFiles", "uglify:d3pie"]);
+	grunt.registerTask("default", ["jshint","createD3PieFiles", "uglify:d3pie"]);
 
 	// tasks for building the website. There are only 2 options: dev and prod
 	grunt.registerTask("dev", [
+        "jshint",
 		"setEnv_Dev",
 		"template:indexFile",
 		"template:devRequireConfig",
@@ -313,6 +318,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask("prod", [
+        "jshint",
 		"setEnv_Prod", // set the build environment constants
 		"clean",       // wipe out the build folder
 		"template:constants", // create the constants file

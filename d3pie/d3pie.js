@@ -284,11 +284,12 @@ var helpers = {
 	},
 
 	processObj: function(obj, is, value) {
-		if (typeof is == 'string') {
+		if (typeof is === 'string') {
 			return helpers.processObj(obj, is.split('.'), value);
-		} else if (is.length == 1 && value !== undefined) {
-			return obj[is[0]] = value;
-		} else if (is.length == 0) {
+		} else if (is.length === 1 && value !== undefined) {
+            obj[is[0]] = value;
+			return obj[is[0]];
+		} else if (is.length === 0) {
 			return obj;
 		} else {
 			return helpers.processObj(obj[is[0]], is.slice(1), value);
@@ -468,35 +469,35 @@ var extend = function() {
 
 		jQuery = {
 			isFunction: function (obj) {
-				return jQuery.type(obj) === "function"
+				return jQuery.type(obj) === "function";
 			},
 			isArray: Array.isArray ||
 				function (obj) {
-					return jQuery.type(obj) === "array"
+					return jQuery.type(obj) === "array";
 				},
 			isWindow: function (obj) {
-				return obj != null && obj == obj.window
+				return obj !== null && obj === obj.window;
 			},
 			isNumeric: function (obj) {
-				return !isNaN(parseFloat(obj)) && isFinite(obj)
+				return !isNaN(parseFloat(obj)) && isFinite(obj);
 			},
 			type: function (obj) {
-				return obj == null ? String(obj) : class2type[toString.call(obj)] || "object"
+				return obj === null ? String(obj) : class2type[toString.call(obj)] || "object";
 			},
 			isPlainObject: function (obj) {
 				if (!obj || jQuery.type(obj) !== "object" || obj.nodeType) {
-					return false
+					return false;
 				}
 				try {
 					if (obj.constructor && !hasOwn.call(obj, "constructor") && !hasOwn.call(obj.constructor.prototype, "isPrototypeOf")) {
-						return false
+						return false;
 					}
 				} catch (e) {
-					return false
+					return false;
 				}
 				var key;
 				for (key in obj) {}
-				return key === undefined || hasOwn.call(obj, key)
+				return key === undefined || hasOwn.call(obj, key);
 			}
 		};
 	if (typeof target === "boolean") {
@@ -505,24 +506,24 @@ var extend = function() {
 		i = 2;
 	}
 	if (typeof target !== "object" && !jQuery.isFunction(target)) {
-		target = {}
+		target = {};
 	}
 	if (length === i) {
 		target = this;
 		--i;
 	}
 	for (i; i < length; i++) {
-		if ((options = arguments[i]) != null) {
+		if ((options = arguments[i]) !== null) {
 			for (name in options) {
 				src = target[name];
 				copy = options[name];
 				if (target === copy) {
-					continue
+					continue;
 				}
 				if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)))) {
 					if (copyIsArray) {
 						copyIsArray = false;
-						clone = src && jQuery.isArray(src) ? src : []
+						clone = src && jQuery.isArray(src) ? src : [];
 					} else {
 						clone = src && jQuery.isPlainObject(src) ? src : {};
 					}
@@ -629,16 +630,16 @@ var math = {
 				data = helpers.shuffleArray(data);
 				break;
 			case "value-asc":
-				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? -1 : 1; });
 				break;
 			case "value-desc":
-				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.value < b.value) ? 1 : -1; });
 				break;
 			case "label-asc":
-				data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1; });
 				break;
 			case "label-desc":
-				data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1 });
+				data.sort(function(a, b) { return (a.label.toLowerCase() < b.label.toLowerCase()) ? 1 : -1; });
 				break;
 		}
 
@@ -649,7 +650,7 @@ var math = {
 
 	// var pieCenter = math.getPieCenter();
 	getPieTranslateCenter: function(pieCenter) {
-		return "translate(" + pieCenter.x + "," + pieCenter.y + ")"
+		return "translate(" + pieCenter.x + "," + pieCenter.y + ")";
 	},
 
 	/**
@@ -696,11 +697,11 @@ var math = {
 	 * @returns {Array}
 	 */
 	rotate: function(x, y, xm, ym, a) {
-		var cos = Math.cos,
+
+        a = a * Math.PI / 180; // convert to radians
+
+        var cos = Math.cos,
 			sin = Math.sin,
-
-		a = a * Math.PI / 180, // convert to radians
-
 		// subtract midpoints, so that midpoint is translated to origin and add it in the end again
 		xr = (x - xm) * cos(a) - (y - ym) * sin(a) + xm,
 		yr = (x - xm) * sin(a) + (y - ym) * cos(a) + ym;
@@ -951,7 +952,7 @@ var labels = {
 				var segmentPercentage = segments.getPercentage(pie, i);
 				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
-			})
+			});
 	},
 
 	positionLabelGroups: function(pie, section) {
@@ -1092,15 +1093,17 @@ var labels = {
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
+        var i,curr;
+
 		if (size <= 1) {
 			return;
 		}
 
 		var currIndexHemisphere = pie.outerLabelGroupData[currIndex].hs;
-		if (direction === "clockwise" && currIndexHemisphere != "right") {
+		if (direction === "clockwise" && currIndexHemisphere !== "right") {
 			return;
 		}
-		if (direction === "anticlockwise" && currIndexHemisphere != "left") {
+		if (direction === "anticlockwise" && currIndexHemisphere !== "left") {
 			return;
 		}
 		var nextIndex = (direction === "clockwise") ? currIndex+1 : currIndex-1;
@@ -1122,8 +1125,9 @@ var labels = {
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
 		if (direction === "clockwise") {
-			for (var i=0; i<=currIndex; i++) {
-				var curr = pie.outerLabelGroupData[i];
+            i=0;
+			for (; i<=currIndex; i++) {
+				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
@@ -1133,8 +1137,9 @@ var labels = {
 				}
 			}
 		} else {
-			for (var i=size-1; i>=currIndex; i--) {
-				var curr = pie.outerLabelGroupData[i];
+            i=size-1;
+			for (; i>=currIndex; i--) {
+				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
@@ -1168,7 +1173,7 @@ var labels = {
 		}
 
 		if (!newXPos) {
-			console.log(lastCorrectlyPositionedLabel.hs, xDiff)
+			console.log(lastCorrectlyPositionedLabel.hs, xDiff);
 		}
 
 		pie.outerLabelGroupData[nextIndex].x = newXPos;
@@ -1709,14 +1714,14 @@ var text = {
 				element: segment,
 				index: index,
 				data: this.options.data.content[index]
-			}
+			};
 		} else {
 			return null;
 		}
 	};
 
 	d3pie.prototype.openSegment = function(index) {
-		var index = parseInt(index, 10);
+		index = parseInt(index, 10);
 		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}

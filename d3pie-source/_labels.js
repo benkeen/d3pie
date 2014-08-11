@@ -208,7 +208,7 @@ var labels = {
 				var segmentPercentage = segments.getPercentage(pie, i);
 				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
-			})
+			});
 	},
 
 	positionLabelGroups: function(pie, section) {
@@ -349,15 +349,17 @@ var labels = {
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
+        var i,curr;
+
 		if (size <= 1) {
 			return;
 		}
 
 		var currIndexHemisphere = pie.outerLabelGroupData[currIndex].hs;
-		if (direction === "clockwise" && currIndexHemisphere != "right") {
+		if (direction === "clockwise" && currIndexHemisphere !== "right") {
 			return;
 		}
-		if (direction === "anticlockwise" && currIndexHemisphere != "left") {
+		if (direction === "anticlockwise" && currIndexHemisphere !== "left") {
 			return;
 		}
 		var nextIndex = (direction === "clockwise") ? currIndex+1 : currIndex-1;
@@ -379,8 +381,9 @@ var labels = {
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
 		if (direction === "clockwise") {
-			for (var i=0; i<=currIndex; i++) {
-				var curr = pie.outerLabelGroupData[i];
+            i=0;
+			for (; i<=currIndex; i++) {
+				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
@@ -390,8 +393,9 @@ var labels = {
 				}
 			}
 		} else {
-			for (var i=size-1; i>=currIndex; i--) {
-				var curr = pie.outerLabelGroupData[i];
+            i=size-1;
+			for (; i>=currIndex; i--) {
+				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
@@ -425,7 +429,7 @@ var labels = {
 		}
 
 		if (!newXPos) {
-			console.log(lastCorrectlyPositionedLabel.hs, xDiff)
+			console.log(lastCorrectlyPositionedLabel.hs, xDiff);
 		}
 
 		pie.outerLabelGroupData[nextIndex].x = newXPos;

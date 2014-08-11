@@ -2,7 +2,7 @@ define([], function() {
 
 	var C = {
 		VERSION: "0.1.3",
-		MINIMIZED: false,
+		MINIMIZED: true,
 		DEBUG: false
 	};
 
