@@ -1898,7 +1898,7 @@ var text = {
 
 	// expose our d3pie function
 	if (typeof module !== 'undefined' && module.exports) {
-		module.exports.d3pie = d3pie; 
+		module.exports = d3pie; 
 	} 
     	window.d3pie = d3pie;
 })();
