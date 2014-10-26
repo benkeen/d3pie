@@ -5,11 +5,24 @@
  * @date June 2014
  * @repo http://github.com/benkeen/d3pie
  */
-;(function() {
-	"use strict";
+
+// UMD pattern from https://github.com/umdjs/umd/blob/master/returnExports.js
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but only CommonJS-like environments that support module.exports,
+    // like Node
+    module.exports = factory(require());
+  } else {
+    // browser globals (root is window)
+    root.d3pie = factory(root);
+  }
+}(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.3";
+	var _version = "0.1.4";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -55,6 +68,11 @@ var defaultSettings = {
 	},
 	data: {
 		sortOrder: "none",
+    ignoreSmallSegments: {
+      enabled: false,
+      valueType: "percentage",
+      value: null
+    },
 		smallSegmentGrouping: {
 			enabled: false,
 			value: 1,
@@ -1896,9 +1914,6 @@ var text = {
 		});
 	};
 
-	// expose our d3pie function
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = d3pie; 
-	} 
-    	window.d3pie = d3pie;
-})();
+  return d3pie;
+
+}));

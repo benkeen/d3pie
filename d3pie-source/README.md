@@ -19,9 +19,9 @@ code is grouped by it's `d3pie.helpers` or `d3.math` prefix.
 
 #### Relationship to the website
 
-None! Well, basically none. The website - i.e. the pretty site that contains the blurb, documentation and generator page
-is a completely separate layer about the actual d3pie script. It uses the same version of d3pie that's available for
-download - it just makes judicious use of the available API functions to update / redraw the pie charts when needed.
+None! Well, basically none. The website uses the same version of d3pie that's available for download - it just
+makes judicious use of the available API functions to update / redraw the pie charts, to provide the generator
+functionality.
 
 ### The files
 

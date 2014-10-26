@@ -35,6 +35,11 @@ var defaultSettings = {
 	},
 	data: {
 		sortOrder: "none",
+		ignoreSmallSegments: {
+			enabled: false,
+			valueType: "percentage",
+			value: null
+		},
 		smallSegmentGrouping: {
 			enabled: false,
 			value: 1,
@@ -92,6 +97,15 @@ var defaultSettings = {
 		},
 		highlightSegmentOnMouseover: true,
 		highlightLuminosity: -0.2
+	},
+	tooltips: {
+		enabled: false,
+		type: "auto", // auto|caption|custom
+		location: "center", // center|follow
+		styles: {
+			backgroundColor: "#000000",
+			color: "#111111"
+		}
 	},
 	misc: {
 		colors: {
