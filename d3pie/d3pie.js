@@ -1,8 +1,8 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.3
- * @date June 2014
+ * @version 0.1.4
+ * @date Oct 2014 - [still in dev!]
  * @repo http://github.com/benkeen/d3pie
  */
 
@@ -68,11 +68,11 @@ var defaultSettings = {
 	},
 	data: {
 		sortOrder: "none",
-    ignoreSmallSegments: {
-      enabled: false,
-      valueType: "percentage",
-      value: null
-    },
+		ignoreSmallSegments: {
+			enabled: false,
+			valueType: "percentage",
+			value: null
+		},
 		smallSegmentGrouping: {
 			enabled: false,
 			value: 1,
@@ -130,6 +130,15 @@ var defaultSettings = {
 		},
 		highlightSegmentOnMouseover: true,
 		highlightLuminosity: -0.2
+	},
+	tooltips: {
+		enabled: false,
+		type: "auto", // auto|caption|custom
+		location: "center", // center|follow
+		styles: {
+			backgroundColor: "#000000",
+			color: "#111111"
+		}
 	},
 	misc: {
 		colors: {
@@ -1661,6 +1670,23 @@ var text = {
 		return h;
 	}
 };
+  //// --------- validate.js -----------
+var tt = {
+  addTooltips: function(pie) {
+    if (pie.options.tooltips.type === 'caption') {
+
+      pie.svg.selectAll("." + pie.cssPrefix + "tooltip")
+        .data(pie.options.data.content)
+        .enter()
+        .append("g")
+        .attr("class", pie.cssPrefix + "tooltip")
+        .text(function(d) {
+          console.log(d);
+        });
+    }
+  }
+};
+
 
 	// --------------------------------------------------------------------------------------------
 
@@ -1787,7 +1813,6 @@ var text = {
 			case "effects.highlightLuminosity":
 				helpers.processObj(this.options, propKey, value);
 				break;
-
 		}
 	};
 
@@ -1797,10 +1822,10 @@ var text = {
 
 	var _init = function() {
 
-		// 1. prep-work
+		// prep-work
 		this.svg = helpers.addSVGSpace(this);
 
-		// 2. store info about the main text components as part of the d3pie object instance. This is populated
+		// store info about the main text components as part of the d3pie object instance
 		this.textComponents = {
 			headerHeight: 0,
 			title: {
@@ -1822,7 +1847,7 @@ var text = {
 
 		this.outerLabelGroupData = [];
 
-		// 3. add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
+		// add the key text components offscreen (title, subtitle, footer). We need to know their widths/heights for later computation
 		if (this.textComponents.title.exists) {
 			text.addTitle(this);
 		}
@@ -1831,7 +1856,7 @@ var text = {
 		}
 		text.addFooter(this);
 
-		// the footer never moves - this puts it in place now
+		// the footer never moves. Put it in place now
 		var self = this;
 		helpers.whenIdExists(this.cssPrefix + "footer", function() {
 			text.positionFooter(self);
@@ -1840,7 +1865,11 @@ var text = {
 			self.textComponents.footer.w = d3.w;
 		});
 
-		// STEP 2: now create the pie chart and position everything accordingly
+    if (this.options.tooltips.enabled) {
+      tt.addTooltipsthis();
+    }
+
+		// now create the pie chart and position everything accordingly
 		var reqEls = [];
 		if (this.textComponents.title.exists)    { reqEls.push(this.cssPrefix + "title"); }
 		if (this.textComponents.subtitle.exists) { reqEls.push(this.cssPrefix + "subtitle"); }
@@ -1915,5 +1944,4 @@ var text = {
 	};
 
   return d3pie;
-
 }));
