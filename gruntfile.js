@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-handlebars");
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 
 	_includeInThisScope("website/grunt-templates/file-paths.js");
 	_includeInThisScope("website/grunt-templates/env-specific-constants.js");
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
 			_math:            fs.readFileSync("d3pie-source/_math.js", 'utf8'),
 			_segments:        fs.readFileSync("d3pie-source/_segments.js", 'utf8'),
 			_text:            fs.readFileSync("d3pie-source/_text.js", 'utf8'),
-      _tooltips:        fs.readFileSync("d3pie-source/_tooltips.js", 'utf8'),
+			_tooltips:        fs.readFileSync("d3pie-source/_tooltips.js", 'utf8'),
 			_validate:        fs.readFileSync("d3pie-source/_validate.js", 'utf8')
 		};
 		grunt.task.run("template:d3pieBundle");
@@ -55,7 +55,6 @@ module.exports = function(grunt) {
 			lines.push('\t\t"' + i + '": "' + file + '"');
 		}
 		config.template.devRequireConfig.options.data.moduleStr = lines.join(",\n");
-
 		config.template.constants.options.data.VERSION = packageFile.version;
 		config.template.constants.options.data.MINIMIZED = _CONSTANTS.DEV.MINIMIZED;
 		config.template.constants.options.data.DEBUG = _CONSTANTS.DEV.DEBUG;
@@ -69,11 +68,9 @@ module.exports = function(grunt) {
 		config.template.prodRequireConfig.options.data.handlebarsLib = _CONSTANTS.PROD.HANDLEBARS_LIB;
 		config.template.prodRequireConfig.options.data.baseUrl = _CONSTANTS.PROD.BASE_URL;
 		config.template.prodRequireConfig.options.data.moduleStr = info.allModules;
-
 		config.template.constants.options.data.VERSION = packageFile.version;
 		config.template.constants.options.data.MINIMIZED = _CONSTANTS.PROD.MINIMIZED;
 		config.template.constants.options.data.DEBUG = _CONSTANTS.PROD.DEBUG;
-
 		config.handlebars.compile.files = info.handlebarsMap;
 	};
 

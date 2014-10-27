@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips
+</h1>
+
+<p>
+	This show how to have a tooltip by specifying a custom string per data item.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "A Very Simple Pie",
+				fontSize: 30
+			}
+		},
+		data: {
+			content: [
+				{ label: "JavaScript", value: 264131, caption: "JS Rocks! Woo!" },
+				{ label: "Ruby", value: 218812, caption: "Ruby is foreign and weird" },
+				{ label: "Java", value: 157618, caption: "Old and verbose (buuuuurn!)" }
+			]
+		},
+    tooltips: {
+      enabled: true,
+      type: "caption"
+    }
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+  header: {
+    title: {
+      text: "A Very Simple Pie",
+      fontSize: 30
+    }
+  },
+  data: {
+    content: [
+      { label: "JavaScript", value: 264131, caption: "JS Rocks! Woo!" },
+      { label: "Ruby", value: 218812, caption: "Ruby is foreign and weird" },
+      { label: "Java", value: 157618, caption: "Old and verbose (buuuuurn!)"}
+    ]
+  },
+  tooltips: {
+    enabled: true,
+    type: "caption"
+  }
+});
+</pre></blockquote>
+
+</body>
+</html>

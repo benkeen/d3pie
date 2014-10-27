@@ -129,6 +129,8 @@ var segments = {
 			}
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
+
+			
 		});
 
 		arc.on("mouseout", function() {

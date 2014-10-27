@@ -1367,6 +1367,8 @@ var segments = {
 			}
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
+
+			
 		});
 
 		arc.on("mouseout", function() {
@@ -1672,19 +1674,25 @@ var text = {
 };
   //// --------- validate.js -----------
 var tt = {
-  addTooltips: function(pie) {
-    if (pie.options.tooltips.type === 'caption') {
+	addTooltips: function(pie) {
 
-      pie.svg.selectAll("." + pie.cssPrefix + "tooltip")
-        .data(pie.options.data.content)
-        .enter()
-        .append("g")
-        .attr("class", pie.cssPrefix + "tooltip")
-        .text(function(d) {
-          console.log(d);
-        });
-    }
-  }
+		// group the label groups (label, percentage, value) into a single element for simpler positioning
+		var tooltips = pie.svg.insert("g", "." + pie.cssPrefix + "tooltips")
+			.attr("class", pie.cssPrefix + "tooltips");
+
+		if (pie.options.tooltips.type === 'caption') {
+			tooltips.selectAll("." + pie.cssPrefix + "tooltip")
+				.data(pie.options.data.content)
+				.enter()
+				.append("g")
+				.attr("class", function(d, i) {
+					return pie.cssPrefix + "tooltip" + i;
+				})
+				.text(function(d) {
+					console.log(d);
+				});
+		}
+	}
 };
 
 
@@ -1865,9 +1873,9 @@ var tt = {
 			self.textComponents.footer.w = d3.w;
 		});
 
-    if (this.options.tooltips.enabled) {
-      tt.addTooltipsthis();
-    }
+		if (this.options.tooltips.enabled) {
+			tt.addTooltips(this);
+		}
 
 		// now create the pie chart and position everything accordingly
 		var reqEls = [];

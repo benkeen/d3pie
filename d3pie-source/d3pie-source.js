@@ -217,9 +217,9 @@
 			self.textComponents.footer.w = d3.w;
 		});
 
-    if (this.options.tooltips.enabled) {
-      tt.addTooltipsthis();
-    }
+		if (this.options.tooltips.enabled) {
+			tt.addTooltips(this);
+		}
 
 		// now create the pie chart and position everything accordingly
 		var reqEls = [];
