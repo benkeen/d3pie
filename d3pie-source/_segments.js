@@ -127,10 +127,14 @@ var segments = {
 				var segColor = pie.options.colors[index];
 				segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
+
+      if (pie.options.tooltips.enabled) {
+        index = segment.attr("data-index");
+        tt.showTooltip(pie, index);
+      }
+
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
-
-			
 		});
 
 		arc.on("mouseout", function() {
@@ -152,6 +156,11 @@ var segments = {
 				}
 				segment.style("fill", color);
 			}
+
+      if (pie.options.tooltips.enabled) {
+        index = segment.attr("data-index");
+        tt.hideTooltip(pie, index);
+      }
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);

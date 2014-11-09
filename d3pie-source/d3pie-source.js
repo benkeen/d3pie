@@ -217,10 +217,6 @@
 			self.textComponents.footer.w = d3.w;
 		});
 
-		if (this.options.tooltips.enabled) {
-			tt.addTooltips(this);
-		}
-
 		// now create the pie chart and position everything accordingly
 		var reqEls = [];
 		if (this.textComponents.title.exists)    { reqEls.push(this.cssPrefix + "title"); }
@@ -291,7 +287,15 @@
 			labels.positionLabelGroups(self, "inner");
 			labels.fadeInLabelsAndLines(self);
 
-			segments.addSegmentEventHandlers(self);
+      // add and position the tooltips
+      if (self.options.tooltips.enabled) {
+        tt.addTooltips(self);
+        if (pie.options.tooltips.location === "center") {
+          tt.positionTooltips(self);
+        }
+      }
+
+      segments.addSegmentEventHandlers(self);
 		});
 	};
 

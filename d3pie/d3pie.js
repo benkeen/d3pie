@@ -133,11 +133,16 @@ var defaultSettings = {
 	},
 	tooltips: {
 		enabled: false,
-		type: "auto", // auto|caption|custom
+		type: "caption", // auto|caption|custom
 		location: "center", // center|follow
 		styles: {
+      fadeInOutSpeed: 200,
 			backgroundColor: "#000000",
-			color: "#111111"
+      backgroundOpacity: 0.8,
+			color: "#efefef",
+      borderRadius: 2,
+      font: "arial",
+      fontSize: 10
 		}
 	},
 	misc: {
@@ -1365,10 +1370,14 @@ var segments = {
 				var segColor = pie.options.colors[index];
 				segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
+
+      if (pie.options.tooltips.enabled) {
+        index = segment.attr("data-index");
+        tt.showTooltip(pie, index);
+      }
+
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
-
-			
 		});
 
 		arc.on("mouseout", function() {
@@ -1390,6 +1399,11 @@ var segments = {
 				}
 				segment.style("fill", color);
 			}
+
+      if (pie.options.tooltips.enabled) {
+        index = segment.attr("data-index");
+        tt.hideTooltip(pie, index);
+      }
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
@@ -1503,6 +1517,7 @@ var segments = {
 		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
 	}
 };
+
 	//// --------- text.js -----------
 var text = {
 	offscreenCoord: -10000,
@@ -1513,10 +1528,12 @@ var text = {
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
-			.attr("id", pie.cssPrefix + "title")
-			.attr("class", pie.cssPrefix + "title")
-			.attr("x", text.offscreenCoord)
-			.attr("y", text.offscreenCoord)
+			.attr({
+        id: pie.cssPrefix + "title",
+        class: pie.cssPrefix + "title",
+        x: text.offscreenCoord,
+        y: text.offscreenCoord
+      })
 			.attr("text-anchor", function() {
 				var location;
 				if (pie.options.header.location === "top-center" || pie.options.header.location === "pie-center") {
@@ -1672,27 +1689,97 @@ var text = {
 		return h;
 	}
 };
+
   //// --------- validate.js -----------
 var tt = {
 	addTooltips: function(pie) {
 
 		// group the label groups (label, percentage, value) into a single element for simpler positioning
-		var tooltips = pie.svg.insert("g", "." + pie.cssPrefix + "tooltips")
+		var tooltips = pie.svg.insert("g")
 			.attr("class", pie.cssPrefix + "tooltips");
 
-		if (pie.options.tooltips.type === 'caption') {
+    if (pie.options.tooltips.type === 'caption') {
+
 			tooltips.selectAll("." + pie.cssPrefix + "tooltip")
 				.data(pie.options.data.content)
 				.enter()
 				.append("g")
-				.attr("class", function(d, i) {
-					return pie.cssPrefix + "tooltip" + i;
-				})
-				.text(function(d) {
-					console.log(d);
-				});
+          .attr("class", pie.cssPrefix + "tooltip")
+          .attr("id", function(d, i) { return pie.cssPrefix + "tooltip" + i; })
+          //.style("opacity", 0)
+        .append("rect")
+        .attr({
+          rx: pie.options.tooltips.styles.borderRadius,
+          ry: pie.options.tooltips.styles.borderRadius
+        })
+
+
+      tooltips.selectAll("." + pie.cssPrefix + "tooltip")
+        .data(pie.options.data.content)
+        .append("text")
+          .attr("fill", function(d) { return pie.options.tooltips.styles.color; })
+          .style("font-size", function(d) { return pie.options.tooltips.styles.fontSize; })
+          .style("font-family", function(d) { return pie.options.tooltips.styles.font; })
+          .text(function(d) {
+            return d.caption;
+          });
 		}
-	}
+	},
+
+  positionTooltips: function(pie) {
+    d3.selectAll("." + pie.cssPrefix + "tooltip")
+      .attr("transform", function(d, i) {
+
+        // TODO move to helper. This is now (largely) shared by the labels code too
+        var pieCenterCopy = extend(true, {}, pie.pieCenter);
+
+        // now recompute the "center" based on the current _innerRadius
+        if (pie.innerRadius > 0) {
+          var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
+          var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
+          pieCenterCopy.x = newCoords.x;
+          pieCenterCopy.y = newCoords.y;
+        }
+
+        var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+        var xOffset = dims.w / 2;
+        var yOffset = dims.h / 4;
+
+        var x = pieCenterCopy.x + (pie.lineCoordGroups[i][0].x - pieCenterCopy.x) / 1.8;
+        var y = pieCenterCopy.y + (pie.lineCoordGroups[i][0].y - pieCenterCopy.y) / 1.8;
+
+        x = x - xOffset;
+        y = y + yOffset;
+
+        return "translate(" + x + "," + y + ")";
+      });
+
+    d3.selectAll("." + pie.cssPrefix + "tooltip rect")
+      .attr({
+        width: function(d, i) {
+          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+          return dims.w;
+        },
+        height: function(d, i) {
+          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+          return dims.h;
+        }
+      });
+  },
+
+  showTooltip: function(pie, index) {
+    d3.select("#" + pie.cssPrefix + "tooltip" + index)
+      .transition()
+      .duration(200)
+      .style("opacity", function() { return 1; });
+  },
+
+  hideTooltip: function(pie, index) {
+    d3.select("#" + pie.cssPrefix + "tooltip" + index)
+      .transition()
+      .duration(200)
+      .style("opacity", function() { return 0; });
+  }
 };
 
 
@@ -1873,10 +1960,6 @@ var tt = {
 			self.textComponents.footer.w = d3.w;
 		});
 
-		if (this.options.tooltips.enabled) {
-			tt.addTooltips(this);
-		}
-
 		// now create the pie chart and position everything accordingly
 		var reqEls = [];
 		if (this.textComponents.title.exists)    { reqEls.push(this.cssPrefix + "title"); }
@@ -1947,7 +2030,15 @@ var tt = {
 			labels.positionLabelGroups(self, "inner");
 			labels.fadeInLabelsAndLines(self);
 
-			segments.addSegmentEventHandlers(self);
+      // add and position the tooltips
+      if (self.options.tooltips.enabled) {
+        tt.addTooltips(self);
+        if (pie.options.tooltips.location === "center") {
+          tt.positionTooltips(self);
+        }
+      }
+
+      segments.addSegmentEventHandlers(self);
 		});
 	};
 

@@ -100,11 +100,16 @@ var defaultSettings = {
 	},
 	tooltips: {
 		enabled: false,
-		type: "auto", // auto|caption|custom
+		type: "caption", // auto|caption|custom
 		location: "center", // center|follow
 		styles: {
+      fadeInOutSpeed: 200,
 			backgroundColor: "#000000",
-			color: "#111111"
+      backgroundOpacity: 0.8,
+			color: "#efefef",
+      borderRadius: 2,
+      font: "arial",
+      fontSize: 10
 		}
 	},
 	misc: {
