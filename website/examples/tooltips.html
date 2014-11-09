@@ -27,6 +27,11 @@
 				fontSize: 20
 			}
 		},
+    labels: {
+      inner: {
+        format: "none"
+      }
+    },
 		data: {
 			content: [
 				{ label: "JavaScript", value: 264131, caption: "JS Rocks! Woo!" },
@@ -50,6 +55,11 @@ var pie = new d3pie("pie", {
       text: "A Very Simple Pie",
       fontSize: 30
     }
+  },
+  labels: {
+		inner: {
+			format: "none"
+		}
   },
   data: {
     content: [

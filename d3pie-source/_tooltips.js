@@ -14,13 +14,12 @@ var tt = {
 				.append("g")
           .attr("class", pie.cssPrefix + "tooltip")
           .attr("id", function(d, i) { return pie.cssPrefix + "tooltip" + i; })
-          //.style("opacity", 0)
+          .style("opacity", 0)
         .append("rect")
         .attr({
           rx: pie.options.tooltips.styles.borderRadius,
           ry: pie.options.tooltips.styles.borderRadius
-        })
-
+        });
 
       tooltips.selectAll("." + pie.cssPrefix + "tooltip")
         .data(pie.options.data.content)
@@ -66,26 +65,32 @@ var tt = {
       .attr({
         width: function(d, i) {
           var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-          return dims.w;
+          return dims.w + (2 * pie.options.tooltips.styles.padding);
         },
         height: function(d, i) {
           var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-          return dims.h;
-        }
+          return dims.h + (2 * pie.options.tooltips.styles.padding);
+        },
+        y: function(d, i) {
+          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+          return -(dims.h / 2) + 1;
+        },
+        x: -pie.options.tooltips.styles.padding,
+        opacity: pie.options.tooltips.styles.backgroundOpacity
       });
   },
 
   showTooltip: function(pie, index) {
     d3.select("#" + pie.cssPrefix + "tooltip" + index)
       .transition()
-      .duration(200)
+      .duration(pie.options.tooltips.styles.fadeInSpeed)
       .style("opacity", function() { return 1; });
   },
 
   hideTooltip: function(pie, index) {
     d3.select("#" + pie.cssPrefix + "tooltip" + index)
       .transition()
-      .duration(200)
+      .duration(pie.options.tooltips.styles.fadeOutSpeed)
       .style("opacity", function() { return 0; });
   }
 };

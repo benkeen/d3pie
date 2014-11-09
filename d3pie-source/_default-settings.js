@@ -103,13 +103,15 @@ var defaultSettings = {
 		type: "caption", // auto|caption|custom
 		location: "center", // center|follow
 		styles: {
-      fadeInOutSpeed: 200,
+      fadeInSpeed: 250,
+      fadeOutSpeed: 100,
 			backgroundColor: "#000000",
-      backgroundOpacity: 0.8,
+      backgroundOpacity: 0.5,
 			color: "#efefef",
       borderRadius: 2,
       font: "arial",
-      fontSize: 10
+      fontSize: 10,
+      padding: 4
 		}
 	},
 	misc: {
