@@ -134,7 +134,7 @@ var defaultSettings = {
 	tooltips: {
 		enabled: false,
 		type: "caption", // auto|caption|custom
-		location: "center", // center|follow
+    location: "follow", // center|follow
 		styles: {
       fadeInSpeed: 250,
       fadeOutSpeed: 100,
@@ -1206,10 +1206,6 @@ var labels = {
 			newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
 		}
 
-		if (!newXPos) {
-			console.log(lastCorrectlyPositionedLabel.hs, xDiff);
-		}
-
 		pie.outerLabelGroupData[nextIndex].x = newXPos;
 		pie.outerLabelGroupData[nextIndex].y = newYPos;
 	},
@@ -1243,6 +1239,7 @@ var labels = {
 		};
 	}
 };
+
 	//// --------- segments.js -----------
 var segments = {
 
@@ -1381,6 +1378,10 @@ var segments = {
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
 		});
+
+    arc.on("mousemove", function() {
+      tt.moveTooltip(pie);
+    });
 
 		arc.on("mouseout", function() {
 			var currentEl = d3.select(this);
@@ -1758,7 +1759,7 @@ var tt = {
     d3.selectAll("." + pie.cssPrefix + "tooltip rect")
       .attr({
         width: function(d, i) {
-          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);;
           return dims.w + (2 * pie.options.tooltips.styles.padding);
         },
         height: function(d, i) {
@@ -1775,10 +1776,25 @@ var tt = {
   },
 
   showTooltip: function(pie, index) {
+    tt.currentTooltip = index;
     d3.select("#" + pie.cssPrefix + "tooltip" + index)
       .transition()
       .duration(pie.options.tooltips.styles.fadeInSpeed)
       .style("opacity", function() { return 1; });
+
+    tt.moveTooltip();
+  },
+
+  moveTooltip: function() {
+    if (pie.options.tooltips.location !== "follow") {
+      return;
+    }
+
+    d3.selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
+      .attr("transform", function(d, i) {
+        var y = d3.event.pageY - (pie.pieCenter.y / 2);
+        return "translate(" + d3.event.pageX + "," + y + ")"
+      });
   },
 
   hideTooltip: function(pie, index) {
@@ -2040,9 +2056,7 @@ var tt = {
       // add and position the tooltips
       if (self.options.tooltips.enabled) {
         tt.addTooltips(self);
-        if (pie.options.tooltips.location === "center") {
-          tt.positionTooltips(self);
-        }
+        tt.positionTooltips(self);
       }
 
       segments.addSegmentEventHandlers(self);

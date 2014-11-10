@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #1
+</h1>
+
+<p>
+	This shows how to display tools tips on your pie chart segments, but supplying an additional
+  <code>caption</code> attribute in your data. If you don't want have additional text for your tooltips,
+  check out <a href="tooltips_auto.html">Tooltips #2</a>.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "Tooltips: example #1",
+				fontSize: 20
+			}
+		},
+    labels: {
+      inner: {
+        format: "none"
+      }
+    },
+		data: {
+			content: [
+				{ label: "JavaScript", value: 1, caption: "JS Rocks! Woo!" },
+				{ label: "Ruby", value: 2, caption: "Ruby is foreign and strange" },
+				{ label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)" }
+			]
+		},
+    tooltips: {
+      //enabled: true,
+      type: "caption"
+    }
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+  header: {
+    title: {
+      text: "Tooltips: example #1",
+      fontSize: 30
+    }
+  },
+  labels: {
+    inner: {
+      format: "none"
+    }
+  },
+  data: {
+    content: [
+      { label: "JavaScript", value: 1, caption: "JS Rocks! Woo!" },
+      { label: "Ruby", value: 2, caption: "Ruby is foreign and weird" },
+      { label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)"}
+    ]
+  },
+  tooltips: {
+    enabled: true,
+    type: "caption"
+  }
+});
+</pre></blockquote>
+
+<br />
+
+</body>
+</html>

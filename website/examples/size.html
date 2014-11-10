@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Pie Chart Canvas Size
+</h1>
+
+<p>
+	This example shows how to specify a size for your pie chart canvas.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+    size: {
+      canvasHeight: 120,
+      canvasWidth: 140
+    },
+    labels: {
+      outer: {
+        format: "none"
+      }
+    },
+		data: {
+			content: [
+				{ label: "JavaScript", value: 241 },
+				{ label: "Ruby", value: 525 },
+				{ label: "Java", value: 150 }
+			]
+		}
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+  size: {
+    canvasHeight: 120,
+    canvasWidth: 140
+  },
+  labels: {
+    outer: {
+      format: "none"
+    }
+  },
+  data: {
+    content: [
+      { label: "JavaScript", value: 241 },
+      { label: "Ruby", value: 525 },
+      { label: "Java", value: 150 }
+    ]
+  }
+});
+</pre></blockquote>
+
+</body>
+</html>

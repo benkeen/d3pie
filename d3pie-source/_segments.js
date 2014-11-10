@@ -137,6 +137,10 @@ var segments = {
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
 		});
 
+    arc.on("mousemove", function() {
+      tt.moveTooltip(pie);
+    });
+
 		arc.on("mouseout", function() {
 			var currentEl = d3.select(this);
 			var segment, index;

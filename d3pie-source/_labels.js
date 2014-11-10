@@ -428,10 +428,6 @@ var labels = {
 			newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
 		}
 
-		if (!newXPos) {
-			console.log(lastCorrectlyPositionedLabel.hs, xDiff);
-		}
-
 		pie.outerLabelGroupData[nextIndex].x = newXPos;
 		pie.outerLabelGroupData[nextIndex].y = newYPos;
 	},

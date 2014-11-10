@@ -290,9 +290,7 @@
       // add and position the tooltips
       if (self.options.tooltips.enabled) {
         tt.addTooltips(self);
-        if (pie.options.tooltips.location === "center") {
-          tt.positionTooltips(self);
-        }
+        tt.positionTooltips(self);
       }
 
       segments.addSegmentEventHandlers(self);

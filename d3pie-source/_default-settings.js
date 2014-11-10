@@ -101,7 +101,7 @@ var defaultSettings = {
 	tooltips: {
 		enabled: false,
 		type: "caption", // auto|caption|custom
-		location: "center", // center|follow
+    location: "follow", // center|follow
 		styles: {
       fadeInSpeed: 250,
       fadeOutSpeed: 100,
