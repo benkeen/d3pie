@@ -64,6 +64,7 @@
 			_uniqueIDCounter++;
 		}
 
+
 		// now run some validation on the user-defined info
 		if (!validate.initialCheck(this)) {
 			return;

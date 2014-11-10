@@ -104,7 +104,6 @@ var defaultSettings = {
     location: "follow", // center|follow
 		styles: {
       fadeInSpeed: 250,
-      fadeOutSpeed: 100,
 			backgroundColor: "#000000",
       backgroundOpacity: 0.5,
 			color: "#efefef",

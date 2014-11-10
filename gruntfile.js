@@ -308,7 +308,7 @@ module.exports = function(grunt) {
 
 	// tasks for building the website. There are only 2 options: dev and prod
 	grunt.registerTask("dev", [
-        "jshint",
+    "jshint",
 		"setEnv_Dev",
 		"template:indexFile",
 		"template:devRequireConfig",
