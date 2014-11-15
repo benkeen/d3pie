@@ -100,8 +100,8 @@ var defaultSettings = {
 	},
 	tooltips: {
 		enabled: false,
-		type: "caption", // auto|caption|custom
-    location: "follow", // center|follow
+		type: "placeholder", // caption|placeholder
+    string: "",
 		styles: {
       fadeInSpeed: 250,
 			backgroundColor: "#000000",

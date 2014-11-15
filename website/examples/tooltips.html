@@ -5,12 +5,12 @@
 </head>
 <body>
 <h1>
-	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #2
+	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #1: custom captions
 </h1>
 
 <p>
-	This shows how to display auto-generated tooltips on your chart that contains whatever segment info you want
-  (label, value, percent, or a combination).
+	This example shows how to define tooltips by including <b>caption</b> properties to your data sets. This is
+  useful if you want some unique tooltips per item.
 </p>
 
 <hr size="1" />
@@ -35,8 +35,8 @@
     },
 		data: {
 			content: [
-				{ label: "JavaScript", value: 1, caption: "JS Rocks! Woo!" },
-				{ label: "Ruby", value: 2, caption: "Ruby is foreign and strange" },
+				{ label: "JavaScript", value: 1, caption: "New and shiny despite its age." },
+				{ label: "Ruby", value: 2, caption: "Foreign and strange" },
 				{ label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)" }
 			]
 		},
@@ -54,7 +54,7 @@ var pie = new d3pie("pie", {
   header: {
     title: {
       text: "Tooltips: example #1",
-      fontSize: 30
+      fontSize: 20
     }
   },
   labels: {
@@ -64,9 +64,9 @@ var pie = new d3pie("pie", {
   },
   data: {
     content: [
-      { label: "JavaScript", value: 1, caption: "JS Rocks! Woo!" },
-      { label: "Ruby", value: 2, caption: "Ruby is foreign and weird" },
-      { label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)"}
+      { label: "JavaScript", value: 1, caption: "New and shiny despite its age." },
+      { label: "Ruby", value: 2, caption: "Foreign and strange" },
+      { label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)" }
     ]
   },
   tooltips: {

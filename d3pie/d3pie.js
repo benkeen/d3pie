@@ -133,8 +133,8 @@ var defaultSettings = {
 	},
 	tooltips: {
 		enabled: false,
-		type: "caption", // auto|caption|custom
-    location: "follow", // center|follow
+		type: "placeholder", // caption|placeholder
+    string: "",
 		styles: {
       fadeInSpeed: 250,
 			backgroundColor: "#000000",
@@ -1708,10 +1708,11 @@ var tt = {
         .attr("id", function(d, i) { return pie.cssPrefix + "tooltip" + i; })
         .style("opacity", 0)
       .append("rect")
-      .attr({
-        rx: pie.options.tooltips.styles.borderRadius,
-        ry: pie.options.tooltips.styles.borderRadius
-      });
+        .attr({
+          rx: pie.options.tooltips.styles.borderRadius,
+          ry: pie.options.tooltips.styles.borderRadius
+        })
+      .style("fill", pie.options.tooltips.styles.backgroundColor);
 
     tooltips.selectAll("." + pie.cssPrefix + "tooltip")
       .data(pie.options.data.content)
@@ -1719,12 +1720,21 @@ var tt = {
         .attr("fill", function(d) { return pie.options.tooltips.styles.color; })
         .style("font-size", function(d) { return pie.options.tooltips.styles.fontSize; })
         .style("font-family", function(d) { return pie.options.tooltips.styles.font; })
-        .text(function(d) {
-          return tt.replacePlaceholders(d.caption, { label: d.label, value: d.value });
+        .text(function(d, i) {
+          var caption = pie.options.tooltips.string;
+          if (pie.options.tooltips.type === "caption") {
+            caption = d.caption;
+          }
+          return tt.replacePlaceholders(caption, {
+            label: d.label,
+            value: d.value,
+            percentage: segments.getPercentage(pie, i)
+          });
         });
 	},
 
   positionTooltips: function(pie) {
+    /*
     d3.selectAll("." + pie.cssPrefix + "tooltip")
       .attr("transform", function(d, i) {
 
@@ -1750,6 +1760,7 @@ var tt = {
 
         return "translate(" + x + "," + y + ")";
       });
+  */
 
     d3.selectAll("." + pie.cssPrefix + "tooltip rect")
       .attr({
@@ -1778,18 +1789,16 @@ var tt = {
       .duration(pie.options.tooltips.styles.fadeInSpeed)
       .style("opacity", function() { return 1; });
 
-    tt.moveTooltip();
+    tt.moveTooltip(pie);
   },
 
-  moveTooltip: function() {
-    if (pie.options.tooltips.location !== "follow") {
-      return;
-    }
-
+  moveTooltip: function(pie) {
     d3.selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
-      .attr("transform", function() {
-        var y = d3.event.pageY - (pie.pieCenter.y / 2);
-        return "translate(" + d3.event.pageX + "," + y + ")";
+      .attr("transform", function(d) {
+        var mouseCoords = d3.mouse(this.parentElement);
+        var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;
+        var y = mouseCoords[1] - (2 * pie.options.tooltips.styles.padding) - 2;
+        return "translate(" + x + "," + y + ")";
       });
   },
 
@@ -1801,7 +1810,11 @@ var tt = {
     // element won't interfere
     d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
       .attr("transform", function(d, i) {
-        return "translate(" + pie.options.size.canvasWidth + "," + pie.options.size.canvasHeight + ")";
+
+        // klutzy, but it accounts for tooltip padding which could push it onscreen
+        var x = pie.options.size.canvasWidth + 1000;
+        var y = pie.options.size.canvasHeight + 1000;
+        return "translate(" + x + "," + y + ")";
       });
   },
 
@@ -1818,7 +1831,6 @@ var tt = {
     };
     return str.replace(/\{(\w+)\}/g, replacer(replacements));
   }
-
 };
 
 

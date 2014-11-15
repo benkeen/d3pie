@@ -277,6 +277,21 @@ define([], function() {
 					{ label: "[baleful stare]", value: 3, color: "#386a7e" }
 				]
 			},
+      tooltips: {
+        enabled: true,
+        type: "placeholder",
+        string: "{label}: {percentage}%",
+        styles: {
+          fadeInSpeed: 250,
+          backgroundColor: "#000000",
+          backgroundOpacity: 0.5,
+          color: "#efefef",
+          borderRadius: 2,
+          font: "arial",
+          fontSize: 12,
+          padding: 8
+        }
+      },
 			labels: {
 				enableTooltips: true,
 					outer: {

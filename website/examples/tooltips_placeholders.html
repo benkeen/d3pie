@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #2: placeholders
+</h1>
+
+<p>
+	This is the usual way to add tooltips to your pie chart. In <a href="tooltips.html">Tooltips #1</a> it shows
+  you how to add a custom <b>caption</b> property to each data item for custom tooltips. This technique, however,
+  just lets you define a single string containing placeholders: <b>{value}</b>, <b>{label}</b> and <b>{percentage}</b>
+  which are replaced with their appropriate values. See the example below.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		header: {
+			title: {
+				text: "Tooltips: example #2",
+				fontSize: 20
+			}
+		},
+    labels: {
+      inner: {
+        format: "none"
+      }
+    },
+		data: {
+			content: [
+				{ label: "JavaScript", value: 1 },
+				{ label: "Ruby", value: 2 },
+				{ label: "Java", value: 3 }
+			]
+		},
+    tooltips: {
+      enabled: true,
+      type: "placeholder",
+      string: "{label}, {value}, {percentage}%"
+    }
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+  header: {
+    title: {
+      text: "Tooltips: example #2",
+      fontSize: 20
+    }
+  },
+  labels: {
+    inner: {
+      format: "none"
+    }
+  },
+  data: {
+    content: [
+      { label: "JavaScript", value: 1 },
+      { label: "Ruby", value: 2 },
+      { label: "Java", value: 3 }
+    ]
+  },
+  tooltips: {
+    enabled: true,
+    type: "placeholder",
+    string: "{label}, {value}, {percentage}%"
+  }
+});
+</pre></blockquote>
+
+<br />
+
+</body>
+</html>

@@ -5,12 +5,11 @@
 </head>
 <body>
 <h1>
-	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #2
+	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #3
 </h1>
 
 <p>
-	This shows how to display auto-generated tooltips on your chart that contains whatever segment info you want
-  (label, value, percent, or a combination).
+	This shows you how to customize the tooltips style. The demo below contains all available styling fields.
 </p>
 
 <hr size="1" />
@@ -22,27 +21,31 @@
 
 <script>
 	var pie = new d3pie("pie", {
-		header: {
-			title: {
-				text: "Tooltips: example #1",
-				fontSize: 20
-			}
-		},
-    labels: {
-      inner: {
-        format: "none"
-      }
-    },
 		data: {
 			content: [
-				{ label: "JavaScript", value: 1, caption: "JS Rocks! Woo!" },
-				{ label: "Ruby", value: 2, caption: "Ruby is foreign and strange" },
-				{ label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)" }
+				{ label: "Elephants", value: 1 },
+				{ label: "Motmots", value: 2 },
+				{ label: "Pikas", value: 3 },
+        { label: "Jays", value: 2 },
+        { label: "Rhubarb", value: 5 },
+        { label: "Tennis", value: 2 },
+        { label: "Chickens", value: 1 }
 			]
 		},
     tooltips: {
       enabled: true,
-      type: "caption"
+      type: "placeholder",
+      string: "{label}: {percentage}%",
+      styles: {
+        fadeInSpeed: 500,
+        backgroundColor: "#00cc99",
+        backgroundOpacity: 0.8,
+        color: "#ffffcc",
+        borderRadius: 4,
+        font: "verdana",
+        fontSize: 20,
+        padding: 20
+      }
     }
 	});
 </script>
@@ -51,27 +54,31 @@
 
 <blockquote><pre>
 var pie = new d3pie("pie", {
-  header: {
-    title: {
-      text: "Tooltips: example #1",
-      fontSize: 30
-    }
-  },
-  labels: {
-    inner: {
-      format: "none"
-    }
-  },
   data: {
     content: [
-      { label: "JavaScript", value: 1, caption: "JS Rocks! Woo!" },
-      { label: "Ruby", value: 2, caption: "Ruby is foreign and weird" },
-      { label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)"}
+      { label: "Elephants", value: 1 },
+      { label: "Motmots", value: 2 },
+      { label: "Pikas", value: 3 },
+      { label: "Jays", value: 2 },
+      { label: "Rhubarb", value: 5 },
+      { label: "Tennis", value: 2 },
+      { label: "Chickens", value: 1 }
     ]
   },
   tooltips: {
     enabled: true,
-    type: "caption"
+    type: "placeholder",
+    string: "{label}: {percentage}%",
+    styles: {
+      fadeInSpeed: 500,
+      backgroundColor: "#00cc99",
+      backgroundOpacity: 0.8,
+      color: "#ffffcc",
+      borderRadius: 4,
+      font: "verdana",
+      fontSize: 20,
+      padding: 20
+    }
   }
 });
 </pre></blockquote>
