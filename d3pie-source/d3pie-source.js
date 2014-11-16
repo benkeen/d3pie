@@ -297,7 +297,6 @@
       // add and position the tooltips
       if (self.options.tooltips.enabled) {
         tt.addTooltips(self);
-        tt.positionTooltips(self);
       }
 
       segments.addSegmentEventHandlers(self);

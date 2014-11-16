@@ -15,24 +15,12 @@ var tt = {
         .style("opacity", 0)
       .append("rect")
         .attr({
-		    rx: pie.options.tooltips.styles.borderRadius,
-		    ry: pie.options.tooltips.styles.borderRadius
-		    width: function (d, i) {
-			    var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-			    return dims.w + (2 * pie.options.tooltips.styles.padding);
-		    },
-		    height: function (d, i) {
-			    var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-			    return dims.h + (2 * pie.options.tooltips.styles.padding);
-		    },
-		    y: function (d, i) {
-			    var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-			    return -(dims.h / 2) + 1;
-		    },
-		    x: -pie.options.tooltips.styles.padding,
-		    opacity: pie.options.tooltips.styles.backgroundOpacity
-	    })
-	    .style("fill", pie.options.tooltips.styles.backgroundColor);
+			    rx: pie.options.tooltips.styles.borderRadius,
+			    ry: pie.options.tooltips.styles.borderRadius,
+			    x: -pie.options.tooltips.styles.padding,
+			    opacity: pie.options.tooltips.styles.backgroundOpacity
+		    })
+		    .style("fill", pie.options.tooltips.styles.backgroundColor);
 
     tooltips.selectAll("." + pie.cssPrefix + "tooltip")
       .data(pie.options.data.content)
@@ -51,13 +39,35 @@ var tt = {
             percentage: segments.getPercentage(pie, i)
           });
         });
-  },
+
+		tooltips.selectAll("." + pie.cssPrefix + "tooltip rect")
+			.attr({
+				width: function (d, i) {
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					return dims.w + (2 * pie.options.tooltips.styles.padding);
+				},
+				height: function (d, i) {
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					return dims.h + (2 * pie.options.tooltips.styles.padding);
+				},
+				y: function (d, i) {
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					return -(dims.h / 2) + 1;
+				}
+			});
+	},
 
   showTooltip: function(pie, index) {
+
+	  var fadeInSpeed = pie.options.tooltips.styles.fadeInSpeed;
+	  if (tt.currentTooltip === index) {
+		  fadeInSpeed = 1;
+	  }
+
     tt.currentTooltip = index;
     d3.select("#" + pie.cssPrefix + "tooltip" + index)
       .transition()
-      .duration(pie.options.tooltips.styles.fadeInSpeed)
+      .duration(fadeInSpeed)
       .style("opacity", function() { return 1; });
 
     tt.moveTooltip(pie);
@@ -87,6 +97,8 @@ var tt = {
         var y = pie.options.size.canvasHeight + 1000;
         return "translate(" + x + "," + y + ")";
       });
+
+//	  tt.currentTooltip = null;
   },
 
   replacePlaceholders: function(str, replacements) {

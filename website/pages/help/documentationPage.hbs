@@ -13,6 +13,7 @@
 		<li><a href="#docs-default-settings"><i class="icon-chevron-right"></i> &#8212; Default settings</a></li>
 		<li><a href="#docs-settings"><i class="icon-chevron-right"></i> &#8212; Setting Details</a></li>
 		<li><a href="#docs-colors"><i class="icon-chevron-right"></i> Segment Colors</a></li>
+        <li><a href="#docs-tooltips"><i class="icon-chevron-right"></i> Tooltips</a></li>
 		<li><a href="#docs-fonts"><i class="icon-chevron-right"></i> Fonts</a></li>
 		<li><a href="#docs-upgrading"><i class="icon-chevron-right"></i> Upgrading</a></li>
 		<li><a href="#docs-feature-requests"><i class="icon-chevron-right"></i> Feature Requests!</a></li>
@@ -813,6 +814,100 @@ myPie.redraw();
 	</td>
 </tr>
 <tr>
+  <th colspan="4">Tooltips</th>
+</tr>
+<tr>
+  <td>tooltips.enabled</td>
+  <td><span class="label label-pink">boolean</span></td>
+  <td>true</td>
+  <td>
+    By default, tooltips are disabled.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.type</td>
+  <td><span class="label label-warning">string</span></td>
+  <td>placeholder</td>
+  <td>
+    <code>placeholder</code> or <code>caption</code>. This determines which of the two tooltips types you want
+    to use. For information on the two types, see the <a href="#docs-tooltips">Tooltips</a> section below.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.string</td>
+  <td><span class="label label-warning">string</span></td>
+  <td></td>
+  <td>
+    If you're using a <code>placeholder</code> type tooltip, this should contain the tooltip string. It may contain
+    the following placeholders which will be replaced with their appropriate values for each segment: <code>{label}</code>,
+    <code>{value}</code> and <code>{percentage}</code>.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.fadeInSpeed</td>
+  <td><span class="label label-primary">number</span></td>
+  <td>250</td>
+  <td>
+    The speed in milliseconds of how long the tooltip takes to fade in upon first mouseover of a segment.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.backgroundColor</td>
+  <td><span class="label label-warning">string</span></td>
+  <td>#000000</td>
+  <td>
+    Tooltips have a rectangular background. This governs the color of that background.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.backgroundOpacity</td>
+  <td><span class="label label-primary">number</span></td>
+  <td>0.5</td>
+  <td>
+    This controls the opacity of the background rectangle. Valid values are anything from 0 to 1.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.color</td>
+  <td><span class="label label-warning">string</span></td>
+  <td>#efefef</td>
+  <td>
+    The color of the tooltip text.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.borderRadius</td>
+  <td><span class="label label-primary">number</span></td>
+  <td>2</td>
+  <td>
+    This adds a rounded corner to the tooltip background. If you don't want rounded corners, set this to 0.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.font</td>
+  <td><span class="label label-warning">string</span></td>
+  <td>arial</td>
+  <td>
+    The font family to use for the tooltip.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.fontSize</td>
+  <td><span class="label label-primary">number</span></td>
+  <td>10</td>
+  <td>
+    The tooltip font size.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.style.padding</td>
+  <td><span class="label label-primary">number</span></td>
+  <td>4</td>
+  <td>
+    The padding around the tooltip. This increases the size of the tooltip backbrounds.
+  </td>
+</tr>
+<tr>
 	<th colspan="4">Misc</th>
 </tr>
 <tr>
@@ -1020,6 +1115,50 @@ data: {
 	</p>
 
 </section>
+
+<section>
+  <a id="docs-tooltips" class="docAnchor"></a>
+
+  <h3>Tooltips</h3>
+
+  <p>
+    Basic tooltips were added in 0.1.4. They add a simple mouseover tooltip to your pie segments, containing a (single)
+    line of text. Exactly what goes
+  </p>
+
+  <ol>
+    <li>Completely unique tooltips per segment. <a href="website/examples/tooltips.html" target="_blank">See example</a>.</li>
+    <li>
+      The same tooltip format for each segment, differing only in the values displayed.
+      <a href="website/examples/tooltips_placeholders.html" target="_blank">See example</a>.
+    </li>
+  </ol>
+
+  <p>
+    Click on the link next to each item for a illustration of how they each work. Note: the Generator is currently
+    limited in only letting you generate pie charts with the second type of tooltips. Just a heads up.
+  </p>
+
+  <h4>Styles</h4>
+
+  <p>
+    You have a number of different styling options for customizing the look and feel of your tooltips. Specifically,
+    the following characteristics can be styled:
+  </p>
+
+  <ul>
+    <li>Fade in speed</li>
+    <li>Background color and opacity</li>
+    <li>Font color, size and font</li>
+    <li>Border radius</li>
+    <li>Padding</li>
+  </ul>
+
+  <p>
+    For an illustration of how styling works, take a look at <a href="website/examples/tooltips_styles.html" target="_blank">this example</a>.
+  </p>
+</section>
+
 
 <section>
 	<a id="docs-fonts" class="docAnchor"></a>
