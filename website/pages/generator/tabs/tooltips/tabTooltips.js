@@ -6,7 +6,7 @@ define([
 ], function(C, mediator, utils, tooltipsTabTemplate) {
 	"use strict";
 
-	var _MODULE_ID = "labelsTab";
+	var _MODULE_ID = "tooltipsTab";
 
 	var _render = function(tabEl, config) {
 		$(tabEl).html(tooltipsTabTemplate({
@@ -37,31 +37,25 @@ define([
 		} else {
 			$(".tooltipsSection").find("input,select").attr("disabled", "disabled");
 		}
+		mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.NO_ANIMATION);
 	};
-
-	//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
-	//	prop: prop,
-	//	value: func
-	//});
 
 	var _getTabData = function() {
 		return {
-      tooltips: {
-        enabled: $("#showLabelLines")[0].checked,
-	      type: "placeholder",
-	      string: $("#tooltip").val(),
-	      styles: {
-		      fadeInSpeed: parseInt($("#tooltipFadeInSpeed").val(), 10),
-		      backgroundColor: $("#tooltipBackgroundColor").val(),
-		      backgroundOpacity: parseFloat($("#tooltipBackgroundOpacity").val()),
-		      color: $("#tooltipColor").val(),
-		      borderRadius: parseInt($("#tooltipBorderRadius").val(), 10),
-		      font: $("#tooltipFont").val(),
-		      fontSize: $("#tooltipFontSize").val(),
-		      padding: $("#tooltipPadding").val()
-	      }
+      enabled: $("#enableTooltips")[0].checked,
+      type: "placeholder",
+      string: $("#tooltip").val(),
+      styles: {
+	      fadeInSpeed: parseInt($("#tooltipFadeInSpeed").val(), 10),
+	      backgroundColor: $("#tooltipBackgroundColor").val(),
+	      backgroundOpacity: parseFloat($("#tooltipBackgroundOpacity").val()),
+	      color: $("#tooltipColor").val(),
+	      borderRadius: parseInt($("#tooltipBorderRadius").val(), 10),
+	      font: $("#tooltipFont").val(),
+	      fontSize: parseInt($("#tooltipFontSize").val(), 10),
+	      padding: parseInt($("#tooltipPadding").val(), 10)
       }
-		};
+    };
 	};
 
 

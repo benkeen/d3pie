@@ -166,6 +166,12 @@
 			case "effects.highlightLuminosity":
 				helpers.processObj(this.options, propKey, value);
 				break;
+
+			// everything else, attempt to update it & do a repaint
+			default:
+				helpers.processObj(this.options, propKey, value);
+				this.redraw();
+				break;
 		}
 	};
 

@@ -15,8 +15,8 @@
     </div>
     <div class="row form-group paddedRow">
         <div class="col-md-12 padRight">
-            <input type="text" id="tooltip" class="form-control" value="{{config.tooltips.string}}"
-                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+            <input type="text" id="tooltip" class="form-control keyupUpdateNoAnimation" value="{{config.tooltips.string}}"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} placeholder="{label}: {value}, {percentage}%" />
         </div>
     </div>
 
@@ -53,7 +53,7 @@
             </select>
         </div>
         <div class="col-md-3">
-            <input id="tooltipFontSize" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0"
+            <input id="tooltipFontSize" type="number" class="pixelSizeField changeUpdateNoAnimation" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0"
                 {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
             <label for="tooltipFontSize">px</label>
         </div>
@@ -73,14 +73,14 @@
             </div>
         </div>
         <div class="col-md-5">
-            <input id="tooltipBorderRadius" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.borderRadius}}" min="0"
+            <input id="tooltipBorderRadius" type="number" class="pixelSizeField changeUpdateNoAnimation" value="{{numbersOnly config.tooltips.styles.borderRadius}}" min="0"
                 {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
             <label for="tooltipBorderRadius">px</label>
         </div>
         <div class="col-md-3">
-            <input id="footerFontSize" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0"
+            <input id="tooltipPadding" type="number" class="pixelSizeField changeUpdateNoAnimation" value="{{numbersOnly config.tooltips.styles.padding}}" min="0"
                 {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
-            <label for="footerFontSize">px</label>
+            <label for="tooltipPadding">px</label>
         </div>
     </div>
 
@@ -92,7 +92,7 @@
     <div class="row">
         <div class="col-md-12">
             <input type="range" id="tooltipBackgroundOpacity" value="{{config.tooltips.styles.backgroundOpacity}}" min="0" max="1" step="0.01"
-                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+                class="changeUpdateNoAnimation" {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
         </div>
     </div>
     <div class="row form-group">
@@ -107,7 +107,6 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-12">
             <label for="outerLabel" class="control-label">Fade-in Speed</label>
@@ -116,7 +115,7 @@
     <div class="row">
         <div class="col-md-12">
             <input type="range" id="tooltipFadeInSpeed" value="{{config.tooltips.styles.fadeInSpeed}}" min="0" max="1000"
-                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+                class="changeUpdateNoAnimation" {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
         </div>
     </div>
     <div class="row form-group">

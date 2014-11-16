@@ -107,6 +107,7 @@ define([
 	};
 
 	var _renderWithNoAnimation = function() {
+		console.log( _getConfigObject());
 		_renderPie(false, _getConfigObject());
 	};
 

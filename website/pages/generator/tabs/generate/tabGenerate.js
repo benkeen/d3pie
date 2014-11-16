@@ -294,6 +294,50 @@ define([
 			}
 		}
 
+		// tooltips
+		var tooltipsDiff = allSettings.tooltips.enabled != defaultSettings.tooltips.enabled;
+
+		if (tooltipsDiff) {
+			finalObj.tooltips = {
+				enabled: allSettings.tooltips.enabled,
+				type: "placeholder",
+				string: allSettings.tooltips.string
+			};
+
+			if (allSettings.tooltips.styles.fadeInSpeed !== defaultSettings.tooltips.styles.fadeInSpeed) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.fadeInSpeed = allSettings.tooltips.styles.fadeInSpeed;
+			}
+			if (allSettings.tooltips.styles.backgroundColor !== defaultSettings.tooltips.styles.backgroundColor) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.backgroundColor = allSettings.tooltips.styles.backgroundColor;
+			}
+			if (allSettings.tooltips.styles.backgroundOpacity !== defaultSettings.tooltips.styles.backgroundOpacity) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.backgroundOpacity = allSettings.tooltips.styles.backgroundOpacity;
+			}
+			if (allSettings.tooltips.styles.color !== defaultSettings.tooltips.styles.color) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.color = allSettings.tooltips.styles.color;
+			}
+			if (allSettings.tooltips.styles.borderRadius !== defaultSettings.tooltips.styles.borderRadius) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.borderRadius = allSettings.tooltips.styles.borderRadius;
+			}
+			if (allSettings.tooltips.styles.font !== defaultSettings.tooltips.styles.font) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.font = allSettings.tooltips.styles.font;
+			}
+			if (allSettings.tooltips.styles.fontSize !== defaultSettings.tooltips.styles.fontSize) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.fontSize = allSettings.tooltips.styles.fontSize;
+			}
+			if (allSettings.tooltips.styles.padding !== defaultSettings.tooltips.styles.padding) {
+				if (!finalObj.tooltips.hasOwnProperty("styles")) { finalObj.tooltips.styles = {}; }
+				finalObj.tooltips.styles.padding = allSettings.tooltips.styles.padding;
+			}
+		}
+
 		// effects
 		var effectsLoadDiff  = allSettings.effects.load.effect != defaultSettings.effects.load.effect;
 		var effectsSpeedDiff = allSettings.effects.load.speed != defaultSettings.effects.load.speed;
