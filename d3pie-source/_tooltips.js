@@ -15,10 +15,24 @@ var tt = {
         .style("opacity", 0)
       .append("rect")
         .attr({
-          rx: pie.options.tooltips.styles.borderRadius,
-          ry: pie.options.tooltips.styles.borderRadius
-        })
-      .style("fill", pie.options.tooltips.styles.backgroundColor);
+		    rx: pie.options.tooltips.styles.borderRadius,
+		    ry: pie.options.tooltips.styles.borderRadius
+		    width: function (d, i) {
+			    var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+			    return dims.w + (2 * pie.options.tooltips.styles.padding);
+		    },
+		    height: function (d, i) {
+			    var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+			    return dims.h + (2 * pie.options.tooltips.styles.padding);
+		    },
+		    y: function (d, i) {
+			    var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+			    return -(dims.h / 2) + 1;
+		    },
+		    x: -pie.options.tooltips.styles.padding,
+		    opacity: pie.options.tooltips.styles.backgroundOpacity
+	    })
+	    .style("fill", pie.options.tooltips.styles.backgroundColor);
 
     tooltips.selectAll("." + pie.cssPrefix + "tooltip")
       .data(pie.options.data.content)
@@ -37,56 +51,7 @@ var tt = {
             percentage: segments.getPercentage(pie, i)
           });
         });
-	},
-
-  positionTooltips: function(pie) {
-    /*
-    d3.selectAll("." + pie.cssPrefix + "tooltip")
-      .attr("transform", function(d, i) {
-
-        // TODO move to helper. This is now (largely) shared by the labels code too
-        var pieCenterCopy = extend(true, {}, pie.pieCenter);
-
-        // now recompute the "center" based on the current _innerRadius
-        if (pie.innerRadius > 0) {
-          var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
-          var newCoords = math.translate(pie.pieCenter.x, pie.pieCenter.y, pie.innerRadius, angle);
-          pieCenterCopy.x = newCoords.x;
-          pieCenterCopy.y = newCoords.y;
-        }
-
-        var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-        var xOffset = dims.w / 2;
-        var yOffset = dims.h / 4;
-
-        var x = pieCenterCopy.x + (pie.lineCoordGroups[i][0].x - pieCenterCopy.x) / 1.8;
-        var y = pieCenterCopy.y + (pie.lineCoordGroups[i][0].y - pieCenterCopy.y) / 1.8;
-        x = x - xOffset;
-        y = y + yOffset;
-
-        return "translate(" + x + "," + y + ")";
-      });
-  */
-
-    d3.selectAll("." + pie.cssPrefix + "tooltip rect")
-      .attr({
-        width: function(d, i) {
-          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-          return dims.w + (2 * pie.options.tooltips.styles.padding);
-        },
-        height: function(d, i) {
-          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-          return dims.h + (2 * pie.options.tooltips.styles.padding);
-        },
-        y: function(d, i) {
-          var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-          return -(dims.h / 2) + 1;
-        },
-        x: -pie.options.tooltips.styles.padding,
-        opacity: pie.options.tooltips.styles.backgroundOpacity
-      });
   },
-
 
   showTooltip: function(pie, index) {
     tt.currentTooltip = index;
