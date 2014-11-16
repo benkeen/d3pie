@@ -532,3 +532,13 @@ a.btn-info[target=_blank] {
     width: 100px;
     display: inline-block;
 }
+
+.hr {
+    border-bottom: 1px solid #dddddd;
+    margin: 15px 0px;
+}
+
+.hint {
+    font-size: 7pt;
+    color: #999999;
+}

@@ -45,6 +45,8 @@ require.config({
 		"colorsets": "pages/generator/tabs/data/colorsets",
 		"labelsTab": "pages/generator/tabs/labels/tabLabels",
 		"labelsTabTemplate": "pages/generator/tabs/labels/tabLabelsTemplate.hbs",
+		"tooltipsTab": "pages/generator/tabs/tooltips/tabTooltips",
+		"tooltipsTabTemplate": "pages/generator/tabs/tooltips/tabTooltipsTemplate.hbs",
 		"footerTab": "pages/generator/tabs/footer/tabFooter",
 		"footerTabTemplate": "pages/generator/tabs/footer/tabFooterTemplate.hbs",
 		"effectsTab": "pages/generator/tabs/effects/tabEffects",

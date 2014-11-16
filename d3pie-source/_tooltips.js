@@ -133,7 +133,7 @@ var tt = {
         } else {
           return arguments[0];
         }
-      }
+      };
     };
     return str.replace(/\{(\w+)\}/g, replacer(replacements));
   }

@@ -57,6 +57,9 @@ var _requireJSModulePaths = {
 	labelsTab: "pages/generator/tabs/labels/tabLabels.js",
 	labelsTabTemplate: "pages/generator/tabs/labels/tabLabelsTemplate.hbs",
 
+  tooltipsTab: "pages/generator/tabs/tooltips/tabTooltips.js",
+  tooltipsTabTemplate: "pages/generator/tabs/tooltips/tabTooltipsTemplate.hbs",
+
 	footerTab: "pages/generator/tabs/footer/tabFooter.js",
 	footerTabTemplate: "pages/generator/tabs/footer/tabFooterTemplate.hbs",
 

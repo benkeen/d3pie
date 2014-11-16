@@ -10,6 +10,7 @@ define([
 	"sizeTab",
 	"dataTab",
 	"labelsTab",
+  "tooltipsTab",
 	"footerTab",
 	"effectsTab",
 	"eventsTab",
@@ -17,15 +18,15 @@ define([
 	"generateTab",
 	"examplePies",
 	"hbs!generatorPageTemplate"
-], function(C, mediator, pageHelper, startTab, titleTab, sizeTab, dataTab, labelsTab, footerTab, effectsTab, eventsTab,
-			miscTab, generateTab, EXAMPLE_PIES, generatorPageTemplate) {
+], function(C, mediator, pageHelper, startTab, titleTab, sizeTab, dataTab, labelsTab, tooltipsTab, footerTab,
+    effectsTab, eventsTab, miscTab, generateTab, EXAMPLE_PIES, generatorPageTemplate) {
 	"use strict";
 
 	var _MODULE_ID = "generatorPage";
 	var _isCreated = false;
 	var _demoD3Pie = null;
 	var _tabs = [
-		"generator-start", "generator-title", "generator-size", "generator-data", "generator-labels",
+		"generator-start", "generator-title", "generator-size", "generator-data", "generator-labels", "generator-tooltips",
 		"generator-footer", "generator-effects", "generator-events", "generator-misc", "generator-result"
 	];
 	var _currentTab = null;
@@ -158,6 +159,7 @@ define([
 			size:      sizeTab.getTabData(),
 			data:      dataTab.getTabData(),
 			labels:    labelsTab.getTabData(),
+			tooltips:  tooltipsTab.getTabData(),
 			effects:   effectsTab.getTabData(),
 			callbacks: eventsTab.getTabData(),
 			misc:      miscTab.getTabData()
@@ -179,6 +181,7 @@ define([
 		sizeTab.render("#generator-size", config, pieConfiguration.showCanvasOutline); // meh!
 		dataTab.render("#generator-data", config);
 		labelsTab.render("#generator-labels", config);
+    tooltipsTab.render("#generator-tooltips", config);
 		footerTab.render("#generator-footer", config);
 		effectsTab.render("#generator-effects", config);
 		eventsTab.render("#generator-events", config);

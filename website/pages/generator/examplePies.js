@@ -121,6 +121,21 @@ define([], function() {
 						length: 30
 					}
 				},
+				tooltips: {
+					enabled: false,
+					type: "placeholder",
+					string: "{label}: {value}, {percentage}%",
+					styles: {
+						fadeInSpeed: 250,
+						backgroundColor: "#000000",
+						backgroundOpacity: 0.5,
+						color: "#efefef",
+						borderRadius: 2,
+						font: "arial",
+						fontSize: 10,
+						padding: 4
+					}
+				},
 				effects: {
 					load: {
 						effect: "default", // none / default
@@ -258,6 +273,21 @@ define([], function() {
 						length: 30
 					}
 				},
+				tooltips: {
+					enabled: false,
+					type: "placeholder",
+					string: "{label}: {value}, {percentage}%",
+					styles: {
+						fadeInSpeed: 250,
+						backgroundColor: "#000000",
+						backgroundOpacity: 0.5,
+						color: "#efefef",
+						borderRadius: 2,
+						font: "arial",
+						fontSize: 10,
+						padding: 4
+					}
+				},
 				effects: {
 					load: {
 						effect: "default", // none / default
@@ -388,6 +418,21 @@ define([], function() {
 						length: 30
 					}
 				},
+				tooltips: {
+					enabled: false,
+					type: "placeholder",
+					string: "{label}: {value}, {percentage}%",
+					styles: {
+						fadeInSpeed: 250,
+						backgroundColor: "#000000",
+						backgroundOpacity: 0.5,
+						color: "#efefef",
+						borderRadius: 2,
+						font: "arial",
+						fontSize: 10,
+						padding: 4
+					}
+				},
 				effects: {
 					load: {
 						effect: "default", // none / default
@@ -506,6 +551,21 @@ define([], function() {
 					truncation: {
 						enabled: true,
 						length: 30
+					}
+				},
+				tooltips: {
+					enabled: false,
+					type: "placeholder",
+					string: "{label}: {value}, {percentage}%",
+					styles: {
+						fadeInSpeed: 250,
+						backgroundColor: "#000000",
+						backgroundOpacity: 0.5,
+						color: "#efefef",
+						borderRadius: 2,
+						font: "arial",
+						fontSize: 10,
+						padding: 4
 					}
 				},
 				effects: {
