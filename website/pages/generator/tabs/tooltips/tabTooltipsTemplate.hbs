@@ -1,5 +1,5 @@
 <div style="float:right">
-    <input type="checkbox" id="enableTooltips" {{#compare config.tooltips.enabled true}}checked="checked"{{/compare}} class="changeUpdateNoAnimation" />
+    <input type="checkbox" id="enableTooltips" {{#compare config.tooltips.enabled true}}checked="checked"{{/compare}} />
     <label for="enableTooltips">Enable</label>
 </div>
 
@@ -7,113 +7,123 @@
 
 <div class="hr"></div>
 
-<div class="row">
-  <div class="col-md-12">
-    <label for="tooltip" class="control-label">Tooltip</label>
-  </div>
-</div>
-<div class="row form-group paddedRow">
-    <div class="col-md-12 padRight">
-        <input type="text" id="tooltip" class="form-control" value="{{config.tooltips.string}}" />
+<div class="tooltipsSection">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="tooltip" class="control-label">Tooltip</label>
+      </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-md-4"><label>Font Color</label></div>
-    <div class="col-md-5"><label>Font</label></div>
-    <div class="col-md-3"><label>Font Size</label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-4">
-        <div id="tooltipColorGroup" class="colorGroup input-group form-group">
-            <input type="text" id="tooltipColor" value="{{config.tooltips.styles.color}}" class="form-control" />
-            <span class="input-group-addon"><i></i></span>
+    <div class="row form-group paddedRow">
+        <div class="col-md-12 padRight">
+            <input type="text" id="tooltip" class="form-control" value="{{config.tooltips.string}}"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
         </div>
     </div>
-    <div class="col-md-5">
-        <select id="tooltipFont" class="form-control changeUpdateNoAnimation">
-            <optgroup label="Standard Fonts">
-                <option value="arial" {{#compare config.tooltips.styles.font "arial"}}selected="selected"{{/compare}}>Arial</option>
-                <option value="courier" {{#compare config.tooltips.styles.font "courier"}}selected="selected"{{/compare}}>Courier</option>
-                <option value="garamond" {{#compare config.tooltips.styles.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
-                <option value="georgia" {{#compare config.tooltips.styles.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
-                <option value="helvetica" {{#compare config.tooltips.styles.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
-                <option value="lucida sans" {{#compare config.tooltips.styles.font "lucida sans"}}selected="selected"{{/compare}}>Lucida Sans</option>
-                <option value="times new roman" {{#compare config.tooltips.styles.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
-                <option value="verdana" {{#compare config.tooltips.styles.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
-            </optgroup>
-            <optgroup label="Web Fonts">
-                <option value="cinzel" {{#compare config.tooltips.styles.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
-                <option value="exo" {{#compare config.tooltips.styles.font "exo"}}selected="selected"{{/compare}}>Exo</option>
-                <option value="open sans" {{#compare config.tooltips.styles.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
-            </optgroup>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <input id="tooltipFontSize" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0" />
-        <label for="tooltipFontSize">px</label>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-4"><label>Background Color</label></div>
-    <div class="col-md-5"><label>Border Radius</label></div>
-    <div class="col-md-3"><label>Padding</label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-4">
-        <div id="tooltipBackgroundColorGroup" class="colorGroup input-group form-group">
-            <input type="text" id="tooltipBackgroundColor" value="{{config.tooltips.styles.backgroundColor}}" class="form-control" />
-            <span class="input-group-addon"><i></i></span>
+    <div class="row">
+        <div class="col-md-4"><label>Font Color</label></div>
+        <div class="col-md-5"><label>Font</label></div>
+        <div class="col-md-3"><label>Font Size</label></div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-4">
+            <div id="tooltipColorGroup" class="colorGroup input-group form-group">
+                <input type="text" id="tooltipColor" value="{{config.tooltips.styles.color}}" class="form-control"
+                    {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+                <span class="input-group-addon"><i></i></span>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <select id="tooltipFont" class="form-control changeUpdateNoAnimation" {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}}>
+                <optgroup label="Standard Fonts">
+                    <option value="arial" {{#compare config.tooltips.styles.font "arial"}}selected="selected"{{/compare}}>Arial</option>
+                    <option value="courier" {{#compare config.tooltips.styles.font "courier"}}selected="selected"{{/compare}}>Courier</option>
+                    <option value="garamond" {{#compare config.tooltips.styles.font "garamond"}}selected="selected"{{/compare}}>Garamond</option>
+                    <option value="georgia" {{#compare config.tooltips.styles.font "georgia"}}selected="selected"{{/compare}}>Georgia</option>
+                    <option value="helvetica" {{#compare config.tooltips.styles.font "helvetica"}}selected="selected"{{/compare}}>Helvetica</option>
+                    <option value="lucida sans" {{#compare config.tooltips.styles.font "lucida sans"}}selected="selected"{{/compare}}>Lucida Sans</option>
+                    <option value="times new roman" {{#compare config.tooltips.styles.font "times new roman"}}selected="selected"{{/compare}}>Times New Roman</option>
+                    <option value="verdana" {{#compare config.tooltips.styles.font "verdana"}}selected="selected"{{/compare}}>Verdana</option>
+                </optgroup>
+                <optgroup label="Web Fonts">
+                    <option value="cinzel" {{#compare config.tooltips.styles.font "cinzel"}}selected="selected"{{/compare}}>Cinzel</option>
+                    <option value="exo" {{#compare config.tooltips.styles.font "exo"}}selected="selected"{{/compare}}>Exo</option>
+                    <option value="open sans" {{#compare config.tooltips.styles.font "open sans"}}selected="selected"{{/compare}}>Open Sans</option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input id="tooltipFontSize" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+            <label for="tooltipFontSize">px</label>
         </div>
     </div>
-    <div class="col-md-5">
-        <input id="tooltipBorderRadius" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.borderRadius}}" min="0" />
-        <label for="tooltipBorderRadius">px</label>
-    </div>
-    <div class="col-md-3">
-        <input id="footerFontSize" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0" />
-        <label for="footerFontSize">px</label>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-12">
-        <label for="outerLabel" class="control-label">Background Opacity</label>
+    <div class="row">
+        <div class="col-md-4"><label>Background Color</label></div>
+        <div class="col-md-5"><label>Border Radius</label></div>
+        <div class="col-md-3"><label>Padding</label></div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <input type="range" id="tooltipBackgroundOpacity" value="{{config.tooltips.styles.backgroundOpacity}}" min="0" max="1" step="0.01" />
+    <div class="row form-group">
+        <div class="col-md-4">
+            <div id="tooltipBackgroundColorGroup" class="colorGroup input-group form-group">
+                <input type="text" id="tooltipBackgroundColor" value="{{config.tooltips.styles.backgroundColor}}" class="form-control"
+                    {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+                <span class="input-group-addon"><i></i></span>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <input id="tooltipBorderRadius" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.borderRadius}}" min="0"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+            <label for="tooltipBorderRadius">px</label>
+        </div>
+        <div class="col-md-3">
+            <input id="footerFontSize" type="number" class="pixelSizeField" value="{{numbersOnly config.tooltips.styles.fontSize}}" min="0"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+            <label for="footerFontSize">px</label>
+        </div>
     </div>
-</div>
-<div class="row form-group">
-  <div class="col-lg-2">
-    <span class="hint">Transparent</span>
-  </div>
-  <div class="col-lg-8"> </div>
-  <div class="col-lg-2" style="text-align: right">
-    <span class="hint">Solid</span>
-  </div>
-</div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label for="outerLabel" class="control-label">Background Opacity</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="range" id="tooltipBackgroundOpacity" value="{{config.tooltips.styles.backgroundOpacity}}" min="0" max="1" step="0.01"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-2">
+            <span class="hint">Transparent</span>
+        </div>
+        <div class="col-lg-8" style="text-align: center">
+            <span class="label label-default" id="backgroundOpacityDisplay">{{backgroundOpacityDisplay}}</span>
+        </div>
+        <div class="col-lg-2" style="text-align: right">
+            <span class="hint">Solid</span>
+        </div>
+    </div>
 
 
-
-
-<div class="row">
-    <div class="col-md-12">
-        <label for="outerLabel" class="control-label">Fade-in Speed</label>
+    <div class="row">
+        <div class="col-md-12">
+            <label for="outerLabel" class="control-label">Fade-in Speed</label>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <input type="range" id="tooltipFadeInSpeed" value="{{config.tooltips.styles.fadeInSpeed}}" min="0" max="1000" />
+    <div class="row">
+        <div class="col-md-12">
+            <input type="range" id="tooltipFadeInSpeed" value="{{config.tooltips.styles.fadeInSpeed}}" min="0" max="1000"
+                {{#compare config.tooltips.enabled false}}disabled="disabled"{{/compare}} />
+        </div>
     </div>
-</div>
-<div class="row form-group">
-    <div class="col-lg-12" style="text-align: center">
-        <span class="label label-default" id="fadeInSpeedDisplayValue">{{config.tooltips.styles.fadeInSpeed}} ms</span>
+    <div class="row form-group">
+        <div class="col-lg-12" style="text-align: center">
+            <span class="label label-default" id="fadeInSpeedDisplayValue">{{config.tooltips.styles.fadeInSpeed}} ms</span>
+        </div>
     </div>
-</div>
 
+</div>
 

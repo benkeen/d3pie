@@ -10,18 +10,39 @@ define([
 
 	var _render = function(tabEl, config) {
 		$(tabEl).html(tooltipsTabTemplate({
-			config: config
+			config: config,
+			backgroundOpacityDisplay: config.tooltips.styles.backgroundOpacity.toFixed(2)
 		}));
 
 		utils.addColorpicker("tooltipColor");
 		utils.addColorpicker("tooltipBackgroundColor");
 
 		$("#tooltipFadeInSpeed").on("input change", _onChangeFadeInSpeed);
+		$("#tooltipBackgroundOpacity").on("input change", _onChangeBackgroundOpacity);
+		$("#enableTooltips").on("change", _onToggleEnableTooltips);
 	};
 
-	var _onChangeFadeInSpeed = function (e) {
+	var _onChangeFadeInSpeed = function(e) {
 		$("#fadeInSpeedDisplayValue").html(e.target.value + " ms");
 	};
+
+	var _onChangeBackgroundOpacity = function(e) {
+		var val = parseFloat(e.target.value);
+		$("#backgroundOpacityDisplay").html(val.toFixed(2));
+	};
+
+	var _onToggleEnableTooltips = function(e) {
+		if (e.target.checked) {
+			$(".tooltipsSection").find("input,select").removeAttr("disabled");
+		} else {
+			$(".tooltipsSection").find("input,select").attr("disabled", "disabled");
+		}
+	};
+
+	//mediator.publish(_MODULE_ID, C.EVENT.DEMO_PIE.RENDER.UPDATE_PROP, {
+	//	prop: prop,
+	//	value: func
+	//});
 
 	var _getTabData = function() {
 		return {

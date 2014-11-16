@@ -542,3 +542,7 @@ a.btn-info[target=_blank] {
     font-size: 7pt;
     color: #999999;
 }
+
+.pixelSizeField[disabled] {
+    background-color: #eeeeee;
+}
