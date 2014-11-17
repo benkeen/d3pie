@@ -50,7 +50,7 @@ Lots! A big thanks to the developers of these scripts.
 
 ### Changelog
 
-- `0.1.4` - Work in progress (Nov 2014)
+- `0.1.4` - Nov 16, 2014, Tooltips added, bug fixes.
 - `0.1.3` - July 2, 2014. Small segment grouping option added; jQuery dependency dropped.
 - `0.1.2` - June 7, 2014. Assorted bug fixes.
 - `0.1.1` - May 7, 2014. Gradients added.
