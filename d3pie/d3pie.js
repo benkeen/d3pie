@@ -1855,6 +1855,17 @@ var tt = {
 		_init.call(this);
 	};
 
+	d3pie.prototype.recreate = function() {
+		this.options.data.content = math.sortPieData(this);
+		if (this.options.data.smallSegmentGrouping.enabled) {
+			this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
+		}
+		this.options.colors = helpers.initSegmentColors(this);
+		this.totalSize      = math.getTotalPieSize(this.options.data.content);
+
+		_init.call(this);
+	},
+
 	d3pie.prototype.redraw = function() {
 		this.element.innerHTML = "";
 		_init.call(this);
@@ -1941,7 +1952,9 @@ var tt = {
 			// everything else, attempt to update it & do a repaint
 			default:
 				helpers.processObj(this.options, propKey, value);
-				this.redraw();
+
+				this.destroy();
+				this.recreate();
 				break;
 		}
 	};

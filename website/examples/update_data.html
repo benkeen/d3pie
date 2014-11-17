@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Update Data
+</h1>
+
+<p>
+	This example shows how to dynamically change the data set.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/jquery.js"></script>
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+  var data = [
+    { label: "1", value: 1 },
+    { label: "2", value: 4 },
+    { label: "3", value: 3 }
+  ];
+
+	var pie = new d3pie("pie", {
+		data: {
+			content: data
+		}
+	});
+
+  $(function() {
+    var num = 4;
+    $("#addData").on("click", function() {
+      data.push({
+        label: num.toString(),
+        value: Math.floor(Math.random() * 10) + 1
+      });
+
+      pie.updateProp("data.content", data);
+      num++;
+    });
+  });
+</script>
+
+<input type="button" value="Add Data" id="addData" />
+
+<hr size="1" />
+
+<blockquote><pre>
+var data = [
+  { label: "1", value: 1 },
+  { label: "2", value: 4 },
+  { label: "3", value: 3 }
+];
+
+var pie = new d3pie("pie", {
+  data: {
+    content: data
+  }
+});
+
+$(function() {
+  var num = 4;
+  $("#addData").on("click", function() {
+    data.push({
+      label: num.toString(),
+      value: Math.floor(Math.random() * 10) + 1
+    });
+
+    pie.updateProp("data.content", data);
+    num++;
+  });
+});
+</pre></blockquote>
+
+</body>
+</html>
