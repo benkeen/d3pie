@@ -93,7 +93,7 @@
 		this.totalSize      = math.getTotalPieSize(this.options.data.content);
 
 		_init.call(this);
-	},
+	};
 
 	d3pie.prototype.redraw = function() {
 		this.element.innerHTML = "";
