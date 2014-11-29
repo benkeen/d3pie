@@ -73,7 +73,8 @@ var defaultSettings = {
 		value: {
 			color: "#cccc44",
 			font: "arial",
-			fontSize: 10
+			fontSize: 10,
+			formatter: null
 		},
 		lines: {
 			enabled: true,
