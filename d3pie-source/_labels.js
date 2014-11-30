@@ -436,7 +436,9 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		var labelGroupNode = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node();
+		if (!labelGroupNode) return;
+		var labelGroupDims = labelGroupNode.getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
