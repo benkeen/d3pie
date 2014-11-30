@@ -14,16 +14,16 @@
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but only CommonJS-like environments that support module.exports,
     // like Node
-    module.exports = factory(require());
+    module.exports = factory();
   } else {
     // browser globals (root is window)
-    root.d3pie = factory(root);
+    root.returnExports = factory();
   }
 }(this, function() {
 
 	var _scriptName = "d3pie";
 	var _version = "0.1.4";
-
+	var d3pie = {};
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
 
