@@ -61,7 +61,7 @@ var labels = {
 			labelGroup.append("text")
 				.attr("id", function(d, i) { return pie.cssPrefix +  "segmentValue" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentValue-" + section)
-				.text(function(d) { return d.value; })
+				.text(function(d) { return pie.options.labels.value.formatter ? pie.options.labels.value.formatter(d.value) : d.value; })
 				.style("font-size", settings.value.fontSize + "px")
 				.style("font-family", settings.value.font)
 				.style("fill", settings.value.color);
@@ -212,6 +212,9 @@ var labels = {
 	},
 
 	positionLabelGroups: function(pie, section) {
+		// 0. check we actually have some of those labels
+		if (pie.options.labels[section].format === "none") return;
+
 		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
@@ -343,6 +346,9 @@ var labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function(pie) {
+		// check we actually have some outer labels
+		if (pie.options.labels.outer.format === "none") return;
+
 		var size = pie.options.data.content.length;
 		labels.checkConflict(pie, 0, "clockwise", size);
 		labels.checkConflict(pie, size-1, "anticlockwise", size);
@@ -436,7 +442,9 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		var labelGroupNode = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node();
+		if (!labelGroupNode) return;
+		var labelGroupDims = labelGroupNode.getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
