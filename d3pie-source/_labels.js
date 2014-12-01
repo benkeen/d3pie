@@ -212,6 +212,9 @@ var labels = {
 	},
 
 	positionLabelGroups: function(pie, section) {
+		// 0. check we actually have some of those labels
+		if (pie.options.labels[section].format === "none") return;
+
 		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
@@ -343,6 +346,9 @@ var labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function(pie) {
+		// check we actually have some outer labels
+		if (pie.options.labels.outer.format === "none") return;
+
 		var size = pie.options.data.content.length;
 		labels.checkConflict(pie, 0, "clockwise", size);
 		labels.checkConflict(pie, size-1, "anticlockwise", size);
