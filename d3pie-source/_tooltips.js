@@ -36,6 +36,7 @@ var tt = {
           return tt.replacePlaceholders(caption, {
             label: d.label,
             value: d.value,
+            f_value: d.f_value,
             percentage: segments.getPercentage(pie, i)
           });
         });
