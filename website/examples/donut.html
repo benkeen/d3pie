@@ -11,8 +11,8 @@
 <hr size="1" />
 
 <p>
-	This is a basic donut chart that uses most of the default setting. Check out the <b>size.pieInnerRadius</b> setting.
-	That's what turns it into a donut chart.
+	This is a basic donut chart that uses most of the default settings. Check out the <b>size.pieInnerRadius</b> setting.
+	That's what turns it into a donut chart. We also added the title to appear in the center, just 'cause it looks nice.
 </p>
 
 <hr size="1" />
@@ -27,7 +27,8 @@
 		header: {
 			title: {
 				text: "A Simple Donut Pie"
-			}
+			},
+			location: "pie-center"
 		},
 		size: {
 			pieInnerRadius: "80%"
@@ -49,24 +50,25 @@
 
 <blockquote><pre>
 var pie = new d3pie("pie", {
-	header: {
-		title: {
-			text: "A Simple Donut Pie"
-		}
-	},
-	size: {
-		pieInnerRadius: "80%"
-	},
-	data: {
-		sortOrder: "label-asc",
-		content: [
-			{ label: "JavaScript", value: 1 },
-			{ label: "Ruby", value: 2 },
-			{ label: "Java", value: 3 },
-			{ label: "C++", value: 2 },
-			{ label: "Objective-C", value: 6 }
-		]
-	}
+  header: {
+    title: {
+      text: "A Simple Donut Pie"
+    },
+    location: "pie-center"
+  },
+  size: {
+    pieInnerRadius: "80%"
+  },
+  data: {
+    sortOrder: "label-asc",
+    content: [
+      { label: "JavaScript", value: 1 },
+      { label: "Ruby", value: 2 },
+      { label: "Java", value: 3 },
+      { label: "C++", value: 2 },
+      { label: "Objective-C", value: 6 }
+    ]
+  }
 });
 </pre></blockquote>
 

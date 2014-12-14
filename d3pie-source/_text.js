@@ -41,6 +41,10 @@ var text = {
 		} else {
 			x = ((canvasWidth - canvasPadding.right) / 2) + canvasPadding.left;
 		}
+
+    // add whatever offset has been added by user
+    x += pie.options.misc.pieCenterOffset.x;
+
 		var y = canvasPadding.top + textComponents.title.h;
 
 		if (headerLocation === "pie-center") {
@@ -96,6 +100,10 @@ var text = {
 		} else {
 			x = ((canvasWidth - canvasPadding.right) / 2) + canvasPadding.left;
 		}
+
+    // add whatever offset has been added by user
+    x += pie.options.misc.pieCenterOffset.x;
+
 		var y = text.getHeaderHeight(pie);
 		pie.svg.select("#" + pie.cssPrefix + "subtitle")
 			.attr("x", x)
