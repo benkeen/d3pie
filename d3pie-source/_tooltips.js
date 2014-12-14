@@ -33,7 +33,7 @@ var tt = {
           if (pie.options.tooltips.type === "caption") {
             caption = d.caption;
           }
-          return tt.replacePlaceholders(caption, {
+          return tt.replacePlaceholders(pie, caption, i, {
             label: d.label,
             value: d.value,
             percentage: segments.getPercentage(pie, i)
@@ -97,11 +97,15 @@ var tt = {
         var y = pie.options.size.canvasHeight + 1000;
         return "translate(" + x + "," + y + ")";
       });
-
-//	  tt.currentTooltip = null;
   },
 
-  replacePlaceholders: function(str, replacements) {
+  replacePlaceholders: function(pie, str, index, replacements) {
+
+    // if the user has defined a placeholderParser function, call it before doing the replacements
+    if (helpers.isFunction(pie.options.tooltips.placeholderParser)) {
+      pie.options.tooltips.placeholderParser(index, replacements);
+    }
+
     var replacer = function()  {
       return function(match) {
         var placeholder = arguments[1];

@@ -317,6 +317,23 @@ myPie.redraw();
 		highlightSegmentOnMouseover: true,
 		highlightLuminosity: -0.2
 	},
+	tooltips: {
+		enabled: false,
+		type: "placeholder", // caption|placeholder
+		string: "",
+		placeholderParser: null,
+		styles: {
+			fadeInSpeed: 250,
+			backgroundColor: "#000000",
+			backgroundOpacity: 0.5,
+			color: "#efefef",
+			borderRadius: 2,
+			font: "arial",
+			fontSize: 10,
+			padding: 4
+		}
+	},
+
 	misc: {
 		colors: {
 			background: null, // transparent
@@ -841,6 +858,17 @@ myPie.redraw();
     If you're using a <code>placeholder</code> type tooltip, this should contain the tooltip string. It may contain
     the following placeholders which will be replaced with their appropriate values for each segment: <code>{label}</code>,
     <code>{value}</code> and <code>{percentage}</code>.
+  </td>
+</tr>
+<tr>
+  <td>tooltips.placeholderParser</td>
+  <td><span class="label label-green">function</span></td>
+  <td></td>
+  <td>
+    This option was added in 0.1.5 and lets you define a function that parses the placeholder values (<code>{label}</code>,
+    <code>{value}</code> and <code>{percentage}</code>) prior to the tooltips being constructed. This allows you to modify
+    them in any way you want - such as change the case of the label, or specify a decimal place for the numeric values.
+    <a href="website/examples/tooltips_placeholderParser.html" target="_blank">See example</a>.
   </td>
 </tr>
 <tr>

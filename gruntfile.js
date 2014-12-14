@@ -316,7 +316,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask("prod", [
-        "jshint",
+    "jshint",
 		"setEnv_Prod", // set the build environment constants
 		"clean",       // wipe out the build folder
 		"template:constants", // create the constants file

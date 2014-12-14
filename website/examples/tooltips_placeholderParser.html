@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Tooltips #4 - placeholder parser
+</h1>
+
+<p>
+	If you find you need to do any form of conversion of the placeholder data within the tooltips string, such
+  as formatting a number or uppercasing a string, you can use the <b>tooltips.placeholderParser</b> function. See
+  below for a simple example: it adds an exclamation mark after the label, and adds decimal points to the percentage
+  and values.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+	var pie = new d3pie("pie", {
+		data: {
+			content: [
+				{ label: "Elephants", value: 1 },
+				{ label: "Motmots", value: 2 },
+				{ label: "Pikas", value: 3 },
+        { label: "Jays", value: 2 },
+        { label: "Rhubarb", value: 5 },
+        { label: "Tennis", value: 2 },
+        { label: "Chickens", value: 1 }
+			]
+		},
+    tooltips: {
+      enabled: true,
+      type: "placeholder",
+      string: "{label}: {percentage}% ({value})",
+
+      // data is an object with the three properties listed below. Just modify the properties
+      // directly - there's no need to return anything
+      placeholderParser: function(index, data) {
+        data.label = data.label + "!";
+        data.percentage = data.percentage.toFixed(2);
+        data.value = data.value.toFixed(5);
+      }
+    }
+	});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var pie = new d3pie("pie", {
+  data: {
+    content: [
+      { label: "Elephants", value: 1 },
+      { label: "Motmots", value: 2 },
+      { label: "Pikas", value: 3 },
+      { label: "Jays", value: 2 },
+      { label: "Rhubarb", value: 5 },
+      { label: "Tennis", value: 2 },
+      { label: "Chickens", value: 1 }
+    ]
+  },
+  tooltips: {
+    enabled: true,
+    type: "placeholder",
+    string: "{label}: {percentage}% ({value})",
+
+    // data is an object with the three properties listed below. Just modify the properties
+    // directly - there's no need to return anything
+    placeholderParser: function(index, data) {
+      data.label = data.label + "!";
+      data.percentage = data.percentage.toFixed(2);
+      data.value = data.value.toFixed(5);
+    }
+  }
+});
+</pre></blockquote>
+
+<br />
+
+</body>
+</html>

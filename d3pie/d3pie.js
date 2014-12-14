@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.4";
+	var _version = "0.1.5";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -135,6 +135,7 @@ var defaultSettings = {
 		enabled: false,
 		type: "placeholder", // caption|placeholder
     string: "",
+    placeholderParser: null,
 		styles: {
       fadeInSpeed: 250,
 			backgroundColor: "#000000",
@@ -1727,7 +1728,7 @@ var tt = {
           if (pie.options.tooltips.type === "caption") {
             caption = d.caption;
           }
-          return tt.replacePlaceholders(caption, {
+          return tt.replacePlaceholders(pie, caption, i, {
             label: d.label,
             value: d.value,
             percentage: segments.getPercentage(pie, i)
@@ -1791,11 +1792,15 @@ var tt = {
         var y = pie.options.size.canvasHeight + 1000;
         return "translate(" + x + "," + y + ")";
       });
-
-//	  tt.currentTooltip = null;
   },
 
-  replacePlaceholders: function(str, replacements) {
+  replacePlaceholders: function(pie, str, index, replacements) {
+
+    // if the user has defined a placeholderParser function, call it before doing the replacements
+    if (helpers.isFunction(pie.options.tooltips.placeholderParser)) {
+      pie.options.tooltips.placeholderParser(index, replacements);
+    }
+
     var replacer = function()  {
       return function(match) {
         var placeholder = arguments[1];
@@ -1864,7 +1869,7 @@ var tt = {
 		this.totalSize      = math.getTotalPieSize(this.options.data.content);
 
 		_init.call(this);
-	},
+	};
 
 	d3pie.prototype.redraw = function() {
 		this.element.innerHTML = "";

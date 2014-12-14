@@ -102,6 +102,7 @@ var defaultSettings = {
 		enabled: false,
 		type: "placeholder", // caption|placeholder
     string: "",
+    placeholderParser: null,
 		styles: {
       fadeInSpeed: 250,
 			backgroundColor: "#000000",
