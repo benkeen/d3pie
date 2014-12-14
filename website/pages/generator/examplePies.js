@@ -207,7 +207,7 @@ define([], function() {
 					canvasWidth: 590,
 					canvasHeight: 500,
 					pieInnerRadius: "95%",
-					pieOuterRadius: "80%"
+					pieOuterRadius: "70%"
 				},
 				data: {
 					sortOrder: "label-desc",
