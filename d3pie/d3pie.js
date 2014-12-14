@@ -825,9 +825,8 @@ var labels = {
 			labelGroup.append("text")
 				.attr("id", function(d, i) { return pie.cssPrefix + "segmentPercentage" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentPercentage-" + section)
-				.text(function(d) {
-					var percent = (d.value / pie.totalSize) * 100;
-					return percent.toFixed(pie.options.labels.percentage.decimalPlaces) + "%";
+				.text(function(d, i) {
+          return segments.getPercentage(pie, i) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize + "px")
 				.style("font-family", settings.percentage.font)
