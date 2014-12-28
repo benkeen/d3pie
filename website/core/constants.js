@@ -1,9 +1,9 @@
 define([], function() {
 
 	var C = {
-		VERSION: "0.1.5",
-		MINIMIZED: true,
-		DEBUG: false
+		VERSION: "0.1.6",
+		MINIMIZED: false,
+		DEBUG: true
 	};
 
 	C.EVENT = {

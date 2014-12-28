@@ -38,6 +38,9 @@ var segments = {
 
 		g.append("path")
 			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
+			.each(function(d) {
+				this._current = d;
+			})
 			.attr("fill", function(d, i) {
 				var color = colors[i];
 				if (pie.options.misc.gradient.enabled) {
@@ -70,6 +73,76 @@ var segments = {
 		);
 		pie.arc = arc;
 	},
+
+	// updatePie: function(pie) {
+	// 	this.create(pie);
+	// 	return;
+	// },
+
+	updatePie: function(pie) {
+    // pie.svg.selectAll(".segment-path")
+    pie.svg.selectAll("g." + pie.cssPrefix + "arc path")
+      .data(pie.options.data.content)
+      .transition()
+      .duration(500)
+      .attrTween("d", function (d) {
+        var i = d3.interpolate(this._current, d);        
+        this._current = i(0);
+        return function(t) {
+          return pie.arc(i(t));
+        };
+      });
+      // .attrTween("d", function (d) {
+      //   var i = d3.interpolate({ value: 0 }, d);        
+      //   return function(t) {
+      //     return pie.arc(i(t));
+      //   };
+      // });
+    pie.totalSize = 0;
+    pie.options.data.content.forEach(function(elem){
+      pie.totalSize += elem.value;
+    });
+    pie.svg.selectAll("g." + pie.cssPrefix + "arc")
+      .transition()
+      .duration(500)
+      .attr("transform", function(d, i) {
+        var angle = 0;
+        if (i > 0) {
+          angle = segments.getSegmentAngle(i-1, pie.options.data.content, pie.totalSize);
+        }
+        return "rotate(" + angle + ")";
+      }
+    );
+    d3.selectAll("." + pie.cssPrefix + "lineGroups").remove();
+    d3.selectAll("." + pie.cssPrefix + "labels-inner").remove();
+    d3.selectAll("." + pie.cssPrefix + "labels-outer").remove();
+    d3.selectAll("." + pie.cssPrefix + "tooltips").remove();
+
+    labels.add(pie, "inner", pie.options.labels.inner.format);
+    labels.add(pie, "outer", pie.options.labels.outer.format);
+
+    labels.positionLabelElements(pie, "inner", pie.options.labels.inner.format);
+    labels.positionLabelElements(pie, "outer", pie.options.labels.outer.format);
+    labels.computeOuterLabelCoords(pie);
+
+    labels.positionLabelGroups(pie, "outer");
+
+    labels.computeLabelLinePositions(pie);
+
+    if (pie.options.labels.lines.enabled && pie.options.labels.outer.format !== "none") {
+      labels.addLabelLines(pie);
+    }
+
+    labels.positionLabelGroups(pie, "inner");
+    labels.fadeInLabelsAndLines(pie);
+
+    if (pie.options.tooltips.enabled) {
+      tt.addTooltips(pie);
+    }
+
+    segments.addSegmentEventHandlers(pie);
+
+  },
 
 	addGradients: function(pie) {
 		var grads = pie.svg.append("defs")

@@ -178,6 +178,11 @@
 				helpers.processObj(this.options, propKey, value);
 				break;
 
+			case "data.content":
+				helpers.processObj(this.options, propKey, value);
+				segments.updatePie(this);
+				break;
+
 			// everything else, attempt to update it & do a repaint
 			default:
 				helpers.processObj(this.options, propKey, value);
