@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.5";
+	var _version = "0.1.6";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -1321,13 +1321,7 @@ var segments = {
 		pie.arc = arc;
 	},
 
-	// updatePie: function(pie) {
-	// 	this.create(pie);
-	// 	return;
-	// },
-
 	updatePie: function(pie) {
-
 		if(pie.currentlyOpenSegment){
 			d3.select(pie.currentlyOpenSegment)
 			.attr("transform", "translate(0,0)")
@@ -1400,69 +1394,69 @@ var segments = {
 				};
 			});
 
-    // pie.svg.selectAll(".segment-path")
-    pie.svg.selectAll("g." + pie.cssPrefix + "arc path")
-      .data(pie.options.data.content)
-      .transition()
-      .duration(500)
-      .attrTween("d", function (d) {
-        var i = d3.interpolate(this._current, d);        
-        this._current = i(0);
-        return function(t) {
-          return pie.arc(i(t));
-        };
-      });
-      // .attrTween("d", function (d) {
-      //   var i = d3.interpolate({ value: 0 }, d);        
-      //   return function(t) {
-      //     return pie.arc(i(t));
-      //   };
-      // });
-    pie.totalSize = 0;
-    pie.options.data.content.forEach(function(elem){
-      pie.totalSize += elem.value;
-    });
-    pie.svg.selectAll("g." + pie.cssPrefix + "arc")
-      .transition()
-      .duration(loadSpeed)
-      .attr("transform", function(d, i) {
-        var angle = 0;
-        if (i > 0) {
-          angle = segments.getSegmentAngle(i-1, pie.options.data.content, pie.totalSize);
-        }
-        return "rotate(" + angle + ")";
-      }
-    );
-    d3.selectAll("." + pie.cssPrefix + "lineGroups").remove();
-    d3.selectAll("." + pie.cssPrefix + "labels-inner").remove();
-    d3.selectAll("." + pie.cssPrefix + "labels-outer").remove();
-    d3.selectAll("." + pie.cssPrefix + "tooltips").remove();
+		// pie.svg.selectAll(".segment-path")
+		pie.svg.selectAll("g." + pie.cssPrefix + "arc path")
+			.data(pie.options.data.content)
+			.transition()
+			.duration(500)
+			.attrTween("d", function (d) {
+				var i = d3.interpolate(this._current, d);        
+				this._current = i(0);
+				return function(t) {
+					return pie.arc(i(t));
+				};
+			});
+			// .attrTween("d", function (d) {
+			//   var i = d3.interpolate({ value: 0 }, d);        
+			//   return function(t) {
+			//     return pie.arc(i(t));
+			//   };
+			// });
+		pie.totalSize = 0;
+		pie.options.data.content.forEach(function(elem){
+			pie.totalSize += elem.value;
+		});
+		pie.svg.selectAll("g." + pie.cssPrefix + "arc")
+			.transition()
+			.duration(loadSpeed)
+			.attr("transform", function(d, i) {
+				var angle = 0;
+				if (i > 0) {
+					angle = segments.getSegmentAngle(i-1, pie.options.data.content, pie.totalSize);
+				}
+				return "rotate(" + angle + ")";
+			}
+		);
+		d3.selectAll("." + pie.cssPrefix + "lineGroups").remove();
+		d3.selectAll("." + pie.cssPrefix + "labels-inner").remove();
+		d3.selectAll("." + pie.cssPrefix + "labels-outer").remove();
+		d3.selectAll("." + pie.cssPrefix + "tooltips").remove();
 
-    labels.add(pie, "inner", pie.options.labels.inner.format);
-    labels.add(pie, "outer", pie.options.labels.outer.format);
+		labels.add(pie, "inner", pie.options.labels.inner.format);
+		labels.add(pie, "outer", pie.options.labels.outer.format);
 
-    labels.positionLabelElements(pie, "inner", pie.options.labels.inner.format);
-    labels.positionLabelElements(pie, "outer", pie.options.labels.outer.format);
-    labels.computeOuterLabelCoords(pie);
+		labels.positionLabelElements(pie, "inner", pie.options.labels.inner.format);
+		labels.positionLabelElements(pie, "outer", pie.options.labels.outer.format);
+		labels.computeOuterLabelCoords(pie);
 
-    labels.positionLabelGroups(pie, "outer");
+		labels.positionLabelGroups(pie, "outer");
 
-    labels.computeLabelLinePositions(pie);
+		labels.computeLabelLinePositions(pie);
 
-    if (pie.options.labels.lines.enabled && pie.options.labels.outer.format !== "none") {
-      labels.addLabelLines(pie);
-    }
+		if (pie.options.labels.lines.enabled && pie.options.labels.outer.format !== "none") {
+			labels.addLabelLines(pie);
+		}
 
-    labels.positionLabelGroups(pie, "inner");
-    labels.fadeInLabelsAndLines(pie);
+		labels.positionLabelGroups(pie, "inner");
+		labels.fadeInLabelsAndLines(pie);
 
-    if (pie.options.tooltips.enabled) {
-      tt.addTooltips(pie);
-    }
+		if (pie.options.tooltips.enabled) {
+			tt.addTooltips(pie);
+		}
 
-    segments.addSegmentEventHandlers(pie);
+		segments.addSegmentEventHandlers(pie);
 
-  },
+	},
 
 	addGradients: function(pie) {
 		var grads = pie.svg.append("defs")
@@ -1521,18 +1515,18 @@ var segments = {
 				segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
 
-      if (pie.options.tooltips.enabled) {
-        index = segment.attr("data-index");
-        tt.showTooltip(pie, index);
-      }
+			if (pie.options.tooltips.enabled) {
+				index = segment.attr("data-index");
+				tt.showTooltip(pie, index);
+			}
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
 		});
 
-    arc.on("mousemove", function() {
-      tt.moveTooltip(pie);
-    });
+		arc.on("mousemove", function() {
+			tt.moveTooltip(pie);
+		});
 
 		arc.on("mouseout", function() {
 			var currentEl = d3.select(this);
@@ -1554,10 +1548,10 @@ var segments = {
 				segment.style("fill", color);
 			}
 
-      if (pie.options.tooltips.enabled) {
-        index = segment.attr("data-index");
-        tt.hideTooltip(pie, index);
-      }
+			if (pie.options.tooltips.enabled) {
+				index = segment.attr("data-index");
+				tt.hideTooltip(pie, index);
+			}
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
