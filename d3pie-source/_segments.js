@@ -275,6 +275,8 @@ var segments = {
 	},
 
 	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
+		var decimalPlaces = pie.options.labels.percentage.decimalPlaces;
+		return ((pie.options.data.content[index].value / pie.totalSize) * 100).toFixed(decimalPlaces);
+		// return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
 	}
 };
