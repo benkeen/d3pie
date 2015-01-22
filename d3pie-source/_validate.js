@@ -14,7 +14,7 @@ var validate = {
 		}
 
 		// confirm element is either a DOM element or a valid string for a DOM element
-		if (!(element instanceof HTMLElement)) {
+		if (!(element instanceof HTMLElement || element instanceof SVGElement)) {
 			console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
 			return false;
 		}
