@@ -35,7 +35,7 @@
 
   $(function() {
     var num = 4;
-    $("#addData").on("click", function() {
+    $("#pushData").on("click", function() {
       data.push({
         label: num.toString(),
         value: Math.floor(Math.random() * 10) + 1
@@ -44,10 +44,32 @@
       pie.updateProp("data.content", data);
       num++;
     });
+    $("#unshiftData").on("click", function() {
+      data.unshift({
+        label: num.toString(),
+        value: Math.floor(Math.random() * 10) + 1
+      });
+
+      pie.updateProp("data.content", data);
+      num++;
+    });
+
+    $("#popData").on('click', function(){
+      data.pop();
+      pie.updateProp("data.content", data);
+    });
+
+    $("#shiftData").on('click', function(){
+      data.shift();
+      pie.updateProp("data.content", data);
+    });
   });
 </script>
 
-<input type="button" value="Add Data" id="addData" />
+<input type="button" value="Push Data" id="pushData" />
+<input type="button" value="Unshift Data" id="unshiftData" />
+<input type="button" value="Pop Data" id="popData" />
+<input type="button" value="Shift Data" id="shiftData" />
 
 <hr size="1" />
 
@@ -66,7 +88,7 @@ var pie = new d3pie("pie", {
 
 $(function() {
   var num = 4;
-  $("#addData").on("click", function() {
+  $("#pushData").on("click", function() {
     data.push({
       label: num.toString(),
       value: Math.floor(Math.random() * 10) + 1
@@ -74,6 +96,25 @@ $(function() {
 
     pie.updateProp("data.content", data);
     num++;
+  });
+  $("#unshiftData").on("click", function() {
+    data.unshift({
+      label: num.toString(),
+      value: Math.floor(Math.random() * 10) + 1
+    });
+
+    pie.updateProp("data.content", data);
+    num++;
+  });
+
+  $("#popData").on('click', function(){
+    data.pop();
+    pie.updateProp("data.content", data);
+  });
+
+  $("#shiftData").on('click', function(){
+    data.shift();
+    pie.updateProp("data.content", data);
   });
 });
 </pre></blockquote>

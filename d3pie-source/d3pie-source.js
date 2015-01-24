@@ -1,7 +1,7 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.4
+ * @version 0.1.6
  * @date Oct 2014 - [still in dev!]
  * @repo http://github.com/benkeen/d3pie
  */
@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.5";
+	var _version = "0.1.6";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -176,6 +176,11 @@
 			case "effects.highlightSegmentOnMouseover":
 			case "effects.highlightLuminosity":
 				helpers.processObj(this.options, propKey, value);
+				break;
+
+			case "data.content":
+				helpers.processObj(this.options, propKey, value);
+				segments.updatePie(this);
 				break;
 
 			// everything else, attempt to update it & do a repaint

@@ -13,7 +13,9 @@ var segments = {
 
 		// we insert the pie chart BEFORE the title, to ensure the title overlaps the pie
 		var pieChartElement = pie.svg.insert("g", "#" + pie.cssPrefix + "title")
-			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
+			.attr("transform", function() {
+				return math.getPieTranslateCenter(pieCenter);
+			})
 			.attr("class", pie.cssPrefix + "pieChart");
 
 		var arc = d3.svg.arc()
@@ -38,6 +40,9 @@ var segments = {
 
 		g.append("path")
 			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
+			.each(function(d) {
+				this._current = d;
+			})
 			.attr("fill", function(d, i) {
 				var color = colors[i];
 				if (pie.options.misc.gradient.enabled) {
@@ -69,6 +74,143 @@ var segments = {
 			}
 		);
 		pie.arc = arc;
+	},
+
+	updatePie: function(pie) {
+		if(pie.currentlyOpenSegment){
+			d3.select(pie.currentlyOpenSegment)
+			.attr("transform", "translate(0,0)")
+			.attr("class", "");
+			pie.currentlyOpenSegment = null;
+		}
+
+		var pieCenter = pie.pieCenter;
+		pie.options.colors = helpers.initSegmentColors(pie);
+		var colors = pie.options.colors;
+		var loadEffects = pie.options.effects.load;
+		var segmentStroke = pie.options.misc.colors.segmentStroke;
+
+		var pieChartElement = pie.svg.select("."+pie.cssPrefix+ "pieChart");
+
+		var arc = d3.svg.arc()
+			.innerRadius(pie.innerRadius)
+			.outerRadius(pie.outerRadius)
+			.startAngle(0)
+			.endAngle(function(d) {
+				return (d.value / pie.totalSize) * 2 * Math.PI;
+			});
+
+		var length = pie.options.data.content.length;
+		var lengthCount = 0;
+		pieChartElement.selectAll("." + pie.cssPrefix + "arc")
+			.each(function(d, i){
+				if(i >= length){
+					d3.select(this).remove();
+				} else {
+					d3.select(this).select("path").attr("data-index", lengthCount);
+					lengthCount++;
+				}
+			});
+
+		var g = pieChartElement.selectAll("." + pie.cssPrefix + "arc")
+			.data(pie.options.data.content)
+			.enter()
+			.append("g")
+			.attr("class", pie.cssPrefix + "arc");
+
+		// if we're not fading in the pie, just set the load speed to 0
+		var loadSpeed = loadEffects.speed;
+		if (loadEffects.effect === "none") {
+			loadSpeed = 0;
+		}
+
+		g.append("path")
+			.attr("id", function(d, i) { return pie.cssPrefix + "segment" + i; })
+			.each(function(d) {
+				this._current = d;
+			})
+			.attr("fill", function(d, i) {
+				var color = colors[i];
+				if (pie.options.misc.gradient.enabled) {
+					color = "url(#" + pie.cssPrefix + "grad" + i + ")";
+				}
+				return color;
+			})
+			.style("stroke", segmentStroke)
+			.style("stroke-width", 1)
+			.attr("data-index", function(d, i) { return i; })
+			.transition()
+			.ease("cubic-in-out")
+			.duration(loadSpeed)
+			.attrTween("d", function(b) {
+				var i = d3.interpolate({ value: 0 }, b);
+				return function(t) {
+					return pie.arc(i(t));
+				};
+			});
+
+		// pie.svg.selectAll(".segment-path")
+		pie.svg.selectAll("g." + pie.cssPrefix + "arc path")
+			.data(pie.options.data.content)
+			.transition()
+			.duration(500)
+			.attrTween("d", function (d) {
+				var i = d3.interpolate(this._current, d);        
+				this._current = i(0);
+				return function(t) {
+					return pie.arc(i(t));
+				};
+			});
+			// .attrTween("d", function (d) {
+			//   var i = d3.interpolate({ value: 0 }, d);        
+			//   return function(t) {
+			//     return pie.arc(i(t));
+			//   };
+			// });
+		pie.totalSize = 0;
+		pie.options.data.content.forEach(function(elem){
+			pie.totalSize += elem.value;
+		});
+		pie.svg.selectAll("g." + pie.cssPrefix + "arc")
+			.transition()
+			.duration(loadSpeed)
+			.attr("transform", function(d, i) {
+				var angle = 0;
+				if (i > 0) {
+					angle = segments.getSegmentAngle(i-1, pie.options.data.content, pie.totalSize);
+				}
+				return "rotate(" + angle + ")";
+			}
+		);
+		d3.selectAll("." + pie.cssPrefix + "lineGroups").remove();
+		d3.selectAll("." + pie.cssPrefix + "labels-inner").remove();
+		d3.selectAll("." + pie.cssPrefix + "labels-outer").remove();
+		d3.selectAll("." + pie.cssPrefix + "tooltips").remove();
+
+		labels.add(pie, "inner", pie.options.labels.inner.format);
+		labels.add(pie, "outer", pie.options.labels.outer.format);
+
+		labels.positionLabelElements(pie, "inner", pie.options.labels.inner.format);
+		labels.positionLabelElements(pie, "outer", pie.options.labels.outer.format);
+		labels.computeOuterLabelCoords(pie);
+
+		labels.positionLabelGroups(pie, "outer");
+
+		labels.computeLabelLinePositions(pie);
+
+		if (pie.options.labels.lines.enabled && pie.options.labels.outer.format !== "none") {
+			labels.addLabelLines(pie);
+		}
+
+		labels.positionLabelGroups(pie, "inner");
+		labels.fadeInLabelsAndLines(pie);
+
+		if (pie.options.tooltips.enabled) {
+			tt.addTooltips(pie);
+		}
+
+		segments.addSegmentEventHandlers(pie);
+
 	},
 
 	addGradients: function(pie) {
@@ -128,18 +270,18 @@ var segments = {
 				segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
 
-      if (pie.options.tooltips.enabled) {
-        index = segment.attr("data-index");
-        tt.showTooltip(pie, index);
-      }
+			if (pie.options.tooltips.enabled) {
+				index = segment.attr("data-index");
+				tt.showTooltip(pie, index);
+			}
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
 		});
 
-    arc.on("mousemove", function() {
-      tt.moveTooltip(pie);
-    });
+		arc.on("mousemove", function() {
+			tt.moveTooltip(pie);
+		});
 
 		arc.on("mouseout", function() {
 			var currentEl = d3.select(this);
@@ -161,10 +303,10 @@ var segments = {
 				segment.style("fill", color);
 			}
 
-      if (pie.options.tooltips.enabled) {
-        index = segment.attr("data-index");
-        tt.hideTooltip(pie, index);
-      }
+			if (pie.options.tooltips.enabled) {
+				index = segment.attr("data-index");
+				tt.hideTooltip(pie, index);
+			}
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
