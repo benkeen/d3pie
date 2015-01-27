@@ -274,7 +274,11 @@ var segments = {
 		return angle;
 	},
 
-	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
+	getPercentage: function(pie, index, decimalPlaces) {
+	    if (decimalPlaces <= 0) {
+	        return Math.round((pie.options.data.content[index].value / pie.totalSize) * 100);
+	    } else {
+	        return ((pie.options.data.content[index].value / pie.totalSize) * 100).toFixed(decimalPlaces);
+	    }
 	}
 };

@@ -1,7 +1,7 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.4
+ * @version 0.1.5
  * @date Oct 2014 - [still in dev!]
  * @repo http://github.com/benkeen/d3pie
  */
