@@ -19,6 +19,11 @@ To download the script, go to the [./d3pie](d3pie) folder and pick one of the fi
 If you fancy hacking on the d3pie code, awesome! Visit the [./d3pie-source](d3pie-source) folder. That contains some
 more info about how the code is organized and how the file is generated.
 
+### Contributions  
+
+Pull requests are always welcome! Please know that all contributors should understand that they'll be contributing under
+the license of the script (MIT).
+
 ### The website
 
 I wrote the website along with the script itself, and with the generator in particular in mind. The generator is my
