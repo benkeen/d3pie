@@ -36,7 +36,7 @@ var tt = {
           return tt.replacePlaceholders(pie, caption, i, {
             label: d.label,
             value: d.value,
-            percentage: segments.getPercentage(pie, i)
+            percentage: segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces)
           });
         });
 
