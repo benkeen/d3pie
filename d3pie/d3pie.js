@@ -200,7 +200,7 @@ var validate = {
 		}
 
 		// confirm element is either a DOM element or a valid string for a DOM element
-		if (!(element instanceof HTMLElement)) {
+		if (!(element instanceof HTMLElement || element instanceof SVGElement)) {
 			console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
 			return false;
 		}
@@ -1795,14 +1795,14 @@ var tt = {
 
     // move the tooltip offscreen. This ensures that when the user next mousovers the segment the hidden
     // element won't interfere
-    d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
-      .attr("transform", function(d, i) {
+    // d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
+    //   .attr("transform", function(d, i) {
 
-        // klutzy, but it accounts for tooltip padding which could push it onscreen
-        var x = pie.options.size.canvasWidth + 1000;
-        var y = pie.options.size.canvasHeight + 1000;
-        return "translate(" + x + "," + y + ")";
-      });
+    //     // klutzy, but it accounts for tooltip padding which could push it onscreen
+    //     var x = pie.options.size.canvasWidth + 1000;
+    //     var y = pie.options.size.canvasHeight + 1000;
+    //     return "translate(" + x + "," + y + ")";
+    //   });
   },
 
   replacePlaceholders: function(pie, str, index, replacements) {
