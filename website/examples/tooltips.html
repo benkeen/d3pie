@@ -21,30 +21,30 @@
 <script src="../../d3pie/d3pie.js"></script>
 
 <script>
-	var pie = new d3pie("pie", {
-		header: {
-			title: {
-				text: "Tooltips: example #1",
-				fontSize: 20
-			}
-		},
-    labels: {
-      inner: {
-        format: "none"
-      }
-    },
-		data: {
-			content: [
-				{ label: "JavaScript", value: 1, caption: "New and shiny despite its age." },
-				{ label: "Ruby", value: 2, caption: "Foreign and strange" },
-				{ label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)" }
-			]
-		},
-    tooltips: {
-      enabled: true,
-      type: "caption"
+var pie = new d3pie("pie", {
+  header: {
+    title: {
+      text: "Tooltips: example #1",
+      fontSize: 20
     }
-	});
+  },
+  labels: {
+    inner: {
+      format: "none"
+    }
+  },
+  data: {
+    content: [
+      { label: "JavaScript", value: 1, caption: "New and shiny despite its age." },
+      { label: "Ruby", value: 2, caption: "Foreign and strange" },
+      { label: "Java", value: 3, caption: "Old and verbose (buuuuurn!)" }
+    ]
+  },
+  tooltips: {
+    enabled: true,
+    type: "caption"
+  }
+});
 </script>
 
 <hr size="1" />

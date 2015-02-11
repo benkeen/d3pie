@@ -1,8 +1,8 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.5
- * @date Oct 2014 - [still in dev!]
+ * @version 0.1.6
+ * @date Feb 10 2014
  * @repo http://github.com/benkeen/d3pie
  */
 
@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.5";
+	var _version = "0.1.6";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
