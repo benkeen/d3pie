@@ -1,7 +1,7 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.4
+ * @version 0.1.5
  * @date Oct 2014 - [still in dev!]
  * @repo http://github.com/benkeen/d3pie
  */
@@ -200,7 +200,7 @@ var validate = {
 		}
 
 		// confirm element is either a DOM element or a valid string for a DOM element
-		if (!(element instanceof HTMLElement)) {
+		if (!(element instanceof HTMLElement || element instanceof SVGElement)) {
 			console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
 			return false;
 		}
@@ -830,7 +830,7 @@ var labels = {
 				.attr("id", function(d, i) { return pie.cssPrefix + "segmentPercentage" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentPercentage-" + section)
 				.text(function(d, i) {
-          return segments.getPercentage(pie, i) + "%";
+					return segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces) + "%";
 				})
 				.style("font-size", settings.percentage.fontSize + "px")
 				.style("font-family", settings.percentage.font)
@@ -986,7 +986,7 @@ var labels = {
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-				var segmentPercentage = segments.getPercentage(pie, i);
+				var segmentPercentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
 				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
 			});
@@ -1039,7 +1039,7 @@ var labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-					var segmentPercentage = segments.getPercentage(pie, i);
+					var segmentPercentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
@@ -1048,7 +1048,7 @@ var labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = pie.options.labels.inner.hideWhenLessThanPercentage;
-					var segmentPercentage = segments.getPercentage(pie, i);
+					var segmentPercentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
@@ -1519,9 +1519,15 @@ var segments = {
 		return angle;
 	},
 
-	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
+	getPercentage: function(pie, index, decimalPlaces) {
+		var relativeAmount = pie.options.data.content[index].value / pie.totalSize;
+		if (decimalPlaces <= 0) {
+			return Math.round(relativeAmount * 100);
+		} else {
+			return (relativeAmount * 100).toFixed(decimalPlaces);
+		}
 	}
+
 };
 
 	//// --------- text.js -----------
@@ -1742,7 +1748,7 @@ var tt = {
           return tt.replacePlaceholders(pie, caption, i, {
             label: d.label,
             value: d.value,
-            percentage: segments.getPercentage(pie, i)
+            percentage: segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces)
           });
         });
 

@@ -293,9 +293,9 @@ module.exports = function(grunt) {
 				dest: 'build/'
 			}
 		},
-        jshint: {
-            all: ['d3pie-source/*.js']
-        }
+		jshint: {
+				all: ['d3pie-source/*.js']
+		}
 	};
 
 	grunt.initConfig(config);

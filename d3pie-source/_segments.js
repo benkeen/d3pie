@@ -275,10 +275,12 @@ var segments = {
 	},
 
 	getPercentage: function(pie, index, decimalPlaces) {
-	    if (decimalPlaces <= 0) {
-	        return Math.round((pie.options.data.content[index].value / pie.totalSize) * 100);
-	    } else {
-	        return ((pie.options.data.content[index].value / pie.totalSize) * 100).toFixed(decimalPlaces);
-	    }
+		var relativeAmount = pie.options.data.content[index].value / pie.totalSize;
+		if (decimalPlaces <= 0) {
+			return Math.round(relativeAmount * 100);
+		} else {
+			return (relativeAmount * 100).toFixed(decimalPlaces);
+		}
 	}
+
 };
