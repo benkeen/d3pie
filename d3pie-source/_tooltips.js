@@ -79,7 +79,10 @@ var tt = {
         var mouseCoords = d3.mouse(this.parentElement);
         var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;
         var y = mouseCoords[1] - (2 * pie.options.tooltips.styles.padding) - 2;
-        return "translate(" + x + "," + y + ")";
+				//wyc change
+        var canvasWidth=pie.options.size.canvasWidth;
+        var textWidth=d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip).select("rect").attr("width");
+        return "translate(" + Math.min(x,canvasWidth-textWidth) + "," + y + ")";
       });
   },
 

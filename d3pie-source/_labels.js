@@ -354,6 +354,10 @@ var labels = {
 			return;
 		}
 
+		//wyc add
+    if (pie.options.labels.outer.format && pie.options.labels.outer.format=='none'){
+      return;
+    }//wyc add end
 		var currIndexHemisphere = pie.outerLabelGroupData[currIndex].hs;
 		if (direction === "clockwise" && currIndexHemisphere !== "right") {
 			return;
@@ -421,11 +425,13 @@ var labels = {
 
 		// ahhh! info.lineLength is no longer a constant.....
 
-		if (lastCorrectlyPositionedLabel.hs === "right") {
-			newXPos = info.center.x + xDiff;
-		} else {
-			newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
-		}
+		//wyc change
+    //if (plastCorrectlyPositionedLabel.hs === "right") {
+    if (pie.options.labels.outer.format!='none' && lastCorrectlyPositionedLabel.hs === "right") {
+      newXPos = info.center.x + xDiff;
+    } else {
+      newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
+    }
 
 		pie.outerLabelGroupData[nextIndex].x = newXPos;
 		pie.outerLabelGroupData[nextIndex].y = newYPos;
@@ -435,7 +441,13 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		//----wyc change begin
+		// var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		var labelGroupNode = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node();
+		if (!labelGroupNode) return;
+		var labelGroupDims = labelGroupNode.getBBox();
+		//-----wyc change end
+
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;

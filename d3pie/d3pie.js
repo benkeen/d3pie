@@ -200,7 +200,7 @@ var validate = {
 		}
 
 		// confirm element is either a DOM element or a valid string for a DOM element
-		if (!(element instanceof HTMLElement)) {
+		if (!(element instanceof HTMLElement || element instanceof SVGElement)) {
 			console.error("d3pie error: the first d3pie() param must be a valid DOM element (not jQuery) or a ID string.");
 			return false;
 		}
@@ -1136,6 +1136,10 @@ var labels = {
 			return;
 		}
 
+		//wyc add
+    if (pie.options.labels.outer.format && pie.options.labels.outer.format=='none'){
+      return;
+    }//wyc add end
 		var currIndexHemisphere = pie.outerLabelGroupData[currIndex].hs;
 		if (direction === "clockwise" && currIndexHemisphere !== "right") {
 			return;
@@ -1203,11 +1207,13 @@ var labels = {
 
 		// ahhh! info.lineLength is no longer a constant.....
 
-		if (lastCorrectlyPositionedLabel.hs === "right") {
-			newXPos = info.center.x + xDiff;
-		} else {
-			newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
-		}
+		//wyc change
+    //if (plastCorrectlyPositionedLabel.hs === "right") {
+    if (pie.options.labels.outer.format!='none' && lastCorrectlyPositionedLabel.hs === "right") {
+      newXPos = info.center.x + xDiff;
+    } else {
+      newXPos = info.center.x - xDiff - pie.outerLabelGroupData[nextIndex].w;
+    }
 
 		pie.outerLabelGroupData[nextIndex].x = newXPos;
 		pie.outerLabelGroupData[nextIndex].y = newYPos;
@@ -1217,7 +1223,13 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		//----wyc change begin
+		// var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		var labelGroupNode = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node();
+		if (!labelGroupNode) return;
+		var labelGroupDims = labelGroupNode.getBBox();
+		//-----wyc change end
+
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
@@ -1519,8 +1531,8 @@ var segments = {
 		return angle;
 	},
 
-	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
+	getPercentage: function(pie, index) {//wyc change floor-->round
+		return Math.round((pie.options.data.content[index].value / pie.totalSize) * 10000)/100;
 	}
 };
 
@@ -1785,7 +1797,10 @@ var tt = {
         var mouseCoords = d3.mouse(this.parentElement);
         var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;
         var y = mouseCoords[1] - (2 * pie.options.tooltips.styles.padding) - 2;
-        return "translate(" + x + "," + y + ")";
+				//wyc change
+        var canvasWidth=pie.options.size.canvasWidth;
+        var textWidth=d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip).select("rect").attr("width");
+        return "translate(" + Math.min(x,canvasWidth-textWidth) + "," + y + ")";
       });
   },
 

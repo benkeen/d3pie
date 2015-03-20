@@ -274,7 +274,7 @@ var segments = {
 		return angle;
 	},
 
-	getPercentage: function(pie, index) {
-		return Math.floor((pie.options.data.content[index].value / pie.totalSize) * 100);
+	getPercentage: function(pie, index) {//wyc change floor-->round
+		return Math.round((pie.options.data.content[index].value / pie.totalSize) * 10000)/100;
 	}
 };
