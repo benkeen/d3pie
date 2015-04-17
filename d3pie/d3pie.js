@@ -26,9 +26,8 @@
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
-
-  //used to as global access instead of document for shadow DOM
   var rootNode;
+
 
 	// this section includes all helper libs on the d3pie object. They're populated via grunt-template. Note: to keep
 	// the syntax highlighting from getting all messed up, I commented out each line. That REQUIRES each of the files
@@ -270,7 +269,7 @@ var helpers = {
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
-			if (rootNode.getElementById(id)) {
+			if (document.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
@@ -288,7 +287,7 @@ var helpers = {
 		var interval = setInterval(function() {
 			var allExist = true;
 			for (var i=0; i<els.length; i++) {
-				if (!rootNode.getElementById(els[i])) {
+				if (!document.getElementById(els[i])) {
 					allExist = false;
 					break;
 				}
@@ -333,7 +332,7 @@ var helpers = {
 	},
 
 	getDimensions: function(id) {
-		var el = rootNode.getElementById(id);
+		var el = document.getElementById(id);
 		var w = 0, h = 0;
 		if (el) {
 			var dimensions = el.getBBox();
@@ -685,7 +684,7 @@ var math = {
 		return data;
 	},
 
-
+	
 
 	// var pieCenter = math.getPieCenter();
 	getPieTranslateCenter: function(pieCenter) {
@@ -1838,15 +1837,36 @@ var tt = {
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
-	var d3pie = function(element, options, shadowRoot) {
+	var d3pie = function(element, options,shadow) {
 
-    //inside shadow dom we can't access element with document.getElementById
     rootNode = shadowRoot || document;
+    if(shadowRoot){
+      //HACK: Till I figure out a better way to do this
+      var d3root = d3.select(rootNode);
+      var querySelect = d3root.select;
+      var querySelectAll = d3root.selectAll;
+      var oldSelect =d3.select;
+      var oldSelectAll = d3.selectAll;
+      d3.select = function(selector){
+        if(typeof selector == "string"){
+          return querySelect.apply(d3root,arguments);
+        }else{
+          return oldSelect.apply(this,arguments);
+        }
+      };
+      d3.selectAll = function(selector){
+        if(typeof selector == "string"){
+          return querySelectAll.apply(d3root,arguments);
+        }else{
+          return oldSelectAll.apply(this,arguments);
+        }
+      };
+    }
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = rootNode.getElementById(el);
+			this.element = document.getElementById(el);
 		}
 
 		var opts = {};

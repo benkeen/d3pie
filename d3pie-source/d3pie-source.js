@@ -26,6 +26,7 @@
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
+  var rootNode;
 
 
 	// this section includes all helper libs on the d3pie object. They're populated via grunt-template. Note: to keep
@@ -43,8 +44,31 @@
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
-	var d3pie = function(element, options) {
+	var d3pie = function(element, options,shadow) {
 
+    rootNode = shadowRoot || document;
+    if(shadowRoot){
+      //HACK: Till I figure out a better way to do this
+      var d3root = d3.select(rootNode);
+      var querySelect = d3root.select;
+      var querySelectAll = d3root.selectAll;
+      var oldSelect =d3.select;
+      var oldSelectAll = d3.selectAll;
+      d3.select = function(selector){
+        if(typeof selector == "string"){
+          return querySelect.apply(d3root,arguments);
+        }else{
+          return oldSelect.apply(this,arguments);
+        }
+      };
+      d3.selectAll = function(selector){
+        if(typeof selector == "string"){
+          return querySelectAll.apply(d3root,arguments);
+        }else{
+          return oldSelectAll.apply(this,arguments);
+        }
+      };
+    }
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
