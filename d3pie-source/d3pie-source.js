@@ -44,7 +44,7 @@
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
-	var d3pie = function(element, options,shadow) {
+	var d3pie = function(element, options, shadowRoot) {
 
     rootNode = shadowRoot || document;
     if(shadowRoot){
