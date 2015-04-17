@@ -3,3 +3,4 @@ node_modules/*
 build/*
 website/core/.DS_Store
 bower_components/
+.DS_Store
