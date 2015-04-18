@@ -55,7 +55,7 @@ Lots! A big thanks to the developers of these scripts.
 
 ### Changelog
 
-- `0.1.7` - Apr 18, 2015. Added support for shadow dom.
+- `0.1.7` - Apr 18, 2015. Added support for shadow DOM.
 - `0.1.6` - Feb 10, 2015. Bug fixes.
 - `0.1.5` - Dec 14, 2014. placeholderParser option added for tooltips; bug fixes.
 - `0.1.4` - Nov 16, 2014, Tooltips added, bug fixes.
