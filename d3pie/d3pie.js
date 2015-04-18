@@ -269,7 +269,7 @@ var helpers = {
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
-			if (document.getElementById(id)) {
+			if (rootNode.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
@@ -287,7 +287,7 @@ var helpers = {
 		var interval = setInterval(function() {
 			var allExist = true;
 			for (var i=0; i<els.length; i++) {
-				if (!document.getElementById(els[i])) {
+				if (!rootNode.getElementById(els[i])) {
 					allExist = false;
 					break;
 				}
@@ -332,7 +332,7 @@ var helpers = {
 	},
 
 	getDimensions: function(id) {
-		var el = document.getElementById(id);
+		var el = rootNode.getElementById(id);
 		var w = 0, h = 0;
 		if (el) {
 			var dimensions = el.getBBox();
@@ -572,6 +572,7 @@ var extend = function() {
 	}
 	return target;
 };
+
 	//// --------- math.js -----------
 var math = {
 
@@ -1866,7 +1867,7 @@ var tt = {
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = document.getElementById(el);
+			this.element = rootNode.getElementById(el);
 		}
 
 		var opts = {};

@@ -73,7 +73,7 @@
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = document.getElementById(el);
+			this.element = rootNode.getElementById(el);
 		}
 
 		var opts = {};

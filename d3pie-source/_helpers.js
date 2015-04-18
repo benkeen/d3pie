@@ -24,7 +24,7 @@ var helpers = {
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
-			if (document.getElementById(id)) {
+			if (rootNode.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
@@ -42,7 +42,7 @@ var helpers = {
 		var interval = setInterval(function() {
 			var allExist = true;
 			for (var i=0; i<els.length; i++) {
-				if (!document.getElementById(els[i])) {
+				if (!rootNode.getElementById(els[i])) {
 					allExist = false;
 					break;
 				}
@@ -87,7 +87,7 @@ var helpers = {
 	},
 
 	getDimensions: function(id) {
-		var el = document.getElementById(id);
+		var el = rootNode.getElementById(id);
 		var w = 0, h = 0;
 		if (el) {
 			var dimensions = el.getBBox();
