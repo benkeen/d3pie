@@ -87,7 +87,7 @@ var segments = {
 	},
 
 	addSegmentEventHandlers: function(pie) {
-		var arc = d3.selectAll("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
+		var arc = d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
 
 		arc.on("click", function() {
 			var currentEl = d3.select(this);
@@ -98,7 +98,7 @@ var segments = {
 				segment = currentEl.select("path");
 			} else {
 				var index = currentEl.attr("data-index");
-				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+				segment = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "segment" + index);
 			}
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, segment, isExpanded);
@@ -120,7 +120,7 @@ var segments = {
 				segment = currentEl.select("path");
 			} else {
 				index = currentEl.attr("data-index");
-				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+				segment = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "segment" + index);
 			}
 
 			if (pie.options.effects.highlightSegmentOnMouseover) {
@@ -150,7 +150,7 @@ var segments = {
 				segment = currentEl.select("path");
 			} else {
 				index = currentEl.attr("data-index");
-				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+				segment = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "segment" + index);
 			}
 
 			if (pie.options.effects.highlightSegmentOnMouseover) {
@@ -193,8 +193,8 @@ var segments = {
 		pie.isOpeningSegment = true;
 
 		// close any open segments
-		if (d3.selectAll("." + pie.cssPrefix + "expanded").length > 0) {
-			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
+		if (d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "expanded").length > 0) {
+			segments.closeSegment(pie, d3.select(pie.rootNode).select("." + pie.cssPrefix + "expanded").node());
 		}
 
 		d3.select(segment).transition()

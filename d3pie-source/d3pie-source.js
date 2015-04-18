@@ -46,28 +46,6 @@
 	var d3pie = function(element, options, shadowRoot) {
 
     this.rootNode = shadowRoot || document;
-    if(shadowRoot){
-      //HACK: Till I figure out a better way to do this
-      var d3root = d3.select(this.rootNode);
-      var querySelect = d3root.select;
-      var querySelectAll = d3root.selectAll;
-      var oldSelect =d3.select;
-      var oldSelectAll = d3.selectAll;
-      d3.select = function(selector){
-        if(typeof selector == "string"){
-          return querySelect.apply(d3root,arguments);
-        }else{
-          return oldSelect.apply(this,arguments);
-        }
-      };
-      d3.selectAll = function(selector){
-        if(typeof selector == "string"){
-          return querySelectAll.apply(d3root,arguments);
-        }else{
-          return oldSelectAll.apply(this,arguments);
-        }
-      };
-    }
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
@@ -156,7 +134,7 @@
 		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}
-		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());
+		segments.openSegment(this, d3.select(this.rootNode).select("#" + this.cssPrefix + "segment" + index).node());
 	};
 
 	d3pie.prototype.closeSegment = function() {
@@ -174,7 +152,7 @@
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				d3.select("#" + this.cssPrefix + "title").html(value);
+				d3.select(this.rootNode).select("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.redraw();
 				}
@@ -183,7 +161,7 @@
 			case "header.subtitle.text":
 				var oldValue = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				d3.select("#" + this.cssPrefix + "subtitle").html(value);
+				d3.select(this.rootNode).select("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 					this.redraw();
 				}
