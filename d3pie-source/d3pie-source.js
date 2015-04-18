@@ -255,7 +255,7 @@
 		var self = this;
 		helpers.whenIdExists(this.cssPrefix + "footer", self, function() {
 			text.positionFooter(self);
-			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
+			var d3 = helpers.getDimensions(self.cssPrefix + "footer",self);
 			self.textComponents.footer.h = d3.h;
 			self.textComponents.footer.w = d3.w;
 		});
@@ -268,12 +268,12 @@
 
 		helpers.whenElementsExist(reqEls, self, function() {
 			if (self.textComponents.title.exists) {
-				var d1 = helpers.getDimensions(self.cssPrefix + "title");
+				var d1 = helpers.getDimensions(self.cssPrefix + "title",self);
 				self.textComponents.title.h = d1.h;
 				self.textComponents.title.w = d1.w;
 			}
 			if (self.textComponents.subtitle.exists) {
-				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
+				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle",self);
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}
