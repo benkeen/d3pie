@@ -1440,7 +1440,8 @@ var segments = {
 
 		// close any open segments
 		if (d3.selectAll("." + pie.cssPrefix + "expanded").length > 0) {
-			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
+			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node(),
+				pie.options.effects.pullOutSegmentOnClick.speed);
 		}
 
 		d3.select(segment).transition()
@@ -1462,9 +1463,10 @@ var segments = {
 			});
 	},
 
-	closeSegment: function(pie, segment) {
+	closeSegment: function(pie, segment,speed) {
+		speed = speed || 400;
 		d3.select(segment).transition()
-			.duration(400)
+			.duration(speed)
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				d3.select(this).attr("class", "");
