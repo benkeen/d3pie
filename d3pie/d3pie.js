@@ -1351,7 +1351,8 @@ var segments = {
 			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
-					segments.closeSegment(pie, segment.node());
+					var speed =pie.options.effects.pullOutSegmentOnClick.speed;
+					segments.closeSegment(pie, segment.node(),speed);
 				} else {
 					segments.openSegment(pie, segment.node());
 				}
@@ -1440,8 +1441,7 @@ var segments = {
 
 		// close any open segments
 		if (d3.selectAll("." + pie.cssPrefix + "expanded").length > 0) {
-			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node(),
-				pie.options.effects.pullOutSegmentOnClick.speed);
+			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
 		}
 
 		d3.select(segment).transition()
@@ -1463,10 +1463,10 @@ var segments = {
 			});
 	},
 
-	closeSegment: function(pie, segment,speed) {
-		speed = speed || 400;
+	closeSegment: function(pie, segment) {
 		d3.select(segment).transition()
-			.duration(speed)
+			.ease(pie.options.effects.pullOutSegmentOnClick.effect)
+			.duration(pie.options.effects.pullOutSegmentOnClick.speed)
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				d3.select(this).attr("class", "");
