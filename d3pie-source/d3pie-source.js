@@ -22,11 +22,10 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.7";
+	var _version = "0.1.8";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
-  var rootNode;
 
 
 	// this section includes all helper libs on the d3pie object. They're populated via grunt-template. Note: to keep
@@ -46,10 +45,10 @@
 	// our constructor
 	var d3pie = function(element, options, shadowRoot) {
 
-    rootNode = shadowRoot || document;
+    this.rootNode = shadowRoot || document;
     if(shadowRoot){
       //HACK: Till I figure out a better way to do this
-      var d3root = d3.select(rootNode);
+      var d3root = d3.select(this.rootNode);
       var querySelect = d3root.select;
       var querySelectAll = d3root.selectAll;
       var oldSelect =d3.select;
@@ -73,7 +72,7 @@
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = rootNode.getElementById(el);
+			this.element = this.rootNode.getElementById(el);
 		}
 
 		var opts = {};
@@ -254,7 +253,7 @@
 
 		// the footer never moves. Put it in place now
 		var self = this;
-		helpers.whenIdExists(this.cssPrefix + "footer", function() {
+		helpers.whenIdExists(this.cssPrefix + "footer", self, function() {
 			text.positionFooter(self);
 			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
 			self.textComponents.footer.h = d3.h;
@@ -267,7 +266,7 @@
 		if (this.textComponents.subtitle.exists) { reqEls.push(this.cssPrefix + "subtitle"); }
 		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
-		helpers.whenElementsExist(reqEls, function() {
+		helpers.whenElementsExist(reqEls, self, function() {
 			if (self.textComponents.title.exists) {
 				var d1 = helpers.getDimensions(self.cssPrefix + "title");
 				self.textComponents.title.h = d1.h;

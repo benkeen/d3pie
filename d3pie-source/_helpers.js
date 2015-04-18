@@ -19,12 +19,12 @@ var helpers = {
 		return svg;
 	},
 
-	whenIdExists: function(id, callback) {
+	whenIdExists: function(id, pie, callback) {
 		var inc = 1;
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
-			if (rootNode.getElementById(id)) {
+			if (pie.rootNode.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
@@ -35,14 +35,14 @@ var helpers = {
 		}, 1);
 	},
 
-	whenElementsExist: function(els, callback) {
+	whenElementsExist: function(els, pie, callback) {
 		var inc = 1;
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
 			var allExist = true;
 			for (var i=0; i<els.length; i++) {
-				if (!rootNode.getElementById(els[i])) {
+				if (!pie.rootNode.getElementById(els[i])) {
 					allExist = false;
 					break;
 				}
@@ -86,8 +86,8 @@ var helpers = {
 		}
 	},
 
-	getDimensions: function(id) {
-		var el = rootNode.getElementById(id);
+	getDimensions: function(id,pie) {
+		var el = pie.rootNode.getElementById(id);
 		var w = 0, h = 0;
 		if (el) {
 			var dimensions = el.getBBox();

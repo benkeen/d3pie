@@ -22,11 +22,10 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.6";
+	var _version = "0.1.8";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
-  var rootNode;
 
 
 	// this section includes all helper libs on the d3pie object. They're populated via grunt-template. Note: to keep
@@ -264,12 +263,12 @@ var helpers = {
 		return svg;
 	},
 
-	whenIdExists: function(id, callback) {
+	whenIdExists: function(id, pie, callback) {
 		var inc = 1;
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
-			if (rootNode.getElementById(id)) {
+			if (pie.rootNode.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
@@ -280,14 +279,14 @@ var helpers = {
 		}, 1);
 	},
 
-	whenElementsExist: function(els, callback) {
+	whenElementsExist: function(els, pie, callback) {
 		var inc = 1;
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
 			var allExist = true;
 			for (var i=0; i<els.length; i++) {
-				if (!rootNode.getElementById(els[i])) {
+				if (!pie.rootNode.getElementById(els[i])) {
 					allExist = false;
 					break;
 				}
@@ -331,8 +330,8 @@ var helpers = {
 		}
 	},
 
-	getDimensions: function(id) {
-		var el = rootNode.getElementById(id);
+	getDimensions: function(id,pie) {
+		var el = pie.rootNode.getElementById(id);
 		var w = 0, h = 0;
 		if (el) {
 			var dimensions = el.getBBox();
@@ -1013,7 +1012,7 @@ var labels = {
 						pieCenterCopy.y = newCoords.y;
 					}
 
-					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
+					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner",pie);
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
@@ -1759,15 +1758,15 @@ var tt = {
 		tooltips.selectAll("." + pie.cssPrefix + "tooltip rect")
 			.attr({
 				width: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return dims.w + (2 * pie.options.tooltips.styles.padding);
 				},
 				height: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return dims.h + (2 * pie.options.tooltips.styles.padding);
 				},
 				y: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return -(dims.h / 2) + 1;
 				}
 			});
@@ -1842,10 +1841,10 @@ var tt = {
 	// our constructor
 	var d3pie = function(element, options, shadowRoot) {
 
-    rootNode = shadowRoot || document;
+    this.rootNode = shadowRoot || document;
     if(shadowRoot){
       //HACK: Till I figure out a better way to do this
-      var d3root = d3.select(rootNode);
+      var d3root = d3.select(this.rootNode);
       var querySelect = d3root.select;
       var querySelectAll = d3root.selectAll;
       var oldSelect =d3.select;
@@ -1869,7 +1868,7 @@ var tt = {
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = rootNode.getElementById(el);
+			this.element = this.rootNode.getElementById(el);
 		}
 
 		var opts = {};
@@ -2050,7 +2049,7 @@ var tt = {
 
 		// the footer never moves. Put it in place now
 		var self = this;
-		helpers.whenIdExists(this.cssPrefix + "footer", function() {
+		helpers.whenIdExists(this.cssPrefix + "footer", self, function() {
 			text.positionFooter(self);
 			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
 			self.textComponents.footer.h = d3.h;
@@ -2063,7 +2062,7 @@ var tt = {
 		if (this.textComponents.subtitle.exists) { reqEls.push(this.cssPrefix + "subtitle"); }
 		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
-		helpers.whenElementsExist(reqEls, function() {
+		helpers.whenElementsExist(reqEls, self, function() {
 			if (self.textComponents.title.exists) {
 				var d1 = helpers.getDimensions(self.cssPrefix + "title");
 				self.textComponents.title.h = d1.h;

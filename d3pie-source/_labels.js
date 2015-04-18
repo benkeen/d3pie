@@ -229,7 +229,7 @@ var labels = {
 						pieCenterCopy.y = newCoords.y;
 					}
 
-					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
+					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner",pie);
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
