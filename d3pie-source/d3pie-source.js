@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.8";
+	var _version = "0.1.9";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
