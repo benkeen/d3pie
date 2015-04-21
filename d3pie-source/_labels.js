@@ -74,7 +74,7 @@ var labels = {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section);
+		var labelGroups = d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-" + section);
 		labelGroups.each(function(d, i) {
 			var mainLabel  = d3.select(this).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
 			var percentage = d3.select(this).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
@@ -91,19 +91,19 @@ var labels = {
 		var dims = labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
-				d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentValue-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-value2":
-				d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentValue-" + section)
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
 			case "label-percentage1":
-				d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-percentage2":
-				d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
@@ -112,7 +112,7 @@ var labels = {
 
 	computeLabelLinePositions: function(pie) {
 		pie.lineCoordGroups = [];
-		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+		d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-outer")
 			.each(function(d, i) { return labels.computeLinePosition(pie, i); });
 	},
 
@@ -211,7 +211,7 @@ var labels = {
 	},
 
 	positionLabelGroups: function(pie, section) {
-		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
+		d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
 				var x, y;
@@ -229,7 +229,7 @@ var labels = {
 						pieCenterCopy.y = newCoords.y;
 					}
 
-					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
+					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner",pie);
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
@@ -252,7 +252,7 @@ var labels = {
 		setTimeout(function() {
 			var labelFadeInTime = (pie.options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
 
-			d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+			d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-outer")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
@@ -261,7 +261,7 @@ var labels = {
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
-			d3.selectAll("." + pie.cssPrefix + "labelGroup-inner")
+			d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-inner")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
@@ -270,7 +270,7 @@ var labels = {
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
-			d3.selectAll("g." + pie.cssPrefix + "lineGroups")
+			d3.select(pie.rootNode).selectAll("g." + pie.cssPrefix + "lineGroups")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
@@ -435,7 +435,7 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		var labelGroupDims = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;

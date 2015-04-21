@@ -1,6 +1,6 @@
 {
   "name": "d3pie",
-  "version": "0.1.6",
+  "version": "0.1.9",
   "description": "A highly configurable, re-usable library built on d3.js for creating clear, attractive pie charts.",
   "homepage": "http://d3pie.org",
   "main": "d3pie/d3pie.js",

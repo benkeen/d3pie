@@ -43,15 +43,15 @@ var tt = {
 		tooltips.selectAll("." + pie.cssPrefix + "tooltip rect")
 			.attr({
 				width: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return dims.w + (2 * pie.options.tooltips.styles.padding);
 				},
 				height: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return dims.h + (2 * pie.options.tooltips.styles.padding);
 				},
 				y: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return -(dims.h / 2) + 1;
 				}
 			});
@@ -74,7 +74,7 @@ var tt = {
   },
 
   moveTooltip: function(pie) {
-    d3.selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
+    d3.select(pie.rootNode).selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
       .attr("transform", function(d) {
         var mouseCoords = d3.mouse(this.parentNode);
         var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;

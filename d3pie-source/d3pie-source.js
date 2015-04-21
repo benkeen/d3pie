@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.6";
+	var _version = "0.1.9";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -43,13 +43,14 @@
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
-	var d3pie = function(element, options) {
+	var d3pie = function(element, options, shadowRoot) {
 
+    this.rootNode = shadowRoot || document;
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = document.getElementById(el);
+			this.element = this.rootNode.getElementById(el);
 		}
 
 		var opts = {};
@@ -133,7 +134,7 @@
 		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}
-		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());
+		segments.openSegment(this, d3.select(this.rootNode).select("#" + this.cssPrefix + "segment" + index).node());
 	};
 
 	d3pie.prototype.closeSegment = function() {
@@ -151,7 +152,7 @@
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				d3.select("#" + this.cssPrefix + "title").html(value);
+				d3.select(this.rootNode).select("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.redraw();
 				}
@@ -160,7 +161,7 @@
 			case "header.subtitle.text":
 				var oldValue = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				d3.select("#" + this.cssPrefix + "subtitle").html(value);
+				d3.select(this.rootNode).select("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 					this.redraw();
 				}
@@ -230,9 +231,9 @@
 
 		// the footer never moves. Put it in place now
 		var self = this;
-		helpers.whenIdExists(this.cssPrefix + "footer", function() {
+		helpers.whenIdExists(this.cssPrefix + "footer", self, function() {
 			text.positionFooter(self);
-			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
+			var d3 = helpers.getDimensions(self.cssPrefix + "footer",self);
 			self.textComponents.footer.h = d3.h;
 			self.textComponents.footer.w = d3.w;
 		});
@@ -243,14 +244,14 @@
 		if (this.textComponents.subtitle.exists) { reqEls.push(this.cssPrefix + "subtitle"); }
 		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
-		helpers.whenElementsExist(reqEls, function() {
+		helpers.whenElementsExist(reqEls, self, function() {
 			if (self.textComponents.title.exists) {
-				var d1 = helpers.getDimensions(self.cssPrefix + "title");
+				var d1 = helpers.getDimensions(self.cssPrefix + "title",self);
 				self.textComponents.title.h = d1.h;
 				self.textComponents.title.w = d1.w;
 			}
 			if (self.textComponents.subtitle.exists) {
-				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
+				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle",self);
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}

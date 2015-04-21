@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.6";
+	var _version = "0.1.9";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -263,12 +263,12 @@ var helpers = {
 		return svg;
 	},
 
-	whenIdExists: function(id, callback) {
+	whenIdExists: function(id, pie, callback) {
 		var inc = 1;
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
-			if (document.getElementById(id)) {
+			if (pie.rootNode.getElementById(id)) {
 				clearInterval(interval);
 				callback();
 			}
@@ -279,14 +279,14 @@ var helpers = {
 		}, 1);
 	},
 
-	whenElementsExist: function(els, callback) {
+	whenElementsExist: function(els, pie, callback) {
 		var inc = 1;
 		var giveupIterationCount = 1000;
 
 		var interval = setInterval(function() {
 			var allExist = true;
 			for (var i=0; i<els.length; i++) {
-				if (!document.getElementById(els[i])) {
+				if (!pie.rootNode.getElementById(els[i])) {
 					allExist = false;
 					break;
 				}
@@ -330,8 +330,8 @@ var helpers = {
 		}
 	},
 
-	getDimensions: function(id) {
-		var el = document.getElementById(id);
+	getDimensions: function(id,pie) {
+		var el = pie.rootNode.getElementById(id);
 		var w = 0, h = 0;
 		if (el) {
 			var dimensions = el.getBBox();
@@ -571,6 +571,7 @@ var extend = function() {
 	}
 	return target;
 };
+
 	//// --------- math.js -----------
 var math = {
 
@@ -856,7 +857,7 @@ var labels = {
 		labels["dimensions-" + section] = [];
 
 		// get the latest widths, heights
-		var labelGroups = d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section);
+		var labelGroups = d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-" + section);
 		labelGroups.each(function(d, i) {
 			var mainLabel  = d3.select(this).selectAll("." + pie.cssPrefix + "segmentMainLabel-" + section);
 			var percentage = d3.select(this).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section);
@@ -873,19 +874,19 @@ var labels = {
 		var dims = labels["dimensions-" + section];
 		switch (sectionDisplayType) {
 			case "label-value1":
-				d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentValue-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-value2":
-				d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentValue-" + section)
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
 			case "label-percentage1":
-				d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return dims[i].mainLabel.width + singleLinePad; });
 				break;
 			case "label-percentage2":
-				d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
+				d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
@@ -894,7 +895,7 @@ var labels = {
 
 	computeLabelLinePositions: function(pie) {
 		pie.lineCoordGroups = [];
-		d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+		d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-outer")
 			.each(function(d, i) { return labels.computeLinePosition(pie, i); });
 	},
 
@@ -993,7 +994,7 @@ var labels = {
 	},
 
 	positionLabelGroups: function(pie, section) {
-		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
+		d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
 				var x, y;
@@ -1011,7 +1012,7 @@ var labels = {
 						pieCenterCopy.y = newCoords.y;
 					}
 
-					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner");
+					var dims = helpers.getDimensions(pie.cssPrefix + "labelGroup" + i + "-inner",pie);
 					var xOffset = dims.w / 2;
 					var yOffset = dims.h / 4; // confusing! Why 4? should be 2, but it doesn't look right
 
@@ -1034,7 +1035,7 @@ var labels = {
 		setTimeout(function() {
 			var labelFadeInTime = (pie.options.effects.load.effect === "default") ? 400 : 1; // 400 is hardcoded for the present
 
-			d3.selectAll("." + pie.cssPrefix + "labelGroup-outer")
+			d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-outer")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
@@ -1043,7 +1044,7 @@ var labels = {
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
-			d3.selectAll("." + pie.cssPrefix + "labelGroup-inner")
+			d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "labelGroup-inner")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
@@ -1052,7 +1053,7 @@ var labels = {
 					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
 				});
 
-			d3.selectAll("g." + pie.cssPrefix + "lineGroups")
+			d3.select(pie.rootNode).selectAll("g." + pie.cssPrefix + "lineGroups")
 				.transition()
 				.duration(labelFadeInTime)
 				.style("opacity", 1);
@@ -1217,7 +1218,7 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+		var labelGroupDims = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;
@@ -1332,7 +1333,7 @@ var segments = {
 	},
 
 	addSegmentEventHandlers: function(pie) {
-		var arc = d3.selectAll("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
+		var arc = d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "arc,." + pie.cssPrefix + "labelGroup-inner,." + pie.cssPrefix + "labelGroup-outer");
 
 		arc.on("click", function() {
 			var currentEl = d3.select(this);
@@ -1343,13 +1344,14 @@ var segments = {
 				segment = currentEl.select("path");
 			} else {
 				var index = currentEl.attr("data-index");
-				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+				segment = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "segment" + index);
 			}
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
 				if (isExpanded) {
-					segments.closeSegment(pie, segment.node());
+					var speed =pie.options.effects.pullOutSegmentOnClick.speed;
+					segments.closeSegment(pie, segment.node(),speed);
 				} else {
 					segments.openSegment(pie, segment.node());
 				}
@@ -1364,7 +1366,7 @@ var segments = {
 				segment = currentEl.select("path");
 			} else {
 				index = currentEl.attr("data-index");
-				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+				segment = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "segment" + index);
 			}
 
 			if (pie.options.effects.highlightSegmentOnMouseover) {
@@ -1394,7 +1396,7 @@ var segments = {
 				segment = currentEl.select("path");
 			} else {
 				index = currentEl.attr("data-index");
-				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+				segment = d3.select(pie.rootNode).select("#" + pie.cssPrefix + "segment" + index);
 			}
 
 			if (pie.options.effects.highlightSegmentOnMouseover) {
@@ -1437,8 +1439,8 @@ var segments = {
 		pie.isOpeningSegment = true;
 
 		// close any open segments
-		if (d3.selectAll("." + pie.cssPrefix + "expanded").length > 0) {
-			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
+		if (d3.select(pie.rootNode).selectAll("." + pie.cssPrefix + "expanded").length > 0) {
+			segments.closeSegment(pie, d3.select(pie.rootNode).select("." + pie.cssPrefix + "expanded").node());
 		}
 
 		d3.select(segment).transition()
@@ -1462,7 +1464,8 @@ var segments = {
 
 	closeSegment: function(pie, segment) {
 		d3.select(segment).transition()
-			.duration(400)
+			.ease(pie.options.effects.pullOutSegmentOnClick.effect)
+			.duration(pie.options.effects.pullOutSegmentOnClick.speed)
 			.attr("transform", "translate(0,0)")
 			.each("end", function(d, i) {
 				d3.select(this).attr("class", "");
@@ -1755,15 +1758,15 @@ var tt = {
 		tooltips.selectAll("." + pie.cssPrefix + "tooltip rect")
 			.attr({
 				width: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return dims.w + (2 * pie.options.tooltips.styles.padding);
 				},
 				height: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return dims.h + (2 * pie.options.tooltips.styles.padding);
 				},
 				y: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i, pie);
 					return -(dims.h / 2) + 1;
 				}
 			});
@@ -1786,7 +1789,7 @@ var tt = {
   },
 
   moveTooltip: function(pie) {
-    d3.selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
+    d3.select(pie.rootNode).selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
       .attr("transform", function(d) {
         var mouseCoords = d3.mouse(this.parentNode);
         var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;
@@ -1836,13 +1839,14 @@ var tt = {
 	// --------------------------------------------------------------------------------------------
 
 	// our constructor
-	var d3pie = function(element, options) {
+	var d3pie = function(element, options, shadowRoot) {
 
+    this.rootNode = shadowRoot || document;
 		// element can be an ID or DOM element
 		this.element = element;
 		if (typeof element === "string") {
 			var el = element.replace(/^#/, ""); // replace any jQuery-like ID hash char
-			this.element = document.getElementById(el);
+			this.element = this.rootNode.getElementById(el);
 		}
 
 		var opts = {};
@@ -1926,7 +1930,7 @@ var tt = {
 		if (index < 0 || index > this.options.data.content.length-1) {
 			return;
 		}
-		segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());
+		segments.openSegment(this, d3.select(this.rootNode).select("#" + this.cssPrefix + "segment" + index).node());
 	};
 
 	d3pie.prototype.closeSegment = function() {
@@ -1944,7 +1948,7 @@ var tt = {
 			case "header.title.text":
 				var oldVal = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				d3.select("#" + this.cssPrefix + "title").html(value);
+				d3.select(this.rootNode).select("#" + this.cssPrefix + "title").html(value);
 				if ((oldVal === "" && value !== "") || (oldVal !== "" && value === "")) {
 					this.redraw();
 				}
@@ -1953,7 +1957,7 @@ var tt = {
 			case "header.subtitle.text":
 				var oldValue = helpers.processObj(this.options, propKey);
 				helpers.processObj(this.options, propKey, value);
-				d3.select("#" + this.cssPrefix + "subtitle").html(value);
+				d3.select(this.rootNode).select("#" + this.cssPrefix + "subtitle").html(value);
 				if ((oldValue === "" && value !== "") || (oldValue !== "" && value === "")) {
 					this.redraw();
 				}
@@ -2023,9 +2027,9 @@ var tt = {
 
 		// the footer never moves. Put it in place now
 		var self = this;
-		helpers.whenIdExists(this.cssPrefix + "footer", function() {
+		helpers.whenIdExists(this.cssPrefix + "footer", self, function() {
 			text.positionFooter(self);
-			var d3 = helpers.getDimensions(self.cssPrefix + "footer");
+			var d3 = helpers.getDimensions(self.cssPrefix + "footer",self);
 			self.textComponents.footer.h = d3.h;
 			self.textComponents.footer.w = d3.w;
 		});
@@ -2036,14 +2040,14 @@ var tt = {
 		if (this.textComponents.subtitle.exists) { reqEls.push(this.cssPrefix + "subtitle"); }
 		if (this.textComponents.footer.exists)   { reqEls.push(this.cssPrefix + "footer"); }
 
-		helpers.whenElementsExist(reqEls, function() {
+		helpers.whenElementsExist(reqEls, self, function() {
 			if (self.textComponents.title.exists) {
-				var d1 = helpers.getDimensions(self.cssPrefix + "title");
+				var d1 = helpers.getDimensions(self.cssPrefix + "title",self);
 				self.textComponents.title.h = d1.h;
 				self.textComponents.title.w = d1.w;
 			}
 			if (self.textComponents.subtitle.exists) {
-				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle");
+				var d2 = helpers.getDimensions(self.cssPrefix + "subtitle",self);
 				self.textComponents.subtitle.h = d2.h;
 				self.textComponents.subtitle.w = d2.w;
 			}
