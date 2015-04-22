@@ -82,7 +82,7 @@ var defaultSettings = {
 		},
 		truncation: {
 			enabled: false,
-			length: 30
+			truncateLength: 30
 		}
 	},
 	effects: {

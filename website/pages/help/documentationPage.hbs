@@ -768,10 +768,13 @@ myPie.redraw();
 	<td>This enables truncation of the main labels.</td>
 </tr>
 <tr>
-	<td>labels.truncation.length</td>
+	<td>labels.truncation.truncateLength</td>
 	<td><span class="label label-primary">number</span></td>
 	<td>30</td>
-	<td>The max length of the main labels before they are truncated with an ellipsis (...)</td>
+	<td>The max length of the main labels before they are truncated with an ellipsis (...). 
+		Note: this was originally called <b>length</b> in 0.1.6; it was renamed to prevent
+		confusion in the javascript.
+	</td>
 </tr>
 <tr>
 	<th colspan="4">Effects</th>

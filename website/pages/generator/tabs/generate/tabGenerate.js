@@ -294,6 +294,18 @@ define([
 			}
 		}
 
+		// label truncation
+		var labelTruncationDiff = allSettings.labels.truncation.enabled != defaultSettings.labels.truncation.enabled;
+		if (labelTruncationDiff) {
+			if (!finalObj.hasOwnProperty("labels")) { finalObj.labels = {}; }
+			finalObj.labels.truncation = {
+				enabled: allSettings.labels.truncation.enabled
+			};
+			if (allSettings.labels.truncation.truncateLength != defaultSettings.labels.truncation.truncateLength) {
+				finalObj.labels.truncation.truncateLength = allSettings.labels.truncation.truncateLength;
+			}
+		}
+
 		// tooltips
 		var tooltipsDiff = allSettings.tooltips.enabled != defaultSettings.tooltips.enabled;
 

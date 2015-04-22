@@ -110,7 +110,7 @@ define([
 			},
 			truncation: {
 				enabled: $("#labelTruncation2")[0].checked,
-				length: parseInt($("#labelTruncationLength").val(), 10)
+				truncateLength: parseInt($("#labelTruncationLength").val(), 10)
 			}
 		};
 	};
