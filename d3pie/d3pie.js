@@ -1878,6 +1878,10 @@ var tt = {
 	};
 
 	d3pie.prototype.recreate = function() {
+		// now run some validation on the user-defined info
+		if (!validate.initialCheck(this)) {
+			return;
+		}
 		this.options.data.content = math.sortPieData(this);
 		if (this.options.data.smallSegmentGrouping.enabled) {
 			this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
