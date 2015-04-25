@@ -777,6 +777,22 @@ myPie.redraw();
 	</td>
 </tr>
 <tr>
+	<td>labels.formatter</td>
+	<td><span class="label label-green">function</span></td>
+	<td>null</td>
+	<td>
+	    This was added in 0.1.7. It allows you to intercept all labels prior to them being outputted on the
+	    pie chart and do whatever you want with them. The function is passed a single <code>context</code> parameter
+	    containing information about the label context: section (whether it's an inner/outer label), the value, the
+	    label that would normally be outputted, the pie index and the label type (i.e. the value of
+	    <code>labels.inner.format</code> or <code>labels.inner.format</code>). Please note that if the format for an inner/outer
+	    is a compound of two fields (e.g. <code>label-value1</code> - which contains both the label and value), your
+	    function will be called twice. You can use that to precisely tailor whatever you want to be outputted. For
+	    an example of how this feature works take a look at the
+	    <a href="website/examples/custom_label_formatting.html">Custom Label Formatting</a> example.
+	</td>
+</tr>
+<tr>
 	<th colspan="4">Effects</th>
 </tr>
 <tr>

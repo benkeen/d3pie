@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3pie examples</title>
+</head>
+<body>
+<h1>
+	<a href="../../#examples">Standalone Examples</a> &raquo; Custom Label Formatting
+</h1>
+
+<p>
+	d3pie does a lot right out of the box to ensure your labels are positioned correctly and contain the appropriate
+    content (value, percentage, label). You can also also choose to truncate them with the <code>labels.truncation</code>
+    option. However, sometimes you might want to do something totally custom - and maybe for only specific labels
+    within the pie. This demos how to add your own custom formatters to do what you want. It's pretty simple: it just looks
+    at the value for the outer label, and if it's 1 - add an exclamation mark at the end.
+</p>
+
+<hr size="1" />
+
+<div id="pie"></div>
+
+<script src="../libs/d3.min.js"></script>
+<script src="../../d3pie/d3pie.js"></script>
+
+<script>
+
+var myLabelFormatter = function (context) {
+    var label = context.label;
+
+    // if it's a single bird seen, add an exclamation mark to the outer label
+    if (context.section === 'outer') {
+        if (context.value === 1) {
+            label = label + '!';
+        }
+    }
+    return label;
+};
+
+var pie = new d3pie("pie", {
+    header: {
+        title: {
+            text: "Nice birds I saw this morning",
+            fontSize: 22
+        }
+    },
+    size: {
+        "pieOuterRadius": "50%"
+    },
+    labels: {
+        formatter: myLabelFormatter,
+        inner: {
+            format: "value"
+        }
+    },
+    data: {
+        content: [
+            { label: "Nashville warbler", value: 1 },
+            { label: "Black-throated gray warbler", value: 5 },
+            { label: "Yellow-rumped warbler", value: 2 },
+            { label: "Orange-crowned warbler", value: 8 },
+            { label: "Townsend's warbler", value: 10 },
+            { label: "Cassin's vireo", value: 1 }
+        ]
+    }
+});
+</script>
+
+<hr size="1" />
+
+<blockquote><pre>
+var myLabelFormatter = function (context) {
+    var label = context.label;
+
+    // if it's a single bird seen, add an exclamation mark to the outer label
+    if (context.section === 'outer') {
+        if (context.value === 1) {
+            label = label + '!';
+        }
+    }
+    return label;
+};
+
+var pie = new d3pie("pie", {
+    header: {
+        title: {
+            text: "Nice birds I saw this morning",
+            fontSize: 22
+        }
+    },
+    size: {
+        "pieOuterRadius": "50%"
+    },
+    labels: {
+        formatter: myLabelFormatter,
+        inner: {
+            format: "value"
+        }
+    },
+    data: {
+        content: [
+            { label: "Nashville warbler", value: 1 },
+            { label: "Black-throated gray warbler", value: 5 },
+            { label: "Yellow-rumped warbler", value: 2 },
+            { label: "Orange-crowned warbler", value: 8 },
+            { label: "Townsend's warbler", value: 10 },
+            { label: "Cassin's vireo", value: 1 }
+        ]
+    }
+});
+</pre></blockquote>
+
+</body>
+</html>

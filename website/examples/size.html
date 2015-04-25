@@ -20,24 +20,24 @@
 <script src="../../d3pie/d3pie.js"></script>
 
 <script>
-	var pie = new d3pie("pie", {
+var pie = new d3pie("pie", {
     size: {
-      canvasHeight: 120,
-      canvasWidth: 140
+        canvasHeight: 120,
+        canvasWidth: 140
     },
     labels: {
-      outer: {
-        format: "none"
-      }
+        outer: {
+            format: "none"
+        }
     },
-		data: {
-			content: [
-				{ label: "JavaScript", value: 241 },
-				{ label: "Ruby", value: 525 },
-				{ label: "Java", value: 150 }
-			]
-		}
-	});
+    data: {
+        content: [
+            { label: "JavaScript", value: 241 },
+            { label: "Ruby", value: 525 },
+            { label: "Java", value: 150 }
+        ]
+    }
+});
 </script>
 
 <hr size="1" />

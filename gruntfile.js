@@ -167,7 +167,7 @@ module.exports = function(grunt) {
 						"* d3pie\n" +
 						"* @author Ben Keen\n" +
 						"* @version " + packageFile.version + "\n" +
-						"* @date June 2014\n" +
+						"* @date April 2015\n" +
 						"* @repo http://github.com/benkeen/d3pie\n" +
 						"*/\n"
 				}

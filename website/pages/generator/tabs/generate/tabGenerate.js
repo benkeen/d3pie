@@ -144,6 +144,7 @@ define([
 		var canvasWidthDiff = allSettings.size.canvasWidth != defaultSettings.size.canvasWidth;
 		var pieInnerRadiusDiff = allSettings.size.pieInnerRadius != defaultSettings.size.pieInnerRadius;
 		var pieOuterRadiusDiff = allSettings.size.pieOuterRadius != defaultSettings.size.pieOuterRadius;
+
 		if (canvasHeightDiff || canvasWidthDiff || pieInnerRadiusDiff || pieOuterRadiusDiff) {
 			finalObj.size = {};
 			if (canvasHeightDiff) {
@@ -155,7 +156,7 @@ define([
 			if (pieInnerRadiusDiff) {
 				finalObj.size.pieInnerRadius = allSettings.size.pieInnerRadius;
 			}
-			if (pieInnerRadiusDiff) {
+			if (pieOuterRadiusDiff) {
 				finalObj.size.pieOuterRadius = allSettings.size.pieOuterRadius;
 			}
 		}

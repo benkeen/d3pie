@@ -83,7 +83,8 @@ var defaultSettings = {
 		truncation: {
 			enabled: false,
 			truncateLength: 30
-		}
+		},
+    formatter: null
 	},
 	effects: {
 		load: {

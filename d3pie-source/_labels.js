@@ -25,17 +25,28 @@ var labels = {
 			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 
+    var formatterContext = { section: section, sectionDisplayType: sectionDisplayType };
+
 		// 1. Add the main label
 		if (include.mainLabel) {
 			labelGroup.append("text")
 				.attr("id", function(d, i) { return pie.cssPrefix + "segmentMainLabel" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentMainLabel-" + section)
-				.text(function(d) {
+				.text(function(d, i) {
 					var str = d.label;
-					if (settings.truncation.enabled && d.label.length > settings.truncation.length) {
-						str = d.label.substring(0, settings.truncation.length) + "...";
-					}
-					return str;
+
+          // if a custom formatter has been defined, pass it the raw label string - it can do whatever it wants with it.
+          // we only apply truncation if it's not defined
+					if (settings.formatter) {
+            formatterContext.index = i;
+            formatterContext.part = 'mainLabel';
+            formatterContext.value = d.value;
+            formatterContext.label = str;
+            str = settings.formatter(formatterContext);
+          } else if (settings.truncation.enabled && d.label.length > settings.truncation.length) {
+            str = d.label.substring(0, settings.truncation.length) + "...";
+          }
+          return str;
 				})
 				.style("font-size", settings.mainLabel.fontSize + "px")
 				.style("font-family", settings.mainLabel.font)
@@ -48,7 +59,17 @@ var labels = {
 				.attr("id", function(d, i) { return pie.cssPrefix + "segmentPercentage" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentPercentage-" + section)
 				.text(function(d, i) {
-					return segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces) + "%";
+					var percentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
+          if (settings.formatter) {
+            formatterContext.index = i;
+            formatterContext.part = "percentage";
+            formatterContext.value = d.value;
+            formatterContext.label = percentage;
+            percentage = settings.formatter(formatterContext);
+          } else {
+            percentage += "%";
+          }
+          return percentage;
 				})
 				.style("font-size", settings.percentage.fontSize + "px")
 				.style("font-family", settings.percentage.font)
@@ -60,7 +81,13 @@ var labels = {
 			labelGroup.append("text")
 				.attr("id", function(d, i) { return pie.cssPrefix +  "segmentValue" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentValue-" + section)
-				.text(function(d) { return d.value; })
+				.text(function(d, i) {
+          formatterContext.index = i;
+          formatterContext.part = "value";
+          formatterContext.value = d.value;
+          formatterContext.label = d.value;
+          return settings.formatter ? settings.formatter(formatterContext, d.value) : d.value;
+        })
 				.style("font-size", settings.value.fontSize + "px")
 				.style("font-family", settings.value.font)
 				.style("fill", settings.value.color);
@@ -211,6 +238,10 @@ var labels = {
 	},
 
 	positionLabelGroups: function(pie, section) {
+    if (pie.options.labels[section].format === "none") {
+      return;
+    }
+
 		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
@@ -291,7 +322,6 @@ var labels = {
 		var addValue      = false;
 		var addPercentage = false;
 
-		// TODO refactor... somehow
 		switch (val) {
 			case "label":
 				addMainLabel = true;
@@ -342,13 +372,17 @@ var labels = {
 	 * This attempts to resolve label positioning collisions.
 	 */
 	resolveOuterLabelCollisions: function(pie) {
+    if (pie.options.labels.outer.format === "none") {
+      return;
+    }
+
 		var size = pie.options.data.content.length;
 		labels.checkConflict(pie, 0, "clockwise", size);
 		labels.checkConflict(pie, size-1, "anticlockwise", size);
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
-        var i,curr;
+    var i, curr;
 
 		if (size <= 1) {
 			return;
@@ -380,7 +414,7 @@ var labels = {
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
 		if (direction === "clockwise") {
-            i=0;
+      i = 0;
 			for (; i<=currIndex; i++) {
 				curr = pie.outerLabelGroupData[i];
 
@@ -392,8 +426,8 @@ var labels = {
 				}
 			}
 		} else {
-            i=size-1;
-			for (; i>=currIndex; i--) {
+      i = size - 1;
+			for (; i >= currIndex; i--) {
 				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
@@ -419,8 +453,6 @@ var labels = {
 			xDiff = Math.sqrt((yDiff * yDiff) - (info.lineLength * info.lineLength));
 		}
 
-		// ahhh! info.lineLength is no longer a constant.....
-
 		if (lastCorrectlyPositionedLabel.hs === "right") {
 			newXPos = info.center.x + xDiff;
 		} else {
@@ -435,7 +467,11 @@ var labels = {
 	 * @param i 0-N where N is the dataset size - 1.
 	 */
 	getIdealOuterLabelPositions: function(pie, i) {
-		var labelGroupDims = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node().getBBox();
+    var labelGroupNode = d3.select("#" + pie.cssPrefix + "labelGroup" + i + "-outer").node();
+    if (!labelGroupNode) {
+      return;
+    }
+    var labelGroupDims = labelGroupNode.getBBox();
 		var angle = segments.getSegmentAngle(i, pie.options.data.content, pie.totalSize, { midpoint: true });
 
 		var originalX = pie.pieCenter.x;

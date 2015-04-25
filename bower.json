@@ -1,6 +1,6 @@
 {
 	"name": "d3pie",
-	"version": "0.1.4",
+	"version": "0.1.7",
 	"homepage": "http://d3pie.org",
 	"main": ["d3pie/d3pie.min.js"],
 	"authors": [
