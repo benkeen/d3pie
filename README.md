@@ -8,7 +8,7 @@ Visit [d3pie.org](http://d3pie.org) to learn about the script and create your ow
 generation tool. This section is to document the codebase only. The website contains the script download links, standalone
 examples, full documentation and lots of demo pies for you to play around with. That's the place to start!
 
-<img src="http://d3pie.org/website/images/d3pie-screenshot.png" alt="d3pie" title="d3pie" style="float:right" />
+<img src="http://d3pie.org/website/images/d3pie-screenshot2.png" alt="d3pie" title="d3pie" style="float:right" />
 
 ### Download
 
