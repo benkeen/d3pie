@@ -55,8 +55,8 @@ Lots! A big thanks to the developers of these scripts.
 
 ### Changelog
 
-- `0.1.7` - Apr 25, 2015. Script and website bug fixes,<code>labels.formatter</code> method. <b>Breaking change:</b> 
-<code>labels.truncation.length</code> renamed to labels.truncation.truncateLength.
+- `0.1.7` - Apr 25, 2015. Script and website bug fixes, `labels.formatter` method. <b>Breaking change:</b> 
+`labels.truncation.length` renamed to `labels.truncation.truncateLength`.
 - `0.1.6` - Feb 10, 2015. Bug fixes.
 - `0.1.5` - Dec 14, 2014. placeholderParser option added for tooltips; bug fixes.
 - `0.1.4` - Nov 16, 2014, Tooltips added, bug fixes.
