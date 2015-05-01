@@ -118,7 +118,7 @@ define([], function() {
 					},
 					truncation: {
 						enabled: true,
-						length: 30
+            truncateLength: 30
 					}
 				},
 				tooltips: {
@@ -270,7 +270,7 @@ define([], function() {
 					},
 					truncation: {
 						enabled: true,
-						length: 30
+            truncateLength: 30
 					}
 				},
 				tooltips: {
@@ -415,7 +415,7 @@ define([], function() {
 					},
 					truncation: {
 						enabled: true,
-						length: 30
+            truncateLength: 30
 					}
 				},
 				tooltips: {
@@ -550,7 +550,7 @@ define([], function() {
 					},
 					truncation: {
 						enabled: true,
-						length: 30
+            truncateLength: 30
 					}
 				},
 				tooltips: {

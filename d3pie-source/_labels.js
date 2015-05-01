@@ -43,8 +43,8 @@ var labels = {
             formatterContext.value = d.value;
             formatterContext.label = str;
             str = settings.formatter(formatterContext);
-          } else if (settings.truncation.enabled && d.label.length > settings.truncation.length) {
-            str = d.label.substring(0, settings.truncation.length) + "...";
+          } else if (settings.truncation.enabled && d.label.length > settings.truncation.truncateLength) {
+            str = d.label.substring(0, settings.truncation.truncateLength) + "...";
           }
           return str;
 				})

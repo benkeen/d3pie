@@ -55,6 +55,7 @@ Lots! A big thanks to the developers of these scripts.
 
 ### Changelog
 
+- `0.1.8` - May 1, 2015. Bug fix release. 
 - `0.1.7` - Apr 25, 2015. Script and website bug fixes,<code>labels.formatter</code> method. <b>Breaking change:</b> 
 <code>labels.truncation.length</code> renamed to labels.truncation.truncateLength.
 - `0.1.6` - Feb 10, 2015. Bug fixes.

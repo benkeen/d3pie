@@ -1,8 +1,8 @@
 /*!
  * d3pie
  * @author Ben Keen
- * @version 0.1.6
- * @date Feb 10 2014
+ * @version 0.1.8
+ * @date May 1st, 2015
  * @repo http://github.com/benkeen/d3pie
  */
 
@@ -827,8 +827,8 @@ var labels = {
             formatterContext.value = d.value;
             formatterContext.label = str;
             str = settings.formatter(formatterContext);
-          } else if (settings.truncation.enabled && d.label.length > settings.truncation.length) {
-            str = d.label.substring(0, settings.truncation.length) + "...";
+          } else if (settings.truncation.enabled && d.label.length > settings.truncation.truncateLength) {
+            str = d.label.substring(0, settings.truncation.truncateLength) + "...";
           }
           return str;
 				})

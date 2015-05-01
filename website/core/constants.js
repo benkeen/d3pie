@@ -1,7 +1,7 @@
 define([], function() {
 
 	var C = {
-		VERSION: "0.1.7",
+		VERSION: "0.1.8",
 		MINIMIZED: true,
 		DEBUG: false
 	};
