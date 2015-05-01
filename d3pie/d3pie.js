@@ -1837,16 +1837,16 @@ var tt = {
     d3.select("#" + pie.cssPrefix + "tooltip" + index)
       .style("opacity", function() { return 0; });
 
-    // move the tooltip offscreen. This ensures that when the user next mousovers the segment the hidden
+    // move the tooltip offscreen. This ensures that when the user next mouseovers the segment the hidden
     // element won't interfere
-    // d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
-    //   .attr("transform", function(d, i) {
+    d3.select("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
+       .attr("transform", function(d, i) {
 
-    //     // klutzy, but it accounts for tooltip padding which could push it onscreen
-    //     var x = pie.options.size.canvasWidth + 1000;
-    //     var y = pie.options.size.canvasHeight + 1000;
-    //     return "translate(" + x + "," + y + ")";
-    //   });
+         // klutzy, but it accounts for tooltip padding which could push it onscreen
+         var x = pie.options.size.canvasWidth + 1000;
+         var y = pie.options.size.canvasHeight + 1000;
+         return "translate(" + x + "," + y + ")";
+       });
   },
 
   replacePlaceholders: function(pie, str, index, replacements) {
