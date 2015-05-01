@@ -8,7 +8,7 @@ Visit [d3pie.org](http://d3pie.org) to learn about the script and create your ow
 generation tool. This section is to document the codebase only. The website contains the script download links, standalone
 examples, full documentation and lots of demo pies for you to play around with. That's the place to start!
 
-<img src="http://d3pie.org/website/images/d3pie-screenshot.png" alt="d3pie" title="d3pie" style="float:right" />
+<img src="http://d3pie.org/website/images/d3pie-screenshot2.png" alt="d3pie" title="d3pie" style="float:right" />
 
 ### Download
 
@@ -56,8 +56,8 @@ Lots! A big thanks to the developers of these scripts.
 ### Changelog
 
 - `0.1.8` - May 1, 2015. Bug fix release. 
-- `0.1.7` - Apr 25, 2015. Script and website bug fixes,<code>labels.formatter</code> method. <b>Breaking change:</b> 
-<code>labels.truncation.length</code> renamed to labels.truncation.truncateLength.
+- `0.1.7` - Apr 25, 2015. Script and website bug fixes, `labels.formatter` method. <b>Breaking change:</b> 
+`labels.truncation.length` renamed to `labels.truncation.truncateLength`.
 - `0.1.6` - Feb 10, 2015. Bug fixes.
 - `0.1.5` - Dec 14, 2014. placeholderParser option added for tooltips; bug fixes.
 - `0.1.4` - Nov 16, 2014, Tooltips added, bug fixes.
