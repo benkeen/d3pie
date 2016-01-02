@@ -1166,7 +1166,7 @@ var labels = {
 	},
 
 	checkConflict: function(pie, currIndex, direction, size) {
-    var i, curr;
+	    var i, curr;
 
 		if (size <= 1) {
 			return;
@@ -1198,31 +1198,37 @@ var labels = {
 		// loop through *ALL* label groups examined so far to check for conflicts. This is because when they're
 		// very tightly fitted, a later label group may still appear high up on the page
 		if (direction === "clockwise") {
-      i = 0;
+			i = 0;
 			for (; i<=currIndex; i++) {
 				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
-				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
+				if (!labels.isLabelHidden(pie, i) && helpers.rectIntersect(curr, examinedLabelGroup)) {
 					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
 		} else {
-      i = size - 1;
+			i = size - 1;
 			for (; i >= currIndex; i--) {
 				curr = pie.outerLabelGroupData[i];
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
-				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
+				if (!labels.isLabelHidden(pie, i) && helpers.rectIntersect(curr, examinedLabelGroup)) {
 					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
 		}
 		labels.checkConflict(pie, nextIndex, direction, size);
+	},
+
+	isLabelHidden: function(pie, index) {
+		var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
+		var segmentPercentage = segments.getPercentage(pie, index, pie.options.labels.percentage.decimalPlaces);
+		return (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[index].label === "";
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one
