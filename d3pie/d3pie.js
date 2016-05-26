@@ -1204,7 +1204,7 @@ var labels = {
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
-				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
+				if (!labels.isLabelHidden(pie, i) && helpers.rectIntersect(curr, examinedLabelGroup)) {
 					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
@@ -1216,13 +1216,19 @@ var labels = {
 
 				// if there's a conflict with this label group, shift the label to be AFTER the last known
 				// one that's been properly placed
-				if (helpers.rectIntersect(curr, examinedLabelGroup)) {
+				if (!labels.isLabelHidden(pie, i) && helpers.rectIntersect(curr, examinedLabelGroup)) {
 					labels.adjustLabelPos(pie, nextIndex, currLabelGroup, info);
 					break;
 				}
 			}
 		}
 		labels.checkConflict(pie, nextIndex, direction, size);
+	},
+
+	isLabelHidden: function(pie, index) {
+		var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
+		var segmentPercentage = segments.getPercentage(pie, index, pie.options.labels.percentage.decimalPlaces);
+		return (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[index].label === "";
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one
