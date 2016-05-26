@@ -190,7 +190,7 @@ module.exports = function(grunt) {
 					]
 				},
 				options: {
-					compress: true,
+					compress: {},
 					mangle: {
 						except: ["jQuery", "Backbone"]
 					}
@@ -202,7 +202,7 @@ module.exports = function(grunt) {
 					"build/core/appStart.js": ["build/core/appStart.js"]
 				},
 				options: {
-					compress: true
+					compress: {}
 				}
 			}
 		},

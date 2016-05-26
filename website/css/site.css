@@ -39,6 +39,10 @@ body .navbar-nav>li>a {
 #themesDropdown a, #exampleDropdown a {
     color: #444444;
 }
+#exampleDropdown {
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+}
 #generateBtnItem {
 	float: right;
 }
