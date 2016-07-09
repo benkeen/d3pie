@@ -1,5 +1,9 @@
 ## d3pie
 
+------------------
+### DEVELOPERS wanted! I'm not able to spend the time I'd like on this project and it's slowly fallen into neglect. If any developers would like to take on the project (especially addressing the issues reported), I'd welcome an email at ben.keen@gmail.com
+------------------
+
 ### About
 d3pie is a highly configurable, re-usable script built on d3.js and jQuery for creating clear, attractive pie charts.
 It's free, open source, and the source code for the website and script are found right here on github.
