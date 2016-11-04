@@ -10,16 +10,24 @@
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module
-    define([], factory);
+	var d3;
+	try {
+		d3 = require('d3');
+	} catch (e) {
+		d3 = root.d3;
+	}
+    define([], function() {
+		return factory(d3);
+	});
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but only CommonJS-like environments that support module.exports,
     // like Node
-    module.exports = factory();
+    module.exports = factory(require('d3'));
   } else {
     // browser globals (root is window)
-    root.d3pie = factory(root);
+    root.d3pie = factory(root.d3);
   }
-}(this, function() {
+}(this, function(d3) {
 
 	var _scriptName = "d3pie";
 	var _version = "0.1.6";

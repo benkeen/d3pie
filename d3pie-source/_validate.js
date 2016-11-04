@@ -8,7 +8,7 @@ var validate = {
 		var options = pie.options;
 
 		// confirm d3 is available [check minimum version]
-		if (!window.d3 || !window.d3.hasOwnProperty("version")) {
+		if (!d3 || !d3.hasOwnProperty("version")) {
 			console.error("d3pie error: d3 is not available");
 			return false;
 		}
