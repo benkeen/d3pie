@@ -204,10 +204,7 @@ var segments = {
 		}
 		pie.isOpeningSegment = true;
 
-		// close any open segments
-		if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
-			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
-		}
+		segments.maybeCloseOpenSegment();
 
 		d3.select(segment).transition()
 			.ease(segments.effectMap[pie.options.effects.pullOutSegmentOnClick.effect])
@@ -222,11 +219,16 @@ var segments = {
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.on("end", function(d, i) {
-				console.log('open end', segment);
 				pie.currentlyOpenSegment = segment;
 				pie.isOpeningSegment = false;
 				d3.select(segment).attr("class", pie.cssPrefix + "expanded");
 			});
+	},
+
+    maybeCloseOpenSegment: function() {
+        if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
+            segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
+        }
 	},
 
 	closeSegment: function(pie, segment) {
@@ -234,7 +236,6 @@ var segments = {
 			.duration(400)
 			.attr("transform", "translate(0,0)")
 			.on("end", function(d, i) {
-				console.log('close segment...');
 				d3.select(segment).attr("class", "");
 				pie.currentlyOpenSegment = null;
 			});
