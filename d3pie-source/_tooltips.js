@@ -1,60 +1,56 @@
 // --------- validate.js -----------
 var tt = {
-	addTooltips: function(pie) {
+    addTooltips: function(pie) {
 
-		// group the label groups (label, percentage, value) into a single element for simpler positioning
-		var tooltips = pie.svg.insert("g")
-			.attr("class", pie.cssPrefix + "tooltips");
+    // group the label groups (label, percentage, value) into a single element for simpler positioning
+    var tooltips = pie.svg.insert("g")
+        .attr("class", pie.cssPrefix + "tooltips");
 
     tooltips.selectAll("." + pie.cssPrefix + "tooltip")
-      .data(pie.options.data.content)
-      .enter()
-      .append("g")
+        .data(pie.options.data.content)
+        .enter()
+        .append("g")
         .attr("class", pie.cssPrefix + "tooltip")
         .attr("id", function(d, i) { return pie.cssPrefix + "tooltip" + i; })
         .style("opacity", 0)
-      .append("rect")
-        .attr({
-			    rx: pie.options.tooltips.styles.borderRadius,
-			    ry: pie.options.tooltips.styles.borderRadius,
-			    x: -pie.options.tooltips.styles.padding,
-			    opacity: pie.options.tooltips.styles.backgroundOpacity
-		    })
-		    .style("fill", pie.options.tooltips.styles.backgroundColor);
+        .append("rect")
+        .attr("rx", pie.options.tooltips.styles.borderRadius)
+        .attr("ry", pie.options.tooltips.styles.borderRadius)
+        .attr("x", -pie.options.tooltips.styles.padding)
+        .attr("opacity", pie.options.tooltips.styles.backgroundOpacity)
+        .style("fill", pie.options.tooltips.styles.backgroundColor);
 
     tooltips.selectAll("." + pie.cssPrefix + "tooltip")
-      .data(pie.options.data.content)
-      .append("text")
+        .data(pie.options.data.content)
+        .append("text")
         .attr("fill", function(d) { return pie.options.tooltips.styles.color; })
         .style("font-size", function(d) { return pie.options.tooltips.styles.fontSize; })
         .style("font-family", function(d) { return pie.options.tooltips.styles.font; })
         .text(function(d, i) {
-          var caption = pie.options.tooltips.string;
-          if (pie.options.tooltips.type === "caption") {
-            caption = d.caption;
-          }
-          return tt.replacePlaceholders(pie, caption, i, {
-            label: d.label,
-            value: d.value,
-            percentage: segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces)
-          });
+            var caption = pie.options.tooltips.string;
+            if (pie.options.tooltips.type === "caption") {
+                caption = d.caption;
+            }
+            return tt.replacePlaceholders(pie, caption, i, {
+                label: d.label,
+                value: d.value,
+                percentage: segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces)
+            });
         });
 
 		tooltips.selectAll("." + pie.cssPrefix + "tooltip rect")
-			.attr({
-				width: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-					return dims.w + (2 * pie.options.tooltips.styles.padding);
-				},
-				height: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-					return dims.h + (2 * pie.options.tooltips.styles.padding);
-				},
-				y: function (d, i) {
-					var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
-					return -(dims.h / 2) + 1;
-				}
-			});
+			.attr("width", function (d, i) {
+                var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+                return dims.w + (2 * pie.options.tooltips.styles.padding);
+            })
+            .attr("height", function (d, i) {
+                var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+                return dims.h + (2 * pie.options.tooltips.styles.padding);
+            })
+            .attr("y", function (d, i) {
+                var dims = helpers.getDimensions(pie.cssPrefix + "tooltip" + i);
+                return -(dims.h / 2) + 1;
+            });
 	},
 
   showTooltip: function(pie, index) {

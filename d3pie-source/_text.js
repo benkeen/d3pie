@@ -3,17 +3,17 @@ var text = {
 	offscreenCoord: -10000,
 
 	addTitle: function(pie) {
+
+
 		var title = pie.svg.selectAll("." + pie.cssPrefix + "title")
 			.data([pie.options.header.title])
 			.enter()
 			.append("text")
 			.text(function(d) { return d.text; })
-			.attr({
-        id: pie.cssPrefix + "title",
-        class: pie.cssPrefix + "title",
-        x: text.offscreenCoord,
-        y: text.offscreenCoord
-      })
+			.attr("id", pie.cssPrefix + "title")
+        	.attr("class", pie.cssPrefix + "title")
+			.attr("x", text.offscreenCoord)
+			.attr("y", text.offscreenCoord)
 			.attr("text-anchor", function() {
 				var location;
 				if (pie.options.header.location === "top-center" || pie.options.header.location === "pie-center") {

@@ -294,7 +294,7 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint: {
-				all: ['d3pie-source/*.js']
+			all: ['d3pie-source/*.js']
 		}
 	};
 
@@ -308,7 +308,7 @@ module.exports = function(grunt) {
 
 	// tasks for building the website. There are only 2 options: dev and prod
 	grunt.registerTask("dev", [
-    "jshint",
+		"jshint",
 		"setEnv_Dev",
 		"template:indexFile",
 		"template:devRequireConfig",
@@ -316,7 +316,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask("prod", [
-    "jshint",
+		"jshint",
 		"setEnv_Prod", // set the build environment constants
 		"clean",       // wipe out the build folder
 		"template:constants", // create the constants file

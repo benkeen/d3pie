@@ -217,8 +217,8 @@ var labels = {
 			.append("g")
 			.attr("class", pie.cssPrefix + "lineGroup");
 
-		var lineFunction = d3.svg.line()
-			.interpolate("basis")
+        var lineFunction = d3.line()
+			.curve(d3.curveBasis)
 			.x(function(d) { return d.x; })
 			.y(function(d) { return d.y; });
 
