@@ -62,7 +62,7 @@ Lots! A big thanks to the developers of these scripts.
 ### Changelog
 
 - `0.2.0` - In development.
-- `0.1.9` - Jun 17, 2015. UMD fix.
+- `0.1.9` - Jun 17, 2015. UMD fix. *This is the last version that supports d3 v3.x*. 
 - `0.1.8` - May 1, 2015. Bug fix release. 
 - `0.1.7` - Apr 25, 2015. Script and website bug fixes, `labels.formatter` method. <b>Breaking change:</b> 
 `labels.truncation.length` renamed to `labels.truncation.truncateLength`.

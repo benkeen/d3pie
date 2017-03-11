@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.1.6";
+	var _version = "0.2.0";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -38,7 +38,7 @@
 	//<%=_labels%>
 	//<%=_segments%>
 	//<%=_text%>
-  //<%=_tooltips%>
+	//<%=_tooltips%>
 
 	// --------------------------------------------------------------------------------------------
 
@@ -74,28 +74,17 @@
 		d3.select(this.element).attr(_scriptName, _version);
 
 		// things that are done once
-		this.options.data.content = math.sortPieData(this);
-		if (this.options.data.smallSegmentGrouping.enabled) {
-			this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
-		}
-		this.options.colors = helpers.initSegmentColors(this);
-		this.totalSize      = math.getTotalPieSize(this.options.data.content);
-
+		_setupData.call(this);
 		_init.call(this);
 	};
 
 	d3pie.prototype.recreate = function() {
 		// now run some validation on the user-defined info
 		if (!validate.initialCheck(this)) {
-			return;
-		}
-		this.options.data.content = math.sortPieData(this);
-		if (this.options.data.smallSegmentGrouping.enabled) {
-			this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
-		}
-		this.options.colors = helpers.initSegmentColors(this);
-		this.totalSize      = math.getTotalPieSize(this.options.data.content);
+            return;
+        }
 
+		_setupData.call(this);
 		_init.call(this);
 	};
 
@@ -192,6 +181,32 @@
 
 	// ------------------------------------------------------------------------------------------------
 
+	var _setupData = function () {
+        this.options.data.content = math.sortPieData(this);
+        if (this.options.data.smallSegmentGrouping.enabled) {
+            this.options.data.content = helpers.applySmallSegmentGrouping(this.options.data.content, this.options.data.smallSegmentGrouping);
+        }
+
+
+        this.options.colors = helpers.initSegmentColors(this);
+        this.totalSize      = math.getTotalPieSize(this.options.data.content);
+
+        var dp = this.options.labels.percentage.decimalPlaces;
+
+        // add in percentage data to content
+        for (var i=0; i<this.options.data.content.length; i++) {
+            this.options.data.content[i].percentage = _getPercentage(this.options.data.content[i].value, this.totalSize, dp);
+        }
+
+        // adjust the final item to ensure the percentage always adds up to precisely 100%. This is necessary
+		var totalPercentage = 0;
+        for (var j=0; j<this.options.data.content.length; j++) {
+        	if (j === this.options.data.content.length - 1) {
+                this.options.data.content[j].percentage = (100 - totalPercentage).toFixed(dp);
+			}
+			totalPercentage += parseFloat(this.options.data.content[j].percentage);
+        }
+	};
 
 	var _init = function() {
 
@@ -308,14 +323,23 @@
 			labels.positionLabelGroups(self, "inner");
 			labels.fadeInLabelsAndLines(self);
 
-      // add and position the tooltips
-      if (self.options.tooltips.enabled) {
-        tt.addTooltips(self);
-      }
+			// add and position the tooltips
+			if (self.options.tooltips.enabled) {
+				tt.addTooltips(self);
+			}
 
-      segments.addSegmentEventHandlers(self);
+			segments.addSegmentEventHandlers(self);
 		});
 	};
 
-  return d3pie;
+	_getPercentage = function(value, total, decimalPlaces) {
+		var relativeAmount = value / total;
+		if (decimalPlaces <= 0) {
+			return Math.round(relativeAmount * 100);
+		} else {
+			return (relativeAmount * 100).toFixed(decimalPlaces);
+		}
+	};
+
+    return d3pie;
 }));

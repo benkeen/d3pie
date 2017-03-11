@@ -25,7 +25,7 @@ var labels = {
 			.attr("class", pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0);
 
-    var formatterContext = { section: section, sectionDisplayType: sectionDisplayType };
+		var formatterContext = { section: section, sectionDisplayType: sectionDisplayType };
 
 		// 1. Add the main label
 		if (include.mainLabel) {
@@ -35,18 +35,18 @@ var labels = {
 				.text(function(d, i) {
 					var str = d.label;
 
-          // if a custom formatter has been defined, pass it the raw label string - it can do whatever it wants with it.
-          // we only apply truncation if it's not defined
+					// if a custom formatter has been defined, pass it the raw label string - it can do whatever it wants with it.
+					// we only apply truncation if it's not defined
 					if (settings.formatter) {
-            formatterContext.index = i;
-            formatterContext.part = 'mainLabel';
-            formatterContext.value = d.value;
-            formatterContext.label = str;
-            str = settings.formatter(formatterContext);
-          } else if (settings.truncation.enabled && d.label.length > settings.truncation.truncateLength) {
-            str = d.label.substring(0, settings.truncation.truncateLength) + "...";
-          }
-          return str;
+						formatterContext.index = i;
+						formatterContext.part = 'mainLabel';
+						formatterContext.value = d.value;
+						formatterContext.label = str;
+						str = settings.formatter(formatterContext);
+					} else if (settings.truncation.enabled && d.label.length > settings.truncation.truncateLength) {
+						str = d.label.substring(0, settings.truncation.truncateLength) + "...";
+					}
+					return str;
 				})
 				.style("font-size", settings.mainLabel.fontSize + "px")
 				.style("font-family", settings.mainLabel.font)
@@ -59,17 +59,17 @@ var labels = {
 				.attr("id", function(d, i) { return pie.cssPrefix + "segmentPercentage" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentPercentage-" + section)
 				.text(function(d, i) {
-					var percentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
-          if (settings.formatter) {
-            formatterContext.index = i;
-            formatterContext.part = "percentage";
-            formatterContext.value = d.value;
-            formatterContext.label = percentage;
-            percentage = settings.formatter(formatterContext);
-          } else {
-            percentage += "%";
-          }
-          return percentage;
+					var percentage = d.percentage;
+					if (settings.formatter) {
+						formatterContext.index = i;
+						formatterContext.part = "percentage";
+						formatterContext.value = d.value;
+						formatterContext.label = d.percentage;
+						percentage = settings.formatter(formatterContext);
+					} else {
+						percentage += "%";
+					}
+					return percentage;
 				})
 				.style("font-size", settings.percentage.fontSize + "px")
 				.style("font-family", settings.percentage.font)
@@ -82,12 +82,12 @@ var labels = {
 				.attr("id", function(d, i) { return pie.cssPrefix +  "segmentValue" + i + "-" + section; })
 				.attr("class", pie.cssPrefix + "segmentValue-" + section)
 				.text(function(d, i) {
-          formatterContext.index = i;
-          formatterContext.part = "value";
-          formatterContext.value = d.value;
-          formatterContext.label = d.value;
-          return settings.formatter ? settings.formatter(formatterContext, d.value) : d.value;
-        })
+					formatterContext.index = i;
+					formatterContext.part = "value";
+					formatterContext.value = d.value;
+					formatterContext.label = d.value;
+					return settings.formatter ? settings.formatter(formatterContext, d.value) : d.value;
+				})
 				.style("font-size", settings.value.fontSize + "px")
 				.style("font-family", settings.value.font)
 				.style("fill", settings.value.color);
@@ -231,8 +231,7 @@ var labels = {
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-				var segmentPercentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
-				var isHidden = (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[i].label === "";
+				var isHidden = (percentage !== null && d.percentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
 			});
 	},
@@ -288,8 +287,7 @@ var labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-					var segmentPercentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
-					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+					return (percentage !== null && d.percentage < percentage) ? 0 : 1;
 				});
 
 			d3.selectAll("." + pie.cssPrefix + "labelGroup-inner")
@@ -297,8 +295,7 @@ var labels = {
 				.duration(labelFadeInTime)
 				.style("opacity", function(d, i) {
 					var percentage = pie.options.labels.inner.hideWhenLessThanPercentage;
-					var segmentPercentage = segments.getPercentage(pie, i, pie.options.labels.percentage.decimalPlaces);
-					return (percentage !== null && segmentPercentage < percentage) ? 0 : 1;
+					return (percentage !== null && d.percentage < percentage) ? 0 : 1;
 				});
 
 			d3.selectAll("g." + pie.cssPrefix + "lineGroups")
@@ -443,8 +440,7 @@ var labels = {
 
 	isLabelHidden: function(pie, index) {
 		var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-		var segmentPercentage = segments.getPercentage(pie, index, pie.options.labels.percentage.decimalPlaces);
-		return (percentage !== null && segmentPercentage < percentage) || pie.options.data.content[index].label === "";
+		return (percentage !== null && d.percentage < percentage) || pie.options.data.content[index].label === "";
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one

@@ -288,15 +288,6 @@ var segments = {
 		}
 
 		return angle;
-	},
-
-	getPercentage: function(pie, index, decimalPlaces) {
-		var relativeAmount = pie.options.data.content[index].value / pie.totalSize;
-		if (decimalPlaces <= 0) {
-			return Math.round(relativeAmount * 100);
-		} else {
-			return (relativeAmount * 100).toFixed(decimalPlaces);
-		}
 	}
 
 };

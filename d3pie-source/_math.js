@@ -23,13 +23,13 @@ var math = {
 		var h = size.canvasHeight - canvasPadding.top - canvasPadding.bottom;
 
 		// now factor in the footer, title & subtitle
-    if (pie.options.header.location !== "pie-center") {
-      h -= pie.textComponents.headerHeight;
-    }
+		if (pie.options.header.location !== "pie-center") {
+			h -= pie.textComponents.headerHeight;
+		}
 
-    if (pie.textComponents.footer.exists) {
-      h -= pie.textComponents.footer.h;
-    }
+		if (pie.textComponents.footer.exists) {
+			h -= pie.textComponents.footer.h;
+		}
 
 		// for really teeny pies, h may be < 0. Adjust it back
 		h = (h < 0) ? 0 : h;
@@ -109,8 +109,6 @@ var math = {
 
 		return data;
 	},
-
-	
 
 	// var pieCenter = math.getPieCenter();
 	getPieTranslateCenter: function(pieCenter) {
