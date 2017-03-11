@@ -22,7 +22,7 @@
 }(this, function() {
 
 	var _scriptName = "d3pie";
-	var _version = "0.2.0";
+	var _version = "0.2.1";
 
 	// used to uniquely generate IDs and classes, ensuring no conflict between multiple pies on the same page
 	var _uniqueIDCounter = 0;
@@ -2164,7 +2164,7 @@ var tt = {
 		});
 	};
 
-	_getPercentage = function(value, total, decimalPlaces) {
+	var _getPercentage = function(value, total, decimalPlaces) {
 		var relativeAmount = value / total;
 		if (decimalPlaces <= 0) {
 			return Math.round(relativeAmount * 100);
