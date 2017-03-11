@@ -294,7 +294,12 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint: {
-			all: ['d3pie-source/*.js']
+			all: [
+				'd3pie-source/*.js'
+			],
+			options: {
+                reporterOutput: ""
+			}
 		}
 	};
 
