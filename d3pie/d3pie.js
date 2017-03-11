@@ -1001,8 +1001,8 @@ var labels = {
 			.append("g")
 			.attr("class", pie.cssPrefix + "lineGroup");
 
-		var lineFunction = d3.svg.line()
-			.interpolate("basis")
+		var lineFunction = d3.line()
+			.curve(d3.curveBasis)
 			.x(function(d) { return d.x; })
 			.y(function(d) { return d.y; });
 
@@ -1305,7 +1305,7 @@ var segments = {
 			.attr("transform", function() { return math.getPieTranslateCenter(pieCenter); })
 			.attr("class", pie.cssPrefix + "pieChart");
 
-		var arc = d3.svg.arc()
+		var arc = d3.arc()
 			.innerRadius(pie.innerRadius)
 			.outerRadius(pie.outerRadius)
 			.startAngle(0)
@@ -1337,7 +1337,7 @@ var segments = {
 			.style("stroke", segmentStroke)
 			.style("stroke-width", 1)
 			.transition()
-			.ease("cubic-in-out")
+			.ease(d3.easeCubicInOut)
 			.duration(loadSpeed)
 			.attr("data-index", function(d, i) { return i; })
 			.attrTween("d", function(b) {
