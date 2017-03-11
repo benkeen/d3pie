@@ -1,6 +1,18 @@
 // --------- segments.js -----------
 var segments = {
 
+    effectMap: {
+        "none": d3.easeLinear,
+        "bounce": d3.easeBounce,
+        "linear": d3.easeLinear,
+        "sin": d3.easeSin,
+        "elastic": d3.easeElastic,
+        "back": d3.easeBack,
+        "quad": d3.easeQuad,
+        "circle": d3.easeCircle,
+        "exp": d3.easeExp
+    },
+
 	/**
 	 * Creates the pie chart segments and displays them according to the desired load effect.
 	 * @private
@@ -100,6 +112,7 @@ var segments = {
 				var index = currentEl.attr("data-index");
 				segment = d3.select("#" + pie.cssPrefix + "segment" + index);
 			}
+
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onClickSegment, segment, isExpanded);
 			if (pie.options.effects.pullOutSegmentOnClick.effect !== "none") {
@@ -128,18 +141,18 @@ var segments = {
 				segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
 			}
 
-      if (pie.options.tooltips.enabled) {
-        index = segment.attr("data-index");
-        tt.showTooltip(pie, index);
-      }
+			if (pie.options.tooltips.enabled) {
+				index = segment.attr("data-index");
+				tt.showTooltip(pie, index);
+			}
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
 		});
 
-    arc.on("mousemove", function() {
-      tt.moveTooltip(pie);
-    });
+		arc.on("mousemove", function() {
+			tt.moveTooltip(pie);
+		});
 
 		arc.on("mouseout", function() {
 			var currentEl = d3.select(this);
@@ -161,10 +174,10 @@ var segments = {
 				segment.style("fill", color);
 			}
 
-      if (pie.options.tooltips.enabled) {
-        index = segment.attr("data-index");
-        tt.hideTooltip(pie, index);
-      }
+			if (pie.options.tooltips.enabled) {
+				index = segment.attr("data-index");
+				tt.hideTooltip(pie, index);
+			}
 
 			var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
 			segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
@@ -192,12 +205,12 @@ var segments = {
 		pie.isOpeningSegment = true;
 
 		// close any open segments
-		if (d3.selectAll("." + pie.cssPrefix + "expanded").length > 0) {
+		if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
 			segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
 		}
 
 		d3.select(segment).transition()
-			.ease(pie.options.effects.pullOutSegmentOnClick.effect)
+			.ease(segments.effectMap[pie.options.effects.pullOutSegmentOnClick.effect])
 			.duration(pie.options.effects.pullOutSegmentOnClick.speed)
 			.attr("transform", function(d, i) {
 				var c = pie.arc.centroid(d),
@@ -208,10 +221,10 @@ var segments = {
 
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
-			.each("end", function(d, i) {
+			.on("end", function(d, i) {
 				pie.currentlyOpenSegment = segment;
 				pie.isOpeningSegment = false;
-				d3.select(this).attr("class", pie.cssPrefix + "expanded");
+				d3.select(segment).attr("class", pie.cssPrefix + "expanded");
 			});
 	},
 
@@ -219,7 +232,7 @@ var segments = {
 		d3.select(segment).transition()
 			.duration(400)
 			.attr("transform", "translate(0,0)")
-			.each("end", function(d, i) {
+			.on("end", function(d, i) {
 				d3.select(this).attr("class", "");
 				pie.currentlyOpenSegment = null;
 			});
