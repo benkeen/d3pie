@@ -149,7 +149,7 @@ define([], function() {
 				canvasWidth: 700,
 				canvasHeight: 360,
 				pieInnerRadius: "95%",
-				pieOuterRadius: "100%"
+				pieOuterRadius: "95%"
 			},
 			data: {
 				sortOrder: "none",

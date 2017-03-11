@@ -222,6 +222,7 @@ var segments = {
 				return "translate(" + ((x/h) * pullOutSize) + ',' + ((y/h) * pullOutSize) + ")";
 			})
 			.on("end", function(d, i) {
+				console.log('open end', segment);
 				pie.currentlyOpenSegment = segment;
 				pie.isOpeningSegment = false;
 				d3.select(segment).attr("class", pie.cssPrefix + "expanded");
@@ -233,7 +234,8 @@ var segments = {
 			.duration(400)
 			.attr("transform", "translate(0,0)")
 			.on("end", function(d, i) {
-				d3.select(this).attr("class", "");
+				console.log('close segment...');
+				d3.select(segment).attr("class", "");
 				pie.currentlyOpenSegment = null;
 			});
 	},
