@@ -231,7 +231,7 @@ var labels = {
 			.attr("fill", "none")
 			.style("opacity", function(d, i) {
 				var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-				var isHidden = (percentage !== null && d.percentage < percentage) || pie.options.data.content[i].label === "";
+				var isHidden = (percentage !== null && pie.options.data.content[i].percentage < percentage) || pie.options.data.content[i].label === "";
 				return isHidden ? 0 : 1;
 			});
 	},
@@ -440,7 +440,7 @@ var labels = {
 
 	isLabelHidden: function(pie, index) {
 		var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-		return (percentage !== null && d.percentage < percentage) || pie.options.data.content[index].label === "";
+		return (percentage !== null && pie.options.data.content[index].percentage < percentage) || pie.options.data.content[index].label === "";
 	},
 
 	// does a little math to shift a label into a new position based on the last properly placed one
