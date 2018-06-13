@@ -42,8 +42,11 @@ var validate = {
 				console.log("not valid: ", options.data.content[i]);
 				continue;
 			}
-			if (options.data.content[i].value <= 0) {
-				console.log("not valid - should have positive value: ", options.data.content[i]);
+			if (options.data.content[i].value < 0) {
+				console.log("not valid - should have non negative value: ", options.data.content[i]);
+				continue;
+			}
+			if (options.data.content[i].value = 0) {
 				continue;
 			}
 			data.push(options.data.content[i]);
