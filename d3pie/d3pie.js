@@ -1169,7 +1169,7 @@ var labels = {
 
 		// 3. if aside mode is specified, calculate some useful stuff for that.
 		if (pie.options.labels.lines.style === "aside") {
-			labels.moveLabelsAside(pie);
+			labels.calcAsideLabelPositions(pie);
 		}
 	},
 
@@ -1177,11 +1177,11 @@ var labels = {
 	 * "aside" mode will display the labels in a straight stack along the left and right hand side of the pie
 	 * This solves an issue where label lines sometimes overlap.
 	 */
-	moveLabelsAside: function(pie) {
+	calcAsideLabelPositions: function(pie) {
 		pie.labelEdges = { left: null, right: null };
 		for (var i = 0; i < pie.outerLabelGroupData.length; i++) {
 			var entry = pie.outerLabelGroupData[i];
-			if (entry.hs == "left" && (pie.labelEdges.left === null || entry.x < pie.labelEdges.left)) {
+			if (entry.hs == "left" && (pie.labelEdges.left === null || (entry.x + entry.w) < pie.labelEdges.left)) {
 				pie.labelEdges.left = entry.x + entry.w;
 			}
 			if (entry.hs == "right" && (pie.labelEdges.right === null || entry.x > pie.labelEdges.right)) {
