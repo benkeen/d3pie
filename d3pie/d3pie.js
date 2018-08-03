@@ -940,31 +940,42 @@ var labels = {
 			quarter = 1;
 		}
 
+		var lineEndX, lineEndY;
+		if (pie.options.labels.lines.style == "aside") {
+			// lines will end at the same x position along the left and right hand sides of the pie.
+			lineEndLeft = pie.labelEdges.left - pie.outerLabelGroupData[i].w;
+			lineEndRight = pie.labelEdges.right;
+
+		} else {
+			// lines will end at computed position around the circle.			
+			lineEndLeft = lineEndRight = pie.outerLabelGroupData[i].x;
+		}
+
 		switch (quarter) {
 			case 0:
-				x2 = pie.outerLabelGroupData[i].x - labelXMargin - ((pie.outerLabelGroupData[i].x - labelXMargin - originCoords.x) / 2);
+				x2 = lineEndRight - labelXMargin - ((lineEndRight - labelXMargin - originCoords.x) / 2);
 				y2 = pie.outerLabelGroupData[i].y + ((originCoords.y - pie.outerLabelGroupData[i].y) / midPoint);
-				x3 = pie.outerLabelGroupData[i].x - labelXMargin;
+				x3 = lineEndRight - labelXMargin;
 				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 1:
-				x2 = originCoords.x + (pie.outerLabelGroupData[i].x - originCoords.x) / midPoint;
+				x2 = originCoords.x + (lineEndRight - originCoords.x) / midPoint;
 				y2 = originCoords.y + (pie.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-				x3 = pie.outerLabelGroupData[i].x - labelXMargin;
+				x3 = lineEndRight - labelXMargin;
 				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 2:
-				var startOfLabelX = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
+				var startOfLabelX = lineEndLeft + pie.outerLabelGroupData[i].w + labelXMargin;
 				x2 = originCoords.x - (originCoords.x - startOfLabelX) / midPoint;
 				y2 = originCoords.y + (pie.outerLabelGroupData[i].y - originCoords.y) / midPoint;
-				x3 = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
+				x3 = lineEndLeft + pie.outerLabelGroupData[i].w + labelXMargin;
 				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 			case 3:
-				var startOfLabel = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
+				var startOfLabel = lineEndLeft + pie.outerLabelGroupData[i].w + labelXMargin;
 				x2 = startOfLabel + ((originCoords.x - startOfLabel) / midPoint);
 				y2 = pie.outerLabelGroupData[i].y + (originCoords.y - pie.outerLabelGroupData[i].y) / midPoint;
-				x3 = pie.outerLabelGroupData[i].x + pie.outerLabelGroupData[i].w + labelXMargin;
+				x3 = lineEndLeft + pie.outerLabelGroupData[i].w + labelXMargin;
 				y3 = pie.outerLabelGroupData[i].y - heightOffset;
 				break;
 		}
@@ -1019,16 +1030,26 @@ var labels = {
 	},
 
 	positionLabelGroups: function(pie, section) {
-    if (pie.options.labels[section].format === "none") {
-      return;
-    }
+		if (pie.options.labels[section].format === "none") {
+			return;
+		}
 
 		d3.selectAll("." + pie.cssPrefix + "labelGroup-" + section)
 			.style("opacity", 0)
 			.attr("transform", function(d, i) {
 				var x, y;
 				if (section === "outer") {
-					x = pie.outerLabelGroupData[i].x;
+					if (pie.options.labels.lines.style === "aside") {
+						// in aside mode, we are aligning the labels across the left and right flanks of the pie.
+						if (pie.outerLabelGroupData[i].hs == "left") {
+							x = pie.labelEdges.left - pie.outerLabelGroupData[i].w;
+						} else {
+							x = pie.labelEdges.right;
+						}
+					} else {
+						// other options involve drawing the labels around the circle.
+						x = pie.outerLabelGroupData[i].x;	
+					}
 					y = pie.outerLabelGroupData[i].y;
 				} else {
 					var pieCenterCopy = extend(true, {}, pie.pieCenter);
@@ -1129,11 +1150,11 @@ var labels = {
 		};
 	},
 
-
 	/**
-	 * This does the heavy-lifting to compute the actual coordinates for the outer label groups. It does two things:
+	 * This does the heavy-lifting to compute the actual coordinates for the outer label groups. It does three things:
 	 * 1. Make a first pass and position them in the ideal positions, based on the pie sizes
 	 * 2. Do some basic collision avoidance.
+	 * 3. If "aside" mode is specified, shift the labels to the left and right flanks of the chart.
 	 */
 	computeOuterLabelCoords: function(pie) {
 
@@ -1145,6 +1166,28 @@ var labels = {
 
 		// 2. now adjust those positions to try to accommodate conflicts
 		labels.resolveOuterLabelCollisions(pie);
+
+		// 3. if aside mode is specified, calculate some useful stuff for that.
+		if (pie.options.labels.lines.style === "aside") {
+			labels.moveLabelsAside(pie);
+		}
+	},
+
+	/**
+	 * "aside" mode will display the labels in a straight stack along the left and right hand side of the pie
+	 * This solves an issue where label lines sometimes overlap.
+	 */
+	moveLabelsAside: function(pie) {
+		pie.labelEdges = { left: null, right: null };
+		for (var i = 0; i < pie.outerLabelGroupData.length; i++) {
+			var entry = pie.outerLabelGroupData[i];
+			if (entry.hs == "left" && (pie.labelEdges.left === null || entry.x < pie.labelEdges.left)) {
+				pie.labelEdges.left = entry.x + entry.w;
+			}
+			if (entry.hs == "right" && (pie.labelEdges.right === null || entry.x > pie.labelEdges.right)) {
+				pie.labelEdges.right = entry.x;
+			}
+		}
 	},
 
 	/**
