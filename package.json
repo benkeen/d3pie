@@ -28,16 +28,20 @@
     "d3pie/d3pie.min.js"
   ],
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-cssmin": "~0.7.0",
-    "grunt-contrib-handlebars": "~0.6.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-copy": "^0.4.1",
+    "grunt-contrib-cssmin": "^0.7.0",
+    "grunt-contrib-handlebars": "^0.6.1",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-contrib-uglify": "~0.3.2",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-md5": "^0.1.11",
-    "grunt-template": "~0.2.3"
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-uglify": "^0.3.3",
+    "grunt-contrib-watch": "^0.5.3",
+    "grunt-md5": "^0.1.12",
+    "grunt-template": "^0.2.3"
+  },
+  "dependencies": {
+    "grunt-bundle": "^0.1.6",
+    "grunt-bundles": "^0.2.2"
   }
 }

@@ -134,6 +134,20 @@ var labels = {
 					.attr("dx", function(d, i) { return (dims[i].mainLabel.width / 2) - (dims[i].percentage.width / 2); })
 					.attr("dy", function(d, i) { return dims[i].mainLabel.height; });
 				break;
+            case "value-percentage":
+                d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
+                    .attr("dx", function(d, i) { return (dims[i].percentage.width / 2) - (dims[i].value.width / 2); })
+                    .attr("dy", function(d, i) { return -dims[i].percentage.height / 2; });
+                d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
+                    .attr("dy", function(d, i) { return dims[i].percentage.height / 2; });
+                break;
+            case "percentage-value":
+                d3.selectAll("." + pie.cssPrefix + "segmentValue-" + section)
+                    .attr("dx", function(d, i) { return (dims[i].percentage.width / 2) - (dims[i].value.width / 2); })
+                    .attr("dy", function(d, i) { return dims[i].percentage.height / 2; });
+                d3.selectAll("." + pie.cssPrefix + "segmentPercentage-" + section)
+                    .attr("dy", function(d, i) { return -dims[i].percentage.height / 2; });
+                break;
 	 	}
 	},
 
@@ -339,6 +353,11 @@ var labels = {
 				addMainLabel = true;
 				addPercentage = true;
 				break;
+            case "value-percentage":
+            case "percentage-value":
+                addValue = true;
+                addPercentage = true;
+                break;
 		}
 		return {
 			mainLabel: addMainLabel,
