@@ -204,7 +204,7 @@ var segments = {
 		}
 		pie.isOpeningSegment = true;
 
-		segments.maybeCloseOpenSegment();
+		segments.maybeCloseOpenSegment(pie);
 
 		d3.select(segment).transition()
 			.ease(segments.effectMap[pie.options.effects.pullOutSegmentOnClick.effect])
@@ -225,7 +225,7 @@ var segments = {
 			});
 	},
 
-    maybeCloseOpenSegment: function() {
+    maybeCloseOpenSegment: function(pie) {
         if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
             segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
         }
