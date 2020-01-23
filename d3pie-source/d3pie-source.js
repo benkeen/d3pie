@@ -117,8 +117,8 @@ d3pie.prototype.openSegment = function (index) {
     segments.openSegment(this, d3.select("#" + this.cssPrefix + "segment" + index).node());
 };
 
-d3pie.prototype.closeSegment = function () {
-    segments.maybeCloseOpenSegment();
+d3pie.prototype.closeSegment = function (pie) {
+    segments.maybeCloseOpenSegment(pie);
 };
 
 // this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
