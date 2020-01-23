@@ -34,7 +34,7 @@ var math = {
         // for really teeny pies, h may be < 0. Adjust it back
         h = (h < 0) ? 0 : h;
 
-        var outerRadius = ((w < h) ? w : h) / 3;
+        var outerRadius = ((w < h) ? w : h) / (pie.options.labels.outer.format === "none" ? 2 : 3);
         var innerRadius, percent;
 
         // if the user specified something, use that instead
