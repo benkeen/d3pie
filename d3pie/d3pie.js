@@ -1509,8 +1509,8 @@ var segments = {
 	},
 
     maybeCloseOpenSegment: function() {
-        if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
-            segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
+        if (d3.selectAll("." + this.cssPrefix + "expanded").size() > 0) {
+            segments.closeSegment(this, d3.select("." + this.cssPrefix + "expanded").node());
         }
 	},
 
