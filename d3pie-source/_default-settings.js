@@ -86,6 +86,14 @@ var defaultSettings = {
 		},
     formatter: null
 	},
+	legend: {
+		enabled: false,
+		location: "top-left",
+		font: "arial",
+		fontSize: 10,
+		shape: "circle",
+		shapeSize: 10
+	},
 	effects: {
 		load: {
 			effect: "default",
