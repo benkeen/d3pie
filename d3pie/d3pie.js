@@ -123,9 +123,9 @@ var defaultSettings = {
 		enabled: false,
 		location: "top-left",
 		font: "arial",
-		fontSize: 10,
+		fontSize: 12,
 		shape: "circle",
-		shapeSize: 10
+		shapeSize: 11
 	},
 	effects: {
 		load: {
@@ -2196,6 +2196,11 @@ var tt = {
 			text.addSubtitle(this);
 		}
 		text.addFooter(this);
+
+		// add legend
+		if (this.options.legend.enabled) {
+			text.addLegend(this);
+		}
 
 		// the footer never moves. Put it in place now
 		var self = this;

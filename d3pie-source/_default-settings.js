@@ -90,9 +90,9 @@ var defaultSettings = {
 		enabled: false,
 		location: "top-left",
 		font: "arial",
-		fontSize: 10,
+		fontSize: 12,
 		shape: "circle",
-		shapeSize: 10
+		shapeSize: 11
 	},
 	effects: {
 		load: {

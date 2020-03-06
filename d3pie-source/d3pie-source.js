@@ -244,6 +244,11 @@
 		}
 		text.addFooter(this);
 
+		// add legend
+		if (this.options.legend.enabled) {
+			text.addLegend(this);
+		}
+
 		// the footer never moves. Put it in place now
 		var self = this;
 		helpers.whenIdExists(this.cssPrefix + "footer", function() {
