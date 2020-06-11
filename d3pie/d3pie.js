@@ -2025,18 +2025,91 @@ var tt = {
 
         var dp = this.options.labels.percentage.decimalPlaces;
 
-        // add in percentage data to content
-        for (var i=0; i<this.options.data.content.length; i++) {
-            this.options.data.content[i].percentage = _getPercentage(this.options.data.content[i].value, this.totalSize, dp);
-        }
+		var roundedPer = [];
+		var exactPer = [];
+		
+		for (var i = 0; i < this.options.data.content.length; i++) {
+			this.options.data.content[i].percentage = _getPercentage(Math.floor(this.options.data.content[i].value), this.totalSize, dp);
+			roundedPer.push(this.options.data.content[i].percentage);
+			exactPer.push(_getExactPercentage(Math.floor(this.options.data.content[i].value), this.totalSize));
 
-        // adjust the final item to ensure the percentage always adds up to precisely 100%. This is necessary
+		}
+
+		 // adjust the final item to ensure the percentage always adds up to precisely 100%. This is necessary 
 		var totalPercentage = 0;
-        for (var j=0; j<this.options.data.content.length; j++) {
-        	if (j === this.options.data.content.length - 1) {
-                this.options.data.content[j].percentage = (100 - totalPercentage).toFixed(dp);
+		var i;
+		while (totalPercentage != 100) {
+			var totalPercentage = 0;
+			for (i = 0; i < roundedPer.length; i++) {
+				totalPercentage += roundedPer[i];
 			}
-			totalPercentage += parseFloat(this.options.data.content[j].percentage);
+
+			if (totalPercentage > 100) {
+
+				var minFrac;
+				var minIndex = -1;
+				var frac;
+				var j = 0;
+				while (j != -1) {
+					frac = exactPer[j] - Math.floor(exactPer[j]);
+					if ((Math.round(exactPer[j]) - Math.floor(exactPer[j])) != 0) {
+						minFrac = frac;
+						minIndex = j;
+						j = -1;
+					}
+					else {
+						j++;
+					}
+				}
+
+				for (j = 0; j < exactPer.length; j++) {
+					frac = exactPer[j] - Math.floor(exactPer[j]);
+					if ((Math.round(exactPer[j]) - Math.floor(exactPer[j])) != 0 && frac < minFrac) {
+						minFrac = frac;
+						minIndex = j;
+					}
+				}
+				if (minIndex != -1) {
+					roundedPer[minIndex] = Math.floor(exactPer[minIndex]);
+					exactPer[minIndex] = roundedPer[minIndex];
+				}
+			} else if (totalPercentage < 100) {
+
+				var maxFrac;
+				var maxIndex = -1;
+				var frac;
+				var j = 0;
+				while (j != -1) {
+					frac = exactPer[j] - Math.floor(exactPer[j]);
+					if ((Math.round(exactPer[j]) - Math.floor(exactPer[j])) == 0) {
+						maxFrac = frac;
+						maxIndex = j;
+						j = -1;
+					}
+					else {
+						j++;
+					}
+				}
+
+				for (j = 0; j < exactPer.length; j++) {
+					frac = exactPer[j] - Math.floor(exactPer[j]);
+					if ((Math.round(exactPer[j]) - Math.floor(exactPer[j])) == 0 && frac > maxFrac) {
+						maxFrac = frac;
+						maxIndex = j;
+					}
+				}
+				if (maxIndex != -1) {
+					roundedPer[maxIndex] = Math.ceil(exactPer[maxIndex]);
+					exactPer[maxIndex] = roundedPer[maxIndex];
+				}
+			}
+			else {
+
+			}
+		}
+
+        for (var j=0; j<this.options.data.content.length; j++) {
+			this.options.data.content[j].percentage = roundedPer[j];
         }
 	};
 
@@ -2173,5 +2246,8 @@ var tt = {
 		}
 	};
 
+	var _getExactPercentage = function (value, total) {
+		return (value/total)*100;
+	};
     return d3pie;
 }));
