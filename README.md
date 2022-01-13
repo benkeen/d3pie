@@ -1,8 +1,10 @@
 ## d3pie
 
-### DEVELOPERS wanted! 
+### Project expired
 
-I'm not able to spend the time I'd like on this project and it's slowly fallen into neglect. If any developers would like to take on the project (especially addressing the issues reported), I'd welcome an email at ben.keen@gmail.com
+As of today (Jan 13th, 2020) I've let this project expire. The website won't be around any more. It hasn't been developed in years and while I really liked the script I think it's better to shut it down than give a faulty impresson that it's up and running and cause people more work in the long run. 
+
+All the best!
 
 -----------
 
