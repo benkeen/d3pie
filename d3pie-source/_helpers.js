@@ -10,7 +10,9 @@ var helpers = {
 
 		var svg = d3.select(element).append("svg:svg")
 			.attr("width", canvasWidth)
-			.attr("height", canvasHeight);
+			.attr("height", canvasHeight)
+			.attr("preserveAspectRatio", "xMinYMin meet")
+			.attr("viewBox", "0 0 " + canvasWidth + " " + canvasHeight);
 
 		if (backgroundColor !== "transparent") {
 			svg.style("background-color", function() { return backgroundColor; });
