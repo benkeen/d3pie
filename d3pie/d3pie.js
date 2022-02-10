@@ -1487,7 +1487,7 @@ var segments = {
 		}
 		pie.isOpeningSegment = true;
 
-		segments.maybeCloseOpenSegment();
+		segments.maybeCloseOpenSegment(pie);
 
 		d3.select(segment).transition()
 			.ease(segments.effectMap[pie.options.effects.pullOutSegmentOnClick.effect])
@@ -1508,7 +1508,7 @@ var segments = {
 			});
 	},
 
-    maybeCloseOpenSegment: function() {
+    maybeCloseOpenSegment: function(pie) {
         if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
             segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
         }
@@ -1962,7 +1962,7 @@ var tt = {
 	};
 
 	d3pie.prototype.closeSegment = function() {
-        segments.maybeCloseOpenSegment();
+        segments.maybeCloseOpenSegment(this);
 	};
 
 	// this let's the user dynamically update aspects of the pie chart without causing a complete redraw. It
