@@ -119,6 +119,14 @@ var defaultSettings = {
 		},
     formatter: null
 	},
+	legend: {
+		enabled: false,
+		location: "top-left",
+		font: "arial",
+		fontSize: 12,
+		shape: "circle",
+		shapeSize: 11
+	},
 	effects: {
 		load: {
 			effect: "default",
@@ -1509,8 +1517,8 @@ var segments = {
 	},
 
     maybeCloseOpenSegment: function() {
-        if (d3.selectAll("." + pie.cssPrefix + "expanded").size() > 0) {
-            segments.closeSegment(pie, d3.select("." + pie.cssPrefix + "expanded").node());
+        if (d3.selectAll("." + this.cssPrefix + "expanded").size() > 0) {
+            segments.closeSegment(this, d3.select("." + this.cssPrefix + "expanded").node());
         }
 	},
 
@@ -1752,6 +1760,119 @@ var text = {
 			}
 		}
 		return h;
+	},
+
+	addLegend: function(pie) {
+		var legendTexts = pie.svg.selectAll("." + pie.cssPrefix + "legend")
+			.data(pie.options.data.content)
+			.enter()
+			.append("text")
+			.text(function(d) { return d.label; })
+			.attr("x", function() {
+				var x = pie.options.legend.shapeSize + 1,
+					location = pie.options.legend.location.split("-")[1];
+				if ( location === "right") {
+					x = pie.options.size.canvasWidth - pie.options.legend.shapeSize - 1;
+				} else if (location === "center") {
+					x = pie.options.size.canvasWidth / 2; 
+				}
+				return x;
+			})
+			.attr("y", function(d, i) { 
+				var location = pie.options.legend.location.split('-')[0],
+					base = 0,
+					lineHeight = pie.options.legend.fontSize;
+				if(location === 'bottom') {
+					base = pie.options.size.canvasHeight - (pie.options.data.content.length * lineHeight);
+				}
+				return base + (i + 1) * lineHeight;
+			 })
+			.attr("id", pie.cssPrefix + "legend")
+			.attr("class", pie.cssPrefix + "legend")
+			.attr("text-anchor", function() {
+				var anchor = "start",
+					location = pie.options.legend.location.split("-")[1];
+				if (location === "right") {
+					anchor = "end";
+				} else if (location === "center") {
+					anchor = "middle"; 
+				}
+				return anchor;
+			})
+			.style('fill', function(d, i){ return pie.options.colors[i];})
+			.style("font-size", function(d) { return pie.options.legend.fontSize + "px"; })
+			.style("font-family", function(d) { return pie.options.legend.font; });
+		
+		if(pie.options.legend.shape) {
+			var textsArray = [];
+			legendTexts.each(function(data, i, texts){
+				textsArray = texts;
+			});
+			var shapes = pie.svg.selectAll("." + pie.cssPrefix + "legend-shape")
+				.data(textsArray)
+				.enter()
+				.append(pie.options.legend.shape)
+				.attr("class", pie.cssPrefix + "legend-shape")
+				.style("fill", function(d, i){ return pie.options.colors[i];});
+
+			if(pie.options.legend.shape === 'circle') {
+				var radius = pie.options.legend.shapeSize / 2;
+				shapes.attr('cx', function(d) {
+					var x = radius,
+						location = pie.options.legend.location.split("-")[1];
+					if ( location === "right") {
+						x = pie.options.size.canvasWidth - radius;
+					} else if (location === "center") {
+						x = d.getStartPositionOfChar(0).x - radius - 1;
+					}
+					return x;
+				})
+				.attr('cy', function(d, i) { 
+					var location = pie.options.legend.location.split('-')[0],
+						base = -radius,
+						lineHeight = pie.options.legend.fontSize;
+					if(location === 'bottom') {
+						base = pie.options.size.canvasHeight - (pie.options.data.content.length * lineHeight) - radius;
+					}
+					return base + (i + 1) * lineHeight;
+				})
+				.attr("r", radius);
+			}
+			else {
+				var shapeWidth = pie.options.legend.shapeSize;
+				shapes.attr('x', function(d) {
+					var x = 0,
+						location = pie.options.legend.location.split("-")[1];
+					if ( location === "right") {
+						x = pie.options.size.canvasWidth - shapeWidth;
+					} else if (location === "center") {
+						x = d.getStartPositionOfChar(0).x - shapeWidth - 1;
+					}
+					return x;
+				})
+				.attr('y', function(d, i) { 
+					var location = pie.options.legend.location.split('-')[0],
+						base = -shapeWidth,
+						lineHeight = pie.options.legend.fontSize;
+					if(location === 'bottom') {
+						base = pie.options.size.canvasHeight - (pie.options.data.content.length * lineHeight) - shapeWidth;
+					}
+					return base + (i + 1) * lineHeight;
+				})
+				.attr("text-anchor", function() {
+					var anchor = "start",
+						location = pie.options.legend.location.split("-")[1];
+					if (location === "right") {
+						anchor = "end";
+					} else if (location === "center") {
+						anchor = "middle"; 
+					}
+					return anchor;
+				})
+				.attr("width", shapeWidth)
+				.attr("height", shapeWidth);
+			}
+		}
 	}
 };
 
@@ -2075,6 +2196,11 @@ var tt = {
 			text.addSubtitle(this);
 		}
 		text.addFooter(this);
+
+		// add legend
+		if (this.options.legend.enabled) {
+			text.addLegend(this);
+		}
 
 		// the footer never moves. Put it in place now
 		var self = this;
