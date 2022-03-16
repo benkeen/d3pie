@@ -3,6 +3,7 @@
 ### DEVELOPERS wanted! 
 
 I'm not able to spend the time I'd like on this project and it's slowly fallen into neglect. If any developers would like to take on the project (especially addressing the issues reported), I'd welcome an email at ben.keen@gmail.com
+Benya is making this change for ClickUp to integrate. 
 
 -----------
 
