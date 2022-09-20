@@ -80,8 +80,8 @@ var tt = {
 
     moveTooltip: function (pie) {
         d3.selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
-            .attr("transform", function (d) {
-                var mouseCoords = d3.mouse(this.parentNode);
+            .attr("transform", function () {
+                var mouseCoords = d3.pointer(event, this.parentNode);
                 var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;
                 var y = mouseCoords[1] - (2 * pie.options.tooltips.styles.padding) - 2;
                 return "translate(" + x + "," + y + ")";
