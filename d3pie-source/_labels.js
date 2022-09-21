@@ -1,4 +1,6 @@
 // --------- labels.js -----------
+const zwj = "‍";
+
 var labels = {
 
     /**
@@ -283,7 +285,7 @@ var labels = {
             .attr("fill", "none")
             .style("opacity", function (d, i) {
                 var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-                var isHidden = (percentage !== null && d.percentage < percentage) || pie.options.data.content[i].label === "";
+                var isHidden = (percentage !== null && d.percentage < percentage) || ["", zwj].indexOf(pie.options.data.content[i].label) !== -1;
                 return isHidden ? 0 : 1;
             });
     },

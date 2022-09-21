@@ -193,6 +193,10 @@ var _setupData = function () {
             this.options.data.content[j].percentage = (100 - totalPercentage).toFixed(dp);
         }
         totalPercentage += parseFloat(this.options.data.content[j].percentage);
+
+        if (this.options.data.content[j].label === "") {
+            this.options.data.content[j].label = zwj;
+        }
     }
 };
 

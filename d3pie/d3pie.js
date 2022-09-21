@@ -774,6 +774,8 @@ var math = {
 };
 
 //// --------- labels.js -----------
+const zwj = "‍";
+
 var labels = {
 
     /**
@@ -1058,7 +1060,7 @@ var labels = {
             .attr("fill", "none")
             .style("opacity", function (d, i) {
                 var percentage = pie.options.labels.outer.hideWhenLessThanPercentage;
-                var isHidden = (percentage !== null && d.percentage < percentage) || pie.options.data.content[i].label === "";
+                var isHidden = (percentage !== null && d.percentage < percentage) || ["", zwj].indexOf(pie.options.data.content[i].label) !== -1;
                 return isHidden ? 0 : 1;
             });
     },
@@ -1922,8 +1924,8 @@ var tt = {
 
     moveTooltip: function (pie) {
         d3.selectAll("#" + pie.cssPrefix + "tooltip" + tt.currentTooltip)
-            .attr("transform", function (d) {
-                var mouseCoords = d3.mouse(this.parentNode);
+            .attr("transform", function () {
+                var mouseCoords = d3.pointer(event, this.parentNode);
                 var x = mouseCoords[0] + pie.options.tooltips.styles.padding + 2;
                 var y = mouseCoords[1] - (2 * pie.options.tooltips.styles.padding) - 2;
                 return "translate(" + x + "," + y + ")";
@@ -2134,6 +2136,10 @@ var _setupData = function () {
             this.options.data.content[j].percentage = (100 - totalPercentage).toFixed(dp);
         }
         totalPercentage += parseFloat(this.options.data.content[j].percentage);
+
+        if (this.options.data.content[j].label === "") {
+            this.options.data.content[j].label = zwj;
+        }
     }
 };
 
