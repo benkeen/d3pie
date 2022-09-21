@@ -4,3 +4,4 @@ build/*
 website/core/.DS_Store
 bower_components/
 .DS_Store
+/package-lock.json

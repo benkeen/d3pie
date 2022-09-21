@@ -19,6 +19,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-handlebars");
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-esnext');
 
 	_includeInThisScope("website/grunt-templates/file-paths.js");
 	_includeInThisScope("website/grunt-templates/env-specific-constants.js");
@@ -299,6 +300,11 @@ module.exports = function(grunt) {
 			],
 			options: {
                 reporterOutput: ""
+			}
+		},
+		esnext: {
+			options: {
+				includeRuntime: true
 			}
 		}
 	};
